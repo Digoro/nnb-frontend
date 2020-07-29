@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { forkJoin, Observable, of } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Gender } from '../model/gender';
 import { Location } from '../model/location';
 import { KakaoAccount, KakaoProfile, KakaoProperties, KakaoUser, User } from './../model/user';
@@ -30,16 +30,16 @@ export class AuthService {
   ) { }
 
   getCurrentNonunbubUser(): Observable<User> {
-    // return this.http.get<User>(`/users/current`);
-    return of(this.user).pipe(delay(200))
+    return this.http.get<User>(`/users/current`);
+    // return of(this.user).pipe(delay(200))
   }
 
   getCurrentKaKaoUser() {
-    // return this.http.get(`/users/social_current`, { responseType: 'text' }).pipe(
-    //   map(user => this.utilService.convertJson(user)),
-    //   map(user => this.userService.mapKaKaoUser(user))
-    // )
-    return of(this.kakaoUser).pipe(delay(200))
+    return this.http.get(`/users/social_current`, { responseType: 'text' }).pipe(
+      map(user => this.utilService.convertJson(user)),
+      map(user => this.userService.mapKaKaoUser(user))
+    )
+    // return of(this.kakaoUser).pipe(delay(200))
   }
 
   getCurrentUser() {
