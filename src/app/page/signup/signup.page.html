@@ -1,0 +1,71 @@
+<ion-content>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col>
+        <ion-button color="warning" expand="full" (click)="login()"><img width="28" height="28"
+            src="../../../assets/kakaotalk_logo.png">
+          <span style="color: black">카카오톡 계정으로 시작하기</span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <hr>
+        <p style="text-align: center;">또는</p>
+      </ion-col>
+    </ion-row>
+    <form [formGroup]="signupForm">
+      <ion-item>
+        <ion-label>아이디</ion-label>
+        <ion-input type="text" [formControlName]="'id'" placeholder="자주 사용하는 이메일을 입력해주세요"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>비밀번호</ion-label>
+        <ion-input type="text" [formControlName]="'password'" placeholder="비밀번호를 입력해주세요"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>비밀번호 확인</ion-label>
+        <ion-input type="text" [formControlName]="'passwordConfirm'" placeholder="비밀번호를 다시 입력해주세요"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>이름</ion-label>
+        <ion-input type="text" [formControlName]="'name'" placeholder="이름을 입력해주세요"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>닉네임</ion-label>
+        <ion-input type="text" [formControlName]="'nickName'" placeholder="닉네임을 입력해주세요"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>성별</ion-label>
+        <ion-select okText="확인" cancelText="취소" [formControlName]="'sex'">
+          <ion-select-option *ngFor="let sex of sexs" [value]="sex">{{sex}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>나이</ion-label>
+        <ion-datetime displayFormat="YYYY" [formControlName]="'age'" placeholder="년생"></ion-datetime>
+      </ion-item><br>
+      <ion-row>
+        <ion-col>
+          <p>
+            <ion-checkbox (click)="checkAll()"></ion-checkbox> 전체 동의하기
+          </p>
+          <hr>
+          <p>
+            <ion-checkbox [formControlName]="'service'"></ion-checkbox> 노는법 서비스 이용약관 동의 (필수)
+            <a [href]="termsOfService" class="float-right" target="_blank">보기</a>
+          </p>
+          <p>
+            <ion-checkbox [formControlName]="'personal'"></ion-checkbox> 개인정보 수집 이용 동의 (필수)
+            <a [href]="collectPersonal" class="float-right" target="_blank">보기</a>
+          </p>
+          <p>
+            <ion-checkbox [formControlName]="'marketing'"></ion-checkbox> 마케팅 정보 수신 (선택)
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-button color="primary" expand="full" [disabled]="!signupForm.valid" (click)="signup()">회원 가입
+      </ion-button>
+    </form>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,23 @@
+<ion-content>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col *ngFor="let meeting of myMeetings" size="12">
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail slot="start" style="cursor: pointer;" (click)="goDetailPage(meeting)">
+              <img [src]="meeting.file" />
+            </ion-thumbnail>
+            <ion-label style="cursor: pointer;" (click)="goDetailPage(meeting)">
+              <h3>{{meeting.title}} </h3>
+              <p>{{meeting.subTitle}}</p>
+              <p *ngIf="meeting.price !== 0">{{meeting.price}}</p>
+              <p *ngIf="meeting.price === 0">무료</p>
+            </ion-label>
+            <ion-icon name="ellipsis-horizontal-outline" style="float: right; padding:20px 20px" class="more"
+              (click)="presentActionSheet(meeting.mid)"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,22 @@
+<ion-content>
+  <ion-grid fixed *ngIf="magazine">
+    <ion-row>
+      <ion-col>
+        <img [src]="magazine.image" class="main-image" />
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p class="desc date">{{magazine.createDT|date:'yyyy년 MM월 dd일'}}</p>
+        <h3>{{magazine.title}}</h3>
+        <p class="desc">{{magazine.catch_phrase}}</p>
+      </ion-col>
+    </ion-row>
+    <hr style="margin: 0px">
+    <ion-row>
+      <ion-col>
+        <quill-view [content]="magazine.content" format="text" theme="snow" [style]="quillStyle"></quill-view>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

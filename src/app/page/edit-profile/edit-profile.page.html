@@ -1,0 +1,42 @@
+<ion-content *ngIf="!!user">
+  <ion-grid fixed>
+    <ion-row style="margin-top:20px;">
+      <ion-col class="center">
+        <ion-avatar style="width: 80px; height: 80px;">
+          <img [src]="kakaoUser.properties.thumbnail_image">
+        </ion-avatar>
+      </ion-col>
+    </ion-row>
+    <form [formGroup]="form">
+      <ion-item>
+        <ion-label position="floating">닉네임</ion-label>
+        <ion-input type="text" [formControlName]="'nickname'" clearInput></ion-input>
+        <div ngxErrors="nickname">
+          <div ngxError="maxlength" [when]="['dirty']">
+            <p class="invalid-input">30자 제한입니다.</p>
+          </div>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">한줄 소개</ion-label>
+        <ion-input type="text" [formControlName]="'catchphrase'" clearInput></ion-input>
+        <div ngxErrors="catchphrase">
+          <div ngxError="maxlength" [when]="['dirty']">
+            <p class="invalid-input">30자 제한입니다.</p>
+          </div>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">설명</ion-label>
+        <ion-textarea rows="2" placeholder="" maxlength="300" [formControlName]="'description'">
+        </ion-textarea>
+        <div ngxErrors="description">
+          <div ngxError="maxlength" [when]="['dirty']">
+            <p class="invalid-input">300자 제한입니다.</p>
+          </div>
+        </div>
+      </ion-item>
+    </form>
+    <ion-button color="warning" expand="full" (click)="editUser()" [disabled]="form.invalid">저장하기</ion-button>
+  </ion-grid>
+</ion-content>

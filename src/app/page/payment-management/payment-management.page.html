@@ -1,0 +1,67 @@
+<ion-content>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>간편결제 목록</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ng-container *ngIf="!accounts">
+                <div style="margin-left: 25px">
+                  <p>간편결제 목록을 가져오는 중입니다. &nbsp;<img src="/assets/loading.gif" width="25" height="25"></p>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="accounts">
+                <ng-container *ngIf="accounts.length == 0">
+                  <p class="desc" style="margin-left: 20px;">간편결제가 등록되어 있지 않습니다.</p>
+                </ng-container>
+                <ng-container *ngIf="accounts.length >= 1">
+                  <ng-container *ngFor="let account of accounts">
+                    <ion-item>
+                      <ion-label *ngIf="account.PCD_PAY_TYPE === 'transfer'">
+                        <h3>{{account['PCD_PAY_BANKNAME']}}</h3>
+                        <p>{{account['PCD_PAY_BANKNUM']}}</p>
+                      </ion-label>
+                      <ion-label *ngIf="account.PCD_PAY_TYPE === 'card'">
+                        <h3>{{account['PCD_PAY_CARDNAME']}}</h3>
+                        <p>{{account['PCD_PAY_CARDNUM']}}</p>
+                      </ion-label>
+                      <ion-icon name="trash-outline"
+                        style="float: right; padding:20px 20px; font-size:20px;cursor: pointer;"
+                        (click)="delete(account)">
+                      </ion-icon>
+                    </ion-item>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>간편결제 등록</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-radio-group value="card" (ionChange)="selectMethod($event)">
+              <ion-item>
+                <ion-label>신용/체크 카드</ion-label>
+                <ion-radio slot="start" color="primary" value="card"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>계좌</ion-label>
+                <ion-radio slot="start" color="primary" value="transfer"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+            <ion-button color="primary" expand="block" (click)="add()">간편결제 등록하기</ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,22 @@
+<ion-content>
+  <ion-grid fixed>
+    <h3 style="margin-top: 30px;margin-left: 13px;"><strong>{{title}}</strong></h3>
+    <ion-row *ngIf="!!isForest">
+      <ion-col>
+        <img src="/assets/banner/banner03.png">
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ng-container *ngIf="meetings">
+        <ion-col *ngFor="let meeting of meetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6">
+          <meeting-card [meeting]="meeting" (clickEvent)="goDetailPage(meeting)"></meeting-card>
+        </ion-col>
+      </ng-container>
+      <ng-container *ngIf="!meetings">
+        <ion-col *ngFor="let meeting of [1,2,3,4]" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6">
+          <empty-meeting-card></empty-meeting-card>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+  </ion-grid>
+</ion-content>

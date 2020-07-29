@@ -1,0 +1,34 @@
+<ion-row *ngIf="!!title && !!subTitle" style="margin-bottom: -12px;margin-top: 40px;">
+  <ion-col>
+    <strong class="meeting-category" [ngStyle]="{'margin-left':isTitleMargin?'13px':''}">{{title}}</strong>
+    <p class="subTitle" [ngStyle]="{'margin-left':isTitleMargin?'13px':''}">{{subTitle}}</p>
+  </ion-col>
+  <p class="all" (click)="showAll()">전체보기</p>
+</ion-row>
+
+<ion-row>
+  <ion-col class="meeting-list">
+    <ion-slides [options]="sliderConfig" pager="false" #slider id="slider">
+      <ng-container *ngIf="isLoaded">
+        <ng-container *ngIf="meetings.length !==0; else no_meeting">
+          <ion-slide *ngFor="let meeting of meetings">
+            <meeting-card [meeting]="meeting" (clickEvent)="goDetailPage(meeting)"></meeting-card>
+          </ion-slide>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="!isLoaded">
+        <ion-slide *ngFor="let i of [1,2,3,4,5]">
+          <empty-meeting-card></empty-meeting-card>
+        </ion-slide>
+      </ng-container>
+    </ion-slides>
+  </ion-col>
+</ion-row>
+
+<ng-template #no_meeting>
+  <div style="text-align: center; opacity: 0.4;">
+    <ion-chip outline>
+      <ion-label color="primary">모임이 없습니다.</ion-label>
+    </ion-chip>
+  </div>
+</ng-template>

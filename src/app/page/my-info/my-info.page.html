@@ -1,0 +1,54 @@
+<ion-content>
+  <ion-grid fixed>
+    <ion-segment (ionChange)="segmentChanged($event)" value="join">
+      <ion-segment-button value="join">
+        <ion-label>등록한 모임</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="like">
+        <ion-label>찜한 모임</ion-label>
+      </ion-segment-button>
+      <!-- <ion-segment-button value="comment">
+        <ion-label>내가 쓴 댓글</ion-label>
+      </ion-segment-button> -->
+      <ion-segment-button value="refund">
+        <ion-label>환불 내역</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    <br>
+
+    <ion-row *ngIf="selectedMenu === 'join'">
+      <ion-col *ngFor="let meeting of purchasedMeetings" size="12">
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail slot="start" style="cursor: pointer;" (click)="goDetailPage(meeting)">
+              <img [src]="meeting.file" />
+            </ion-thumbnail>
+            <ion-label style="cursor: pointer;" (click)="goDetailPage(meeting)" class="ion-text-wrap">
+              <h3>{{meeting.title}} </h3>
+              <p>{{meeting.subTitle}}</p>
+              <p>{{meeting.price}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="selectedMenu === 'refund'">
+      <ion-col>
+        <div style="text-align: center; opacity: 0.4;">
+          <ion-chip outline>
+            <ion-label color="primary">서비스 추가 예정입니다.</ion-label>
+          </ion-chip>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="selectedMenu === 'like'">
+      <ion-col>
+        <div style="text-align: center; opacity: 0.4;">
+          <ion-chip outline>
+            <ion-label color="primary">서비스 추가 예정입니다.</ion-label>
+          </ion-chip>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

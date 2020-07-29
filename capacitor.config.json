@@ -1,0 +1,7 @@
+{
+  "appId": "com.nonunbub",
+  "appName": "nonunbub",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}

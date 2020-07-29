@@ -1,0 +1,93 @@
+<ion-content fullscreen="true" slot="fixed">
+  <ion-grid fixed>
+    <div class="card" *ngIf="!!user">
+      <div class="header"
+        [ngStyle]="{ 'background': 'url(/assets/profile-background.png) no-repeat top center/cover fixed, #fff'}">
+        <p class="info">{{user.catch_phrase}}</p>
+        <div class="avatar">
+          <!-- <img [src]="kakaoUser.properties.thumbnail_image" alt=""> -->
+          <!-- <img src="/assets/user.png"> -->
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ion-row *ngIf="!!user">
+        <ion-col>
+          <div class="user-meta ion-text-center">
+            <h3 class="hostname">{{user.name}}</h3>
+            <h5 class="nickname">{{user.nickName}}</h5>
+          </div>
+          &nbsp;
+          <p class="desc" style="margin:0px">{{user.introduction}}</p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <a href="mailto:nonunbub@gmail.com">
+            <ion-button color="light" size="small" style="min-width: 115px;">
+              <ion-icon name="mail-outline"></ion-icon>&nbsp;&nbsp;&nbsp;문의하기
+            </ion-button>
+          </a>
+
+          <a href="mailto:nonunbub@gmail.com">
+            <ion-button color="light" size="small" style="min-width: 115px;">
+              <ion-icon name="hand-left-outline"></ion-icon>&nbsp;&nbsp;&nbsp;사용자 신고하기
+            </ion-button>
+          </a>
+        </ion-col>
+      </ion-row>
+      <hr>
+
+      <ion-row *ngIf="!!user">
+        <ion-col>
+          <p class="host-subject">{{user.nickName}}님의 관심사</p>
+          <div style="opacity: 0.4; padding: 20px">
+            <ng-container *ngFor="let favorite of ['등산','건강','취미','함께']">
+              <ion-chip>
+                <ion-label color="primary">{{favorite}}</ion-label>
+              </ion-chip>
+            </ng-container>
+            <br>
+            <ion-chip outline>
+              <ion-label color="primary">서비스 추가 예정입니다.</ion-label>
+            </ion-chip>
+            <br>
+          </div>
+        </ion-col>
+      </ion-row>
+      <hr>
+
+      <ion-row>
+        <ion-col>
+          <p class="host-subject" *ngIf="!!user">{{user.nickName}}님이 참여한 모임</p>
+          <div style="opacity: 0.4; padding: 20px">
+            <ion-chip outline>
+              <ion-label color="primary">서비스 추가 예정입니다.</ion-label>
+            </ion-chip>
+          </div>
+        </ion-col>
+      </ion-row>
+      <hr>
+
+      <ion-row>
+        <ion-col>
+          <p class="host-subject" *ngIf="!!user">{{user.nickName}}님이 주최한 모임</p>
+          <div style="opacity: 0.4; padding: 20px">
+            <ion-chip outline>
+              <ion-label color="primary">서비스 추가 예정입니다.</ion-label>
+            </ion-chip>
+          </div>
+        </ion-col>
+      </ion-row>
+      <hr>
+
+      <ion-row>
+        <ion-col>
+          <p class="host-subject">후기</p>
+          <comment [comments]="comments" [currentUser]="user" [editable]="false" [displayLabel]="true"></comment>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+</ion-content>

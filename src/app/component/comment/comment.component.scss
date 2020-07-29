@@ -1,0 +1,32 @@
+.avatar {
+    margin: 0px 8px 0px 0px;
+}
+
+.date {
+    font-size: 12px;
+    color: rgb(168, 174, 179);
+}
+
+.comment-icon {
+    font-size: 20px;
+    float: right;
+}
+
+.comment {
+    margin-left: 20px;
+    margin-bottom: 0px;
+}
+
+::ng-deep .comment-textarea {
+    textarea {
+        background: #f8f8f8 !important;
+        border: 1px solid #dddddd !important;
+        border-radius: 9px !important;
+        padding: 7px 10px 10px 10px !important;
+    }
+}
+
+::ng-deep ion-icon:hover {
+    color: #3880ff;
+    font-weight: bold;
+}

@@ -1,0 +1,180 @@
+.main-image {
+    width: 100%;
+    --aspect-ratio: (4/3);
+}
+
+.multi_lines_text {
+    white-space: pre-line;
+}
+
+.basic-info {
+    margin-bottom: 5px;
+}
+
+.basic-info ion-icon {
+    margin-right: 10px;
+}
+
+agm-map {
+    height: 300px;
+}
+
+:host::ng-deep .ql-editor {
+    padding: 0px 10px 0px 10px;
+}
+
+:host::ng-deep .ql-editor h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(27, 28, 29);
+    line-height: 28px;
+    margin: 36px 0px 0px;
+}
+
+:host::ng-deep .ql-editor h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(27, 28, 29);
+    line-height: 28px;
+    margin: 36px 0px 0px;
+}
+
+:host::ng-deep .ql-editor p {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+    padding: 4px 0px;
+}
+
+:host::ng-deep .ql-editor ul>li {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+}
+
+:host::ng-deep .ql-editor ol>li {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+}
+
+:host::ng-deep .ql-editor blockquote {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+}
+
+.host {
+    display: flex;
+
+    .icon-img {
+        border-radius: 50%;
+        margin-right: 19px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .icon {
+        cursor: pointer;
+        font-size: 40px;
+        margin-right: 10px;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+
+        .name {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .badge {
+            font-size: 10px;
+        }
+
+        .desc {
+            font-size: 12px
+        }
+    }
+}
+
+.catch_phrase {
+    margin-bottom: 6px;
+}
+
+.sns-share {
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    display: flex;
+    flex: 1 1 0%;
+    text-align: center;
+
+    .sns {
+        cursor: pointer;
+        font-size: 12px;
+        width: 50px;
+
+        .sns-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+        }
+    }
+}
+
+ion-footer {
+    position: absolute;
+    bottom: -4px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.menu {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    z-index: 99999;
+    background: white;
+    position: sticky;
+    top: 0;
+    display: flex;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+
+    a {
+        text-decoration: none;
+        color: rgb(133, 138, 141);
+
+        p {
+            margin: 0px;
+            padding: 10px 10px 10px 5px;
+        }
+    }
+}
+
+section {
+    padding-top: 60px;
+}
+
+.current p {
+    color: black !important;
+    font-weight: bold;
+    box-shadow: 0 -6px #bec8d4 inset;
+}

@@ -1,0 +1,9 @@
+<div class="meeting" (click)="goDetailPage(meeting)">
+  <img [src]="meeting.file">
+  <div class="body">
+    <p class="sub-title desc">{{meeting.subTitle | truncate: [40]}}</p>
+    <p class="title">{{meeting.title | truncate: [30]}}</p>
+    <span *ngIf="meeting.price !== 0" class="price">{{meeting.price | number}}원</span>
+    <span *ngIf="meeting.price === 0" class="price">무료</span>
+  </div>
+</div>

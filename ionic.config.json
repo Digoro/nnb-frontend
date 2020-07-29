@@ -1,0 +1,8 @@
+{
+  "name": "nonunbub",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}

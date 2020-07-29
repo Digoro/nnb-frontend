@@ -1,0 +1,66 @@
+.main-image {
+    width: 100%;
+    --aspect-ratio: (4/3);
+}
+
+.date {
+    margin: 0px;
+    font-size: 14px;
+}
+
+:host::ng-deep .ql-editor {
+    padding: 0px 10px 0px 10px;
+}
+
+:host::ng-deep .ql-editor h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(27, 28, 29);
+    line-height: 28px;
+    margin: 36px 0px 0px;
+}
+
+:host::ng-deep .ql-editor h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(27, 28, 29);
+    line-height: 28px;
+    margin: 36px 0px 0px;
+}
+
+:host::ng-deep .ql-editor p {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+    padding: 4px 0px;
+}
+
+:host::ng-deep .ql-editor ul>li {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+}
+
+:host::ng-deep .ql-editor ol>li {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+}
+
+:host::ng-deep .ql-editor blockquote {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+}

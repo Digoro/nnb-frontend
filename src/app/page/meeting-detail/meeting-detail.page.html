@@ -1,0 +1,270 @@
+<ng-container *ngIf="!!meeting">
+  <ion-content hide-toolbar [footer]="footer" scroll-events="true" (ionScroll)="onScroll($event)">
+    <ion-grid [fixed]="isDesktop" [ngStyle]="{'padding':isDesktop?'':'0px'}">
+      <ion-row>
+        <ion-col [ngStyle]="{'padding':isDesktop?'':'0px'}">
+          <img [src]="meeting.file" class="main-image" />
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col>
+          <p class="desc">{{meeting.subTitle}}</p>
+          <h4><strong>{{meeting.title}}</strong></h4>
+          <p *ngIf="meeting.price !== 0"><strong>{{meeting.price | number}}원</strong></p>
+          <p *ngIf="meeting.price === 0"><strong>무료</strong></p>
+        </ion-col>
+      </ion-row>
+      <hr>
+      <ion-row style="margin-bottom: 20px;">
+        <ion-col style="font-size: 15px;font-weight: 300;">
+          <p class="basic-info">
+            <ion-icon name="heart-outline" style="color:red"></ion-icon>{{meeting.likes}}명이 좋아한 모임
+          </p>
+          <p class="basic-info">
+            <ion-icon name="calendar-outline" style="color:#3880ff"></ion-icon>
+            {{meeting._from|date:'yyyy년 MM월 dd일 HH시 mm분'}} ~ {{meeting._to|date:'yyyy년 MM월 dd일 HH시 mm분'}}
+          </p>
+          <p class="basic-info">
+            <ion-icon name="at-outline" style="color:#3880ff"></ion-icon>{{meeting.address}}
+            {{meeting.detailed_address}}
+          </p>
+          <p class="basic-info" style="display: flex;">
+            <ion-button color="light" size="small" style="min-width: 115px;" (click)="like(meeting)">
+              <ion-icon name="heart-outline"></ion-icon> {{meeting.likes}}
+            </ion-button>
+            <ion-button color="light" size="small" style="min-width: 115px;" (click)="openModal(meeting, template)">
+              <ion-icon name="share-outline"></ion-icon> 공유하기
+            </ion-button>
+          </p>
+        </ion-col>
+      </ion-row>
+      <div class="menu">
+        <a href="javascript:document.getElementById('section-1').scrollIntoView(true);">
+          <p>모임 소개</p>
+        </a>
+        <a href="javascript:document.getElementById('section-2').scrollIntoView(true);">
+          <p>모임 장소</p>
+        </a>
+        <a *ngIf="meeting.check_list" href="javascript:document.getElementById('section-3').scrollIntoView(true);">
+          <p>준비물</p>
+        </a>
+        <a *ngIf="meeting.include" href="javascript:document.getElementById('section-4').scrollIntoView(true);">
+          <p>포함 사항</p>
+        </a>
+        <a *ngIf="meeting.exclude" href="javascript:document.getElementById('section-5').scrollIntoView(true);">
+          <p>불포함 사항</p>
+        </a>
+        <a *ngIf="meeting.notice" href="javascript:document.getElementById('section-6').scrollIntoView(true);">
+          <p>유의 사항</p>
+        </a>
+        <a *ngIf="meeting.refund_policy" href="javascript:document.getElementById('section-7').scrollIntoView(true);">
+          <p>환불 정책</p>
+        </a>
+        <a *ngIf="!!host" href="javascript:document.getElementById('section-8').scrollIntoView(true);">
+          <p>호스트 소개</p>
+        </a>
+        <a href="javascript:document.getElementById('section-9').scrollIntoView(true);">
+          <p>댓글</p>
+        </a>
+      </div>
+
+      <main>
+        <section id="section-1">
+          <ion-row>
+            <ion-col>
+              <p class="title">모임 소개</p>
+              <quill-view [content]="meeting.desc" format="text" theme="snow" [style]="quillStyle"></quill-view>
+            </ion-col>
+          </ion-row>
+        </section>
+        <section id="section-2">
+          <ion-row>
+            <ion-col>
+              <p class="title">모임 장소</p>
+              <p>{{meeting.address}} {{meeting.detailed_address}}</p>
+              <agm-map [latitude]="meeting.lat" [longitude]="meeting.lon" [zoom]="15">
+                <agm-marker [latitude]="meeting.lat" [longitude]="meeting.lon"></agm-marker>
+              </agm-map>
+            </ion-col>
+          </ion-row>
+        </section>
+        <ng-container *ngIf="meeting.check_list">
+          <section id="section-3">
+            <ion-row>
+              <ion-col>
+                <p class="title">준비물</p>
+                <p class="pre-wrap">{{meeting.check_list}}</p>
+              </ion-col>
+            </ion-row>
+          </section>
+        </ng-container>
+        <ng-container *ngIf="meeting.include">
+          <section id="section-4">
+            <ion-row>
+              <ion-col>
+                <p class="title">포함 사항</p>
+                <p class="pre-wrap">{{meeting.include}}</p>
+              </ion-col>
+            </ion-row>
+          </section>
+        </ng-container>
+        <ng-container *ngIf="meeting.exclude">
+          <section id="section-5">
+            <ion-row>
+              <ion-col>
+                <p class="title">불포함 사항</p>
+                <p class="pre-wrap">{{meeting.exclude}}</p>
+              </ion-col>
+            </ion-row>
+          </section>
+        </ng-container>
+        <ng-container *ngIf="meeting.notice">
+          <section id="section-6">
+            <ion-row>
+              <ion-col>
+                <p class="title">유의 사항</p>
+                <p class="pre-wrap">{{meeting.notice}}</p>
+              </ion-col>
+            </ion-row>
+          </section>
+        </ng-container>
+        <ng-container *ngIf="meeting.refund_policy">
+          <section id="section-7">
+            <ion-row>
+              <ion-col>
+                <p class="title">환불 정책</p>
+                <p class="pre-wrap">{{meeting.refund_policy}}</p>
+              </ion-col>
+            </ion-row>
+          </section>
+        </ng-container>
+        <section id="section-8">
+          <ion-row>
+            <ion-col>
+              <p class="title">호스트 소개</p>
+              <div *ngIf="!!host">
+                <div class="host">
+                  <img *ngIf="host.image" [src]="host.image" class="icon-img">
+                  <ion-icon *ngIf="!host.image" name="person-circle-outline" class="icon" (click)="goToHostPage(host)">
+                  </ion-icon>
+                  <div class="info">
+                    <div>
+                      <span (click)="goToHostPage(host)" class="name">{{host.name}}</span>&nbsp;
+                      <ion-badge color="medium" class="badge">인기</ion-badge>
+                    </div>
+                    <div class="desc">score: {{host.score}}</div>
+                  </div>
+                </div>
+                <p class="desc catch_phrase">{{host.catch_phrase}}</p>
+                <p>{{host.introduction}}</p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </section>
+        <section id="section-9">
+          <ion-row>
+            <ion-col>
+              <p class="title">댓글</p>
+              <comment [comments]="comments" [currentUser]="user" (onComment)="onComment($event)"
+                (onDelete)="onDeleteComment($event)" (onChildComment)="onChildComment($event)"></comment>
+            </ion-col>
+          </ion-row>
+        </section>
+      </main>
+    </ion-grid>
+    <footer></footer>
+  </ion-content>
+  <ion-footer #footer>
+    <ion-grid fixed style="padding: 0px">
+      <ion-toolbar style="padding:10px">
+        <ion-button expand="full" size="large" style="margin: 0px; height: 48px; color:#007bff" (click)="join(meeting)">
+          모임 참여하기
+        </ion-button>
+      </ion-toolbar>
+    </ion-grid>
+  </ion-footer>
+</ng-container>
+
+<ng-container *ngIf="!meeting">
+  <ion-content>
+    <ion-grid [fixed]="isDesktop" [ngStyle]="{'padding':isDesktop?'':'0px'}">
+      <ion-row>
+        <ion-col [ngStyle]="{'padding':isDesktop?'':'0px'}">
+          <skeleton [width]="'100%'"></skeleton>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <p class="desc">
+            <skeleton [width]="'90%'" [height]="'22px'"></skeleton>
+          </p>
+          <h4>
+            <skeleton [width]="'100%'" [height]="'56px'"></skeleton>
+          </h4>
+          <p><strong>
+              <skeleton [width]="'40%'" [height]="'24px'"></skeleton>
+            </strong></p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col style="font-size: 15px;font-weight: 300;">
+          <p class="basic-info">
+            <skeleton [width]="'45%'" [height]="'22px'"></skeleton>
+          </p>
+          <p class="basic-info">
+            <skeleton [width]="'85%'" [height]="'22px'"></skeleton>
+          </p>
+          <p class="basic-info">
+            <skeleton [width]="'100%'" [height]="'22px'"></skeleton>
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</ng-container>
+
+<ng-template #template>
+  <div class="modal-header">
+    <p class="modal-title pull-left">공유하기</p>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="sns-share">
+      <div class="sns" (click)="share('facebook')">
+        <div>
+          <img class="sns-icon" src="/assets/sns-icon/facebook.png">
+        </div>페이스북
+      </div>
+      <div class="sns" (click)="share('kakaotalk')">
+        <div>
+          <img class="sns-icon" src="/assets/sns-icon/kakaotalk.png">
+        </div>카카오톡
+      </div>
+      <div class="sns" (click)="share('kakaostory')">
+        <div>
+          <img class="sns-icon" src="/assets/sns-icon/kakao-story.png">
+        </div>카카오<br>스토리
+      </div>
+      <div class="sns" (click)="share('naverband')">
+        <div>
+          <img class="sns-icon" src="/assets/sns-icon/naver-band.png">
+        </div>네이버<br>밴드
+      </div>
+      <div class="sns" (click)="share('link')">
+        <div>
+          <img class="sns-icon" src="/assets/sns-icon/link.png">
+        </div>링크복사
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div #script style.display="none">
+  <ng-content></ng-content>
+</div>

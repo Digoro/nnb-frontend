@@ -1,0 +1,13 @@
+<ion-content *ngIf="data">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-list-header>
+          <ion-label>결제 현황</ion-label>
+        </ion-list-header>
+        <ngx-table [configuration]="configuration" [data]="data" [columns]="columns">
+        </ngx-table>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

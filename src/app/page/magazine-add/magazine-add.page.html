@@ -1,0 +1,49 @@
+<ion-content>
+    <ion-grid fixed>
+        <form [formGroup]="form">
+            <ion-item>
+                <ion-label position="floating">제목</ion-label>
+                <ion-input type="text" [formControlName]="'title'" clearInput></ion-input>
+                <div ngxErrors="title">
+                    <div ngxError="maxlength" [when]="['dirty']">
+                        <p class="invalid-input">30자 제한입니다.</p>
+                    </div>
+                    <div ngxError="required" [when]="['dirty']">
+                        <p class="invalid-input">필수 입력 항목입니다.</p>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item>
+                <ion-label position="floating">캐치프라이즈</ion-label>
+                <ion-input type="text" [formControlName]="'catch_phrase'" clearInput></ion-input>
+                <div ngxErrors="catch_phrase">
+                    <div ngxError="maxlength" [when]="['dirty']">
+                        <p class="invalid-input">30자 제한입니다.</p>
+                    </div>
+                    <div ngxError="required" [when]="['dirty']">
+                        <p class="invalid-input">필수 입력 항목입니다.</p>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item>
+                <ion-label position="fixed">대표 이미지</ion-label>
+                <input [formControlName]="'image'" type="file" class="form-control" (change)="onFileChange($event)">
+            </ion-item>
+            <img *ngIf="!!previewImage" [src]="previewImage" style="width: 400px; height: 400px" />
+
+            <ion-item>
+                <ion-label position="fixed">내용</ion-label>
+            </ion-item>
+            <quill-editor style="-webkit-user-select: text" formControlName="content" [placeholder]="'내용을 입력해주세요'"
+                [styles]="quillStyle"></quill-editor>
+            <div ngxErrors="content">
+                <div ngxError="required" [when]="['dirty']">
+                    <p class="invalid-input">필수 입력 항목입니다.</p>
+                </div>
+            </div>
+        </form>
+        <ion-button color="warning" expand="full" (click)="add()" [disabled]="form.invalid">저장하기</ion-button>
+    </ion-grid>
+</ion-content>

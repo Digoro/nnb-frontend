@@ -1,0 +1,63 @@
+<ion-content>
+  <ion-grid fixed style="margin-top: 90px">
+    <ion-row>
+      <ion-col>
+        <ion-button color="warning" expand="full" (click)="login('kakao')"><img width="28" height="28"
+            src="../../../assets/kakaotalk_logo.png">
+          <span style="color: black">카카오톡 계정으로 로그인</span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <div style="opacity: 0.4;">
+      <ion-row>
+        <ion-col>
+          <hr>
+          <p style="text-align: center;">또는</p>
+        </ion-col>
+      </ion-row>
+      <div style="text-align: center;">
+        <ion-chip outline>
+          <ion-label color="primary">서비스 추가 예정입니다. 카카오톡 로그인을 이용해주세요.</ion-label>
+        </ion-chip>
+      </div>
+      <form [formGroup]="loginForm">
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-input type="text" [formControlName]="'id'" placeholder="이메일"></ion-input>
+              <div ngxErrors="id">
+                <div ngxError="maxlength" [when]="['dirty']">
+                  <p class="invalid-input">30자 제한</p>
+                </div>
+              </div>
+            </ion-item>
+            <ion-item>
+              <ion-input type="text" [formControlName]="'password'" placeholder="비밀번호"></ion-input>
+              <div ngxErrors="password">
+                <div ngxError="maxlength" [when]="['dirty']">
+                  <p class="invalid-input">30자 제한</p>
+                </div>
+              </div>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button color="primary" expand="full" [disabled]="!loginForm.valid" (click)="login('email')">노는법 로그인
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </form>
+      <ion-row>
+        <ion-col>
+          <div style="display: flex; justify-content: center;">
+            <p (click)="findPassword()" style="cursor: pointer;">비밀번호 찾기</p>&nbsp;&nbsp;&nbsp;&nbsp;
+            |&nbsp;&nbsp;&nbsp;
+            <p (click)="signup()" style="cursor: pointer;">회원 가입</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+</ion-content>
