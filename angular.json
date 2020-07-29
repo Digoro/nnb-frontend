@@ -15,7 +15,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
-            "outputPath": "/Users/digoro/Desktop/dev/SeniorGround-BE/tutorial/tutorial/static",
+            "outputPath": "/home/ubuntu/nnb-backend/tutorial/tutorial/develop_static",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
