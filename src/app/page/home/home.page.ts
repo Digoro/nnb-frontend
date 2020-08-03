@@ -104,7 +104,7 @@ export class HomePage implements OnInit, OnDestroy {
       this.mainMeetings = [
         {
           title: '일주일 이내 열리는 모임', subTitle: `가장 빨리 만나 볼 수 있는 기회!(${this.toWeek} ~ ${this.fromWeek})`,
-          onShowKey: 'week', onShowTitle: `일주일 이내 열리는 모임(${this.toWeek} ~ ${this.fromWeek})`, meetings: this.fastMeetings
+          onShowKey: 'week', onShowTitle: `일주일 이내 열리는 모임`, meetings: this.fastMeetings
         },
         {
           title: '인기 있는 모임 👍👍', subTitle: "지금 노는법에서 가장 인기있는 모임!",
