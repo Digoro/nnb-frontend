@@ -15,12 +15,13 @@
       <ion-row style="margin-bottom: -12px;margin-top: 40px;">
         <ion-col>
           <strong class="meeting-category" [ngStyle]="{'margin-left':'13px'}">{{meeting.title}}</strong>
-          <p class="subTitle" [ngStyle]="{'margin-left':'13px'}">{{meeting.subTitle}}</p>
+          <!-- <p class="subTitle" [ngStyle]="{'margin-left':'13px'}">{{meeting.subTitle}}</p> -->
         </ion-col>
         <p class="all" (click)="onShowAll(meeting.onShowKey,meeting.onShowTitle)">전체보기</p>
       </ion-row>
       <ion-row>
-        <ion-col *ngFor="let m of meeting.meetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6">
+        <ion-col *ngFor="let m of meeting.meetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
+          style="padding:0px">
           <meeting-card [meeting]="m" (clickEvent)="onClick(m)"></meeting-card>
         </ion-col>
       </ion-row>
