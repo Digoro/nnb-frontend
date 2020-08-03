@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx';
 import * as moment from 'moment';
 import { Callable } from 'src/app/model/callable';
 import { MeetingService } from 'src/app/service/meeting.service';
@@ -20,16 +19,6 @@ export class HomePage implements OnInit, OnDestroy {
   fromWeek: string;
   forestMeetings: Meeting[];
   cationMeetings: Meeting[];
-  options: NativeTransitionOptions = {
-    direction: 'left',
-    duration: 500,
-    slowdownfactor: 1,
-    slidePixels: 20,
-    iosdelay: 100,
-    androiddelay: 150,
-    fixedPixelsTop: 0,
-    fixedPixelsBottom: 60
-  };
 
   bannerSliderConfig = {
     initialSlide: 1,
@@ -39,10 +28,10 @@ export class HomePage implements OnInit, OnDestroy {
     }
   }
   banners: { src: string, fn: Callable }[];
+  mainMeetings: { title: string, subTitle: string, onShowKey: string, onShowTitle: string, meetings: Meeting[] }[]
 
   constructor(
     private meetingService: MeetingService,
-    private nativePageTransitions: NativePageTransitions,
     private router: Router,
     private cds: CheckDesktopService
   ) {
@@ -111,6 +100,25 @@ export class HomePage implements OnInit, OnDestroy {
       })
       this.forestMeetings = meetings.filter(meeting => meeting.subTitle.includes('숲찾사'))
       this.cationMeetings = meetings.filter(meeting => meeting.subTitle.includes('락앤롤'))
+
+      this.mainMeetings = [
+        {
+          title: '일주일 이내 열리는 모임', subTitle: `가장 빨리 만나 볼 수 있는 기회!(${this.toWeek} ~ ${this.fromWeek})`,
+          onShowKey: 'week', onShowTitle: '이번주 진행되는 모임 💛💛', meetings: this.fastMeetings
+        },
+        {
+          title: '인기 있는 모임', subTitle: "지금 노는법에서 가장 인기있는 모임!",
+          onShowKey: 'all', onShowTitle: '인기 있는 모임 👍👍', meetings: this.meetings
+        },
+        {
+          title: '100케이션', subTitle: "락앤롤 아트투어",
+          onShowKey: '100cation', onShowTitle: '100케이션 🎨🎨', meetings: this.cationMeetings
+        },
+        {
+          title: '숲을 찾는 사람들', subTitle: "길여행가와 떠나는 힐링 여행~",
+          onShowKey: 'forest', onShowTitle: '숲을 찾는 사람들 🌲🌲', meetings: this.forestMeetings
+        },
+      ]
     });
   }
 
@@ -120,7 +128,6 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   onClick(meeting: Meeting) {
-    // this.nativePageTransitions.slide(this.options);
     this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
   }
 

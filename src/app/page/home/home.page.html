@@ -11,7 +11,21 @@
     </ion-row>
   </ion-grid>
   <ion-grid fixed>
-    <horizontal-slider [title]="'일주일 이내 열리는 모임'" [subTitle]="'가장 빨리 만나 볼 수 있는 기회! '+'(' + toWeek + ' ~ '+ fromWeek +')'"
+    <ng-container *ngFor="let meeting of mainMeetings">
+      <ion-row style="margin-bottom: -12px;margin-top: 40px;">
+        <ion-col>
+          <strong class="meeting-category" [ngStyle]="{'margin-left':'13px'}">{{meeting.title}}</strong>
+          <p class="subTitle" [ngStyle]="{'margin-left':'13px'}">{{meeting.subTitle}}</p>
+        </ion-col>
+        <p class="all" (click)="onShowAll(meeting.onShowKey,meeting.onShowTitle)">전체보기</p>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngFor="let m of meeting.meetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6">
+          <meeting-card [meeting]="m" (clickEvent)="onClick(m)"></meeting-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+    <!-- <horizontal-slider [title]="'일주일 이내 열리는 모임'" [subTitle]="'가장 빨리 만나 볼 수 있는 기회! '+'(' + toWeek + ' ~ '+ fromWeek +')'"
       [meetings]="fastMeetings" (clickEvent)="onClick($event)" (showAllEvent)="onShowAll('week','이번주 진행되는 모임 💛💛')">
     </horizontal-slider>
     <horizontal-slider [title]="'인기 있는 모임'" [subTitle]="'지금 노는법에서 가장 인기있는 모임!'" [meetings]="meetings"
@@ -19,7 +33,7 @@
     <horizontal-slider [title]="'100케이션'" [subTitle]="'락앤롤 아트투어'" [meetings]="cationMeetings"
       (clickEvent)="onClick($event)" (showAllEvent)="onShowAll('100cation','100케이션 🎨🎨')"></horizontal-slider>
     <horizontal-slider [title]="'숲을 찾는 사람들'" [subTitle]="'길여행가와 떠나는 힐링 여행~'" [meetings]="forestMeetings"
-      (clickEvent)="onClick($event)" (showAllEvent)="onShowAll('forest','숲을 찾는 사람들 🌲🌲')"></horizontal-slider>
+      (clickEvent)="onClick($event)" (showAllEvent)="onShowAll('forest','숲을 찾는 사람들 🌲🌲')"></horizontal-slider> -->
   </ion-grid>
   <footer></footer>
 </ion-content>
