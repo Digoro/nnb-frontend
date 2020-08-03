@@ -67,7 +67,6 @@ export class PaymentService {
       map(data => {
         let payments = data[0];
         let maps: any[] = data[1];
-        maps = maps.filter(option => !option.option.isOld)
         payments = payments.map(payment => {
           payment.options = maps.filter(map => map.payment.pid === payment.pid);
           return payment;
