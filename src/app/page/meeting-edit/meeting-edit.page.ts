@@ -145,7 +145,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
   }
 
   private setFileFormControl() {
-    this.http.get(this.meeting.file.replace('http', 'https'), { responseType: 'blob' }).subscribe(resp => {
+    this.http.get(this.meeting.file, { responseType: 'blob' }).subscribe(resp => {
       const splitted = this.meeting.file.split("/");
       const name = splitted[splitted.length - 1];
       const decoded = decodeURI(name);
@@ -224,7 +224,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
             if (result[0]) {
               const location = result[0].geometry.location;
               this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, location.lat(), location.lng(), 0, from, to,
-                categories, limitPerson, '', price, 0, refund_policy, notice, check_list, include, exclude, options)
+                categories, limitPerson, '', price, 0, refund_policy, notice, check_list, include, exclude, 0, options)
             }
             else {
               alert('주소 검색 결과가 없습니다.')

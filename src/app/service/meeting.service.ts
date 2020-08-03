@@ -55,6 +55,15 @@ export class MeetingService {
     return this.http.put<Meeting>(`${this.urlPrefix}/meetings/${mid}/`, formData)
   }
 
+  editMeetingOrders(orders: { mid: number, order: number }[]) {
+    const requests: Observable<any>[] = [];
+    orders.forEach(order => {
+      return requests.push(this.http.post('/admin/meetings/order', order))
+    })
+    if (requests.length === 0) return of([]);
+    return forkJoin(requests);
+  }
+
   searchMeetings(queries: string[]): Observable<Meeting[]> {
     const queryString = queries.join('&')
     return this.http.get<Meeting[]>(`/bmeetings?${queryString}`)

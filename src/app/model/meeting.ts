@@ -23,6 +23,7 @@ export class Meeting {
         public check_list: string,
         public include: string,
         public exclude: string,
+        public order: number,
         public options?: MeetingOption[]
     ) { }
 }

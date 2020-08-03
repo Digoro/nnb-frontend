@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./page/tabs/tabs.module').then(m => m.TabsPageModule) },
+  // { path: 'admin', loadChildren: () => import('./page/admin/admin.module').then(m => m.AdminPageModule) },
   // { path: 'booking', loadChildren: () => import('./page/booking/booking.module').then(m => m.BookingPageModule) },
   // { path: 'magazine-add', loadChildren: () => import('./page/magazine-add/magazine-add.module').then(m => m.MagazineAddPageModule) },
   // { path: 'magazine-edit', loadChildren: () => import('./page/magazine-edit/magazine-edit.module').then(m => m.MagazineEditPageModule) },

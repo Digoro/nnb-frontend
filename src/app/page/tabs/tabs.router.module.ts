@@ -138,6 +138,12 @@ const routes: Routes = [
           path: '', loadChildren: () =>
             import('../booking/booking.module').then(m => m.BookingPageModule)
         }]
+      },
+      {
+        path: 'admin', canActivateChild: [AuthGuard], children: [{
+          path: '', loadChildren: () =>
+            import('../admin/admin.module').then(m => m.AdminPageModule)
+        }]
       }
     ],
   },
