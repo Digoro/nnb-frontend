@@ -1,6 +1,8 @@
 <ion-content>
-  <ion-grid>
-    <h3>관리자 메뉴</h3>
+  <ion-grid fixed>
+    <ion-list-header>
+      <ion-label>관리자 메뉴</ion-label>
+    </ion-list-header>
     <ion-row>
       <ion-col>
         <ion-card>
@@ -28,7 +30,27 @@
             <ion-card-title>결제 목록</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ngx-table [configuration]="configuration" [data]="data" [columns]="columns">
+            <ngx-table *ngIf="data" [configuration]="configuration" [data]="data" [columns]="columns">
+              <ng-template let-row let-index="index">
+                <td>{{ row.PCD_PAY_TIME }}</td>
+                <td>{{ row.uid.nickName }}</td>
+                <td>{{ row.PCD_PAY_GOODS }}</td>
+                <td>
+                  <ng-container *ngFor="let option of row.options; let last = last">
+                    <p>옵션: {{option.option.optionTitle}}</p>
+                    <p>가격: {{option.option.optionPrice}}</p>
+                    <p>수량: {{option.count}}</p>
+                    <hr style="margin: 0px" *ngIf="!last">
+                  </ng-container>
+                </td>
+                <td>{{ row.phone }}</td>
+                <td>{{ row.PCD_PAY_TOTAL }}</td>
+                <td>{{ row.PCD_PAY_OID }}</td>
+                <td>{{ row.PCD_PAY_MSG }}</td>
+                <td>{{ row.PCD_PAY_TYPE }}</td>
+                <td>{{ row.PCD_PAY_RST }}</td>
+                <td>{{ row.mid.mid }}</td>
+              </ng-template>
             </ngx-table>
           </ion-card-content>
         </ion-card>

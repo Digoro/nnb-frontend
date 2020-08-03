@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 import { PaymentOptionMap, PaymentResult } from 'src/app/model/payment';
 import { PayMethod, UserPaymentInfo } from '../model/payment-user-info';
 import { AlimtalkPaymentResult } from './../model/alimtalk-payment-result';
@@ -60,7 +60,21 @@ export class PaymentService {
   }
 
   getPurchasedInfoAll(): Observable<PaymentResult[]> {
-    return this.http.get<PaymentResult[]>(`${this.urlPrefix}/payments/`)
+    return forkJoin(
+      this.http.get<PaymentResult[]>(`${this.urlPrefix}/payments/`),
+      this.http.get<PaymentResult[]>(`${this.urlPrefix}/paymentOptionMaps/`)
+    ).pipe(
+      map(data => {
+        let payments = data[0];
+        let maps: any[] = data[1];
+        maps = maps.filter(option => !option.option.isOld)
+        payments = payments.map(payment => {
+          payment.options = maps.filter(map => map.payment.pid === payment.pid);
+          return payment;
+        })
+        return payments;
+      })
+    )
   }
 
   add(account: UserPaymentInfo) {

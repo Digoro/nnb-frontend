@@ -28,6 +28,7 @@ export class PaymentResult {
         public PCD_TAXSAVE_MGTNUM: string,
         public mid: number,
         public uid: number,
+        public options?: any[]
     ) { }
 }
 
