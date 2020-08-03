@@ -15,6 +15,7 @@ export class MyInfoPage implements OnInit {
   user: User;
   purchasedMeetings: any[];
   selectedMenu: string;
+  Date = Date
 
   constructor(
     private authService: AuthService,

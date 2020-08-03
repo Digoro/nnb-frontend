@@ -16,22 +16,38 @@
     </ion-segment>
     <br>
 
-    <ion-row *ngIf="selectedMenu === 'join'">
-      <ion-col *ngFor="let meeting of purchasedMeetings" size="12">
-        <ion-list>
-          <ion-item>
-            <ion-thumbnail slot="start" style="cursor: pointer;" (click)="goDetailPage(meeting)">
-              <img [src]="meeting.file" />
-            </ion-thumbnail>
-            <ion-label style="cursor: pointer;" (click)="goDetailPage(meeting)" class="ion-text-wrap">
-              <h3>{{meeting.title}} </h3>
-              <p>{{meeting.subTitle}}</p>
-              <p>{{meeting.price}}</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
+    <ng-container *ngIf="selectedMenu === 'join'">
+      <ng-container *ngFor="let options of purchasedMeetings">
+        <ion-label class="ion-text-wrap">
+          <div class="row" style="margin-left: 6px;">
+            <div class="col-md-6">
+              <p style="color:#007bff;cursor: pointer;" (click)="goDetailPage(options[0].payment.mid)">모임 확인하러 가기</p>
+              <h3>{{options[0].payment.mid.title}}</h3>
+              <p>{{options[0].payment.mid.subTitle}}</p>
+              <div style="text-align: center;">
+                <img [src]="options[0].payment.mid.file" style="max-width:250px" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h4>[결제 정보]</h4>
+              <p>주문번호: {{options[0].payment.PCD_PAY_OID}}</p>
+              <p>결제일시: {{Date.apply(options[0].payment.PCD_PAY_TIME)|date: 'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+              <p>결제금액: {{options[0].payment.PCD_PAY_TOTAL}}원</p>
+              <br>
+              <h4>[구매 옵션]</h4>
+              <ng-container *ngFor="let option of options;let last = last">
+                <p>옵션: {{option.option.optionTitle}}</p>
+                <p>시작일: {{option.option.optionTo|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+                <p>가격: {{option.option.optionPrice}}원</p>
+                <p>수량: {{option.count}}개</p>
+                <br *ngIf="!last">
+              </ng-container>
+            </div>
+          </div>
+          <hr>
+        </ion-label>
+      </ng-container>
+    </ng-container>
     <ion-row *ngIf="selectedMenu === 'refund'">
       <ion-col>
         <div style="text-align: center; opacity: 0.4;">

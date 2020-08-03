@@ -104,7 +104,7 @@ export class MeetingService {
   getPurchasedMeetings(uid: number) {
     return this.paymentService.getPurchasedInfo(uid).pipe(
       concatMap(info => {
-        const requests = info.map(r => this.getMeeting(r.mid));
+        const requests = info.map(p => this.paymentService.getPaymentOptionMaps(p.pid).toPromise())
         if (requests.length === 0) return of([]);
         return forkJoin(requests);
       })
