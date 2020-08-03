@@ -34,8 +34,8 @@ export class AdminPage implements OnInit {
     this.configuration.horizontalScroll = true;
     this.columns = [
       { key: 'PCD_PAY_TIME', title: '결제 일시' },
-      { key: 'uid.nickname', title: '결제자 닉네임' },
-      { key: 'uid.name', title: '결제자 이름' },
+      { key: 'uid.nickName', title: '결제자 닉네임' },
+      // { key: 'uid.name', title: '결제자 이름' },
       { key: 'PCD_PAY_GOODS', title: '모임명' },
       { key: 'phone', title: '휴대폰' },
       { key: 'PCD_PAY_TOTAL', title: '결제 금액' },
