@@ -107,15 +107,15 @@ export class HomePage implements OnInit, OnDestroy {
           onShowKey: 'week', onShowTitle: `일주일 이내 열리는 모임(${this.toWeek} ~ ${this.fromWeek})`, meetings: this.fastMeetings
         },
         {
-          title: '인기 있는 모임', subTitle: "지금 노는법에서 가장 인기있는 모임!",
+          title: '인기 있는 모임 👍👍', subTitle: "지금 노는법에서 가장 인기있는 모임!",
           onShowKey: 'all', onShowTitle: '인기 있는 모임 👍👍', meetings: this.meetings
         },
         {
-          title: '100케이션', subTitle: "락앤롤 아트투어",
+          title: '100케이션 🎨🎨', subTitle: "락앤롤 아트투어",
           onShowKey: '100cation', onShowTitle: '100케이션 🎨🎨', meetings: this.cationMeetings
         },
         {
-          title: '숲을 찾는 사람들', subTitle: "길여행가와 떠나는 힐링 여행~",
+          title: '숲을 찾는 사람들 🌲🌲', subTitle: "길여행가와 떠나는 힐링 여행~",
           onShowKey: 'forest', onShowTitle: '숲을 찾는 사람들 🌲🌲', meetings: this.forestMeetings
         },
       ]
