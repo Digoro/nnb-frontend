@@ -224,7 +224,7 @@ export class MeetingDetailPage implements OnInit {
     const toast = await this.toastController.create({
       message: '주소가 복사되었습니다!',
       duration: 2000,
-      color: "primary",
+      color: "medium",
       animated: true,
     });
     toast.present();
