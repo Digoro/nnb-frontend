@@ -12,32 +12,32 @@ export class CategoryPage implements OnInit {
     {
       title: "여행",
       icon: "airplane-outline",
-      key: 'travel'
+      key: '여행'
     },
     {
       title: "취미",
       icon: "brush-outline",
-      key: 'hobby'
+      key: '취미'
     },
     {
-      title: "학습",
+      title: "교육",
       icon: "book-outline",
-      key: 'education'
+      key: '교육'
     },
     {
       title: "모임",
       icon: "people-outline",
-      key: 'meeting'
+      key: '모임'
     },
     {
-      title: "건강",
+      title: "운동",
       icon: "bicycle-outline",
-      key: 'exercise'
+      key: '운동'
     },
     {
       title: "사회공헌",
       icon: "body-outline",
-      key: 'social'
+      key: '사회공헌'
     },
   ];
 
