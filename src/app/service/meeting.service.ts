@@ -65,6 +65,7 @@ export class MeetingService {
   }
 
   searchMeetings(queries: string[]): Observable<Meeting[]> {
+    queries.push("status=2")
     const queryString = queries.join('&')
     return this.http.get<Meeting[]>(`/bmeetings?${queryString}`)
   }
@@ -90,7 +91,7 @@ export class MeetingService {
   }
 
   getAllMeetings(): Observable<Meeting[]> {
-    return this.http.get<Meeting[]>(`/bmeetings`).pipe(
+    return this.http.get<Meeting[]>(`/bmeetings?status=2`).pipe(
       map(meetings => meetings.reverse()),
       map(meetings => meetings.filter(meeting => {
         return !meeting.title.includes('동양 전통채색화 그리기 클래스') &&

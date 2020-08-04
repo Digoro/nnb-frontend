@@ -24,8 +24,19 @@ export class Meeting {
         public include: string,
         public exclude: string,
         public order: number,
+        public status: MeetingStatus,
         public options?: MeetingOption[]
     ) { }
+}
+
+export enum MeetingStatus {
+    CREATED,
+    INSPACTED,
+    ENTERED,
+    UPDATED,
+    DISABLED,
+    COMPLETED,
+    DELETED
 }
 
 export class MeetingOption {

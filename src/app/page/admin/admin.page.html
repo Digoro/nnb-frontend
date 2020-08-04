@@ -37,10 +37,12 @@
                 <td>{{ row.PCD_PAY_GOODS }}</td>
                 <td>
                   <ng-container *ngFor="let option of row.options; let last = last">
+                    <ion-chip *ngIf="!option.option.isOld">
+                      <ion-label style="font-size: 12px;">이전옵션</ion-label>
+                    </ion-chip>
                     <p>옵션: {{option.option.optionTitle}}</p>
                     <p>가격: {{option.option.optionPrice}}</p>
                     <p>수량: {{option.count}}</p>
-                    <p>isOld: {{option.option.isOld}}</p>
                     <hr style="margin: 0px" *ngIf="!last">
                   </ng-container>
                 </td>

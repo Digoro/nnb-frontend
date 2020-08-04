@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import Stepper from 'bs-stepper';
 import { QuillEditorComponent } from 'ngx-quill';
 import { Category } from 'src/app/model/category';
-import { Meeting, MeetingOption } from 'src/app/model/meeting';
+import { Meeting, MeetingOption, MeetingStatus } from 'src/app/model/meeting';
 import { AuthService } from 'src/app/service/auth.service';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { FormService } from '../../service/form.service';
@@ -158,7 +158,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
             if (result[0]) {
               const location = result[0].geometry.location;
               this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, location.lat(), location.lng(), 0, from, to,
-                categories, limitPerson, '', price, 0, refund_policy, notice, check_list, include, exclude, 0, options)
+                categories, limitPerson, '', price, 0, refund_policy, notice, check_list, include, exclude, 0, MeetingStatus.CREATED, options)
             }
             else {
               alert('주소 검색 결과가 없습니다.')

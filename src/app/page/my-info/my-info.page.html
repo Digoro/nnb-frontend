@@ -31,7 +31,7 @@
             <div class="col-md-6">
               <h4>[결제 정보]</h4>
               <p>주문번호: {{options[0].payment.PCD_PAY_OID}}</p>
-              <p>결제일시: {{Date.apply(options[0].payment.PCD_PAY_TIME)|date: 'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+              <p>결제일시: {{options[0].payment.PCD_PAY_TIME}}</p>
               <p>결제금액: {{options[0].payment.PCD_PAY_TOTAL}}원</p>
               <br>
               <h4>[구매 옵션]</h4>
