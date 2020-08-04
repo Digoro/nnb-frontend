@@ -21,21 +21,18 @@
       <ion-row style="margin-bottom: 20px;">
         <ion-col style="font-size: 15px;font-weight: 300;">
           <p class="basic-info">
-            <ion-icon name="heart-outline" style="color:red"></ion-icon>{{meeting.likes}}명이 좋아한 모임
+            <ion-icon name="calendar-outline" style="color:#2c353e"></ion-icon>
+            {{meeting._from|date:'yyyy.MM.dd HH:mm'}} ~ {{meeting._to|date:'yyyy.MM.dd HH:mm'}}
           </p>
           <p class="basic-info">
-            <ion-icon name="calendar-outline" style="color:#3880ff"></ion-icon>
-            {{meeting._from|date:'yyyy년 MM월 dd일 HH시 mm분'}} ~ {{meeting._to|date:'yyyy년 MM월 dd일 HH시 mm분'}}
-          </p>
-          <p class="basic-info">
-            <ion-icon name="at-outline" style="color:#3880ff"></ion-icon>{{meeting.address}}
+            <ion-icon name="at-outline" style="color:#2c353e"></ion-icon>{{meeting.address}}
             {{meeting.detailed_address}}
           </p>
-          <p class="basic-info" style="display: flex;">
-            <ion-button color="light" size="small" style="min-width: 115px;" (click)="like(meeting)">
+          <p class="basic-info" style="display: flex;justify-content: space-between;">
+            <ion-button color="danger" expand="block" style="min-width: 190px;" (click)="like(meeting)">
               <ion-icon name="heart-outline"></ion-icon> {{meeting.likes}}
             </ion-button>
-            <ion-button color="light" size="small" style="min-width: 115px;" (click)="openModal(meeting, template)">
+            <ion-button color="warning" expand="block" style="min-width: 190px;" (click)="openModal(meeting, template)">
               <ion-icon name="share-outline"></ion-icon> 공유하기
             </ion-button>
           </p>
