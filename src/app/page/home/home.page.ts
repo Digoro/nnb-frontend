@@ -80,7 +80,7 @@ export class HomePage implements OnInit, OnDestroy {
       },
       {
         src: 'assets/banner/banner03.png',
-        fn: () => window.open('http://localhost:8000/tabs/meetings?key=forest&title=%EC%88%B2%EC%9D%84%20%EC%B0%BE%EB%8A%94%20%EC%82%AC%EB%9E%8C%EB%93%A4%20%F0%9F%8C%B2%F0%9F%8C%B2', "_self")
+        fn: () => window.open('https://www.nonunbub.com/tabs/meetings?key=forest&title=%EC%88%B2%EC%9D%84%20%EC%B0%BE%EB%8A%94%20%EC%82%AC%EB%9E%8C%EB%93%A4%20%F0%9F%8C%B2%F0%9F%8C%B2', "_self")
       },
       // {
       //   src: 'assets/banner/banner07.jpg',
