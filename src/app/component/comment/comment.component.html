@@ -13,7 +13,7 @@
           </ion-avatar>
           <ion-label>
             <h3 style="margin-bottom: -5px;">{{comment['writer']['nickName']}}</h3>
-            <span class="date">{{comment.createDT}}</span>
+            <span class="date">{{comment.createDT|date:'yyyy-MM-dd HH:mm'}}</span>
             <ion-icon class="comment-icon" *ngIf="editable && comment.canDelete" name="close-circle-outline"
               (click)="delete(true, comment)"></ion-icon>
             <ion-icon class="comment-icon" name="chatbubbles-outline" (click)="showChildComment(i, comment)">
