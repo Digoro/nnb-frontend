@@ -72,11 +72,15 @@ export class HomePage implements OnInit, OnDestroy {
       },
       {
         src: 'assets/banner/banner06.jpg',
-        fn: () => window.open('https://www.nonunbub.com/tabs/meetings?key=100cation&title=100%EC%BC%80%EC%9D%B4%EC%85%98%20%F0%9F%8E%A8%F0%9F%8E%A8')
+        fn: () => window.open('https://www.nonunbub.com/tabs/meetings?key=100cation&title=100%EC%BC%80%EC%9D%B4%EC%85%98%20%F0%9F%8E%A8%F0%9F%8E%A8', "_self")
       },
       {
         src: 'assets/banner/banner08.jpg',
         fn: () => window.open('https://www.notion.so/031ae74f97594bde85bb8580def7a253')
+      },
+      {
+        src: 'assets/banner/banner03.png',
+        fn: () => window.open('http://localhost:8000/tabs/meetings?key=forest&title=%EC%88%B2%EC%9D%84%20%EC%B0%BE%EB%8A%94%20%EC%82%AC%EB%9E%8C%EB%93%A4%20%F0%9F%8C%B2%F0%9F%8C%B2', "_self")
       },
       // {
       //   src: 'assets/banner/banner07.jpg',
