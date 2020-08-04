@@ -28,7 +28,8 @@
             <ion-icon name="at-outline" style="color:#2c353e"></ion-icon>{{meeting.address}}
             {{meeting.detailed_address}}
           </p>
-          <p class="basic-info" style="display: flex;justify-content: space-between;">
+          <p class="basic-info" [ngStyle]="{ 'justify-content': isDesktop? 'flex-start': 'space-between'}"
+            style="display: flex;;">
             <ion-button color="danger" expand="block" style="min-width: 190px;" (click)="like(meeting)">
               <ion-icon name="heart-outline"></ion-icon> {{meeting.likes}}
             </ion-button>
