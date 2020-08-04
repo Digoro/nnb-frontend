@@ -7,14 +7,16 @@
       <ion-col>
         <ion-card>
           <ion-card-header>
-            <ion-card-title>모임 순서</ion-card-title>
+            <ion-card-title>모임 관리</ion-card-title>
           </ion-card-header>
           <ion-card-content>
             <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
               <ion-item *ngFor="let meeting of meetings">
                 <ion-label>
-                  <p>title: {{meeting.title}}</p>
+                  <p>{{meeting.title}}</p>
                 </ion-label>
+                <ion-toggle slot="end" name="show" color="success" [checked]="meeting.status===3"
+                  (ionChange)="onChange($event, meeting)"></ion-toggle>
                 <ion-reorder slot="end"></ion-reorder>
               </ion-item>
             </ion-reorder-group>

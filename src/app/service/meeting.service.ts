@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
-import { Meeting, MeetingOption } from '../model/meeting';
+import { Meeting, MeetingOption, MeetingStatus } from '../model/meeting';
 import { PaymentService } from './payment.service';
 import { UrlService } from './url.service';
 import { UtilService } from './util.service';
@@ -64,8 +64,12 @@ export class MeetingService {
     return forkJoin(requests);
   }
 
+  editMeetingStatus(mid: number, status: MeetingStatus) {
+    return this.http.post(`/admin/meetings/status`, { mid, status })
+  }
+
   searchMeetings(queries: string[]): Observable<Meeting[]> {
-    queries.push("status=2")
+    queries.push("status=3")
     const queryString = queries.join('&')
     return this.http.get<Meeting[]>(`/bmeetings?${queryString}`)
   }
@@ -90,8 +94,8 @@ export class MeetingService {
     )
   }
 
-  getAllMeetings(): Observable<Meeting[]> {
-    return this.http.get<Meeting[]>(`/bmeetings?status=2`).pipe(
+  getAllMeetings(status: MeetingStatus): Observable<Meeting[]> {
+    return this.http.get<Meeting[]>(`/bmeetings?status=${status}`).pipe(
       map(meetings => meetings.reverse()),
       map(meetings => meetings.filter(meeting => {
         return !meeting.title.includes('동양 전통채색화 그리기 클래스') &&

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { Category } from './../../model/category';
-import { Meeting } from './../../model/meeting';
+import { Meeting, MeetingStatus } from './../../model/meeting';
 
 @Component({
   selector: 'search',
@@ -32,19 +32,19 @@ export class SearchPage implements OnInit {
       switch (key) {
         case 'forest': {
           this.isForest = true;
-          this.meetingService.getAllMeetings().subscribe(meetings => {
+          this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
             this.meetings = meetings.filter(m => m.subTitle.includes('숲찾사'))
           }); break;
         }
         case '100cation': {
           this.isForest = false;
-          this.meetingService.getAllMeetings().subscribe(meetings => {
+          this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
             this.meetings = meetings.filter(m => m.subTitle.includes('락앤롤'))
           }); break;
         }
         case 'week': {
           this.isForest = false;
-          this.meetingService.getAllMeetings().subscribe(meetings => {
+          this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
             this.meetings = meetings.filter(meeting => !meeting.subTitle.includes('숲찾사') && !meeting.subTitle.includes('락앤롤'))
             const now = moment();
             const weekEnd = now.clone().add(7, 'days');
@@ -56,7 +56,7 @@ export class SearchPage implements OnInit {
         }
         case 'all': {
           this.isForest = false;
-          this.meetingService.getAllMeetings().subscribe(meetings => {
+          this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
             this.meetings = meetings.filter(m => !m.subTitle.includes('숲찾사') && !m.subTitle.includes('락앤롤'))
           }); break;
         }

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { Callable } from 'src/app/model/callable';
 import { MeetingService } from 'src/app/service/meeting.service';
-import { Meeting } from './../../model/meeting';
+import { Meeting, MeetingStatus } from './../../model/meeting';
 import { CheckDesktopService } from './../../service/check-desktop.service';
 
 @Component({
@@ -92,7 +92,7 @@ export class HomePage implements OnInit, OnDestroy {
     const weekEnd = now.clone().add(7, 'days');
     this.toWeek = now.format('MM.DD');
     this.fromWeek = weekEnd.format('MM.DD');
-    this.meetingService.getAllMeetings().subscribe(meetings => {
+    this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
       this.meetings = meetings.filter(meeting => !meeting.subTitle.includes('숲찾사') && !meeting.subTitle.includes('락앤롤'))
       this.fastMeetings = meetings.filter(meeting => {
         const start = moment(meeting._from);

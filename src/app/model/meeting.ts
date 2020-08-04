@@ -30,6 +30,7 @@ export class Meeting {
 }
 
 export enum MeetingStatus {
+    ALL,
     CREATED,
     INSPACTED,
     ENTERED,

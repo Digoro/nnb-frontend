@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonReorderGroup } from '@ionic/angular';
 import { Columns, Config, DefaultConfig } from 'ngx-easy-table';
-import { Meeting } from 'src/app/model/meeting';
+import { Meeting, MeetingStatus } from 'src/app/model/meeting';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { PaymentService } from './../../service/payment.service';
 
@@ -22,10 +22,14 @@ export class AdminPage implements OnInit {
     private paymentService: PaymentService
   ) { }
 
-  ngOnInit() {
-    this.meetingService.getAllMeetings().subscribe(resp => {
+  setMeetings() {
+    this.meetingService.getAllMeetings(MeetingStatus.ALL).subscribe(resp => {
       this.meetings = resp;
     })
+  }
+
+  ngOnInit() {
+    this.setMeetings();
     this.paymentService.getPurchasedInfoAll().subscribe(resp => {
       this.data = resp;
       this.configuration = { ...DefaultConfig };
@@ -57,5 +61,12 @@ export class AdminPage implements OnInit {
     this.meetingService.editMeetingOrders(data).subscribe(resp => {
       event.detail.complete();
     })
+  }
+
+  onChange(event, meeting: Meeting) {
+    const status = event.detail.checked ? MeetingStatus.ENTERED : MeetingStatus.CREATED
+    this.meetingService.editMeetingStatus(meeting.mid, status).subscribe(resp => {
+      this.setMeetings();
+    }, err => this.setMeetings())
   }
 }
