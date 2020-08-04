@@ -3,6 +3,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
+import { TabService } from './service/tab.service';
 
 @Component({
   selector: 'root',
@@ -17,7 +18,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private titleService: Title,
-    private metaService: Meta
+    private metaService: Meta,
+    private tabService: TabService
   ) {
     this.initializeApp();
   }

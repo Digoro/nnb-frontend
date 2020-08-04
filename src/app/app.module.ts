@@ -11,7 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CsrfInterceptor } from './service/csrf.interceptor';
-
+import { TabService } from './service/tab.service';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -27,7 +27,8 @@ import { CsrfInterceptor } from './service/csrf.interceptor';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptor, multi: true },
-    CookieService
+    CookieService,
+    TabService
   ],
   bootstrap: [AppComponent]
 })
