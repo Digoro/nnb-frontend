@@ -38,7 +38,7 @@
           </ion-avatar>
           <ion-label>
             <h3 style="margin-bottom: -5px;">{{child['writer']['nickName']}}</h3>
-            <span class="date">{{child.createDT}}</span>
+            <span class="date">{{child.createDT|date:'yyyy-MM-dd HH:mm'}}</span>
             <ion-icon class="comment-icon" *ngIf="editable && child.canDelete" name="close-circle-outline"
               (click)="delete(false, child)"></ion-icon>
           </ion-label>
