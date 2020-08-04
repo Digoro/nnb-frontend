@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonReorderGroup } from '@ionic/angular';
 import { Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { Meeting, MeetingStatus } from 'src/app/model/meeting';
@@ -19,7 +20,8 @@ export class AdminPage implements OnInit {
 
   constructor(
     private meetingService: MeetingService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private router: Router
   ) { }
 
   setMeetings() {
@@ -68,5 +70,9 @@ export class AdminPage implements OnInit {
     this.meetingService.editMeetingStatus(meeting.mid, status).subscribe(resp => {
       this.setMeetings();
     }, err => this.setMeetings())
+  }
+
+  goToDetail(mid: number) {
+    this.router.navigate(['/tabs/meeting-detail', mid])
   }
 }
