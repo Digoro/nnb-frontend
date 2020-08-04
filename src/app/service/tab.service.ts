@@ -15,10 +15,13 @@ export class TabService {
     'meeting-edit',
     'my-meetings',
     'magazine',
-
+    'magazine-add',
+    'magazine-edit'
   ];
   routeParamPages: string[] = [
     'meeting-detail',
+    'magazine-detail',
+    'payment'
   ];
 
   constructor(private router: Router, private platform: Platform) {
