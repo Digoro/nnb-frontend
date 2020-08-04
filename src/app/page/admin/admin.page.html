@@ -12,7 +12,7 @@
           <ion-card-content>
             <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
               <ion-item *ngFor="let meeting of meetings">
-                <ion-label>
+                <ion-label class="ion-text-wrap">
                   <p (click)="goToDetail(meeting.mid)" class="link">{{meeting.title}}</p>
                 </ion-label>
                 <ion-toggle slot="end" name="show" color="success" [checked]="meeting.status===3"
