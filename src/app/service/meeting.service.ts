@@ -96,14 +96,7 @@ export class MeetingService {
 
   getAllMeetings(status: MeetingStatus): Observable<Meeting[]> {
     return this.http.get<Meeting[]>(`/bmeetings?status=${status}`).pipe(
-      map(meetings => meetings.reverse()),
-      map(meetings => meetings.filter(meeting => {
-        return !meeting.title.includes('동양 전통채색화 그리기 클래스') &&
-          !meeting.title.includes('테스트') &&
-          !meeting.title.includes('아름다움은 세상을 어떻게 변화시키는가?') &&
-          !meeting.title.includes('락앤롤 아트 투어 중구 북촌편') &&
-          !meeting.title.includes('락앤롤 아트 투어 인사동편')
-      }))
+      map(meetings => meetings.reverse())
     )
   }
 
