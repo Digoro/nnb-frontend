@@ -38,6 +38,7 @@ export class AdminPage implements OnInit {
       this.configuration.searchEnabled = true;
       this.configuration.horizontalScroll = true;
       this.columns = [
+        { key: 'index', title: '번호' },
         { key: 'PCD_PAY_TIME', title: '결제 일시' },
         { key: 'uid', title: '결제자 닉네임' },
         // { key: 'uid.name', title: '결제자 이름' },

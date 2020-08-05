@@ -34,6 +34,7 @@
           <ion-card-content>
             <ngx-table *ngIf="data" [configuration]="configuration" [data]="data" [columns]="columns">
               <ng-template let-row let-index="index">
+                <td>{{ index +1 }}</td>
                 <td>{{ row.PCD_PAY_TIME }}</td>
                 <td>{{ row.uid.nickName }}</td>
                 <td (click)="goToDetail(row.mid.mid)" class="link">{{ row.PCD_PAY_GOODS }}</td>
