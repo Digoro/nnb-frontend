@@ -32,7 +32,8 @@ export class MyInfoPage {
     this.authService.getCurrentNonunbubUser().subscribe(currentUser => {
       this.user = currentUser;
       this.meetingService.getPurchasedMeetings(this.user.uid).subscribe(meetings => {
-        this.purchasedMeetings = meetings;
+        if (meetings.length === 0) this.purchasedMeetings = undefined;
+        else this.purchasedMeetings = meetings;
       });
     });
   }
