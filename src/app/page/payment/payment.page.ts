@@ -7,7 +7,9 @@ import { PayMethod, UserPaymentInfo } from 'src/app/model/payment-user-info';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { FormService } from 'src/app/service/form.service';
+import { Coupon } from './../../model/coupon';
 import { Meeting, MeetingOption } from './../../model/meeting';
+import { CouponService } from './../../service/coupon.service';
 import { MeetingService } from './../../service/meeting.service';
 import { PaymentService } from './../../service/payment.service';
 
@@ -27,6 +29,8 @@ export class PaymentPage implements OnInit {
   form: FormGroup;
   isFree = true;
   options: FormArray;
+  coupons: Coupon[]
+  selectedCoupon: Coupon;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,7 +39,8 @@ export class PaymentPage implements OnInit {
     private paymentService: PaymentService,
     private authService: AuthService,
     private formService: FormService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private couponService: CouponService
   ) { }
 
   ngOnInit() {
@@ -45,7 +50,8 @@ export class PaymentPage implements OnInit {
   initForm() {
     this.form = this.fb.group({
       options: this.fb.array([], Validators.required),
-      phone: new FormControl('', this.formService.getValidators(30, [Validators.pattern("[0-9 ]{11}")]))
+      phone: new FormControl('', this.formService.getValidators(30, [Validators.pattern("[0-9 ]{11}")])),
+      coupon: new FormControl(false)
     })
   }
 
@@ -64,6 +70,9 @@ export class PaymentPage implements OnInit {
             })
             this.meeting = meeting;
             this.isFree = this.meeting.price === 0;
+            this.couponService.getCoupons(user.uid, false).subscribe(coupons => {
+              this.coupons = coupons;
+            })
           });
         })
       })
@@ -86,9 +95,17 @@ export class PaymentPage implements OnInit {
   setPrice() {
     if (this.options.value.length > 0) {
       this.price = this.options.value.map(option => option.optionPrice * +option.optionCount).reduce((a, b) => a + b);
+      if (this.selectedCoupon) {
+        this.price = this.price - this.selectedCoupon.price
+      }
     } else {
       this.price = 0;
     }
+  }
+
+  selectCoupon(event) {
+    this.selectedCoupon = event.target.value;
+    this.setPrice();
   }
 
   changeCount(flag: boolean, index: number) {

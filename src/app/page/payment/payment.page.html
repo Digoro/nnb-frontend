@@ -21,17 +21,6 @@
           </ion-card-content>
         </ion-card>
 
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>휴대폰 번호</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <p class="desc">- 없이 번호만 입력해주세요</p>
-            <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678">
-            <p class="invalid-input" *ngIf="form.controls.phone.invalid">입력이 올바르지 않습니다.</p>
-          </ion-card-content>
-        </ion-card>
-
         <ion-card *ngIf="meeting.options">
           <ion-card-header>
             <ion-card-title>구매 옵션</ion-card-title>
@@ -54,12 +43,23 @@
           </ion-card-content>
         </ion-card>
 
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>휴대폰 번호</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p class="desc">- 없이 번호만 입력해주세요</p>
+            <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678">
+            <p class="invalid-input" *ngIf="form.controls.phone.invalid">입력이 올바르지 않습니다.</p>
+          </ion-card-content>
+        </ion-card>
+
         <ng-container *ngIf="meeting.options.length > 0">
           <ion-card>
             <ion-card-header>
               <ion-card-title>수량</ion-card-title>
             </ion-card-header>
-            <ion-card-content>
+            <ion-card-content *ngIf="form.controls.options.valid">
               <div formArrayName="options" *ngFor="let option of form.get('options')['controls']; let i = index;">
                 <div [formGroupName]="i">
                   <ion-item>
@@ -75,6 +75,30 @@
                 </div>
               </div>
             </ion-card-content>
+            <ion-card-content *ngIf="form.controls.options.invalid">
+              <p class="invalid-input">구매 옵션을 선택해주세요</p>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>쿠폰</ion-card-title>
+            </ion-card-header>
+            <ion-card-content *ngIf="!isFree && form.controls.options.valid">
+              <ion-radio-group formControlName="coupon" (click)="selectCoupon($event)">
+                <ion-item>
+                  <ion-label class="ion-text-wrap">사용 안함</ion-label>
+                  <ion-radio slot="start" [value]="false"></ion-radio>
+                </ion-item>
+                <ion-item *ngFor="let coupon of coupons">
+                  <ion-label class="ion-text-wrap">{{coupon.title}} ({{coupon.price|number}}원)</ion-label>
+                  <ion-radio slot="start" [value]="coupon"></ion-radio>
+                </ion-item>
+              </ion-radio-group>
+            </ion-card-content>
+            <ion-card-content *ngIf="form.controls.options.invalid">
+              <p class="invalid-input">구매 옵션을 선택해주세요</p>
+            </ion-card-content>
           </ion-card>
 
           <ion-card>
@@ -84,6 +108,8 @@
             <ion-card-content *ngIf="form.controls.options.valid">
               <ul style="padding-left: 20px;">
                 <li *ngFor="let option of options.value">{{option.optionTitle}} x {{option.optionCount}}개</li>
+                <li *ngIf="!!form.controls.coupon.value">쿠폰: {{form.controls.coupon.value.title}}
+                  ({{form.controls.coupon.value.price|number}}원)</li>
               </ul>
               <p style="margin-left:15px;font-size:21px;color:#007bff"><strong>총 {{price|number}}원</strong></p>
             </ion-card-content>
@@ -99,21 +125,18 @@
             <ion-card-content>
               <ion-radio-group (ionChange)="selectPaymentMethod($event)">
                 <ion-item>
-                  <ion-label>간편결제</ion-label>
-                  <ion-radio slot="start" color="primary" [value]="'simple'">
-                  </ion-radio>
+                  <ion-label class="ion-text-wrap">간편결제</ion-label>
+                  <ion-radio slot="start" color="primary" [value]="'simple'"></ion-radio>
                 </ion-item>
                 <ng-container *ngIf="isSimple">
                   <p *ngIf="accounts.length === 0" class="desc" style="margin-left:68px">등록된 카드/계좌가 없습니다.</p>
                   <ng-container *ngFor="let account of accounts">
                     <ion-item style="cursor: pointer; margin-left:53px" (click)="selectSimplePay(account.PCD_PAYER_ID)">
-                      <ion-label *ngIf="account.PCD_PAY_TYPE === 'transfer'">
-                        <h3>{{account['PCD_PAY_BANKNAME']}}</h3>
-                        <p>{{account['PCD_PAY_BANKNUM']}}</p>
+                      <ion-label class="ion-text-wrap" *ngIf="account.PCD_PAY_TYPE === 'transfer'">
+                        <h3>{{account['PCD_PAY_BANKNAME']}} ({{account['PCD_PAY_BANKNUM']}})</h3>
                       </ion-label>
-                      <ion-label *ngIf="account.PCD_PAY_TYPE === 'card'">
-                        <h3>{{account['PCD_PAY_CARDNAME']}}</h3>
-                        <p>{{account['PCD_PAY_CARDNUM']}}</p>
+                      <ion-label class="ion-text-wrap" *ngIf="account.PCD_PAY_TYPE === 'card'">
+                        <h3>{{account['PCD_PAY_CARDNAME']}} ({{account['PCD_PAY_CARDNUM']}})</h3>
                       </ion-label>
                       <ion-icon [ngClass]="selectedPayerId === account.PCD_PAYER_ID? 'selected': ''"
                         [name]="selectedPayerId === account.PCD_PAYER_ID? 'checkbox': 'checkbox-outline'"
@@ -124,14 +147,12 @@
                   </ion-button>
                 </ng-container>
                 <ion-item>
-                  <ion-label>카드 일반결제</ion-label>
-                  <ion-radio slot="start" color="primary" [value]="'card'">
-                  </ion-radio>
+                  <ion-label class="ion-text-wrap">카드 일반결제</ion-label>
+                  <ion-radio slot="start" color="primary" [value]="'card'"></ion-radio>
                 </ion-item>
                 <ion-item>
-                  <ion-label>실시간 계좌이체</ion-label>
-                  <ion-radio slot="start" color="primary" [value]="'transfer'">
-                  </ion-radio>
+                  <ion-label class="ion-text-wrap">실시간 계좌이체</ion-label>
+                  <ion-radio slot="start" color="primary" [value]="'transfer'"> </ion-radio>
                 </ion-item>
               </ion-radio-group>
             </ion-card-content>
