@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import { Configuration } from './../model/configuration';
 import { UrlService } from './url.service';
 
@@ -10,15 +9,15 @@ import { UrlService } from './url.service';
 })
 export class ConfigurationService {
   urlPrefix = UrlService.prefix;
-  static readonly SIGNUP_EVENT_KEY = "signupEvent"
+  static readonly SIGNUP_EVENT_KEY = "signupEvent";
+  static readonly ADMIN_PW_KEY = "adminPassword";
+
   constructor(
     private http: HttpClient
   ) { }
 
-  get(key: string): Observable<Configuration[]> {
-    return this.http.get<Configuration[]>(`${this.urlPrefix}/configurations/`).pipe(
-      filter(configs => !!configs.find(config => config.key === key))
-    )
+  getAll(): Observable<Configuration[]> {
+    return this.http.get<Configuration[]>(`${this.urlPrefix}/configurations/`);
   }
 
   update(configuration: Configuration) {
