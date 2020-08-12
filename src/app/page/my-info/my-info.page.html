@@ -59,7 +59,7 @@
           </ion-row>
         </ion-card>
       </ng-container>
-      <ng-container *ngIf="!purchasedMeetings">
+      <ng-container *ngIf="purchasedMeetings.length < 0">
         <div style="text-align: center; opacity: 0.4;">
           <ion-chip outline>
             <ion-label color="primary">등록한 모임이 없습니다.</ion-label>
