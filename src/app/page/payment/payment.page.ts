@@ -96,7 +96,13 @@ export class PaymentPage implements OnInit {
     if (this.options.value.length > 0) {
       this.price = this.options.value.map(option => option.optionPrice * +option.optionCount).reduce((a, b) => a + b);
       if (this.selectedCoupon) {
-        this.price = this.price - this.selectedCoupon.price
+        const result = this.price - this.selectedCoupon.price;
+        if (result < 0) {
+          alert('차감금액이 더 큽니다. 적용한 포인트 및 쿠폰의 남은 금액은 결제 시 남지 않습니다.')
+          this.price = 0
+        }
+        else this.price = result
+
       }
     } else {
       this.price = 0;
