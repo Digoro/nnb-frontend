@@ -58,6 +58,16 @@
                 <hr style="margin: 0px" *ngIf="!last">
               </ng-container>
             </td>
+            <td>
+              <ng-container *ngIf="row.couponId">
+                {{ row.couponId.title }} ({{row.couponId.price|number}}원)
+              </ng-container>
+              <ng-container *ngIf="!row.couponId">
+                <ion-chip>
+                  <ion-label style="font-size: 12px;">없음</ion-label>
+                </ion-chip>
+              </ng-container>
+            </td>
             <td>{{ row.phone }}</td>
             <td>{{ row.PCD_PAY_TOTAL }}</td>
             <td>{{ row.PCD_PAY_OID }}</td>

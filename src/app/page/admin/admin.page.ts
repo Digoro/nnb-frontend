@@ -66,6 +66,7 @@ export class AdminPage {
             // { key: 'uid.name', title: '결제자 이름' },
             { key: 'PCD_PAY_GOODS', title: '모임명' },
             { key: 'options', title: '구매 옵션' },
+            { key: 'coupon', title: '쿠폰' },
             { key: 'phone', title: '휴대폰' },
             { key: 'PCD_PAY_TOTAL', title: '결제 금액' },
             { key: 'PCD_PAY_OID', title: '주문번호' },
