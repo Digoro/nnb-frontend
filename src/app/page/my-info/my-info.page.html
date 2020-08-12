@@ -47,6 +47,13 @@
                   <p>수량: {{option.count}}개</p>
                   <hr *ngIf="!last">
                 </ng-container>
+                <ng-container *ngIf="options[0].payment.couponId">
+                  <br>
+                  <ion-chip outline color="success">
+                    <ion-label>쿠폰</ion-label>
+                  </ion-chip>
+                  <p>{{options[0].payment.couponId.title}} ({{options[0].payment.couponId.price|number}}원)</p>
+                </ng-container>
               </ion-card-content>
             </ion-col>
           </ion-row>

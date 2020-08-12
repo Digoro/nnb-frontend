@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { Meeting } from 'src/app/model/meeting';
@@ -11,11 +11,10 @@ import { MeetingService } from 'src/app/service/meeting.service';
   templateUrl: './my-info.page.html',
   styleUrls: ['./my-info.page.scss'],
 })
-export class MyInfoPage implements OnInit {
+export class MyInfoPage {
   user: User;
   purchasedMeetings: any[];
   selectedMenu: string;
-
 
   constructor(
     private authService: AuthService,
@@ -24,23 +23,22 @@ export class MyInfoPage implements OnInit {
     public actionSheetController: ActionSheetController
   ) { }
 
-  ngOnInit() {
-    this.selectedMenu = 'join';
-    this.authService.getCurrentNonunbubUser().subscribe(currentUser => {
-      this.user = currentUser;
-      this.setMyMeetings();
-    });
+  ionViewDidEnter() {
+    this.setMyMeetings();
   }
 
   private setMyMeetings() {
-    this.meetingService.getPurchasedMeetings(this.user.uid).subscribe(meetings => {
-      this.purchasedMeetings = meetings;
+    this.selectedMenu = 'join';
+    this.authService.getCurrentNonunbubUser().subscribe(currentUser => {
+      this.user = currentUser;
+      this.meetingService.getPurchasedMeetings(this.user.uid).subscribe(meetings => {
+        this.purchasedMeetings = meetings;
+      });
     });
   }
 
   segmentChanged(event) {
     this.selectedMenu = event.detail.value;
-
   }
 
   goDetailPage(meeting: Meeting) {

@@ -80,11 +80,11 @@
             </ion-card-content>
           </ion-card>
 
-          <ion-card>
+          <ion-card *ngIf="!isFree">
             <ion-card-header>
               <ion-card-title>쿠폰</ion-card-title>
             </ion-card-header>
-            <ion-card-content *ngIf="!isFree && form.controls.options.valid">
+            <ion-card-content *ngIf="form.controls.options.valid">
               <ion-radio-group formControlName="coupon" (click)="selectCoupon($event)">
                 <ion-item>
                   <ion-label class="ion-text-wrap">사용 안함</ion-label>

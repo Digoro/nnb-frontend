@@ -2,7 +2,7 @@ import { User } from './user';
 
 export class Coupon {
     constructor(
-        public cid: number,
+        public couponId: number,
         public user: User,
         public title: string,
         public price: number,

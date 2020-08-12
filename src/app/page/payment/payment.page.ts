@@ -164,7 +164,7 @@ export class PaymentPage implements OnInit {
   }
 
   pay() {
-    const { phone, options } = this.form.value;
+    const { phone, options, coupon } = this.form.value;
     let method, selectedAccount;
     switch (this.paymentMethod) {
       case 'card': method = PayMethod.CARD; break;
@@ -178,7 +178,7 @@ export class PaymentPage implements OnInit {
       };
       default: alert('결제 방법을 선택해주세요');
     }
-    this.paymentService.pay(method, this.user, this.meeting, phone, this.price, options, selectedAccount);
+    this.paymentService.pay(method, this.user, this.meeting, phone, this.price, options, coupon, selectedAccount);
   }
 
   ionViewDidLeave() {

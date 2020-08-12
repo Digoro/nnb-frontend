@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { PaymentOptionMap, PaymentResult } from 'src/app/model/payment';
+import { Coupon } from '../model/coupon';
 import { PayMethod, UserPaymentInfo } from '../model/payment-user-info';
 import { AlimtalkPaymentResult } from './../model/alimtalk-payment-result';
 import { Meeting, MeetingOption } from './../model/meeting';
@@ -93,7 +94,7 @@ export class PaymentService {
     })
   }
 
-  pay(method: PayMethod, user: User, meeting: Meeting, phone: string, price: number, options: any[], account?: UserPaymentInfo) {
+  pay(method: PayMethod, user: User, meeting: Meeting, phone: string, price: number, options: any[], coupon: Coupon, account?: UserPaymentInfo) {
     let obj = {};
     obj['PCD_CPAY_VER'] = "1.0.1";
     obj['payple_auth_file'] = "/pg/auth";
@@ -106,6 +107,9 @@ export class PaymentService {
     obj['PCD_PAY_WORK'] = "PAY";
     obj['PCD_USER_DEFINE1'] = phone;
     obj['callbackFunction'] = (result: PaymentResult) => {
+      if (coupon) {
+        result.couponId = coupon.couponId;
+      }
       result.uid = user.uid;
       result.mid = meeting.mid;
       console.log("PAY 결과");
