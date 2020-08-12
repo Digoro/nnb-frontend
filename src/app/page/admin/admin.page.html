@@ -3,64 +3,71 @@
     <ion-list-header>
       <ion-label>관리자 메뉴</ion-label>
     </ion-list-header>
-    <ion-row>
-      <ion-col>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>모임 관리</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
-              <ion-item *ngFor="let meeting of meetings">
-                <ion-label class="ion-text-wrap">
-                  <p (click)="goToDetail(meeting.mid)" class="link">{{meeting.title}}</p>
-                </ion-label>
-                <ion-toggle slot="end" name="show" color="success" [checked]="meeting.status===3"
-                  (ionChange)="onChange($event, meeting)"></ion-toggle>
-                <ion-reorder slot="end"></ion-reorder>
-              </ion-item>
-            </ion-reorder-group>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>이벤트 적용</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ng-container *ngIf="sigupEvent">
+          <ion-item>
+            <ion-label class="ion-text-wrap">회원가입 이벤트(3000원 차감할인)</ion-label>
+            <ion-toggle slot="end" name="show" color="success" [checked]="sigupEvent.value==='true'"
+              (ionChange)="toggleConfiguration($event, sigupEvent)"></ion-toggle>
+          </ion-item>
+        </ng-container>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-row>
-      <ion-col>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>결제 목록</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ngx-table *ngIf="data" [configuration]="configuration" [data]="data" [columns]="columns">
-              <ng-template let-row let-index="index">
-                <td>{{ index +1 }}</td>
-                <td>{{ row.PCD_PAY_TIME }}</td>
-                <td>{{ row.uid.nickName }}</td>
-                <td (click)="goToDetail(row.mid.mid)" class="link">{{ row.PCD_PAY_GOODS }}</td>
-                <td>
-                  <ng-container *ngFor="let option of row.options; let last = last">
-                    <ion-chip *ngIf="!option.option.isOld">
-                      <ion-label style="font-size: 12px;">이전옵션</ion-label>
-                    </ion-chip>
-                    <p>옵션: {{option.option.optionTitle}}</p>
-                    <p>가격: {{option.option.optionPrice}}</p>
-                    <p>수량: {{option.count}}</p>
-                    <hr style="margin: 0px" *ngIf="!last">
-                  </ng-container>
-                </td>
-                <td>{{ row.phone }}</td>
-                <td>{{ row.PCD_PAY_TOTAL }}</td>
-                <td>{{ row.PCD_PAY_OID }}</td>
-                <td>{{ row.PCD_PAY_MSG }}</td>
-                <td>{{ row.PCD_PAY_TYPE }}</td>
-                <td>{{ row.PCD_PAY_RST }}</td>
-                <td>{{ row.mid.mid }}</td>
-              </ng-template>
-            </ngx-table>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>모임 관리</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-reorder-group (ionItemReorder)="reorderMeeting($event)" disabled="false">
+          <ion-item *ngFor="let meeting of meetings">
+            <ion-label class="ion-text-wrap">
+              <p (click)="goToDetail(meeting.mid)" class="link">{{meeting.title}}</p>
+            </ion-label>
+            <ion-toggle slot="end" name="show" color="success" [checked]="meeting.status===3"
+              (ionChange)="toggleMeeting($event, meeting)"></ion-toggle>
+            <ion-reorder slot="end"></ion-reorder>
+          </ion-item>
+        </ion-reorder-group>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>결제 목록</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ngx-table *ngIf="data" [configuration]="configuration" [data]="data" [columns]="columns">
+          <ng-template let-row let-index="index">
+            <td>{{ index +1 }}</td>
+            <td>{{ row.PCD_PAY_TIME }}</td>
+            <td>{{ row.uid.nickName }}</td>
+            <td (click)="goToDetail(row.mid.mid)" class="link">{{ row.PCD_PAY_GOODS }}</td>
+            <td>
+              <ng-container *ngFor="let option of row.options; let last = last">
+                <ion-chip *ngIf="!option.option.isOld">
+                  <ion-label style="font-size: 12px;">이전옵션</ion-label>
+                </ion-chip>
+                <p>옵션: {{option.option.optionTitle}}</p>
+                <p>가격: {{option.option.optionPrice}}</p>
+                <p>수량: {{option.count}}</p>
+                <hr style="margin: 0px" *ngIf="!last">
+              </ng-container>
+            </td>
+            <td>{{ row.phone }}</td>
+            <td>{{ row.PCD_PAY_TOTAL }}</td>
+            <td>{{ row.PCD_PAY_OID }}</td>
+            <td>{{ row.PCD_PAY_MSG }}</td>
+            <td>{{ row.PCD_PAY_TYPE }}</td>
+            <td>{{ row.PCD_PAY_RST }}</td>
+            <td>{{ row.mid.mid }}</td>
+          </ng-template>
+        </ngx-table>
+      </ion-card-content>
+    </ion-card>
   </ion-grid>
 </ion-content>

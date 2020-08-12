@@ -4,6 +4,8 @@ import { IonReorderGroup } from '@ionic/angular';
 import { Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { Meeting, MeetingStatus } from 'src/app/model/meeting';
 import { MeetingService } from 'src/app/service/meeting.service';
+import { Configuration } from './../../model/configuration';
+import { ConfigurationService } from './../../service/configuration.service';
 import { PaymentService } from './../../service/payment.service';
 
 @Component({
@@ -17,11 +19,13 @@ export class AdminPage implements OnInit {
   configuration: Config;
   columns: Columns[];
   data;
+  sigupEvent: Configuration;
 
   constructor(
     private meetingService: MeetingService,
     private paymentService: PaymentService,
-    private router: Router
+    private router: Router,
+    private configService: ConfigurationService
   ) { }
 
   setMeetings() {
@@ -30,8 +34,15 @@ export class AdminPage implements OnInit {
     })
   }
 
+  setConfigurations() {
+    this.configService.get(ConfigurationService.SIGNUP_EVENT_KEY).subscribe(resp => {
+      this.sigupEvent = resp[0];
+    })
+  }
+
   ngOnInit() {
     this.setMeetings();
+    this.setConfigurations();
     this.paymentService.getPurchasedInfoAll().subscribe(resp => {
       this.data = resp;
       this.configuration = { ...DefaultConfig };
@@ -55,7 +66,7 @@ export class AdminPage implements OnInit {
     })
   }
 
-  doReorder(event) {
+  reorderMeeting(event) {
     let draggedItem = this.meetings.splice(event.detail.from, 1)[0];
     this.meetings.splice(event.detail.to, 0, draggedItem)
     const data = this.meetings.map((meeting, index) => {
@@ -66,11 +77,18 @@ export class AdminPage implements OnInit {
     })
   }
 
-  onChange(event, meeting: Meeting) {
+  toggleMeeting(event, meeting: Meeting) {
     const status = event.detail.checked ? MeetingStatus.ENTERED : MeetingStatus.CREATED
     this.meetingService.editMeetingStatus(meeting.mid, status).subscribe(resp => {
       this.setMeetings();
     }, err => this.setMeetings())
+  }
+
+  toggleConfiguration(event, configuration: Configuration) {
+    configuration.value = `${event.detail.checked}`;
+    this.configService.update(configuration).subscribe(resp => {
+      this.setConfigurations();
+    }, err => this.setConfigurations())
   }
 
   goToDetail(mid: number) {
