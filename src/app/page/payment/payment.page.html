@@ -85,6 +85,7 @@
               <ion-card-title>쿠폰</ion-card-title>
             </ion-card-header>
             <ion-card-content *ngIf="form.controls.options.valid">
+              <p class="desc">결제 금액이 {{isThanPrice|number}}원 이상일 때 쿠폰을 사용할 수 있습니다.</p>
               <ion-radio-group formControlName="coupon" (click)="selectCoupon($event)">
                 <ion-item>
                   <ion-label class="ion-text-wrap">사용 안함</ion-label>
@@ -92,7 +93,7 @@
                 </ion-item>
                 <ion-item *ngFor="let coupon of coupons">
                   <ion-label class="ion-text-wrap">{{coupon.title}} ({{coupon.price|number}}원)</ion-label>
-                  <ion-radio slot="start" [value]="coupon"></ion-radio>
+                  <ion-radio [disabled]="isThan" slot="start" [value]="coupon"></ion-radio>
                 </ion-item>
               </ion-radio-group>
             </ion-card-content>

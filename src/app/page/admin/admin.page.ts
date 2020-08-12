@@ -81,7 +81,6 @@ export class AdminPage {
         this.router.navigate(['/tabs/home']);
       }
     })
-
   }
 
   reorderMeeting(event) {

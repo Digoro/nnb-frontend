@@ -23,6 +23,8 @@ export class PaymentPage implements OnInit {
   meeting: Meeting;
   paymentMethod: string;
   accounts: UserPaymentInfo[];
+  isThan: boolean;
+  isThanPrice = 10000;
   price: number;
   isSimple = false;
   selectedPayerId: string;
@@ -95,14 +97,18 @@ export class PaymentPage implements OnInit {
   setPrice() {
     if (this.options.value.length > 0) {
       this.price = this.options.value.map(option => option.optionPrice * +option.optionCount).reduce((a, b) => a + b);
+      this.isThan = this.price < this.isThanPrice;
+      if (this.isThan) {
+        this.form.controls.coupon.patchValue(false);
+        this.selectedCoupon = undefined;
+      }
       if (this.selectedCoupon) {
         const result = this.price - this.selectedCoupon.price;
         if (result < 0) {
-          alert('차감금액이 더 큽니다. 적용한 포인트 및 쿠폰의 남은 금액은 결제 시 남지 않습니다.')
+          alert('할인 금액이 더 큽니다. 적용한 포인트/쿠폰의 남은 금액은 결제 시 남지 않고 소멸됩니다.')
           this.price = 0
         }
         else this.price = result
-
       }
     } else {
       this.price = 0;
