@@ -15,6 +15,6 @@ export class CouponService {
   ) { }
 
   getCoupons(uid: number, isUsed: boolean): Observable<Coupon[]> {
-    return this.http.get<Coupon[]>(`/coupons?user=${uid}&isUsed=${isUsed}`)
+    return this.http.get<Coupon[]>(`/coupons?uid=${uid}&isUsed=${isUsed}`)
   }
 }
