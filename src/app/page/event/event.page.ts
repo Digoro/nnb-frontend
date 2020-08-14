@@ -15,7 +15,11 @@ export class EventPage implements OnInit {
   ngOnInit() {
   }
 
-  onClick(mid: number) {
-    this.router.navigate(['/tabs/meeting-detail', mid]);
+  onClick(info: any, isLink: boolean = false) {
+    if (isLink) {
+      window.open(info);
+    } else {
+      this.router.navigate(['/tabs/meeting-detail', info]);
+    }
   }
 }
