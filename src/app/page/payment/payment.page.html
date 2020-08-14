@@ -75,25 +75,34 @@
             </ion-card-content>
           </ion-card>
 
-          <ion-card *ngIf="!isFree">
+          <ion-card *ngIf="!isFree && !!coupons">
             <ion-card-header>
               <ion-card-title>쿠폰</ion-card-title>
             </ion-card-header>
-            <ion-card-content *ngIf="form.controls.options.valid">
-              <p class="desc">결제 금액이 {{isThanPrice|number}}원 이상일 때 쿠폰을 사용할 수 있습니다.</p>
-              <ion-radio-group formControlName="coupon" (click)="selectCoupon($event)">
-                <ion-item>
-                  <ion-label class="ion-text-wrap">사용 안함</ion-label>
-                  <ion-radio slot="start" [value]="false"></ion-radio>
-                </ion-item>
-                <ion-item *ngFor="let coupon of coupons">
-                  <ion-label class="ion-text-wrap">{{coupon.title}} ({{coupon.price|number}}원)</ion-label>
-                  <ion-radio [disabled]="isThan" slot="start" [value]="coupon"></ion-radio>
-                </ion-item>
-              </ion-radio-group>
-            </ion-card-content>
-            <ion-card-content *ngIf="form.controls.options.invalid">
-              <p class="invalid-input">구매 옵션을 선택해주세요</p>
+            <ion-card-content>
+              <ng-container *ngIf="coupons.length === 0">
+                <p class="desc">사용 가능한 쿠폰이 없습니다.</p>
+              </ng-container>
+
+              <ng-container *ngIf="coupons.length > 0">
+                <ng-container *ngIf="form.controls.options.valid">
+                  <p class="desc">결제 금액이 {{isThanPrice|number}}원 이상일 때 쿠폰을 사용할 수 있습니다.</p>
+                  <ion-radio-group formControlName="coupon" (click)="selectCoupon($event)">
+                    <ion-item>
+                      <ion-label class="ion-text-wrap">사용 안함</ion-label>
+                      <ion-radio slot="start" [value]="false"></ion-radio>
+                    </ion-item>
+                    <ion-item *ngFor="let coupon of coupons">
+                      <ion-label class="ion-text-wrap">{{coupon.title}} ({{coupon.price|number}}원)</ion-label>
+                      <ion-radio [disabled]="isThan" slot="start" [value]="coupon"></ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+                </ng-container>
+
+                <ng-container *ngIf="form.controls.options.invalid">
+                  <p class="invalid-input">구매 옵션을 선택해주세요</p>
+                </ng-container>
+              </ng-container>
             </ion-card-content>
           </ion-card>
 
