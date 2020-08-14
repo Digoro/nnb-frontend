@@ -113,8 +113,8 @@ export class PaymentPage implements OnInit {
   }
 
   selectCalendar(event: CalendarDay) {
-    const month = moment(event.time).get('month')
-    const day = moment(event.time).get('day')
+    const month = +moment(event.time).format('M')
+    const day = +moment(event.time).get('D')
 
     // select same date
     if (this.selectedMonth === month && this.selectedDay === day && this.isSameSelectDate) {
@@ -124,9 +124,8 @@ export class PaymentPage implements OnInit {
     // select calendar date
     else {
       const selectedOptions = this.meeting.options.filter(option => {
-        const time = moment(option.optionTo);
-        const optionMonth = time.get('month');
-        const optionDay = time.get('day');
+        const optionMonth = +moment(option.optionTo).format('M');
+        const optionDay = +moment(option.optionTo).format('D');
         return month === optionMonth && day === optionDay;
       })
       this.selectedOptionsFromCalendar = selectedOptions;
