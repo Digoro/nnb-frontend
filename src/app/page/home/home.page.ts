@@ -19,6 +19,7 @@ export class HomePage implements OnInit, OnDestroy {
   fromWeek: string;
   forestMeetings: Meeting[];
   cationMeetings: Meeting[];
+  eventMeetings: Meeting[];
 
   bannerSliderConfig = {
     initialSlide: 1,
@@ -104,8 +105,17 @@ export class HomePage implements OnInit, OnDestroy {
       })
       this.forestMeetings = meetings.filter(meeting => meeting.subTitle.includes('숲찾사'))
       this.cationMeetings = meetings.filter(meeting => meeting.subTitle.includes('락앤롤'))
+      this.eventMeetings = meetings.filter(meeting =>
+        meeting.mid === 79 ||
+        meeting.mid === 140 ||
+        meeting.mid === 141 ||
+        meeting.mid === 145)
 
       this.mainMeetings = [
+        {
+          title: '노는법 가을 여행 프로모션', subTitle: `이벤트`,
+          onShowKey: 'event', onShowTitle: `노는법 가을 여행 프로모션`, meetings: this.eventMeetings
+        },
         {
           title: '일주일 이내 열리는 모임', subTitle: `가장 빨리 만나 볼 수 있는 기회!(${this.toWeek} ~ ${this.fromWeek})`,
           onShowKey: 'week', onShowTitle: `일주일 이내 열리는 모임`, meetings: this.fastMeetings

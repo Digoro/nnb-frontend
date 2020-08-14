@@ -60,6 +60,16 @@ export class SearchPage implements OnInit {
             this.meetings = meetings.filter(m => !m.subTitle.includes('숲찾사') && !m.subTitle.includes('락앤롤'))
           }); break;
         }
+        case 'event': {
+          this.isForest = false;
+          this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
+            this.meetings = meetings.filter(meeting =>
+              meeting.mid === 79 ||
+              meeting.mid === 140 ||
+              meeting.mid === 141 ||
+              meeting.mid === 145)
+          }); break;
+        }
         default: {
           this.isForest = false;
           this.title = Category[key];
