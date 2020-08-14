@@ -1,6 +1,6 @@
 <ion-content>
   <ion-grid fixed>
-    <ion-row>
+    <ion-row *ngIf="!!myMeetings">
       <ion-col *ngFor="let meeting of myMeetings" size="12">
         <ion-list>
           <ion-item>
