@@ -37,6 +37,7 @@ export class PaymentPage implements OnInit {
   selectedOptionsFromCalendar: MeetingOption[];
   selectedOptionsFromCheckbox: MeetingOption[] = [];
   calendarOptions: CalendarComponentOptions;
+  date;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,7 +58,8 @@ export class PaymentPage implements OnInit {
     this.form = this.fb.group({
       options: this.fb.array([], Validators.required),
       phone: new FormControl('', this.formService.getValidators(30, [Validators.pattern("[0-9 ]{11}")])),
-      coupon: new FormControl(false)
+      coupon: new FormControl(false),
+      date: new FormControl('')
     })
   }
 
@@ -76,6 +78,7 @@ export class PaymentPage implements OnInit {
             })
             this.meeting = meeting;
             this.selectedOptionsFromCalendar = meeting.options;
+            this.date = meeting.options[0].optionTo
             this.calendarOptions = {
               color: 'primary',
               to: null,
@@ -110,6 +113,7 @@ export class PaymentPage implements OnInit {
   showAllOptions() {
     this.selectedOptionsFromCalendar = this.meeting.options;
     this.isSameSelectDate = false;
+    this.setSelectCheckbox();
   }
 
   selectCalendar(event: CalendarDay) {
@@ -133,6 +137,10 @@ export class PaymentPage implements OnInit {
       this.selectedDay = day;
       this.isSameSelectDate = true;
     }
+    this.setSelectCheckbox();
+  }
+
+  setSelectCheckbox() {
     this.selectedOptionsFromCalendar = this.selectedOptionsFromCalendar.map(calendar => {
       const isSame = this.selectedOptionsFromCheckbox.find(checkbox => checkbox.oid === calendar.oid);
       calendar['checked'] = isSame
