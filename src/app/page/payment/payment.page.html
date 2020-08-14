@@ -29,9 +29,10 @@
             </ion-card-title>
           </ion-card-header>
           <ion-card-content *ngIf="meeting.options.length > 0">
-            <ion-calendar (select)="selectCalendar($event)" [options]="calendarOptions" [type]="'string'"
-              [format]="'YYYY-MM-DD'"></ion-calendar>
-            <div style="overflow-y: auto; max-height: 450px;">
+            <ion-calendar style="border: 1px solid #e7e7e7;border-radius: 5px;margin-bottom: 7px;"
+              (select)="selectCalendar($event)" [options]="calendarOptions" [type]="'string'" [format]="'YYYY-MM-DD'">
+            </ion-calendar>
+            <div style="overflow-y: auto; max-height: 450px;border: 1px solid #e7e7e7;border-radius: 5px;">
               <ion-item *ngFor="let option of selectedOptionsFromCalendar">
                 <ion-label class="ion-text-wrap">
                   <p class="black-label">{{option.optionTitle}}</p>
