@@ -18,6 +18,13 @@
           </ion-item>
         </ion-list>
       </ion-col>
+      <ion-col *ngIf="myMeetings.length === 0">
+        <div style="opacity: 0.4; padding: 20px">
+          <ion-chip outline>
+            <ion-label color="primary">주최한 모임이 없습니다.</ion-label>
+          </ion-chip>
+        </div>
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

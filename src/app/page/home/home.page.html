@@ -20,6 +20,13 @@
         </ion-col>
       </ion-row>
       <ion-row>
+        <ion-col *ngIf="meeting.meetings.length === 0">
+          <div style="opacity: 0.4; padding: 20px">
+            <ion-chip outline>
+              <ion-label color="primary">다음 일정을 기대해주세요~!</ion-label>
+            </ion-chip>
+          </div>
+        </ion-col>
         <ion-col *ngFor="let m of meeting.meetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
           style="padding:0px">
           <meeting-card [meeting]="m" (clickEvent)="onClick(m)"></meeting-card>
