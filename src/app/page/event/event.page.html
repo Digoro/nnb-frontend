@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-grid fixed>
+  <ion-grid fixed [fixed]="isDesktop" [ngStyle]="{'padding':isDesktop?'':'0px'}">
     <img src="https://nonunbub.s3.ap-northeast-2.amazonaws.com/meetings/1_%ED%8F%AC%EC%8A%A4%ED%84%B0.jpg">
     <img
       src="https://nonunbub.s3.ap-northeast-2.amazonaws.com/meetings/2_%ED%8F%AC%EC%8A%A4%ED%84%B0%EC%BF%A0%ED%8F%B0%EB%B2%84%ED%8A%BC_click.jpg"
