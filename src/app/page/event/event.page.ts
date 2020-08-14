@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'event',
@@ -7,12 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
 
-  onClick(link: string) {
-    window.open(link, '_blank');
+  onClick(mid: number) {
+    this.router.navigate(['/tabs/meeting-detail', mid]);
   }
 }
