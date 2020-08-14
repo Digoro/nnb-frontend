@@ -63,11 +63,7 @@ export class SearchPage implements OnInit {
         case 'event': {
           this.isForest = false;
           this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
-            this.meetings = meetings.filter(meeting =>
-              meeting.mid === 79 ||
-              meeting.mid === 140 ||
-              meeting.mid === 141 ||
-              meeting.mid === 145)
+            this.meetings = meetings.filter(meeting => meeting.subTitle.includes('이벤트'))
           }); break;
         }
         default: {

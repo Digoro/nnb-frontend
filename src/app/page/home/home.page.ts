@@ -105,11 +105,7 @@ export class HomePage implements OnInit, OnDestroy {
       })
       this.forestMeetings = meetings.filter(meeting => meeting.subTitle.includes('숲찾사'))
       this.cationMeetings = meetings.filter(meeting => meeting.subTitle.includes('락앤롤'))
-      this.eventMeetings = meetings.filter(meeting =>
-        meeting.mid === 79 ||
-        meeting.mid === 140 ||
-        meeting.mid === 141 ||
-        meeting.mid === 145)
+      this.eventMeetings = meetings.filter(meeting => meeting.subTitle.includes('이벤트'))
 
       this.mainMeetings = [
         {
