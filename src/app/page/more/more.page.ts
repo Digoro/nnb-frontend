@@ -48,6 +48,7 @@ export class MorePage implements OnInit {
           new MoreMenuItem('정산 관리', () => alert('서비스 준비중입니다 ^^'), 'wallet-outline', true)
         ]),
         new MoreMenuGroup('지원', [
+          new MoreMenuItem('이벤트', () => this.router.navigate(['/tabs/event']), ''),
           new MoreMenuItem('서비스 소개', () => window.open('https://www.notion.so/gdgdaejeon/f381a7c4327a4ddb9095dd6b0cdd00c9'), ''),
           new MoreMenuItem('매거진', () => this.router.navigate(['/tabs/magazine']), ''),
           new MoreMenuItem('공지사항', () => alert('서비스 준비중입니다 ^^'), '', true),

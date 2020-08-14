@@ -138,6 +138,12 @@ const routes: Routes = [
           path: '', loadChildren: () =>
             import('../admin/admin.module').then(m => m.AdminPageModule)
         }]
+      },
+      {
+        path: 'event', children: [{
+          path: '', loadChildren: () =>
+            import('../event/event.module').then(m => m.EventPageModule)
+        }]
       }
     ],
   },

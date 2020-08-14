@@ -14,7 +14,8 @@ export class TabService {
     'meeting-add',
     'my-meetings',
     'magazine',
-    'magazine-add'
+    'magazine-add',
+    'event'
   ];
   routeParamPages: string[] = [
     'meeting-detail',
