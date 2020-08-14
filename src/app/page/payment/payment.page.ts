@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CalendarComponentOptions, CalendarDay } from 'ion2-calendar';
 import * as moment from 'moment';
 import { PaymentResult } from 'src/app/model/payment';
 import { PayMethod, UserPaymentInfo } from 'src/app/model/payment-user-info';
@@ -33,6 +34,9 @@ export class PaymentPage implements OnInit {
   options: FormArray;
   coupons: Coupon[]
   selectedCoupon: Coupon;
+  selectedOptionsFromCalendar: MeetingOption[];
+  selectedOptionsFromCheckbox: MeetingOption[] = [];
+  calendarOptions: CalendarComponentOptions;
 
   constructor(
     private route: ActivatedRoute,
@@ -71,6 +75,24 @@ export class PaymentPage implements OnInit {
               return option;
             })
             this.meeting = meeting;
+            this.selectedOptionsFromCalendar = meeting.options;
+            this.calendarOptions = {
+              color: 'primary',
+              to: null,
+              monthFormat: 'YYYY.MM',
+              weekdays: ['일', '월', '화', '수', '목', '금', '토'],
+              monthPickerFormat: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+              daysConfig: this.meeting.options.map(option => {
+                return {
+                  date: moment(option.optionTo).toDate(),
+                  marked: true,
+                  disable: false,
+                  // title: option.optionTitle,
+                  // subTitle: `${option.optionPrice}`,
+                  cssClass: '',
+                }
+              })
+            }
             this.isFree = this.meeting.price === 0;
             this.couponService.getCoupons(user.uid, false).subscribe(coupons => {
               this.coupons = coupons;
@@ -78,6 +100,44 @@ export class PaymentPage implements OnInit {
           });
         })
       })
+    })
+  }
+
+  selectedMonth: number;
+  selectedDay: number;
+  isSameSelectDate = true;
+
+  showAllOptions() {
+    this.selectedOptionsFromCalendar = this.meeting.options;
+    this.isSameSelectDate = false;
+  }
+
+  selectCalendar(event: CalendarDay) {
+    const month = moment(event.time).get('month')
+    const day = moment(event.time).get('day')
+
+    // select same date
+    if (this.selectedMonth === month && this.selectedDay === day && this.isSameSelectDate) {
+      this.selectedOptionsFromCalendar = this.meeting.options;
+      this.isSameSelectDate = false;
+    }
+    // select calendar date
+    else {
+      const selectedOptions = this.meeting.options.filter(option => {
+        const time = moment(option.optionTo);
+        const optionMonth = time.get('month');
+        const optionDay = time.get('day');
+        return month === optionMonth && day === optionDay;
+      })
+      this.selectedOptionsFromCalendar = selectedOptions;
+      this.selectedMonth = month;
+      this.selectedDay = day;
+      this.isSameSelectDate = true;
+    }
+    this.selectedOptionsFromCalendar = this.selectedOptionsFromCalendar.map(calendar => {
+      const isSame = this.selectedOptionsFromCheckbox.find(checkbox => checkbox.oid === calendar.oid);
+      calendar['checked'] = isSame
+      return calendar;
     })
   }
 
@@ -137,9 +197,11 @@ export class PaymentPage implements OnInit {
   selectMeetingOption(event, option: MeetingOption) {
     if (event.detail.checked) {
       this.addItem(option);
+      this.selectedOptionsFromCheckbox.push(option);
     }
     else {
       this.minusItem(option)
+      this.selectedOptionsFromCheckbox = this.selectedOptionsFromCheckbox.filter(o => o.oid === option.oid);
     }
     this.setPrice()
     this.options.controls = this.sortSelectedOptions(this.options.controls)

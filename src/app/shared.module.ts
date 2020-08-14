@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxErrorsModule } from '@hackages/ngxerrors';
 import { IonicModule } from '@ionic/angular';
+import { CalendarModule } from 'ion2-calendar';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TableModule } from 'ngx-easy-table';
@@ -32,7 +33,7 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     HideToolbarDirective,
     InputDigitsOnlyDirective,
     FooterComponent,
-    MeetingPreviewComponent
+    MeetingPreviewComponent,
   ],
   imports: [
     CommonModule,
@@ -68,7 +69,8 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     }),
     ClipboardModule,
     ModalModule.forRoot(),
-    TableModule
+    TableModule,
+    CalendarModule
   ],
   exports: [
     HorizontalSliderComponent,
@@ -91,7 +93,8 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     InputDigitsOnlyDirective,
     FooterComponent,
     MeetingPreviewComponent,
-    TableModule
-  ]
+    TableModule,
+    CalendarModule
+  ],
 })
 export class SharedModule { }

@@ -23,34 +23,28 @@
 
         <ion-card *ngIf="meeting.options">
           <ion-card-header>
-            <ion-card-title>구매 옵션</ion-card-title>
+            <ion-card-title>
+              구매 옵션
+              <ion-button color="light" size="small" class="float-right" (click)="showAllOptions()">옵션 전체보기</ion-button>
+            </ion-card-title>
           </ion-card-header>
           <ion-card-content *ngIf="meeting.options.length > 0">
-            <p class="desc">옵션을 선택해주세요</p>
-            <div *ngFor="let option of meeting.options">
-              <ion-item>
+            <ion-calendar (select)="selectCalendar($event)" [options]="calendarOptions" [type]="'string'"
+              [format]="'YYYY-MM-DD'"></ion-calendar>
+            <div style="overflow-y: auto; max-height: 450px;">
+              <ion-item *ngFor="let option of selectedOptionsFromCalendar">
                 <ion-label class="ion-text-wrap">
                   <p class="black-label">{{option.optionTitle}}</p>
                   <p class="black-label">가격: {{option.optionPrice}}</p>
                   <p class="black-label">일시: {{option.optionTo|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
                 </ion-label>
-                <ion-checkbox (ionChange)="selectMeetingOption($event, option)"></ion-checkbox>
+                <ion-checkbox [checked]="!!option['checked']" (ionChange)="selectMeetingOption($event, option)">
+                </ion-checkbox>
               </ion-item>
             </div>
           </ion-card-content>
           <ion-card-content *ngIf="meeting.options.length === 0">
             <p class="invalid-input">현재 구매 가능한 옵션이 없습니다. 다음 일정을 기대해주세요~!</p>
-          </ion-card-content>
-        </ion-card>
-
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>휴대폰 번호</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <p class="desc">- 없이 번호만 입력해주세요</p>
-            <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678">
-            <p class="invalid-input" *ngIf="form.controls.phone.invalid">입력이 올바르지 않습니다.</p>
           </ion-card-content>
         </ion-card>
 
@@ -156,6 +150,17 @@
                   <ion-radio slot="start" color="primary" [value]="'transfer'"> </ion-radio>
                 </ion-item>
               </ion-radio-group>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>휴대폰 번호</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p class="desc">- 없이 번호만 입력해주세요</p>
+              <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678">
+              <p class="invalid-input" *ngIf="form.controls.phone.invalid">입력이 올바르지 않습니다.</p>
             </ion-card-content>
           </ion-card>
         </ng-container>
