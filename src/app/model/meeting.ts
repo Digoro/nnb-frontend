@@ -17,6 +17,7 @@ export class Meeting {
         public limitPerson: number,
         public file: string,
         public price: number,
+        public discountPrice: number,
         public likes: number,
         public refund_policy: string,
         public notice: string,

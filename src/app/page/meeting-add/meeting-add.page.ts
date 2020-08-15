@@ -1,7 +1,7 @@
 import { MapsAPILoader } from '@agm/core';
 import { Location } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Stepper from 'bs-stepper';
 import { QuillEditorComponent } from 'ngx-quill';
@@ -102,6 +102,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       to: new FormControl('', this.formService.getValidators(30)),
       limitPerson: new FormControl('', this.formService.getValidators(10, [Validators.max(1000)])),
       price: new FormControl('', this.formService.getValidators(10, [Validators.max(10000000)])),
+      discountPrice: new FormControl(0, [Validators.max(10000000), this.validateDiscountPrice('price')]),
       desc: new FormControl('', Validators.required),
       refund_policy: new FormControl('', this.formService.getValidators(500)),
       notice: new FormControl('', Validators.maxLength(500)),
@@ -110,6 +111,26 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       exclude: new FormControl('', Validators.maxLength(500)),
       options: this.fb.array([this.createItem()], Validators.required)
     })
+  }
+
+  validateDiscountPrice(controlName: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } => {
+      const discountPrice = control.value;
+      const price = control.root.value[controlName];
+      const isUpper = price < discountPrice;
+      return isUpper ? { 'isUpper': { isUpper } } : null;
+    };
+  }
+
+  checkDiscountPrice() {
+    const price = this.meetingForm.controls.price;
+    const discountPrice = this.meetingForm.controls.discountPrice;
+    if (price.value < discountPrice.value) {
+      discountPrice.setErrors({ 'isUpper': true })
+    } else {
+      discountPrice.setErrors({ 'isUpper': null });
+      discountPrice.updateValueAndValidity();
+    }
   }
 
   createItem() {
@@ -150,7 +171,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   makePreviewMeeting() {
     if (this.meetingForm.valid) {
       const { title, subTitle, fileSource, categories, address, detailAddress, from, to, limitPerson,
-        price, desc, refund_policy, notice, check_list, include, exclude, options } = this.meetingForm.value;
+        price, discountPrice, desc, refund_policy, notice, check_list, include, exclude, options } = this.meetingForm.value;
       this.mapsAPILoader.load().then(() => {
         this.geoCoder = new google.maps.Geocoder;
         this.geoCoder.geocode({ address }, (result, status) => {
@@ -158,7 +179,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
             if (result[0]) {
               const location = result[0].geometry.location;
               this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, location.lat(), location.lng(), 0, from, to,
-                categories, limitPerson, '', price, 0, refund_policy, notice, check_list, include, exclude, 0, MeetingStatus.CREATED, options)
+                categories, limitPerson, '', price, discountPrice, 0, refund_policy, notice, check_list, include, exclude, 0, MeetingStatus.CREATED, options)
             }
             else {
               alert('주소 검색 결과가 없습니다.')
@@ -256,7 +277,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
 
   add() {
     const { title, subTitle, fileSource, categories, address, detailAddress, from, to,
-      limitPerson, price, desc, refund_policy, notice, check_list, include, exclude, options } = this.meetingForm.value;
+      limitPerson, price, discountPrice, desc, refund_policy, notice, check_list, include, exclude, options } = this.meetingForm.value;
     this.mapsAPILoader.load().then(() => {
       this.geoCoder = new google.maps.Geocoder;
       this.geoCoder.geocode({ address }, (result, status) => {
@@ -280,6 +301,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
             formData.append('_to', to);
             formData.append('limitPerson', `${limitPerson}`);
             formData.append('price', `${price}`);
+            formData.append('discountPrice', `${discountPrice}`);
             formData.append('desc', desc);
             formData.append('host', `${uid}`);
             formData.append('refund_policy', refund_policy);

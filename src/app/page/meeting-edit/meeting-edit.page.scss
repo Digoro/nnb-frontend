@@ -93,3 +93,17 @@ agm-map {
 .invalid-input {
     margin-left: 5px;
 }
+
+.price {
+    .origin {
+        color: #848c94;
+        font-size: 14px;
+        margin-right: 4px;
+        text-decoration: line-through;
+    }
+
+    .discount {
+        font-size: 16px;
+        font-weight: 600;
+    }
+}

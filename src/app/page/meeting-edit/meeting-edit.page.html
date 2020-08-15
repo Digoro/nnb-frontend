@@ -59,8 +59,10 @@
           </div>
           <div class="step" data-target="#test-l-7">
             <button class="trigger">
-              <ion-icon *ngIf="meetingForm.controls.price.invalid" name="checkmark-circle-outline"></ion-icon>
-              <ion-icon *ngIf="meetingForm.controls.price.valid" name="checkmark-circle" style="color:#28a745">
+              <ion-icon *ngIf="meetingForm.controls.price.invalid || meetingForm.controls.discountPrice.invalid"
+                name="checkmark-circle-outline"></ion-icon>
+              <ion-icon *ngIf="meetingForm.controls.price.valid &&meetingForm.controls.discountPrice.valid"
+                name="checkmark-circle" style="color:#28a745">
               </ion-icon>
               가격
             </button>
@@ -237,7 +239,8 @@
               <div id="test-l-7" class="content">
                 <ion-item lines="none">
                   <ion-label position="floating">가격<span class="invalid-input">*</span></ion-label>
-                  <ion-input type="number" formControlName="price" clearInput></ion-input>
+                  <ion-input type="number" formControlName="price" (ngModelChange)="checkDiscountPrice()" clearInput>
+                  </ion-input>
                   <div ngxErrors="price">
                     <div ngxError="max" [when]="['dirty']">
                       <p class="invalid-input">10000000원 제한입니다.</p>
@@ -248,6 +251,36 @@
                   </div>
                 </ion-item>
                 <hr>
+                <ion-item lines="none">
+                  <ion-label position="floating">할인된 가격</ion-label>
+                  <ion-input type="number" formControlName="discountPrice" clearInput></ion-input>
+                  <div ngxErrors="discountPrice">
+                    <div ngxError="max" [when]="['dirty']">
+                      <p class="invalid-input">10000000원 제한입니다.</p>
+                    </div>
+                    <div ngxError="isUpper" [when]="['dirty']">
+                      <p class="invalid-input">할인가격이 더 클 수 없습니다.</p>
+                    </div>
+                  </div>
+                </ion-item>
+                <hr>
+                <br>
+                <span class="desc">다음과 같이 표시됩니다.</span>
+                <div style="padding: 20px; border: 1px solid #c8c7c7;border-radius: 4px;max-width: 240px;">
+                  <span *ngIf="meetingForm.controls.price.value !== 0" class="price">
+                    <ng-container *ngIf="!!meetingForm.controls.discountPrice.value &&
+                       meetingForm.controls.discountPrice.value !== 0 &&
+                      meetingForm.controls.price.valid">
+                      <span class="origin">{{meetingForm.controls.price.value | number}}원</span>
+                      <span class="discount">{{meetingForm.controls.discountPrice.value | number}}원</span>
+                    </ng-container>
+                    <ng-container
+                      *ngIf="meetingForm.controls.discountPrice.value === 0 || !meetingForm.controls.discountPrice.value">
+                      <p class="discount" style="margin-bottom: 0px;">{{meetingForm.controls.price.value | number}}원</p>
+                    </ng-container>
+                  </span>
+                  <span *ngIf="meetingForm.controls.price.value === 0" class="price">무료</span>
+                </div>
                 <br><br>
                 <ion-button color="light" (click)="prev()">이전</ion-button>
                 <ion-button color="primary" (click)="next()">다음</ion-button>
