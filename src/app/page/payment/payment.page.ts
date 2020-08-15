@@ -264,6 +264,8 @@ export class PaymentPage implements OnInit {
 
   ionViewDidLeave() {
     this.form.reset();
+    this.selectedOptionsFromCalendar = this.meeting.options;
+    this.selectedOptionsFromCheckbox = [];
   }
 
 
