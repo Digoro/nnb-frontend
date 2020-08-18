@@ -18,7 +18,7 @@ export class HomePage implements OnInit, OnDestroy {
   toWeek: string;
   fromWeek: string;
   forestMeetings: Meeting[];
-  cationMeetings: Meeting[];
+  jejuMeetings: Meeting[];
   eventMeetings: Meeting[];
 
   bannerSliderConfig = {
@@ -98,13 +98,13 @@ export class HomePage implements OnInit, OnDestroy {
     this.toWeek = now.format('MM.DD');
     this.fromWeek = weekEnd.format('MM.DD');
     this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
-      this.meetings = meetings.filter(meeting => !meeting.subTitle.includes('숲찾사') && !meeting.subTitle.includes('락앤롤'))
+      this.meetings = meetings.filter(meeting => !meeting.subTitle.includes('숲찾사') && !meeting.subTitle.includes('제주'))
       this.fastMeetings = meetings.filter(meeting => {
         const start = moment(meeting._from);
         return start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
       })
       this.forestMeetings = meetings.filter(meeting => meeting.subTitle.includes('숲찾사'))
-      this.cationMeetings = meetings.filter(meeting => meeting.subTitle.includes('락앤롤'))
+      this.jejuMeetings = meetings.filter(meeting => meeting.subTitle.includes('제주'))
       this.eventMeetings = meetings.filter(meeting => meeting.subTitle.includes('이벤트'))
 
       this.mainMeetings = [
@@ -121,8 +121,8 @@ export class HomePage implements OnInit, OnDestroy {
           onShowKey: 'all', onShowTitle: '인기 있는 모임 👍👍', meetings: this.meetings
         },
         {
-          title: '100케이션 🎨🎨', subTitle: "락앤롤 아트투어",
-          onShowKey: '100cation', onShowTitle: '100케이션 🎨🎨', meetings: this.cationMeetings
+          title: '제주여가마을 🏝️🏝️', subTitle: "제주여가마을",
+          onShowKey: 'jeju', onShowTitle: '제주여가마을 🏝️🏝️', meetings: this.jejuMeetings
         },
         {
           title: '숲을 찾는 사람들 🌲🌲', subTitle: "길여행가와 떠나는 힐링 여행~",

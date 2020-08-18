@@ -36,16 +36,16 @@ export class SearchPage implements OnInit {
             this.meetings = meetings.filter(m => m.subTitle.includes('숲찾사'))
           }); break;
         }
-        case '100cation': {
+        case 'jeju': {
           this.isForest = false;
           this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
-            this.meetings = meetings.filter(m => m.subTitle.includes('락앤롤'))
+            this.meetings = meetings.filter(m => m.subTitle.includes('제주'))
           }); break;
         }
         case 'week': {
           this.isForest = false;
           this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
-            this.meetings = meetings.filter(meeting => !meeting.subTitle.includes('숲찾사') && !meeting.subTitle.includes('락앤롤'))
+            this.meetings = meetings.filter(meeting => !meeting.subTitle.includes('숲찾사') && !meeting.subTitle.includes('제주'))
             const now = moment();
             const weekEnd = now.clone().add(7, 'days');
             this.meetings = meetings.filter(meeting => {
@@ -57,7 +57,7 @@ export class SearchPage implements OnInit {
         case 'all': {
           this.isForest = false;
           this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
-            this.meetings = meetings.filter(m => !m.subTitle.includes('숲찾사') && !m.subTitle.includes('락앤롤'))
+            this.meetings = meetings.filter(m => !m.subTitle.includes('숲찾사') && !m.subTitle.includes('제주'))
           }); break;
         }
         case 'event': {

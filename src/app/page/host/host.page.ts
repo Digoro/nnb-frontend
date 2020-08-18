@@ -36,9 +36,6 @@ export class HostPage implements OnInit {
       const id = params.id
       this.userService.get(id).subscribe(user => {
         this.user = user;
-        // this.userService.getKaKaoUser(user.sid).subscribe(kakaoUser => {
-        //   this.kakaoUser = kakaoUser
-        // })
         this.commentService.getCommentsByUser(user.uid).subscribe(comments => {
           this.comments = comments
         });
