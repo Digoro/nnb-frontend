@@ -24,7 +24,7 @@ export class HomePage implements OnInit, OnDestroy {
   eventMeetings: Meeting[];
 
   bannerSliderConfig = {
-    initialSlide: 1,
+    initialSlide: 0,
     speed: 400,
     autoplay: {
       delay: 5000
