@@ -79,5 +79,30 @@
         </ngx-table>
       </ion-card-content>
     </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>배너 관리</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <label>배너 파일</label>
+        <input #bannerImage style="margin-left: 13px;" type="file" (change)="selectFile($event)">
+        <br>
+        <label>배너 링크</label>
+        <input #bannerLink type="text" class="form-control" [(ngModel)]="link">
+        <button style="margin-top: 7px" class="btn btn-sm btn-info" [disabled]="!selectedFiles || isUploading"
+          (click)="addBanner()">업로드</button>
+        <p *ngIf="isUploading" style="margin-left: 12px;margin-top: 10px;">업로드 중입니다. &nbsp;<img
+            src="/assets/loading.gif" width="25" height="25"></p>
+        <hr>
+        <div *ngFor="let banner of banners; let last = last">
+          <div class="container">
+            <button class="button btn btn-sm btn-danger" (click)="deleteBanner(banner.image)">삭제</button>
+            <img class="image" [src]="banner.image">
+          </div>
+          <hr *ngIf="!last">
+        </div>
+      </ion-card-content>
+    </ion-card>
   </ion-grid>
 </ion-content>

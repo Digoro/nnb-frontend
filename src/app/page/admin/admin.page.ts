@@ -1,12 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonReorderGroup } from '@ionic/angular';
 import { Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { Meeting, MeetingStatus } from 'src/app/model/meeting';
 import { MeetingService } from 'src/app/service/meeting.service';
+import { environment } from './../../../environments/environment';
 import { Configuration } from './../../model/configuration';
 import { ConfigurationService } from './../../service/configuration.service';
 import { PaymentService } from './../../service/payment.service';
+import { S3Service } from './../../service/s3.service';
 
 @Component({
   selector: 'admin',
@@ -21,12 +23,19 @@ export class AdminPage {
   data;
   sigupEvent: Configuration;
   isShow = false;
+  banners: { image: string, link: Promise<string> }[];
+  selectedFiles: FileList;
+  isUploading = false;
+  @ViewChild('bannerImage') bannerImage: ElementRef;
+  @ViewChild('bannerLink') bannerLink: ElementRef;
+  link: string;
 
   constructor(
     private meetingService: MeetingService,
     private paymentService: PaymentService,
     private router: Router,
-    private configService: ConfigurationService
+    private configService: ConfigurationService,
+    private s3Service: S3Service
   ) { }
 
   setMeetings() {
@@ -42,6 +51,12 @@ export class AdminPage {
     })
   }
 
+  setBanners() {
+    this.s3Service.getList(environment.folder.banner).then(resp => {
+      this.banners = resp;
+    })
+  }
+
   ionViewDidLeave() {
     this.isShow = false;
   }
@@ -54,6 +69,7 @@ export class AdminPage {
         this.isShow = true
         this.setMeetings();
         this.setConfigurations();
+        this.setBanners();
         this.paymentService.getPurchasedInfoAll().subscribe(resp => {
           this.data = resp;
           this.configuration = { ...DefaultConfig };
@@ -110,5 +126,33 @@ export class AdminPage {
 
   goToDetail(mid: number) {
     this.router.navigate(['/tabs/meeting-detail', mid])
+  }
+
+  addBanner() {
+    this.isUploading = true;
+    const file = this.selectedFiles.item(0);
+    this.s3Service.uploadFile(file, environment.folder.banner, this.link).then(resp => {
+      this.setBanners();
+      alert('배너 파일을 업로드 하였습니다.');
+      this.resetBannerInput()
+    }, err => this.resetBannerInput())
+  }
+
+  resetBannerInput() {
+    this.bannerImage.nativeElement.value = '';
+    this.bannerLink.nativeElement.value = '';
+    this.isUploading = false;
+    this.selectedFiles = undefined;
+  }
+
+  selectFile(event) {
+    this.selectedFiles = event.target.files;
+  }
+
+  deleteBanner(link: string) {
+    this.s3Service.deleteFile(link, environment.folder.banner).then(resp => {
+      alert('배너 파일을 삭제 하였습니다.')
+      this.setBanners();
+    })
   }
 }

@@ -11,6 +11,7 @@ import { Meeting, MeetingOption, MeetingStatus } from 'src/app/model/meeting';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { MeetingService } from 'src/app/service/meeting.service';
+import { environment } from 'src/environments/environment';
 import { FormService } from '../../service/form.service';
 import { S3Service } from '../../service/s3.service';
 import { UtilService } from './../../service/util.service';
@@ -76,7 +77,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
       input.click();
       input.onchange = () => {
         const file = input.files[0];
-        this.s3Service.uploadFile(file).then(res => {
+        this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
           const editor = this.quill.quillEditor;
           const range = editor.getSelection();
           editor.insertEmbed(range.index, 'image', `${res.Location}`, 'user');
