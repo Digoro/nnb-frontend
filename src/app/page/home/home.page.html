@@ -6,6 +6,10 @@
           <ion-slide *ngFor="let banner of banners">
             <img [src]="banner.image" (click)="clickBanner(banner.link)">
           </ion-slide>
+
+          <ng-container *ngIf="!banners">
+            <img src="/assets/skeleton-img.png" style="width:748px; height:418px">
+          </ng-container>
         </ion-slides>
       </ion-col>
     </ion-row>
