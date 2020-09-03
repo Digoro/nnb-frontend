@@ -4,16 +4,22 @@
       <img width="28" height="28" src="../../../assets/kakaotalk_logo.png">
       <span style="color: black">카카오톡 계정으로 로그인</span>
     </ion-button>
-    <ion-list *ngIf="!!user && !!kakaoUser && !!kakaoUser.properties" style="margin: 30px 0px 45px 0px">
+    <ion-list *ngIf="!!user && !!kakaoUser && !!kakaoUser.properties" style="margin: 30px 0px 25px 0px">
       <ion-item lines="none">
-        <ion-avatar slot="start" style="width: 80px; height: 80px;">
+        <ion-avatar slot="start" style="width: 80px; height: 80px;margin-left:20px">
           <img [src]="kakaoUser.properties.thumbnail_image">
         </ion-avatar>
-        <ion-label class="name">{{kakaoUser.properties.nickname}}</ion-label>
-        <ion-chip color="primary" (click)="editUser()">
-          <ion-icon name="create-outline"></ion-icon>
-          <ion-label>프로필 설정</ion-label>
-        </ion-chip>
+        <ion-label style="color: #3f3e3e;">{{kakaoUser.properties.nickname}}</ion-label>
+        <div style="display: flex; flex-direction: column;">
+          <ion-chip color="primary" (click)="editUser()">
+            <ion-icon name="create-outline"></ion-icon>
+            <ion-label>프로필 설정</ion-label>
+          </ion-chip>
+          <ion-chip color="tertiary" (click)="editUser()">
+            <ion-icon name="log-out-outline"></ion-icon>
+            <ion-label>호스트 관리</ion-label>
+          </ion-chip>
+        </div>
       </ion-item>
     </ion-list>
     <ion-list>
@@ -25,7 +31,9 @@
           <ng-container *ngFor="let item of menu.items">
             <ion-item style="cursor: pointer;" (click)="item.onClick()" *ngIf="item.isShow">
               <ion-label [ngStyle]="{'opacity':item.disable ? 0.3 : 1}">{{item.label}}</ion-label>
-              <ion-icon class="icon" [name]="item.icon"></ion-icon>
+              <ion-icon *ngIf="!item.isBadge" class="icon" [name]="item.icon"></ion-icon>
+              <span class="badge badge-danger" *ngIf="item.isBadge">{{item.badge}}</span>
+              <!-- <ion-badge *ngIf="item.isBadge" mode="ios" color="danger">{{item.badge}}</ion-badge> -->
             </ion-item>
           </ng-container>
         </ion-item-group>

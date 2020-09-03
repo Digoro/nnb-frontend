@@ -6,12 +6,12 @@ import { AuthService } from 'src/app/service/auth.service';
 import { MeetingService } from 'src/app/service/meeting.service';
 
 @Component({
-  selector: 'my-meetings',
-  templateUrl: './my-meetings.page.html',
-  styleUrls: ['./my-meetings.page.scss'],
+  selector: 'hosted-meetings',
+  templateUrl: './hosted-meetings.page.html',
+  styleUrls: ['./hosted-meetings.page.scss'],
 })
-export class MyMeetingsPage implements OnInit {
-  myMeetings: any[];
+export class HostedMeetingsPage implements OnInit {
+  hostedMeetings: any[];
 
   constructor(
     private authService: AuthService,
@@ -22,13 +22,13 @@ export class MyMeetingsPage implements OnInit {
 
   ngOnInit() {
     this.authService.getCurrentUser().subscribe(currentUser => {
-      this.setMyMeetings();
+      this.setHostedMeetings();
     });
   }
 
-  private setMyMeetings() {
-    this.meetingService.getMyMeetings().subscribe(meetings => {
-      this.myMeetings = meetings;
+  private setHostedMeetings() {
+    this.meetingService.getHostedMeetings().subscribe(meetings => {
+      this.hostedMeetings = meetings;
     });
   }
 
@@ -58,7 +58,7 @@ export class MyMeetingsPage implements OnInit {
           if (isDelete) {
             this.meetingService.deleteMeeting(mid).subscribe(resp => {
               alert('모임을 삭제하였습니다.');
-              this.setMyMeetings();
+              this.setHostedMeetings();
             })
           }
         }

@@ -1,0 +1,58 @@
+<ion-content>
+  <ion-grid fixed *ngIf="coupons && usedCoupons">
+    <ion-segment (ionChange)="segmentChanged($event)" value="canUse">
+      <ion-segment-button value="canUse">
+        <ion-label>사용가능한 쿠폰&nbsp;<span class="badge badge-danger">{{coupons.length}}</span></ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="used">
+        <ion-label>지난 쿠폰&nbsp;<span class="badge badge-secondary">{{usedCoupons.length}}</span></ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-row *ngIf="selectedMenu === 'canUse'">
+      <ion-col>
+        <ng-container *ngFor="let coupon of coupons">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-subtitle>{{coupon.isUsed ? '사용됨':'사용가능'}}</ion-card-subtitle>
+              <ion-card-title>{{coupon.price|number}}원</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              {{coupon.title}}
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+        <ng-container *ngIf="coupons.length === 0">
+          <div style="text-align: center; opacity: 0.4;">
+            <ion-chip outline>
+              <ion-label color="primary">쿠폰이 없습니다.</ion-label>
+            </ion-chip>
+          </div>
+        </ng-container>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="selectedMenu === 'used'">
+      <ion-col>
+        <ng-container *ngFor="let coupon of usedCoupons">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-subtitle>{{coupon.isUsed ? '사용됨':'사용가능'}}</ion-card-subtitle>
+              <ion-card-title>{{coupon.price|number}}원</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              {{coupon.title}}
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+        <ng-container *ngIf="usedCoupons.length === 0">
+          <div style="text-align: center; opacity: 0.4;">
+            <ion-chip outline>
+              <ion-label color="primary">쿠폰이 없습니다.</ion-label>
+            </ion-chip>
+          </div>
+        </ng-container>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

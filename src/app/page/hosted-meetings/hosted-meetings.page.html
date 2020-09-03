@@ -1,7 +1,7 @@
 <ion-content>
   <ion-grid fixed>
-    <ion-row *ngIf="!!myMeetings">
-      <ion-col *ngFor="let meeting of myMeetings" size="12">
+    <ion-row *ngIf="!!hostedMeetings">
+      <ion-col *ngFor="let meeting of hostedMeetings" size="12">
         <ion-list>
           <ion-item>
             <ion-thumbnail slot="start" style="cursor: pointer;" (click)="goDetailPage(meeting)">
@@ -10,7 +10,7 @@
             <ion-label style="cursor: pointer;" (click)="goDetailPage(meeting)">
               <h3>{{meeting.title}} </h3>
               <p>{{meeting.subTitle}}</p>
-              <p *ngIf="meeting.price !== 0">{{meeting.price}}</p>
+              <p *ngIf="meeting.price !== 0">{{meeting.price|number}}원</p>
               <p *ngIf="meeting.price === 0">무료</p>
             </ion-label>
             <ion-icon name="ellipsis-horizontal-outline" style="float: right; padding:20px 20px" class="more"
@@ -18,7 +18,7 @@
           </ion-item>
         </ion-list>
       </ion-col>
-      <ion-col *ngIf="myMeetings.length === 0">
+      <ion-col *ngIf="hostedMeetings.length === 0">
         <div style="opacity: 0.4; padding: 20px">
           <ion-chip outline>
             <ion-label color="primary">주최한 모임이 없습니다.</ion-label>

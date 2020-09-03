@@ -92,9 +92,9 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'my-meetings', canActivateChild: [AuthGuard], children: [{
+        path: 'hosted-meetings', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>
-            import('../my-meetings/my-meetings.module').then(m => m.MyMeetingsPageModule)
+            import('../hosted-meetings/hosted-meetings.module').then(m => m.HostedMeetingsPageModule)
         }]
       },
       {
@@ -143,6 +143,12 @@ const routes: Routes = [
         path: 'event', children: [{
           path: '', loadChildren: () =>
             import('../event/event.module').then(m => m.EventPageModule)
+        }]
+      },
+      {
+        path: 'coupon-list', children: [{
+          path: '', loadChildren: () =>
+            import('../coupon-list/coupon-list.module').then(m => m.CouponListPageModule)
         }]
       }
     ],

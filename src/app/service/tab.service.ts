@@ -12,10 +12,11 @@ export class TabService {
     'meetings',
     'payment-management',
     'meeting-add',
-    'my-meetings',
+    'hosted-meetings',
     'magazine',
     'magazine-add',
-    'event'
+    'event',
+    'coupon-list'
   ];
   routeParamPages: string[] = [
     'meeting-detail',
