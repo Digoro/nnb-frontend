@@ -36,11 +36,6 @@ export class UserService {
     return this.http.get<User>(`${this.urlPrefix}/users/${nid}`);
   }
 
-  getKaKaoUser(sid: number): Observable<KakaoUser> {
-    // return of(this.kakaoUser).pipe(delay(500))
-    return this.http.get<KakaoUser>(`${this.urlPrefix}/users/social_profile?sid=${sid}`);
-  }
-
   edit(user: User) {
     return this.http.put(`${this.urlPrefix}/users/${user.uid}`, user)
   }

@@ -60,9 +60,11 @@ export class PaymentService {
     return this.http.get<PaymentResult[]>(`/payment/my_purchased?uid=${uid}`)
   }
 
-  getPurchasedInfoAll(): Observable<PaymentResult[]> {
+  getPurchasedInfoAll(mid: number): Observable<PaymentResult[]> {
+    let url = `${this.urlPrefix}/payments`;
+    if (mid) url = `payments?mid=${mid}`;
     return forkJoin(
-      this.http.get<PaymentResult[]>(`${this.urlPrefix}/payments/`),
+      this.http.get<PaymentResult[]>(url),
       this.http.get<PaymentResult[]>(`${this.urlPrefix}/paymentOptionMaps/`)
     ).pipe(
       map(data => {

@@ -70,7 +70,7 @@ export class AdminPage {
         this.setMeetings();
         this.setConfigurations();
         this.setBanners();
-        this.paymentService.getPurchasedInfoAll().subscribe(resp => {
+        this.paymentService.getPurchasedInfoAll(undefined).subscribe(resp => {
           this.data = resp;
           this.configuration = { ...DefaultConfig };
           this.configuration.searchEnabled = true;

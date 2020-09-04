@@ -11,10 +11,9 @@ export class MoreMenuItem {
     constructor(
         public label: string,
         public onClick: Callable,
-        public icon: string,
         public badge = 0,
+        public badgeIcon = 'badge-secondary',
         public isBadge = false,
-        public disable = false,
-        public isShow = true
+        public disable = false
     ) { }
 }

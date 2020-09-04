@@ -1,93 +1,44 @@
-<ion-content fullscreen="true" slot="fixed">
+<ion-content>
   <ion-grid fixed>
-    <div class="card" *ngIf="!!user">
-      <div class="header"
-        [ngStyle]="{ 'background': 'url(/assets/profile-background.png) no-repeat top center/cover fixed, #fff'}">
-        <p class="info">{{user.catch_phrase}}</p>
-        <div class="avatar">
-          <!-- <img [src]="kakaoUser.properties.thumbnail_image" alt=""> -->
-          <!-- <img src="/assets/user.png"> -->
+    <br>
+    <ion-item lines="none">
+      <ion-button (click)="goToAdd()" slot="end" size="default">
+        <ion-icon name="add-outline" slot="start"></ion-icon>모임 등록하기
+      </ion-button>
+    </ion-item>
+    <hr style="margin:10px 0px 0px 0px">
+    <ion-row *ngIf="!!hostedMeetings">
+      <ion-col *ngFor="let meeting of hostedMeetings" size="12">
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail slot="start" style="cursor: pointer;" (click)="goDetailPage(meeting)">
+              <img [src]="meeting.file" />
+            </ion-thumbnail>
+            <ion-label style="cursor: pointer;" (click)="goDetailPage(meeting)">
+              <h3>{{meeting.title}} </h3>
+              <p>{{meeting.subTitle}}</p>
+              <p *ngIf="meeting.price !== 0">{{meeting.price|number}}원</p>
+              <p *ngIf="meeting.price === 0">무료</p>
+            </ion-label>
+            <div *ngIf="isDesktop">
+              <ion-button color="medium" (click)="edit(meeting.mid)">수정하기</ion-button>
+              <ion-button color="medium" (click)="reservate(meeting.mid)">예약관리</ion-button>
+              <ion-button color="medium" (click)="noReady()">후기관리</ion-button>
+              <ion-button color="medium" (click)="noReady()">문의관리</ion-button>
+              <ion-button color="medium" (click)="delete(meeting.mid)">삭제</ion-button>
+            </div>
+            <ion-icon *ngIf="!isDesktop" name="ellipsis-vertical-outline" style="float: right; padding:20px 20px"
+              class="more" (click)="presentActionSheet(meeting.mid)"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col *ngIf="hostedMeetings.length === 0">
+        <div style="opacity: 0.4; padding: 20px">
+          <ion-chip outline>
+            <ion-label color="primary">주최한 모임이 없습니다.</ion-label>
+          </ion-chip>
         </div>
-      </div>
-    </div>
-    <div class="card-body">
-      <ion-row *ngIf="!!user">
-        <ion-col>
-          <div class="user-meta ion-text-center">
-            <h3 class="hostname">{{user.name}}</h3>
-            <h5 class="nickname">{{user.nickName}}</h5>
-          </div>
-          &nbsp;
-          <p class="desc" style="margin:0px">{{user.introduction}}</p>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <a href="mailto:nonunbub@gmail.com">
-            <ion-button color="light" size="small" style="min-width: 115px;">
-              <ion-icon name="mail-outline"></ion-icon>&nbsp;&nbsp;&nbsp;문의하기
-            </ion-button>
-          </a>
-
-          <a href="mailto:nonunbub@gmail.com">
-            <ion-button color="light" size="small" style="min-width: 115px;">
-              <ion-icon name="hand-left-outline"></ion-icon>&nbsp;&nbsp;&nbsp;사용자 신고하기
-            </ion-button>
-          </a>
-        </ion-col>
-      </ion-row>
-      <hr>
-
-      <ion-row *ngIf="!!user">
-        <ion-col>
-          <p class="host-subject">{{user.nickName}}님의 관심사</p>
-          <div style="opacity: 0.4; padding: 20px">
-            <ng-container *ngFor="let favorite of ['등산','건강','취미','함께']">
-              <ion-chip>
-                <ion-label color="primary">{{favorite}}</ion-label>
-              </ion-chip>
-            </ng-container>
-            <br>
-            <ion-chip outline>
-              <ion-label color="primary">서비스 추가 예정입니다.</ion-label>
-            </ion-chip>
-            <br>
-          </div>
-        </ion-col>
-      </ion-row>
-      <hr>
-
-      <ion-row>
-        <ion-col>
-          <p class="host-subject" *ngIf="!!user">{{user.nickName}}님이 참여한 모임</p>
-          <div style="opacity: 0.4; padding: 20px">
-            <ion-chip outline>
-              <ion-label color="primary">서비스 추가 예정입니다.</ion-label>
-            </ion-chip>
-          </div>
-        </ion-col>
-      </ion-row>
-      <hr>
-
-      <ion-row>
-        <ion-col>
-          <p class="host-subject" *ngIf="!!user">{{user.nickName}}님이 주최한 모임</p>
-          <div style="opacity: 0.4; padding: 20px">
-            <ion-chip outline>
-              <ion-label color="primary">서비스 추가 예정입니다.</ion-label>
-            </ion-chip>
-          </div>
-        </ion-col>
-      </ion-row>
-      <hr>
-
-      <ion-row>
-        <ion-col>
-          <p class="host-subject">후기</p>
-          <comment [comments]="comments" [currentUser]="user" [editable]="false" [displayLabel]="true"></comment>
-        </ion-col>
-      </ion-row>
-    </div>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

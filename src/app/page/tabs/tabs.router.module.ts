@@ -62,9 +62,9 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'host/:id', children: [{
+        path: 'profile/:id', children: [{
           path: '', loadChildren: () =>
-            import('../host/host.module').then(m => m.HostPageModule)
+            import('../profile/profile.module').then(m => m.ProfilePageModule)
         }]
       },
       {
@@ -85,6 +85,19 @@ const routes: Routes = [
             import('../edit-profile/edit-profile.module').then(m => m.EditProfilePageModule)
         }]
       },
+      {
+        path: 'host', children: [
+          {
+            path: '', loadChildren: () =>
+              import('../host/host.module').then(m => m.HostPageModule)
+          },
+          {
+            path: 'reservation/:mid', loadChildren: () =>
+              import('../reservation/reservation.module').then(m => m.ReservationPageModule)
+          }
+        ]
+      },
+      //TODO: edit-profile 페이지와 병합할 것
       {
         path: 'edit-individual', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>

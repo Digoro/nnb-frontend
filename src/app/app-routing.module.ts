@@ -3,6 +3,8 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./page/tabs/tabs.module').then(m => m.TabsPageModule) },
+  // { path: 'reservation', loadChildren: () => import('./page/reservation/reservation.module').then(m => m.ReservationPageModule) },
+  // { path: 'host', loadChildren: () => import('./page/host/host.module').then(m => m.HostPageModule) },
   // { path: 'coupon-list', loadChildren: () => import('./coupon-list/coupon-list.module').then(m => m.CouponListPageModule) },
   // { path: 'event', loadChildren: () => import('./page/event/event.module').then(m => m.EventPageModule) },
   // { path: 'admin', loadChildren: () => import('./page/admin/admin.module').then(m => m.AdminPageModule) },
@@ -14,7 +16,7 @@ const routes: Routes = [
   // { path: 'payment-management', loadChildren: () => import('./page/payment-management/payment-management.module').then(m => m.PaymentManagementPageModule) },
   // { path: 'hosted-meetings', loadChildren: () => import('./page/hosted-meetings/hosted-meetings.module').then(m => m.HostedMeetingsPageModule) },
   // { path: 'edit-individual', loadChildren: () => import('./page/edit-individual/edit-individual.module').then(m => m.EditIndividualPageModule) },
-  // { path: 'host', loadChildren: () => import('./page/host/host.module').then(m => m.HostPageModule) },
+  // { path: 'profile', loadChildren: () => import('./page/profile/profile.module').then(m => m.ProfilePageModule) },
   // { path: 'search', loadChildren: () => import('./page/search/search.module').then(m => m.SearchPageModule) },
   // { path: 'meeting-edit', loadChildren: () => import('./page/meeting-edit/meeting-edit.module').then(m => m.MeetingEditPageModule) },
   // { path: 'edit-profile', loadChildren: './page/edit-profile/edit-profile.module#EditProfilerPageModule' },

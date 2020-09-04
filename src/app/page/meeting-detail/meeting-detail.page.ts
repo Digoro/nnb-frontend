@@ -236,7 +236,7 @@ export class MeetingDetailPage implements OnInit {
   }
 
   goToHostPage(host: User) {
-    this.router.navigate(['./tabs/host', host.uid]);
+    this.router.navigate(['./tabs/profile', host.uid]);
   }
 
   onComment(value) {

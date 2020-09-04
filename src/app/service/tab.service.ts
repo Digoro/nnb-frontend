@@ -16,14 +16,16 @@ export class TabService {
     'magazine',
     'magazine-add',
     'event',
-    'coupon-list'
+    'coupon-list',
+    'host'
   ];
   routeParamPages: string[] = [
     'meeting-detail',
     'magazine-detail',
     'meeting-edit',
     'magazine-edit',
-    'payment'
+    'payment',
+    'profile'
   ];
 
   constructor(private router: Router, private platform: Platform) {
@@ -54,12 +56,12 @@ export class TabService {
   }
 
   hideTabs() {
-    const tabBar = document.getElementById('myTabBar');
+    const tabBar = document.getElementById('tabBar');
     if (tabBar !== null && tabBar.style.display !== 'none') tabBar.style.display = 'none';
   }
 
   showTabs() {
-    const tabBar = document.getElementById('myTabBar');
+    const tabBar = document.getElementById('tabBar');
     if (tabBar !== null && tabBar.style.display !== 'flex') tabBar.style.display = 'flex';
   }
 }
