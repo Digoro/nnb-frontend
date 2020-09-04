@@ -4,39 +4,35 @@
       <img width="28" height="28" src="../../../assets/kakaotalk_logo.png">
       <span style="color: black">카카오톡 계정으로 로그인</span>
     </ion-button>
-    <ion-list *ngIf="!!user && !!kakaoUser && !!kakaoUser.properties" style="margin: 30px 0px 25px 0px">
-      <ion-item lines="none">
-        <ion-avatar slot="start" style="width: 80px; height: 80px;margin-left:20px">
-          <img [src]="kakaoUser.properties.thumbnail_image">
-        </ion-avatar>
-        <ion-label style="color: #3f3e3e;">{{kakaoUser.properties.nickname}}</ion-label>
-        <div style="display: flex; flex-direction: column;">
-          <ion-chip color="primary" (click)="editUser()">
-            <ion-icon name="settings-outline"></ion-icon>
-            <ion-label>계정 설정</ion-label>
-          </ion-chip>
-          <ion-chip color="tertiary" (click)="goToHost()">
-            <ion-icon name="log-out-outline"></ion-icon>
-            <ion-label>호스트 관리</ion-label>
-          </ion-chip>
-        </div>
-      </ion-item>
-    </ion-list>
-    <ion-list>
-      <ng-container *ngFor="let menu of menus">
-        <!-- <ion-item-group> -->
-        <!-- <ion-item-divider>
-            <ion-label>{{menu.label}}</ion-label>
-          </ion-item-divider> -->
-        <ng-container *ngFor="let item of menu.items">
-          <ion-item style="cursor: pointer;" (click)="item.onClick()">
-            <ion-label [ngStyle]="{'opacity':item.disable ? 0.3 : 1}">{{item.label}}</ion-label>
-            <span class="badge" [ngClass]="item.badgeIcon" *ngIf="item.isBadge">{{item.badge}}</span>
-          </ion-item>
+    <ng-container *ngIf="!!user && !!kakaoUser && !!kakaoUser.properties">
+      <ion-list style="margin: 30px 0px 25px 0px">
+        <ion-item lines="none">
+          <ion-avatar slot="start" style="width: 80px; height: 80px;margin-left:20px">
+            <img [src]="kakaoUser.properties.thumbnail_image">
+          </ion-avatar>
+          <ion-label style="color: #3f3e3e;">{{kakaoUser.properties.nickname}}</ion-label>
+          <div style="display: flex; flex-direction: column;">
+            <ion-chip color="primary" (click)="editUser()">
+              <ion-icon name="settings-outline"></ion-icon>
+              <ion-label>계정 설정</ion-label>
+            </ion-chip>
+            <ion-chip color="tertiary" (click)="goToHost()">
+              <ion-icon name="log-out-outline"></ion-icon>
+              <ion-label>호스트 관리</ion-label>
+            </ion-chip>
+          </div>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ng-container *ngFor="let menu of menus">
+          <ng-container *ngFor="let item of menu.items">
+            <ion-item style="cursor: pointer;" (click)="item.onClick()">
+              <ion-label [ngStyle]="{'opacity':item.disable ? 0.3 : 1}">{{item.label}}</ion-label>
+              <span class="badge" [ngClass]="item.badgeIcon" *ngIf="item.isBadge">{{item.badge}}</span>
+            </ion-item>
+          </ng-container>
         </ng-container>
-        <!-- </ion-item-group> -->
-      </ng-container>
-      <!-- <ion-button *ngIf="user" color="warning" expand="full" (click)="logout()">로그아웃</ion-button> -->
-    </ion-list>
+      </ion-list>
+    </ng-container>
   </ion-grid>
 </ion-content>
