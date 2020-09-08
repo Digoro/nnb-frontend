@@ -4,16 +4,19 @@ import { HostPage } from './page/host/host.page';
 
 const routes: Routes = [
   {
-    path: 'hosted-meetings', children: [{
-      path: '', component: HostPage, children: [
-        {
-          path: '', loadChildren: () => import('../app/page/hosted-meetings/hosted-meetings.module').then(m => m.HostedMeetingsPageModule),
-        },
-        {
-          path: 'reservation', loadChildren: () => import('../app/page/reservation/reservation.module').then(m => m.ReservationPageModule),
-        }
-      ]
-    }]
+    path: 'host', component: HostPage, children: [
+      {
+        path: '', redirectTo: 'hosted-meetings', pathMatch: 'full',
+      },
+      {
+        path: 'hosted-meetings',
+        loadChildren: () => import('../app/page/hosted-meetings/hosted-meetings.module').then(m => m.HostedMeetingsPageModule),
+      },
+      {
+        path: 'reservation',
+        loadChildren: () => import('../app/page/reservation/reservation.module').then(m => m.ReservationPageModule),
+      }
+    ]
   },
   { path: '', loadChildren: () => import('./page/tabs/tabs.module').then(m => m.TabsPageModule) },
   // { path: 'reservation', loadChildren: () => import('./page/reservation/reservation.module').then(m => m.ReservationPageModule) },

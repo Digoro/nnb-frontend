@@ -42,14 +42,6 @@ export class HostPage implements OnInit {
     this.isOpenSidebar = !this.isOpenSidebar;
   }
 
-  goToHostedMeetings() {
-    this.router.navigate(['/hosted-meetings'])
-  }
-
-  goToReservation() {
-    this.router.navigate(['/hosted-meetings/reservation'])
-  }
-
   goDetailPage(meeting: Meeting) {
     this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
   }

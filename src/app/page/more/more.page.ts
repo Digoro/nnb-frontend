@@ -60,7 +60,7 @@ export class MorePage implements OnInit {
 
   goToHost() {
     // alert('서비스 준비중입니다 ^^')
-    this.router.navigate(['/hosted-meetings']);
+    this.router.navigate(['/host']);
   }
 
   login(method: string) {

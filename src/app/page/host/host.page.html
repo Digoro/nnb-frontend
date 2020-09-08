@@ -42,24 +42,22 @@
 
   <ion-grid style="height: 100%;">
     <ion-row style="height: 100%;">
-      <ion-col class="sidebar" size="2" style="padding:0px" style="height: 100%;padding:0px">
-        <div class="sidemenu" (click)="goToHostedMeetings()">
+      <ion-col *ngIf="isDesktop" class="sidebar" size="2" style="padding:0px" style="height: 100%;padding:0px">
+        <div class="sidemenu" [routerLink]="'/host/hosted-meetings'" [routerLinkActive]="'active'">
           <ion-icon name="copy-outline"></ion-icon>&nbsp;&nbsp;모임관리
         </div>
-        <div class="sidemenu" (click)="goToReservation()">
+        <div class="sidemenu" [routerLink]="'/host/reservation'" [routerLinkActive]="'active'">
           <ion-icon name="calendar-outline"></ion-icon>&nbsp;&nbsp;예약관리
         </div>
-        <div class="sidemenu" (click)="noReady()">
+        <div class="sidemenu" (click)="noReady()" [routerLinkActive]="'active'">
           <ion-icon name="chatbox-outline"></ion-icon>&nbsp;&nbsp;후기관리
         </div>
-        <div class="sidemenu" (click)="noReady()">
+        <div class="sidemenu" (click)="noReady()" [routerLinkActive]="'active'">
           <ion-icon name="help-circle-outline"></ion-icon>&nbsp;&nbsp;문의관리
         </div>
       </ion-col>
       <ion-col style="height: 100%;">
-        <div style="height: 100%;">
-          <router-outlet></router-outlet>
-        </div>
+        <router-outlet></router-outlet>
       </ion-col>
     </ion-row>
   </ion-grid>

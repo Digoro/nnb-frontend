@@ -1,5 +1,12 @@
 <ion-content>
   <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="goToAdd()" size="default">
+          <ion-icon name="add-outline" slot="start"></ion-icon>모임 등록하기
+        </ion-button>
+      </ion-col>
+    </ion-row>
     <ion-row *ngIf="hostedMeetings">
       <ion-col *ngFor="let meeting of hostedMeetings" size="12">
         <ion-list>
