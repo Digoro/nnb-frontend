@@ -1,7 +1,20 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { HostPage } from './page/host/host.page';
 
 const routes: Routes = [
+  {
+    path: 'hosted-meetings', children: [{
+      path: '', component: HostPage, children: [
+        {
+          path: '', loadChildren: () => import('../app/page/hosted-meetings/hosted-meetings.module').then(m => m.HostedMeetingsPageModule),
+        },
+        {
+          path: 'reservation', loadChildren: () => import('../app/page/reservation/reservation.module').then(m => m.ReservationPageModule),
+        }
+      ]
+    }]
+  },
   { path: '', loadChildren: () => import('./page/tabs/tabs.module').then(m => m.TabsPageModule) },
   // { path: 'reservation', loadChildren: () => import('./page/reservation/reservation.module').then(m => m.ReservationPageModule) },
   // { path: 'host', loadChildren: () => import('./page/host/host.module').then(m => m.HostPageModule) },

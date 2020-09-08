@@ -1,6 +1,5 @@
 <ion-content>
-  <ion-grid fixed>
-    <p>예약 목록</p>
+  <ion-grid>
     <ngx-table *ngIf="data" [configuration]="configuration" [data]="data" [columns]="columns">
       <ng-template let-row let-index="index">
         <td>{{ index +1 }}</td>

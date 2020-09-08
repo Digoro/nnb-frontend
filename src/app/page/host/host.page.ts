@@ -14,6 +14,7 @@ import { CheckDesktopService } from './../../service/check-desktop.service';
 export class HostPage implements OnInit {
   hostedMeetings: Meeting[];
   isDesktop = false;
+  isOpenSidebar = false;
 
   constructor(
     private authService: AuthService,
@@ -24,6 +25,7 @@ export class HostPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.cds.setIsDesktop(window.innerWidth);
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp)
     this.authService.getCurrentUser().subscribe(currentUser => {
       this.setHostedMeetings();
@@ -36,81 +38,23 @@ export class HostPage implements OnInit {
     });
   }
 
-  goToAdd() {
-    this.router.navigate(['./tabs/meeting-add']);
+  openSidebar() {
+    this.isOpenSidebar = !this.isOpenSidebar;
+  }
+
+  goToHostedMeetings() {
+    this.router.navigate(['/hosted-meetings'])
+  }
+
+  goToReservation() {
+    this.router.navigate(['/hosted-meetings/reservation'])
   }
 
   goDetailPage(meeting: Meeting) {
     this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
   }
 
-  edit(mid: number) {
-    this.router.navigate(['./tabs/meeting-edit', mid])
-  }
-
-  reservate(mid: number) {
-    this.router.navigate(['/tabs/host/reservation', mid]);
-  }
-
-  delete(mid: number) {
-    const isDelete = confirm('정말로 삭제하시겠습니까?');
-    if (isDelete) {
-      this.meetingService.deleteMeeting(mid).subscribe(resp => {
-        alert('모임을 삭제하였습니다.');
-        this.setHostedMeetings();
-      })
-    }
-  }
-
   noReady() {
-    alert('서비스 준비중')
-  }
-
-  async presentActionSheet(mid: number) {
-    const actionSheet = await this.actionSheetController.create({
-      header: '모임',
-      buttons: [{
-        text: '수정 하기',
-        icon: '',
-        handler: () => {
-          this.edit(mid);
-        }
-      }, {
-        text: '예약 관리',
-        icon: '',
-        handler: () => {
-          this.reservate(mid);
-        }
-      },
-      {
-        text: '후기 관리',
-        icon: '',
-        handler: () => {
-          alert('서비스 준비중입니다.')
-        }
-      },
-      {
-        text: '문의 관리',
-        icon: '',
-        handler: () => {
-          alert('서비스 준비중입니다.')
-        }
-      }, {
-        text: '삭제',
-        role: 'destructive',
-        icon: '',
-        handler: () => {
-          this.delete(mid);
-        }
-      }, {
-        text: '취소',
-        icon: '',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
-    });
-    await actionSheet.present();
+    alert('서비스 준비중입니다.')
   }
 }

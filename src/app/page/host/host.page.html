@@ -1,42 +1,64 @@
 <ion-content>
-  <ion-grid fixed>
-    <br>
-    <ion-item lines="none">
-      <ion-button (click)="goToAdd()" slot="end" size="default">
-        <ion-icon name="add-outline" slot="start"></ion-icon>모임 등록하기
-      </ion-button>
-    </ion-item>
-    <hr style="margin:10px 0px 0px 0px">
-    <ion-row *ngIf="!!hostedMeetings">
-      <ion-col *ngFor="let meeting of hostedMeetings" size="12">
-        <ion-list>
-          <ion-item>
-            <ion-thumbnail slot="start" style="cursor: pointer;" (click)="goDetailPage(meeting)">
-              <img [src]="meeting.file" />
-            </ion-thumbnail>
-            <ion-label style="cursor: pointer;" (click)="goDetailPage(meeting)">
-              <h3>{{meeting.title}} </h3>
-              <p>{{meeting.subTitle}}</p>
-              <p *ngIf="meeting.price !== 0">{{meeting.price|number}}원</p>
-              <p *ngIf="meeting.price === 0">무료</p>
-            </ion-label>
-            <div *ngIf="isDesktop">
-              <ion-button color="medium" (click)="edit(meeting.mid)">수정하기</ion-button>
-              <ion-button color="medium" (click)="reservate(meeting.mid)">예약관리</ion-button>
-              <ion-button color="medium" (click)="noReady()">후기관리</ion-button>
-              <ion-button color="medium" (click)="noReady()">문의관리</ion-button>
-              <ion-button color="medium" (click)="delete(meeting.mid)">삭제</ion-button>
-            </div>
-            <ion-icon *ngIf="!isDesktop" name="ellipsis-vertical-outline" style="float: right; padding:20px 20px"
-              class="more" (click)="presentActionSheet(meeting.mid)"></ion-icon>
-          </ion-item>
-        </ion-list>
+  <!-- mobile -->
+  <ion-header class="ion-no-border" *ngIf="!isDesktop">
+    <ion-grid style="padding: 0px">
+      <ion-toolbar>
+        <ion-title mode=ios>
+          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
+            <img src="../../../assets/nonunbub_logo.png" height="42" width="68">
+          </a>&nbsp;
+          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/hosted-meetings'">
+            <span style="color:#6c757d">호스트센터</span>
+          </a>
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button [routerLink]="'/tabs/more'">
+            <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-grid>
+  </ion-header>
+  <!-- descktop -->
+  <ion-header class="ion-no-border" *ngIf="isDesktop">
+    <ion-grid>
+      <ion-toolbar>
+        <ion-title>
+          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
+            <img src="../../../assets/nonunbub_logo.png" height="42" width="68">
+          </a>&nbsp;
+          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/hosted-meetings'">
+            <span style="color:#6c757d">호스트센터</span>
+          </a>
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button [routerLink]="'/tabs/more'">
+            <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-grid>
+  </ion-header>
+
+  <ion-grid style="height: 100%;">
+    <ion-row style="height: 100%;">
+      <ion-col class="sidebar" size="2" style="padding:0px" style="height: 100%;padding:0px">
+        <div class="sidemenu" (click)="goToHostedMeetings()">
+          <ion-icon name="copy-outline"></ion-icon>&nbsp;&nbsp;모임관리
+        </div>
+        <div class="sidemenu" (click)="goToReservation()">
+          <ion-icon name="calendar-outline"></ion-icon>&nbsp;&nbsp;예약관리
+        </div>
+        <div class="sidemenu" (click)="noReady()">
+          <ion-icon name="chatbox-outline"></ion-icon>&nbsp;&nbsp;후기관리
+        </div>
+        <div class="sidemenu" (click)="noReady()">
+          <ion-icon name="help-circle-outline"></ion-icon>&nbsp;&nbsp;문의관리
+        </div>
       </ion-col>
-      <ion-col *ngIf="hostedMeetings.length === 0">
-        <div style="opacity: 0.4; padding: 20px">
-          <ion-chip outline>
-            <ion-label color="primary">주최한 모임이 없습니다.</ion-label>
-          </ion-chip>
+      <ion-col style="height: 100%;">
+        <div style="height: 100%;">
+          <router-outlet></router-outlet>
         </div>
       </ion-col>
     </ion-row>

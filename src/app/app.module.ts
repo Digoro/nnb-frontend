@@ -10,10 +10,11 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HostPage } from './page/host/host.page';
 import { CsrfInterceptor } from './service/csrf.interceptor';
 import { TabService } from './service/tab.service';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HostPage],
   entryComponents: [],
   imports: [
     BrowserModule, IonicModule.forRoot(),
