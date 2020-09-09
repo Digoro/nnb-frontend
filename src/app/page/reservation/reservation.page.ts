@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { Meeting } from 'src/app/model/meeting';
 import { AuthService } from 'src/app/service/auth.service';
 import { User } from './../../model/user';
+import { CheckDesktopService } from './../../service/check-desktop.service';
 import { PaymentService } from './../../service/payment.service';
 
 @Component({
@@ -17,24 +18,29 @@ export class ReservationPage implements OnInit {
   configuration: Config;
   columns: Columns[];
   data;
+  mobileData;
+  isDesktop = false;
 
   constructor(
     private paymentService: PaymentService,
     private router: Router,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private cds: CheckDesktopService
   ) { }
 
   ngOnInit() {
+    this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
     this.authService.getCurrentNonunbubUser().subscribe(user => {
       this.user = user;
       this.paymentService.getPurchasedInfoAll(user.uid).subscribe(resp => {
         this.data = resp;
+        this.mobileData = resp.map(e => e.options);
         this.configuration = { ...DefaultConfig };
         this.configuration.searchEnabled = true;
         this.configuration.horizontalScroll = true;
         this.columns = [
           { key: 'index', title: '번호' },
+          { key: 'file', title: '이미지' },
           { key: 'PCD_PAY_TIME', title: '결제 일시' },
           { key: 'uid', title: '결제자 닉네임' },
           // { key: 'uid.name', title: '결제자 이름' },

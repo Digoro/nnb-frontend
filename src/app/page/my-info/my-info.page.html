@@ -35,7 +35,7 @@
                 </ion-chip>
                 <p>주문번호: {{options[0].payment.PCD_PAY_OID}}</p>
                 <p>결제일시: {{options[0].payment.PCD_PAY_TIME}}</p>
-                <p>결제금액: {{options[0].payment.PCD_PAY_TOTAL}}원</p>
+                <p>결제금액: {{options[0].payment.PCD_PAY_TOTAL|number}}원</p>
                 <br>
                 <ion-chip outline color="primary">
                   <ion-label>구매 옵션</ion-label>
