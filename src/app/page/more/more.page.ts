@@ -60,7 +60,7 @@ export class MorePage implements OnInit {
 
   goToHost() {
     // alert('서비스 준비중입니다 ^^')
-    this.router.navigate(['/host']);
+    window.open('https://nonunbub.com/host/meeting-management');
   }
 
   login(method: string) {
