@@ -1,44 +1,14 @@
 <ion-content>
   <ion-grid>
-    <ngx-table *ngIf="data && isDesktop" [configuration]="configuration" [data]="data" [columns]="columns">
-      <ng-template let-row let-index="index">
-        <td>{{ index +1 }}</td>
-        <td><img [src]="row.mid.file" height="50" width="60"></td>
-        <td>{{ row.PCD_PAY_TIME }}</td>
-        <td>{{ row.uid.nickName }}</td>
-        <td (click)="goToDetail(row.mid.mid)" class="link">{{ row.PCD_PAY_GOODS }}</td>
-        <td>
-          <ng-container *ngFor="let option of row.options; let last = last">
-            <ion-chip *ngIf="!option.option.isOld">
-              <ion-label style="font-size: 12px;">이전옵션</ion-label>
-            </ion-chip>
-            <p>옵션: {{option.option.optionTitle}}</p>
-            <p>가격: {{option.option.optionPrice}}</p>
-            <p>수량: {{option.count}}</p>
-            <hr style="margin: 0px" *ngIf="!last">
-          </ng-container>
-        </td>
-        <td>
-          <ng-container *ngIf="row.couponId">
-            {{ row.couponId.title }} ({{row.couponId.price|number}}원)
-          </ng-container>
-          <ng-container *ngIf="!row.couponId">
-            <ion-chip>
-              <ion-label style="font-size: 12px;">없음</ion-label>
-            </ion-chip>
-          </ng-container>
-        </td>
-        <td>{{ row.phone }}</td>
-        <td>{{ row.PCD_PAY_TOTAL }}</td>
-        <td>{{ row.PCD_PAY_OID }}</td>
-        <td>{{ row.PCD_PAY_MSG }}</td>
-        <td>{{ row.PCD_PAY_TYPE }}</td>
-        <td>{{ row.PCD_PAY_RST }}</td>
-        <td>{{ row.mid.mid }}</td>
-      </ng-template>
-    </ngx-table>
-
-    <ng-container *ngIf="data && !isDesktop">
+    <!-- mobile -->
+    <ng-container *ngIf="mobileData && !isDesktop">
+      <ng-container *ngIf="mobileData.length === 0">
+        <div style="text-align: center; opacity: 0.4;">
+          <ion-chip outline>
+            <ion-label color="primary">예약이 없습니다.</ion-label>
+          </ion-chip>
+        </div>
+      </ng-container>
       <ng-container *ngFor="let options of mobileData">
         <ion-card>
           <ion-row>
@@ -84,5 +54,43 @@
         </ion-card>
       </ng-container>
     </ng-container>
+    <!-- desktop -->
+    <ngx-table *ngIf="data && isDesktop" [configuration]="configuration" [data]="data" [columns]="columns">
+      <ng-template let-row let-index="index">
+        <td>{{ index +1 }}</td>
+        <td><img [src]="row.mid.file" height="50" width="60"></td>
+        <td>{{ row.PCD_PAY_TIME }}</td>
+        <td>{{ row.uid.nickName }}</td>
+        <td (click)="goToDetail(row.mid.mid)" class="link">{{ row.PCD_PAY_GOODS }}</td>
+        <td>
+          <ng-container *ngFor="let option of row.options; let last = last">
+            <ion-chip *ngIf="!option.option.isOld">
+              <ion-label style="font-size: 12px;">이전옵션</ion-label>
+            </ion-chip>
+            <p>옵션: {{option.option.optionTitle}}</p>
+            <p>가격: {{option.option.optionPrice}}</p>
+            <p>수량: {{option.count}}</p>
+            <hr style="margin: 0px" *ngIf="!last">
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngIf="row.couponId">
+            {{ row.couponId.title }} ({{row.couponId.price|number}}원)
+          </ng-container>
+          <ng-container *ngIf="!row.couponId">
+            <ion-chip>
+              <ion-label style="font-size: 12px;">없음</ion-label>
+            </ion-chip>
+          </ng-container>
+        </td>
+        <td>{{ row.phone }}</td>
+        <td>{{ row.PCD_PAY_TOTAL }}</td>
+        <td>{{ row.PCD_PAY_OID }}</td>
+        <td>{{ row.PCD_PAY_MSG }}</td>
+        <td>{{ row.PCD_PAY_TYPE }}</td>
+        <td>{{ row.PCD_PAY_RST }}</td>
+        <td>{{ row.mid.mid }}</td>
+      </ng-template>
+    </ngx-table>
   </ion-grid>
 </ion-content>
