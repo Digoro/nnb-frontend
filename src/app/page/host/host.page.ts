@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuController } from '@ionic/angular';
 import { CheckDesktopService } from './../../service/check-desktop.service';
 
 @Component({
@@ -11,7 +12,8 @@ export class HostPage implements OnInit {
   isOpenSidebar = false;
 
   constructor(
-    private cds: CheckDesktopService
+    private cds: CheckDesktopService,
+    private menu: MenuController
   ) { }
 
   ngOnInit() {
@@ -20,7 +22,7 @@ export class HostPage implements OnInit {
   }
 
   openSidebar() {
-    this.isOpenSidebar = !this.isOpenSidebar;
+    this.menu.close();
   }
 
   noReady() {

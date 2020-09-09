@@ -1,67 +1,93 @@
-<ion-content>
+<ion-menu side="start" content-id="main-content">
+  <ion-header>
+    <ion-toolbar translucent>
+      <ion-title>호스트센터</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item [routerLink]="'/host/meeting-management'" (click)="openSidebar()">
+        <ion-icon name="copy-outline" slot="start"></ion-icon>
+        <ion-label>모임관리</ion-label>
+      </ion-item>
+      <ion-item [routerLink]="'/host/reservation'" (click)="openSidebar()">
+        <ion-icon name="calendar-outline" slot="start"></ion-icon>
+        <ion-label>예약관리</ion-label>
+      </ion-item>
+      <ion-item (click)="noReady()">
+        <ion-icon name="chatbox-outline" slot="start"></ion-icon>
+        <ion-label>후기관리</ion-label>
+      </ion-item>
+      <ion-item (click)="noReady()">
+        <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+        <ion-label>문의관리</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div class="ion-page" id="main-content">
   <!-- mobile -->
   <ion-header class="ion-no-border" *ngIf="!isDesktop">
-    <ion-grid style="padding: 0px">
-      <ion-toolbar>
-        <ion-title mode=ios>
-          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
-            <img src="../../../assets/nonunbub_logo.png" height="42" width="68">
-          </a>&nbsp;
-          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/host'">
-            <span style="color:#6c757d">호스트센터</span>
-          </a>
-        </ion-title>
-        <ion-buttons slot="end">
-          <ion-button [routerLink]="'/tabs/more'">
-            <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
-          </ion-button>
-          <ion-button>
-            <ion-icon name="menu-outline" style="font-size: 25px;" (click)="openSidebar()"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-grid>
+    <ion-toolbar>
+      <ion-title mode=ios>
+        <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
+          <img src="../../../assets/nonunbub_logo.png" height="42" width="68">
+        </a>&nbsp;
+        <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/host'">
+          <span style="color:#6c757d">호스트센터</span>
+        </a>
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button [routerLink]="'/tabs/more'">
+          <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    </ion-toolbar>
   </ion-header>
   <!-- descktop -->
   <ion-header class="ion-no-border" *ngIf="isDesktop">
-    <ion-grid>
-      <ion-toolbar>
-        <ion-title>
-          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
-            <img src="../../../assets/nonunbub_logo.png" height="42" width="68">
-          </a>&nbsp;
-          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/host'">
-            <span style="color:#6c757d">호스트센터</span>
-          </a>
-        </ion-title>
-        <ion-buttons slot="end">
-          <ion-button [routerLink]="'/tabs/more'">
-            <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-grid>
+    <ion-toolbar>
+      <ion-title>
+        <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
+          <img src="../../../assets/nonunbub_logo.png" height="42" width="68">
+        </a>&nbsp;
+        <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/host'">
+          <span style="color:#6c757d">호스트센터</span>
+        </a>
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button [routerLink]="'/tabs/more'">
+          <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
   </ion-header>
 
-  <ion-grid style="height: 100%;">
-    <ion-row style="height: 100%;">
-      <ion-col *ngIf="isDesktop" class="sidebar" size="2" style="padding:0px" style="height: 100%;padding:0px">
-        <div class="sidemenu" [routerLink]="'/host/meeting-management'" [routerLinkActive]="'active'">
-          <ion-icon name="copy-outline"></ion-icon>&nbsp;&nbsp;모임관리
-        </div>
-        <div class="sidemenu" [routerLink]="'/host/reservation'" [routerLinkActive]="'active'">
-          <ion-icon name="calendar-outline"></ion-icon>&nbsp;&nbsp;예약관리
-        </div>
-        <div class="sidemenu" (click)="noReady()" [routerLinkActive]="'active'">
-          <ion-icon name="chatbox-outline"></ion-icon>&nbsp;&nbsp;후기관리
-        </div>
-        <div class="sidemenu" (click)="noReady()" [routerLinkActive]="'active'">
-          <ion-icon name="help-circle-outline"></ion-icon>&nbsp;&nbsp;문의관리
-        </div>
-      </ion-col>
-      <ion-col style="height: 100%;">
-        <router-outlet></router-outlet>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+  <ion-content>
+    <ion-grid style="height: 100%;">
+      <ion-row style="height: 100%;">
+        <ion-col *ngIf="isDesktop" class="sidebar" size="2" style="padding:0px" style="height: 100%;padding:0px">
+          <div class="sidemenu" [routerLink]="'/host/meeting-management'" [routerLinkActive]="'active'">
+            <ion-icon name="copy-outline"></ion-icon>&nbsp;&nbsp;모임관리
+          </div>
+          <div class="sidemenu" [routerLink]="'/host/reservation'" [routerLinkActive]="'active'">
+            <ion-icon name="calendar-outline"></ion-icon>&nbsp;&nbsp;예약관리
+          </div>
+          <div class="sidemenu" (click)="noReady()" [routerLinkActive]="'active'">
+            <ion-icon name="chatbox-outline"></ion-icon>&nbsp;&nbsp;후기관리
+          </div>
+          <div class="sidemenu" (click)="noReady()" [routerLinkActive]="'active'">
+            <ion-icon name="help-circle-outline"></ion-icon>&nbsp;&nbsp;문의관리
+          </div>
+        </ion-col>
+        <ion-col style="height: 100%;">
+          <router-outlet></router-outlet>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</div>
