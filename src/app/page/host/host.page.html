@@ -7,13 +7,16 @@
           <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
             <img src="../../../assets/nonunbub_logo.png" height="42" width="68">
           </a>&nbsp;
-          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/hosted-meetings'">
+          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/host'">
             <span style="color:#6c757d">호스트센터</span>
           </a>
         </ion-title>
         <ion-buttons slot="end">
           <ion-button [routerLink]="'/tabs/more'">
             <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
+          </ion-button>
+          <ion-button>
+            <ion-icon name="menu-outline" style="font-size: 25px;" (click)="openSidebar()"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
@@ -27,7 +30,7 @@
           <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
             <img src="../../../assets/nonunbub_logo.png" height="42" width="68">
           </a>&nbsp;
-          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/hosted-meetings'">
+          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/host'">
             <span style="color:#6c757d">호스트센터</span>
           </a>
         </ion-title>
@@ -43,7 +46,7 @@
   <ion-grid style="height: 100%;">
     <ion-row style="height: 100%;">
       <ion-col *ngIf="isDesktop" class="sidebar" size="2" style="padding:0px" style="height: 100%;padding:0px">
-        <div class="sidemenu" [routerLink]="'/host/hosted-meetings'" [routerLinkActive]="'active'">
+        <div class="sidemenu" [routerLink]="'/host/meeting-management'" [routerLinkActive]="'active'">
           <ion-icon name="copy-outline"></ion-icon>&nbsp;&nbsp;모임관리
         </div>
         <div class="sidemenu" [routerLink]="'/host/reservation'" [routerLinkActive]="'active'">

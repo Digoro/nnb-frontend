@@ -41,19 +41,15 @@ export class HostedMeetingsPage implements OnInit {
   }
 
   goToAdd() {
-    this.router.navigate(['./tabs/meeting-add']);
+    this.router.navigate(['/host/meeting-management/meeting-add']);
   }
 
   goDetailPage(meeting: Meeting) {
-    this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
+    this.router.navigate(['/tabs/meeting-detail', meeting.mid]);
   }
 
   edit(mid: number) {
-    this.router.navigate(['./tabs/meeting-edit', mid])
-  }
-
-  reservate(mid: number) {
-    this.router.navigate(['/tabs/host/reservation', mid]);
+    this.router.navigate(['/host/meeting-management/meeting-edit', mid])
   }
 
   delete(mid: number) {

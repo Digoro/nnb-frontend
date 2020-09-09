@@ -11,15 +11,28 @@ import { CookieService } from 'ngx-cookie-service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HostPage } from './page/host/host.page';
+import { HostedMeetingsPage } from './page/hosted-meetings/hosted-meetings.page';
+import { MeetingAddPage } from './page/meeting-add/meeting-add.page';
+import { MeetingEditPage } from './page/meeting-edit/meeting-edit.page';
+import { MeetingManagementPage } from './page/meeting-management/meeting-management.page';
 import { CsrfInterceptor } from './service/csrf.interceptor';
 import { TabService } from './service/tab.service';
+import { SharedModule } from './shared.module';
 @NgModule({
-  declarations: [AppComponent, HostPage],
+  declarations: [
+    AppComponent,
+    HostPage,
+    MeetingManagementPage,
+    HostedMeetingsPage,
+    MeetingAddPage,
+    MeetingEditPage
+  ],
   entryComponents: [],
   imports: [
     BrowserModule, IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedModule
   ],
   providers: [
     StatusBar,

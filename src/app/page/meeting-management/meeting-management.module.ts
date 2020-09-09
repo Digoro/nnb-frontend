@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared.module';
-import { MeetingEditPage } from './meeting-edit.page';
+import { MeetingManagementPage } from './meeting-management.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: MeetingEditPage
+    component: MeetingManagementPage
   }
 ];
 
@@ -15,6 +15,6 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [MeetingEditPage]
+  declarations: [MeetingManagementPage]
 })
-export class MeetingEditPageModule { }
+export class MeetingManagementPageModule { }

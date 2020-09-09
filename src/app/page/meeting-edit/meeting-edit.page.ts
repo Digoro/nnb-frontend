@@ -335,12 +335,11 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
     });
   }
 
-  ionViewDidLeave() {
+  ngOnDestroy() {
     this.stepper.reset();
     this.meetingForm.reset();
     this.previewImage = undefined;
     this.fileInput.nativeElement.value = '';
-    this.options.controls = [];
   }
 
   edit() {

@@ -66,10 +66,6 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
     });
   }
 
-  ionViewDidEnter() {
-    this.loadMap();
-  }
-
   getEditorInstance(editorInstance: any) {
     let toolbar = editorInstance.getModule('toolbar');
     toolbar.addHandler('image', () => {
@@ -112,6 +108,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       exclude: new FormControl('', Validators.maxLength(500)),
       options: this.fb.array([this.createItem()], Validators.required)
     })
+    this.loadMap();
   }
 
   validateDiscountPrice(controlName: string): ValidatorFn {
@@ -268,12 +265,11 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
     });
   }
 
-  ionViewDidLeave() {
+  ngOnDestroy() {
     this.stepper.reset();
     this.meetingForm.reset();
     this.previewImage = undefined;
     this.fileInput.nativeElement.value = '';
-    this.options.controls = [];
   }
 
   add() {

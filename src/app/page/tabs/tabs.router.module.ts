@@ -22,12 +22,6 @@ const routes: Routes = [
         path: 'my-info', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>
             import('../my-info/my-info.module').then(m => m.MyInfoPageModule)
-        },
-        {
-          path: 'my-info-edit/:id', children: [{
-            path: '', loadChildren: () =>
-              import('../my-info-edit/my-info-edit.module').then(m => m.MyInfoEditPageModule)
-          }]
         }]
       },
       {
@@ -40,19 +34,6 @@ const routes: Routes = [
         path: 'meeting-detail/:id', children: [{
           path: '', loadChildren: () =>
             import('../meeting-detail/meeting-detail.module').then(m => m.MeetingDetailPageModule)
-        }]
-      },
-      {
-        path: 'meeting-add', canActivateChild: [AuthGuard], children: [{
-          path: '', loadChildren: () =>
-            import('../meeting-add/meeting-add.module').then(m => m.MeetingAddPageModule)
-        }]
-      },
-      {
-        //RoleGuard 추가 필요
-        path: 'meeting-edit/:id', canActivateChild: [AuthGuard], children: [{
-          path: '', loadChildren: () =>
-            import('../meeting-edit/meeting-edit.module').then(m => m.MeetingEditPageModule)
         }]
       },
       {
