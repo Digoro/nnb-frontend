@@ -118,29 +118,29 @@
                   <ion-label position="floating">모임 이름<span class="invalid-input">*</span>
                   </ion-label>
                   <ion-input type="text" [formControlName]="'title'" clearInput></ion-input>
-                  <div ngxErrors="title">
-                    <div ngxError="maxlength" [when]="['dirty']">
-                      <p class="invalid-input">30자 제한입니다.</p>
-                    </div>
-                    <div ngxError="required" [when]="['dirty']">
-                      <p class="invalid-input">필수 입력 항목입니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
                 <hr>
+                <div ngxErrors="title">
+                  <div ngxError="maxlength" [when]="['dirty']">
+                    <p class="invalid-input">30자 제한입니다.</p>
+                  </div>
+                  <div ngxError="required" [when]="['dirty']">
+                    <p class="invalid-input">필수 입력 항목입니다.</p>
+                  </div>
+                </div>
                 <ion-item lines="none">
                   <ion-label position="floating">캐치 프레이즈<span class="invalid-input">*</span></ion-label>
                   <ion-input type="text" [formControlName]="'subTitle'" clearInput></ion-input>
-                  <div ngxErrors="subTitle">
-                    <div ngxError="maxlength" [when]="['dirty']">
-                      <p class="invalid-input">40자 제한입니다.</p>
-                    </div>
-                    <div ngxError="required" [when]="['dirty']">
-                      <p class="invalid-input">필수 입력 항목입니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
                 <hr>
+                <div ngxErrors="subTitle">
+                  <div ngxError="maxlength" [when]="['dirty']">
+                    <p class="invalid-input">40자 제한입니다.</p>
+                  </div>
+                  <div ngxError="required" [when]="['dirty']">
+                    <p class="invalid-input">필수 입력 항목입니다.</p>
+                  </div>
+                </div>
                 <br><br>
                 <ion-button color="primary" (click)="next()">다음</ion-button>
               </div>
@@ -173,15 +173,16 @@
                   <ion-label position="floating">장소<span class="invalid-input">*</span></ion-label>
                   <ion-input type="text" id="addressInput" (keydown.enter)="$event.preventDefault()" type="text"
                     [formControlName]="'address'" clearInput></ion-input>
-                  <div ngxErrors="address">
-                    <div ngxError="maxlength" [when]="['dirty']">
-                      <p class="invalid-input">500자 제한입니다.</p>
-                    </div>
-                    <div ngxError="required" [when]="['dirty']">
-                      <p class="invalid-input">필수 입력 항목입니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
+                <hr>
+                <div ngxErrors="address">
+                  <div ngxError="maxlength" [when]="['dirty']">
+                    <p class="invalid-input">500자 제한입니다.</p>
+                  </div>
+                  <div ngxError="required" [when]="['dirty']">
+                    <p class="invalid-input">필수 입력 항목입니다.</p>
+                  </div>
+                </div>
                 <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
                   <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
                     (dragEnd)="markerDragEnd($event)"></agm-marker>
@@ -189,16 +190,16 @@
                 <ion-item lines="none">
                   <ion-label position="floating">상세 장소<span class="invalid-input">*</span></ion-label>
                   <ion-input type="text" [formControlName]="'detailAddress'" clearInput></ion-input>
-                  <div ngxErrors="detailAddress">
-                    <div ngxError="maxlength" [when]="['dirty']">
-                      <p class="invalid-input">500자 제한입니다.</p>
-                    </div>
-                    <div ngxError="required" [when]="['dirty']">
-                      <p class="invalid-input">필수 입력 항목입니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
                 <hr>
+                <div ngxErrors="detailAddress">
+                  <div ngxError="maxlength" [when]="['dirty']">
+                    <p class="invalid-input">500자 제한입니다.</p>
+                  </div>
+                  <div ngxError="required" [when]="['dirty']">
+                    <p class="invalid-input">필수 입력 항목입니다.</p>
+                  </div>
+                </div>
                 <br><br>
                 <ion-button color="light" (click)="prev()">이전</ion-button>
                 <ion-button color="primary" (click)="next()">다음</ion-button>
@@ -222,16 +223,16 @@
                 <ion-item lines="none">
                   <ion-label position="floating">인원 제한(명)<span class="invalid-input">*</span></ion-label>
                   <ion-input type="number" [formControlName]="'limitPerson'" clearInput></ion-input>
-                  <div ngxErrors="limitPerson">
-                    <div ngxError="max" [when]="['dirty']">
-                      <p class="invalid-input">1000명 제한입니다.</p>
-                    </div>
-                    <div ngxError="required" [when]="['dirty']">
-                      <p class="invalid-input">필수 입력 항목입니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
                 <hr>
+                <div ngxErrors="limitPerson">
+                  <div ngxError="max" [when]="['dirty']">
+                    <p class="invalid-input">1000명 제한입니다.</p>
+                  </div>
+                  <div ngxError="required" [when]="['dirty']">
+                    <p class="invalid-input">필수 입력 항목입니다.</p>
+                  </div>
+                </div>
                 <br><br>
                 <ion-button color="light" (click)="prev()">이전</ion-button>
                 <ion-button color="primary" (click)="next()">다음</ion-button>
@@ -241,29 +242,29 @@
                   <ion-label position="floating">가격<span class="invalid-input">*</span></ion-label>
                   <ion-input type="number" formControlName="price" (ngModelChange)="checkDiscountPrice()" clearInput>
                   </ion-input>
-                  <div ngxErrors="price">
-                    <div ngxError="max" [when]="['dirty']">
-                      <p class="invalid-input">10000000원 제한입니다.</p>
-                    </div>
-                    <div ngxError="required" [when]="['dirty']">
-                      <p class="invalid-input">필수 입력 항목입니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
                 <hr>
+                <div ngxErrors="price">
+                  <div ngxError="max" [when]="['dirty']">
+                    <p class="invalid-input">10000000원 제한입니다.</p>
+                  </div>
+                  <div ngxError="required" [when]="['dirty']">
+                    <p class="invalid-input">필수 입력 항목입니다.</p>
+                  </div>
+                </div>
                 <ion-item lines="none">
                   <ion-label position="floating">할인된 가격</ion-label>
                   <ion-input type="number" formControlName="discountPrice" clearInput></ion-input>
-                  <div ngxErrors="discountPrice">
-                    <div ngxError="max" [when]="['dirty']">
-                      <p class="invalid-input">10000000원 제한입니다.</p>
-                    </div>
-                    <div ngxError="isUpper" [when]="['dirty']">
-                      <p class="invalid-input">할인가격이 더 클 수 없습니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
                 <hr>
+                <div ngxErrors="discountPrice">
+                  <div ngxError="max" [when]="['dirty']">
+                    <p class="invalid-input">10000000원 제한입니다.</p>
+                  </div>
+                  <div ngxError="isUpper" [when]="['dirty']">
+                    <p class="invalid-input">할인가격이 더 클 수 없습니다.</p>
+                  </div>
+                </div>
                 <br>
                 <span class="desc">다음과 같이 표시됩니다.</span>
                 <div style="padding: 20px; border: 1px solid #c8c7c7;border-radius: 4px;max-width: 240px;">
@@ -347,36 +348,36 @@
                 <ion-item lines="none">
                   <ion-label position="floating">준비물<span class="invalid-input">*</span></ion-label>
                   <ion-textarea rows="7" maxlength="500" [formControlName]="'check_list'" clearInput></ion-textarea>
-                  <div ngxErrors="check_list">
-                    <div ngxError="maxlength" [when]="['dirty']">
-                      <p class="invalid-input">500자 제한입니다.</p>
-                    </div>
-                    <div ngxError="required" [when]="['dirty']">
-                      <p class="invalid-input">필수 입력 항목입니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
                 <hr>
+                <div ngxErrors="check_list">
+                  <div ngxError="maxlength" [when]="['dirty']">
+                    <p class="invalid-input">500자 제한입니다.</p>
+                  </div>
+                  <div ngxError="required" [when]="['dirty']">
+                    <p class="invalid-input">필수 입력 항목입니다.</p>
+                  </div>
+                </div>
                 <ion-item lines="none">
                   <ion-label position="floating">포함 사항</ion-label>
                   <ion-textarea rows="7" maxlength="500" [formControlName]="'include'" clearInput></ion-textarea>
-                  <div ngxErrors="include">
-                    <div ngxError="maxlength" [when]="['dirty']">
-                      <p class="invalid-input">500자 제한입니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
                 <hr>
+                <div ngxErrors="include">
+                  <div ngxError="maxlength" [when]="['dirty']">
+                    <p class="invalid-input">500자 제한입니다.</p>
+                  </div>
+                </div>
                 <ion-item lines="none">
                   <ion-label position="floating">불포함 사항</ion-label>
                   <ion-textarea rows="7" maxlength="500" [formControlName]="'exclude'" clearInput></ion-textarea>
-                  <div ngxErrors="exclude">
-                    <div ngxError="maxlength" [when]="['dirty']">
-                      <p class="invalid-input">500자 제한입니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
                 <hr>
+                <div ngxErrors="exclude">
+                  <div ngxError="maxlength" [when]="['dirty']">
+                    <p class="invalid-input">500자 제한입니다.</p>
+                  </div>
+                </div>
                 <br><br>
                 <ion-button color="light" (click)="prev()">이전</ion-button>
                 <ion-button color="primary" (click)="next()">다음</ion-button>
@@ -385,26 +386,26 @@
                 <ion-item lines="none">
                   <ion-label position="floating">환불 정책<span class="invalid-input">*</span></ion-label>
                   <ion-textarea rows="7" maxlength="500" [formControlName]="'refund_policy'" clearInput></ion-textarea>
-                  <div ngxErrors="refund_policy">
-                    <div ngxError="maxlength" [when]="['dirty']">
-                      <p class="invalid-input">500자 제한입니다.</p>
-                    </div>
-                    <div ngxError="required" [when]="['dirty']">
-                      <p class="invalid-input">필수 입력 항목입니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
                 <hr>
+                <div ngxErrors="refund_policy">
+                  <div ngxError="maxlength" [when]="['dirty']">
+                    <p class="invalid-input">500자 제한입니다.</p>
+                  </div>
+                  <div ngxError="required" [when]="['dirty']">
+                    <p class="invalid-input">필수 입력 항목입니다.</p>
+                  </div>
+                </div>
                 <ion-item lines="none">
                   <ion-label position="floating">유의 사항</ion-label>
                   <ion-textarea rows="7" maxlength="500" [formControlName]="'notice'" clearInput></ion-textarea>
-                  <div ngxErrors="notice">
-                    <div ngxError="maxlength" [when]="['dirty']">
-                      <p class="invalid-input">500자 제한입니다.</p>
-                    </div>
-                  </div>
                 </ion-item>
                 <hr>
+                <div ngxErrors="notice">
+                  <div ngxError="maxlength" [when]="['dirty']">
+                    <p class="invalid-input">500자 제한입니다.</p>
+                  </div>
+                </div>
                 <br><br>
                 <ion-button color="light" (click)="prev()">이전</ion-button>
                 <ion-button color="primary" (click)="next()" [disabled]="meetingForm.invalid">다음</ion-button>
