@@ -9,7 +9,7 @@ import { AuthGuard } from './service/auth-guard.service';
 
 const routes: Routes = [
   {
-    path: 'host', component: HostPage, children: [
+    path: 'host', component: HostPage, canActivateChild: [AuthGuard], children: [
       {
         path: '', redirectTo: 'meeting-management', pathMatch: 'full',
       },
@@ -22,11 +22,11 @@ const routes: Routes = [
             path: 'hosted-meetings', component: HostedMeetingsPage
           },
           {
-            path: 'meeting-add', canActivateChild: [AuthGuard], component: MeetingAddPage
+            path: 'meeting-add', component: MeetingAddPage
           },
           {
             //RoleGuard 추가 필요
-            path: 'meeting-edit/:id', canActivateChild: [AuthGuard], component: MeetingEditPage
+            path: 'meeting-edit/:id', component: MeetingEditPage
           },
         ]
       },
