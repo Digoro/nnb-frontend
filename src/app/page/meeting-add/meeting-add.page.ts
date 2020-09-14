@@ -37,7 +37,6 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   geoCoder: google.maps.Geocoder;
   latitude: number;
   longitude: number;
-  address: string;
   zoom: number;
 
   previewMeeting: Meeting;
@@ -133,6 +132,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
 
   createItem() {
     return this.fb.group({
+      oid: [''],
       optionTitle: ['', this.formService.getValidators(100)],
       optionPrice: ['', this.formService.getValidators(10, [Validators.max(10000000)])],
       optionTo: ['', Validators.required],
@@ -254,8 +254,8 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       console.log(status);
       if (status === 'OK') {
         if (results[0]) {
-          this.address = results[0].formatted_address;
-          this.meetingForm.controls['address'].setValue(this.address);
+          const address = results[0].formatted_address;
+          this.meetingForm.controls['address'].setValue(address);
         } else {
           alert('주소 검색 결과가 없습니다.');
         }
@@ -269,7 +269,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
     this.stepper.reset();
     this.meetingForm.reset();
     this.previewImage = undefined;
-    this.fileInput.nativeElement.value = '';
+    // this.fileInput.nativeElement.value = '';
   }
 
   add() {

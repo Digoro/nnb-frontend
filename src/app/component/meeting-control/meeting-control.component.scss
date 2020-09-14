@@ -1,0 +1,110 @@
+.step {
+    margin-bottom: 0px;
+    cursor: pointer;
+    color: rgb(168, 174, 179);
+}
+
+.step:hover,
+.step-col .active {
+    background-color: #f1f1f1;
+    color: black;
+    font-weight: bold;
+}
+
+.trigger {
+    all: unset;
+    cursor: pointer;
+    height: 45px;
+    width: 100%;
+    padding: 0px 5px 0px 5px;
+}
+
+.trigger:hover {
+    background-color: #f1f1f1;
+}
+
+hr {
+    margin: 0px
+}
+
+:host::ng-deep .ql-editor {
+    overflow-y: auto;
+    height: 500px;
+    resize: vertical;
+    padding: 0px 10px 0px 10px;
+}
+
+:host::ng-deep .ql-editor h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(27, 28, 29);
+    line-height: 28px;
+    margin: 36px 0px 0px;
+}
+
+:host::ng-deep .ql-editor h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(27, 28, 29);
+    line-height: 28px;
+    margin: 36px 0px 0px;
+}
+
+:host::ng-deep .ql-editor p {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+    padding: 4px 0px;
+}
+
+:host::ng-deep .ql-editor ul>li {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+}
+
+:host::ng-deep .ql-editor ol>li {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+}
+
+:host::ng-deep .ql-editor blockquote {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(27, 28, 29);
+    line-height: 24px;
+    letter-spacing: -0.3px;
+    margin: 0px;
+}
+
+agm-map {
+    height: 300px;
+}
+
+.invalid-input {
+    margin-left: 5px;
+}
+
+.price {
+    .origin {
+        color: #848c94;
+        font-size: 14px;
+        margin-right: 4px;
+        text-decoration: line-through;
+    }
+
+    .discount {
+        font-size: 16px;
+        font-weight: 600;
+    }
+}

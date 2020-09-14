@@ -15,8 +15,8 @@ import { CommentComponent } from './component/comment/comment.component';
 import { EmptyMeetingCardComponent } from './component/empty-meeting-card/empty-meeting-card.component';
 import { FooterComponent } from './component/footer/footer.component';
 import { HorizontalSliderComponent } from './component/horizontal-slider/horizontal-slider.component';
-import { MeetingAddSidebarComponent } from './component/meeting-add-sidebar/meeting-add-sidebar.component';
 import { MeetingCardComponent } from './component/meeting-card/meeting-card.component';
+import { MeetingControlComponent } from './component/meeting-control/meeting-control.component';
 import { MeetingPreviewComponent } from './component/meeting-preview/meeting-preview.component';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { HideToolbarDirective } from './directive/hide-toolbar.directive';
@@ -35,7 +35,7 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     InputDigitsOnlyDirective,
     FooterComponent,
     MeetingPreviewComponent,
-    MeetingAddSidebarComponent
+    MeetingControlComponent
   ],
   imports: [
     CommonModule,
@@ -97,7 +97,7 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     MeetingPreviewComponent,
     TableModule,
     CalendarModule,
-    MeetingAddSidebarComponent
+    MeetingControlComponent
   ],
 })
 export class SharedModule { }

@@ -339,7 +339,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
     this.stepper.reset();
     this.meetingForm.reset();
     this.previewImage = undefined;
-    this.fileInput.nativeElement.value = '';
+    // this.fileInput.nativeElement.value = '';
   }
 
   edit() {

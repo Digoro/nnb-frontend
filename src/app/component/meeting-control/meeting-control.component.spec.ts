@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { MeetingAddSidebarComponent } from './meeting-add-sidebar.component';
+import { MeetingControlComponent } from './meeting-control.component';
 
-describe('MeetingAddSidebarComponent', () => {
-  let component: MeetingAddSidebarComponent;
-  let fixture: ComponentFixture<MeetingAddSidebarComponent>;
+describe('MeetingControlComponent', () => {
+  let component: MeetingControlComponent;
+  let fixture: ComponentFixture<MeetingControlComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MeetingAddSidebarComponent],
+      declarations: [MeetingControlComponent],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MeetingAddSidebarComponent);
+    fixture = TestBed.createComponent(MeetingControlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
