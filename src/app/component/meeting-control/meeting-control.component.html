@@ -1,5 +1,15 @@
 <ion-row>
-  <ion-col size-lg="2" size-md="2" size-sm="12" size-xs="12" size="12" class="step-col">
+  <ion-col *ngIf="!isDesktop">
+    <ion-button color="medium" expand="block" size="small" (click)="showMenu()">
+      <ion-icon name="grid-outline"></ion-icon>&nbsp;&nbsp;
+      <span *ngIf="!isShowMenu">메뉴 보기</span>
+      <span *ngIf="isShowMenu">메뉴 숨기기</span>
+    </ion-button>
+  </ion-col>
+  <ion-col [ngStyle]="{
+    'visibility':isShowMenu?'visible':'hidden',
+     'position':isShowMenu?'block':'inline-block',
+     'height':isShowMenu?'auto':'0px'}" size-lg="2" size-md="2" size-sm="12" size-xs="12" size="12" class="step-col">
     <div class="step" data-target="#test-l-1">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.title.invalid || formGroup.controls.subTitle.invalid"
@@ -117,6 +127,9 @@
             <ion-input type="text" [formControlName]="'title'" clearInput></ion-input>
           </ion-item>
           <hr>
+          <p *ngIf="formGroup.controls.title.valid" class="maximun-info">
+            {{formGroup.controls.title.value.length}} / 최대 30자
+          </p>
           <div ngxErrors="title">
             <div ngxError="maxlength" [when]="['dirty']">
               <p class="invalid-input">30자 제한입니다.</p>
@@ -130,6 +143,9 @@
             <ion-input type="text" [formControlName]="'subTitle'" clearInput></ion-input>
           </ion-item>
           <hr>
+          <p *ngIf="formGroup.controls.subTitle.valid" class="maximun-info">
+            {{formGroup.controls.subTitle.value.length}} / 최대 40자
+          </p>
           <div ngxErrors="subTitle">
             <div ngxError="maxlength" [when]="['dirty']">
               <p class="invalid-input">40자 제한입니다.</p>
@@ -172,6 +188,9 @@
               [formControlName]="'address'" clearInput></ion-input>
           </ion-item>
           <hr>
+          <p *ngIf="formGroup.controls.address.valid" class="maximun-info">
+            {{formGroup.controls.address.value.length}} / 최대 500자
+          </p>
           <div ngxErrors="address">
             <div ngxError="maxlength" [when]="['dirty']">
               <p class="invalid-input">500자 제한입니다.</p>
@@ -189,6 +208,9 @@
             <ion-input type="text" [formControlName]="'detailAddress'" clearInput></ion-input>
           </ion-item>
           <hr>
+          <p *ngIf="formGroup.controls.detailAddress.valid" class="maximun-info">
+            {{formGroup.controls.detailAddress.value.length}} / 최대 500자
+          </p>
           <div ngxErrors="detailAddress">
             <div ngxError="maxlength" [when]="['dirty']">
               <p class="invalid-input">500자 제한입니다.</p>
@@ -347,6 +369,10 @@
             <ion-textarea rows="7" maxlength="500" [formControlName]="'check_list'" clearInput></ion-textarea>
           </ion-item>
           <hr>
+          <p *ngIf="formGroup.controls.check_list.valid && formGroup.controls.check_list.value.length>0"
+            class="maximun-info">
+            {{formGroup.controls.check_list.value.length}} / 최대 500자
+          </p>
           <div ngxErrors="check_list">
             <div ngxError="maxlength" [when]="['dirty']">
               <p class="invalid-input">500자 제한입니다.</p>
@@ -360,6 +386,9 @@
             <ion-textarea rows="7" maxlength="500" [formControlName]="'include'" clearInput></ion-textarea>
           </ion-item>
           <hr>
+          <p *ngIf="formGroup.controls.include.valid && formGroup.controls.include.value.length>0" class="maximun-info">
+            {{formGroup.controls.include.value.length}} / 최대 500자
+          </p>
           <div ngxErrors="include">
             <div ngxError="maxlength" [when]="['dirty']">
               <p class="invalid-input">500자 제한입니다.</p>
@@ -370,6 +399,9 @@
             <ion-textarea rows="7" maxlength="500" [formControlName]="'exclude'" clearInput></ion-textarea>
           </ion-item>
           <hr>
+          <p *ngIf="formGroup.controls.exclude.valid && formGroup.controls.exclude.value.length>0" class="maximun-info">
+            {{formGroup.controls.exclude.value.length}} / 최대 500자
+          </p>
           <div ngxErrors="exclude">
             <div ngxError="maxlength" [when]="['dirty']">
               <p class="invalid-input">500자 제한입니다.</p>
@@ -385,6 +417,10 @@
             <ion-textarea rows="7" maxlength="500" [formControlName]="'refund_policy'" clearInput></ion-textarea>
           </ion-item>
           <hr>
+          <p *ngIf="formGroup.controls.refund_policy.valid && formGroup.controls.refund_policy.value.length>0"
+            class="maximun-info">
+            {{formGroup.controls.refund_policy.value.length}} / 최대 500자
+          </p>
           <div ngxErrors="refund_policy">
             <div ngxError="maxlength" [when]="['dirty']">
               <p class="invalid-input">500자 제한입니다.</p>
@@ -398,6 +434,9 @@
             <ion-textarea rows="7" maxlength="500" [formControlName]="'notice'" clearInput></ion-textarea>
           </ion-item>
           <hr>
+          <p *ngIf="formGroup.controls.notice.valid && formGroup.controls.notice.value.length>0" class="maximun-info">
+            {{formGroup.controls.notice.value.length}} / 최대 500자
+          </p>
           <div ngxErrors="notice">
             <div ngxError="maxlength" [when]="['dirty']">
               <p class="invalid-input">500자 제한입니다.</p>

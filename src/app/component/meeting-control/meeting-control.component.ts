@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Meeting } from '../../model/meeting';
+import { CheckDesktopService } from './../../service/check-desktop.service';
 
 @Component({
   selector: 'meeting-control',
@@ -28,9 +29,20 @@ export class MeetingControlComponent implements OnInit {
   @Output() onGetEditorInstanceEvent = new EventEmitter();
   @Output() onAddEvent = new EventEmitter();
 
-  constructor() { }
+  isDesktop = false;
+  isShowMenu = false;
 
-  ngOnInit() { }
+  constructor(
+    private cds: CheckDesktopService
+  ) { }
+
+  ngOnInit() {
+    this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
+  }
+
+  showMenu() {
+    this.isShowMenu = !this.isShowMenu;
+  }
 
   next() {
     this.onNextEvent.emit();
