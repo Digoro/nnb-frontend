@@ -3,8 +3,11 @@
     <div class="bs-stepper" #stepperRef>
       <meeting-control [formGroup]="meetingForm" [quillStyle]="quillStyle" [categories]="categories"
         [previewImage]="previewImage" [latitude]="latitude" [longitude]="longitude" [zoom]="zoom"
-        [previewMeeting]="previewMeeting" (onMarkerDragEndEvent)="markerDragEnd($event)" (onAddEvent)="add()">
-      </meeting-control>
+        [previewMeeting]="previewMeeting" [submitMessage]="'모임 만들기 완료!'" (onNextEvent)="next()" (onPrevEvent)="prev()"
+        (onLastCheckEvent)="lastCheck()" (onFileChangeEvent)="onFileChange($event)"
+        (onMarkerDragEndEvent)="markerDragEnd($event)" (onCheckDiscountPriceEvent)="checkDiscountPrice()"
+        (onAddItemEvent)="addItem()" (onMinusItemEvent)="minusItem($event)"
+        (onGetEditorInstanceEvent)="getEditorInstance($event)" (onAddEvent)="add()"></meeting-control>
     </div>
   </ion-grid>
 </ion-content>

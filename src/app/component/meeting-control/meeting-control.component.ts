@@ -17,6 +17,7 @@ export class MeetingControlComponent implements OnInit {
   @Input() longitude: number;
   @Input() zoom: number;
   @Input() previewMeeting: Meeting;
+  @Input() submitMessage: string;
 
   @Output() onNextEvent = new EventEmitter();
   @Output() onPrevEvent = new EventEmitter();
