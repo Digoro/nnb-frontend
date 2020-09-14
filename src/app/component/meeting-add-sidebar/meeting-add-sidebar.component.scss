@@ -1,0 +1,28 @@
+.step {
+    margin-bottom: 0px;
+    cursor: pointer;
+    color: rgb(168, 174, 179);
+}
+
+.step:hover,
+.step-col .active {
+    background-color: #f1f1f1;
+    color: black;
+    font-weight: bold;
+}
+
+.trigger {
+    all: unset;
+    cursor: pointer;
+    height: 45px;
+    width: 100%;
+    padding: 0px 5px 0px 5px;
+}
+
+.trigger:hover {
+    background-color: #f1f1f1;
+}
+
+hr {
+    margin: 0px
+}
