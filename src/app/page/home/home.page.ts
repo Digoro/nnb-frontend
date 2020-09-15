@@ -90,13 +90,10 @@ export class HomePage implements OnInit, OnDestroy {
       this.meetings = meetings.filter(meeting => !meeting.subTitle.includes('숲찾사') && !meeting.subTitle.includes('제주'))
       this.fastMeetings = meetings.filter(meeting => {
         if (meeting.options) {
-          const option = meeting.options.sort((a, b) => {
-            if (moment(a.optionTo).isBefore(b.optionTo)) return -1
-            else if (moment(a.optionTo).isAfter(b.optionTo)) return 1;
-            else return 0;
-          })[0]
-          const start = moment(option.optionTo);
-          return start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
+          return meeting.options.find(option => {
+            const start = moment(option.optionTo);
+            return start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
+          });
         } else return false;
       })
       this.forestMeetings = meetings.filter(meeting => meeting.subTitle.includes('숲찾사'))

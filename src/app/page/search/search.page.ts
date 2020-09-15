@@ -50,13 +50,10 @@ export class SearchPage implements OnInit {
             const weekEnd = now.clone().add(7, 'days');
             this.meetings = meetings.filter(meeting => {
               if (meeting.options) {
-                const option = meeting.options.sort((a, b) => {
-                  if (moment(a.optionTo).isBefore(b.optionTo)) return -1
-                  else if (moment(a.optionTo).isAfter(b.optionTo)) return 1;
-                  else return 0;
-                })[0]
-                const start = moment(option.optionTo);
-                return start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
+                return meeting.options.find(option => {
+                  const start = moment(option.optionTo);
+                  return start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
+                });
               } else return false;
             })
           }); break;
