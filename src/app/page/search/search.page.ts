@@ -48,10 +48,11 @@ export class SearchPage implements OnInit {
             this.meetings = meetings.filter(meeting => !meeting.subTitle.includes('숲찾사') && !meeting.subTitle.includes('제주'))
             const now = moment();
             const weekEnd = now.clone().add(7, 'days');
-            this.meetings = meetings.filter(meeting => {
-              const start = moment(meeting._from);
-              return start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
-            })
+            //FIXED 모임 옵션에서 시작일시 가져와야함
+            // this.fastMeetings = meetings.filter(meeting => {
+            //   const start = moment(meeting._from);
+            //   return start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
+            // })
           }); break;
         }
         case 'all': {
