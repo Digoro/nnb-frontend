@@ -2,8 +2,8 @@
   <ion-col *ngIf="!isDesktop">
     <ion-button color="medium" expand="block" size="small" (click)="showMenu()">
       <ion-icon name="grid-outline"></ion-icon>&nbsp;&nbsp;
-      <span *ngIf="!isShowMenu">메뉴 보기</span>
-      <span *ngIf="isShowMenu">메뉴 숨기기</span>
+      <span *ngIf="!isShowMenu">목록 보기</span>
+      <span *ngIf="isShowMenu">목록 숨기기</span>
     </ion-button>
   </ion-col>
   <ion-col [ngStyle]="{
