@@ -88,11 +88,17 @@ export class HomePage implements OnInit, OnDestroy {
     this.fromWeek = weekEnd.format('MM.DD');
     this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
       this.meetings = meetings.filter(meeting => !meeting.subTitle.includes('숲찾사') && !meeting.subTitle.includes('제주'))
-      //FIXED 모임 옵션에서 시작일시 가져와야함
-      // this.fastMeetings = meetings.filter(meeting => {
-      //   const start = moment(meeting._from);
-      //   return start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
-      // })
+      this.fastMeetings = meetings.filter(meeting => {
+        if (meeting.options) {
+          const option = meeting.options.sort((a, b) => {
+            if (moment(a.optionTo).isBefore(b.optionTo)) return -1
+            else if (moment(a.optionTo).isAfter(b.optionTo)) return 1;
+            else return 0;
+          })[0]
+          const start = moment(option.optionTo);
+          return start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
+        } else return false;
+      })
       this.forestMeetings = meetings.filter(meeting => meeting.subTitle.includes('숲찾사'))
       this.jejuMeetings = meetings.filter(meeting => meeting.subTitle.includes('제주'))
       this.eventMeetings = meetings.filter(meeting => meeting.subTitle.includes('이벤트'))
@@ -102,10 +108,10 @@ export class HomePage implements OnInit, OnDestroy {
           title: '노는법 가을 여행 프로모션', subTitle: `이벤트`,
           onShowKey: 'event', onShowTitle: `노는법 가을 여행 프로모션`, meetings: this.eventMeetings
         },
-        // {
-        //   title: '일주일 이내 열리는 모임', subTitle: `가장 빨리 만나 볼 수 있는 기회!(${this.toWeek} ~ ${this.fromWeek})`,
-        //   onShowKey: 'week', onShowTitle: `일주일 이내 열리는 모임`, meetings: this.fastMeetings
-        // },
+        {
+          title: '일주일 이내 열리는 모임', subTitle: `가장 빨리 만나 볼 수 있는 기회!(${this.toWeek} ~ ${this.fromWeek})`,
+          onShowKey: 'week', onShowTitle: `일주일 이내 열리는 모임`, meetings: this.fastMeetings
+        },
         {
           title: '인기 있는 모임 👍👍', subTitle: "지금 노는법에서 가장 인기있는 모임!",
           onShowKey: 'all', onShowTitle: '인기 있는 모임 👍👍', meetings: this.meetings
