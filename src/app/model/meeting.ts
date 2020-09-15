@@ -11,8 +11,6 @@ export class Meeting {
         public lat: number,
         public lon: number,
         public host: number,
-        public _from: string,
-        public _to: string,
         public categories: Category[],
         public limitPerson: number,
         public file: string,

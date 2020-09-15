@@ -37,7 +37,6 @@ export class PaymentPage implements OnInit {
   selectedOptionsFromCalendar: MeetingOption[];
   selectedOptionsFromCheckbox: MeetingOption[] = [];
   calendarOptions: CalendarComponentOptions;
-  date;
 
   constructor(
     private route: ActivatedRoute,
@@ -78,7 +77,6 @@ export class PaymentPage implements OnInit {
             })
             this.meeting = meeting;
             this.selectedOptionsFromCalendar = meeting.options;
-            this.date = meeting.options[0].optionTo
             this.calendarOptions = {
               color: 'primary',
               to: null,

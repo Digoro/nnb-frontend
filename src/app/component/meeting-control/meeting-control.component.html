@@ -48,23 +48,13 @@
     </div>
     <div class="step" data-target="#test-l-5">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.from.invalid || formGroup.controls.to.invalid"
-          name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.from.valid && formGroup.controls.to.valid" name="checkmark-circle"
-          style="color:#28a745">
-        </ion-icon>
-        기간
-      </button>
-    </div>
-    <div class="step" data-target="#test-l-6">
-      <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.limitPerson.invalid" name="checkmark-circle-outline"></ion-icon>
         <ion-icon *ngIf="formGroup.controls.limitPerson.valid" name="checkmark-circle" style="color:#28a745">
         </ion-icon>
         인원
       </button>
     </div>
-    <div class="step" data-target="#test-l-7">
+    <div class="step" data-target="#test-l-6">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.price.invalid || formGroup.controls.discountPrice.invalid"
           name="checkmark-circle-outline"></ion-icon>
@@ -74,7 +64,7 @@
         가격
       </button>
     </div>
-    <div class="step" data-target="#test-l-8">
+    <div class="step" data-target="#test-l-7">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.options.invalid" name="checkmark-circle-outline"></ion-icon>
         <ion-icon *ngIf="formGroup.controls.options.valid" name="checkmark-circle" style="color:#28a745">
@@ -82,7 +72,7 @@
         구매 옵션
       </button>
     </div>
-    <div class="step" data-target="#test-l-9">
+    <div class="step" data-target="#test-l-8">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.desc.invalid" name="checkmark-circle-outline"></ion-icon>
         <ion-icon *ngIf="formGroup.controls.desc.valid" name="checkmark-circle" style="color:#28a745">
@@ -90,7 +80,7 @@
         소개
       </button>
     </div>
-    <div class="step" data-target="#test-l-10">
+    <div class="step" data-target="#test-l-9">
       <button class="trigger">
         <ion-icon
           *ngIf="formGroup.controls.check_list.invalid || formGroup.controls.include.invalid || formGroup.controls.exclude.invalid"
@@ -102,7 +92,7 @@
         준비물
       </button>
     </div>
-    <div class="step" data-target="#test-l-11">
+    <div class="step" data-target="#test-l-10">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.refund_policy.invalid || formGroup.controls.notice.invalid"
           name="checkmark-circle-outline"></ion-icon>
@@ -112,7 +102,7 @@
         환불 및 유의사항
       </button>
     </div>
-    <div class="step" data-target="#test-l-12">
+    <div class="step" data-target="#test-l-11">
       <button class="trigger" (click)="lastCheck()" [disabled]="formGroup.invalid"
         [ngStyle]="{'cursor':formGroup.invalid ? 'not-allowed':'pointer'}">최종 확인</button>
     </div>
@@ -231,22 +221,6 @@
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
           <ion-item lines="none">
-            <ion-label position="floating">기간 시작<span class="invalid-input">*</span></ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [formControlName]="'from'"></ion-datetime>
-          </ion-item>
-          <hr>
-          <ion-item lines="none">
-            <ion-label position="floating">기간 종료<span class="invalid-input">*</span></ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [formControlName]="'to'"></ion-datetime>
-          </ion-item>
-          <hr>
-        </div>
-        <div id="test-l-6" class="content">
-          <div class="next-prev">
-            <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next()">다음</ion-button>
-          </div>
-          <ion-item lines="none">
             <ion-label position="floating">인원 제한(명)<span class="invalid-input">*</span></ion-label>
             <ion-input type="number" [formControlName]="'limitPerson'" clearInput></ion-input>
           </ion-item>
@@ -260,7 +234,7 @@
             </div>
           </div>
         </div>
-        <div id="test-l-7" class="content">
+        <div id="test-l-6" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
@@ -310,7 +284,7 @@
             <span *ngIf="formGroup.controls.price.value === 0" class="price">무료</span>
           </div>
         </div>
-        <div id="test-l-8" class="content">
+        <div id="test-l-7" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
@@ -354,7 +328,7 @@
             <ion-button (click)="addItem()" color="medium">옵션 추가하기</ion-button>
           </div>
         </div>
-        <div id="test-l-9" class="content">
+        <div id="test-l-8" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
@@ -371,7 +345,7 @@
             </div>
           </div>
         </div>
-        <div id="test-l-10" class="content">
+        <div id="test-l-9" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
@@ -420,10 +394,10 @@
             </div>
           </div>
         </div>
-        <div id="test-l-11" class="content">
+        <div id="test-l-10" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next()">다음</ion-button>
+            <ion-button color="primary" (click)="next()" [disabled]="formGroup.invalid">다음</ion-button>
           </div>
           <ion-item lines="none">
             <ion-label position="floating">환불 정책<span class="invalid-input">*</span></ion-label>
@@ -456,7 +430,7 @@
             </div>
           </div>
         </div>
-        <div id="test-l-12" class="content">
+        <div id="test-l-11" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" [disabled]="formGroup.invalid" (click)="add()">{{submitMessage}}

@@ -98,8 +98,6 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       categories: new FormControl('', this.formService.getValidators(10)),
       address: new FormControl('', this.formService.getValidators(500)),
       detailAddress: new FormControl('', this.formService.getValidators(500)),
-      from: new FormControl('', this.formService.getValidators(30)),
-      to: new FormControl('', this.formService.getValidators(30)),
       limitPerson: new FormControl('', this.formService.getValidators(10, [Validators.max(1000)])),
       price: new FormControl('', this.formService.getValidators(10, [Validators.max(10000000)])),
       discountPrice: new FormControl(0, [Validators.max(10000000), this.validateDiscountPrice('price')]),
@@ -156,18 +154,14 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
 
   next() {
     const index = this.stepper['_currentIndex'];
-    if (index === 10) {
-      this.lastCheck();
+    if (index === 9) {
+      this.makePreviewMeeting();
     }
     this.stepper.next();
   }
 
   prev() {
     this.stepper.previous();
-  }
-
-  lastCheck() {
-    this.makePreviewMeeting();
   }
 
   makePreviewMeeting() {
@@ -180,7 +174,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
           if (status == "OK") {
             if (result[0]) {
               const location = result[0].geometry.location;
-              this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, location.lat(), location.lng(), 0, from, to,
+              this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, location.lat(), location.lng(), 0,
                 categories, limitPerson, '', price, discountPrice, 0, refund_policy, notice, check_list, include, exclude, 0, MeetingStatus.CREATED, options)
             }
             else {
@@ -277,7 +271,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   }
 
   add() {
-    const { title, subTitle, fileSource, categories, address, detailAddress, from, to,
+    const { title, subTitle, fileSource, categories, address, detailAddress,
       limitPerson, price, discountPrice, desc, refund_policy, notice, check_list, include, exclude, options } = this.meetingForm.value;
     this.mapsAPILoader.load().then(() => {
       this.geoCoder = new google.maps.Geocoder;
@@ -298,8 +292,6 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
             formData.append('detailed_address', detailAddress);
             formData.append('lat', lat);
             formData.append('lon', lon);
-            formData.append('_from', from);
-            formData.append('_to', to);
             formData.append('limitPerson', `${limitPerson}`);
             formData.append('price', `${price}`);
             formData.append('discountPrice', `${discountPrice}`);
