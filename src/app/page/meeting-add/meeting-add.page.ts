@@ -23,7 +23,7 @@ import { UtilService } from './../../service/util.service';
 export class MeetingAddPage implements OnInit, AfterViewInit {
   user: User;
   quillStyle;
-  @ViewChild('quill') quill: QuillEditorComponent
+  quill: QuillEditorComponent;
   meetingForm: FormGroup;
   @ViewChild('fileInput') fileInput: ElementRef<any>;
   categories = Object.values(Category).filter(v => typeof Category[v] === 'number');
@@ -63,6 +63,10 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
         trigger: '.trigger',
       }
     });
+  }
+
+  quillLoad(event) {
+    this.quill = event;
   }
 
   getEditorInstance(editorInstance: any) {

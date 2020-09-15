@@ -3,11 +3,12 @@
     <div class="bs-stepper" #stepperRef>
       <meeting-control [formGroup]="meetingForm" [quillStyle]="quillStyle" [categories]="categories"
         [previewImage]="previewImage" [latitude]="latitude" [longitude]="longitude" [zoom]="zoom"
-        [previewMeeting]="previewMeeting" [submitMessage]="'모임 수정 완료!'" (onNextEvent)="next()" (onPrevEvent)="prev()"
-        (onLastCheckEvent)="lastCheck()" (onFileChangeEvent)="onFileChange($event)"
-        (onMarkerDragEndEvent)="markerDragEnd($event)" (onCheckDiscountPriceEvent)="checkDiscountPrice()"
-        (onAddItemEvent)="addItem()" (onMinusItemEvent)="minusItem($event)"
-        (onGetEditorInstanceEvent)="getEditorInstance($event)" (onAddEvent)="edit()"></meeting-control>
+        [previewMeeting]="previewMeeting" [submitMessage]="'모임 수정 완료!'" (onQuillLoadEvent)="quillLoad($event)"
+        (onNextEvent)="next()" (onPrevEvent)="prev()" (onLastCheckEvent)="lastCheck()"
+        (onFileChangeEvent)="onFileChange($event)" (onMarkerDragEndEvent)="markerDragEnd($event)"
+        (onCheckDiscountPriceEvent)="checkDiscountPrice()" (onAddItemEvent)="addItem()"
+        (onMinusItemEvent)="minusItem($event)" (onGetEditorInstanceEvent)="getEditorInstance($event)"
+        (onAddEvent)="edit()"></meeting-control>
     </div>
   </ion-grid>
 </ion-content>

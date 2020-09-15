@@ -24,7 +24,7 @@ import { UtilService } from './../../service/util.service';
 export class MeetingEditPage implements OnInit, AfterViewInit {
   user: User;
   quillStyle;
-  @ViewChild('quill') quill: QuillEditorComponent
+  quill: QuillEditorComponent;
   meeting: Meeting;
   oldOptions: MeetingOption[];
   previewMeeting: Meeting;
@@ -67,6 +67,10 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
         trigger: '.trigger',
       }
     });
+  }
+
+  quillLoad(event) {
+    this.quill = event;
   }
 
   getEditorInstance(editorInstance: any) {

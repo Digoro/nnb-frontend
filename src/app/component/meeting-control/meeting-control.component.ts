@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { QuillEditorComponent } from 'ngx-quill';
 import { Meeting } from '../../model/meeting';
 import { CheckDesktopService } from './../../service/check-desktop.service';
 
@@ -8,7 +9,7 @@ import { CheckDesktopService } from './../../service/check-desktop.service';
   templateUrl: './meeting-control.component.html',
   styleUrls: ['./meeting-control.component.scss'],
 })
-export class MeetingControlComponent implements OnInit {
+export class MeetingControlComponent implements OnInit, AfterViewInit {
   @Input() formGroup: FormGroup;
   @Input() quillStyle;
   @Input() categories;
@@ -30,8 +31,11 @@ export class MeetingControlComponent implements OnInit {
   @Output() onGetEditorInstanceEvent = new EventEmitter();
   @Output() onAddEvent = new EventEmitter();
 
+  @Output() onQuillLoadEvent = new EventEmitter();
+
   isDesktop = false;
   isShowMenu = false;
+  @ViewChild('quill') quill: QuillEditorComponent
 
   constructor(
     private cds: CheckDesktopService
@@ -39,6 +43,10 @@ export class MeetingControlComponent implements OnInit {
 
   ngOnInit() {
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
+  }
+
+  ngAfterViewInit(): void {
+    this.onQuillLoadEvent.emit(this.quill);
   }
 
   showMenu() {
