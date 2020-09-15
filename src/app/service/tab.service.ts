@@ -9,22 +9,22 @@ import { filter } from 'rxjs/operators';
 export class TabService {
   hideTabBarPages: string[] = [
     'admin',
+    'event',
     'meetings',
     'payment-management',
-    'meeting-add',
-    'hosted-meetings',
     'magazine',
     'magazine-add',
-    'event',
+    'hosted-meetings',
+    'meeting-add',
+    'reservation',
     'coupon-list',
-    'host'
   ];
   routeParamPages: string[] = [
     'meeting-detail',
-    'magazine-detail',
-    'meeting-edit',
-    'magazine-edit',
     'payment',
+    'meeting-edit',
+    'magazine-detail',
+    'magazine-edit',
     'profile'
   ];
 
