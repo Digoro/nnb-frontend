@@ -136,11 +136,11 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   checkMinParticipation() {
     const min = this.meetingForm.controls.minParticipation;
     const max = this.meetingForm.controls.maxParticipation;
-    if (min.value < max.value) {
-      max.setErrors({ 'isUpper': true })
+    if (min.value > max.value) {
+      min.setErrors({ 'isUpper': true })
     } else {
-      max.setErrors({ 'isUpper': null });
-      max.updateValueAndValidity();
+      min.setErrors({ 'isUpper': null });
+      min.updateValueAndValidity();
     }
   }
 
