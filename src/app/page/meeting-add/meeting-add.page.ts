@@ -98,7 +98,8 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       categories: new FormControl('', this.formService.getValidators(10)),
       address: new FormControl('', this.formService.getValidators(500)),
       detailAddress: new FormControl('', this.formService.getValidators(500)),
-      limitPerson: new FormControl('', this.formService.getValidators(10, [Validators.max(1000)])),
+      maxParticipation: new FormControl('', this.formService.getValidators(10, [Validators.max(1000)])),
+      minParticipation: new FormControl('', this.formService.getValidators(10, [Validators.max(1000)])),
       price: new FormControl('', this.formService.getValidators(10, [Validators.max(10000000)])),
       discountPrice: new FormControl(0, [Validators.max(10000000), this.validateDiscountPrice('price')]),
       desc: new FormControl('', Validators.required),
@@ -129,6 +130,17 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
     } else {
       discountPrice.setErrors({ 'isUpper': null });
       discountPrice.updateValueAndValidity();
+    }
+  }
+
+  checkMinParticipation() {
+    const min = this.meetingForm.controls.minParticipation;
+    const max = this.meetingForm.controls.maxParticipation;
+    if (min.value < max.value) {
+      max.setErrors({ 'isUpper': true })
+    } else {
+      max.setErrors({ 'isUpper': null });
+      max.updateValueAndValidity();
     }
   }
 
@@ -166,7 +178,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
 
   makePreviewMeeting() {
     if (this.meetingForm.valid) {
-      const { title, subTitle, fileSource, categories, address, detailAddress, from, to, limitPerson,
+      const { title, subTitle, fileSource, categories, address, detailAddress, maxParticipation, minParticipation,
         price, discountPrice, desc, refund_policy, notice, check_list, include, exclude, options } = this.meetingForm.value;
       this.mapsAPILoader.load().then(() => {
         this.geoCoder = new google.maps.Geocoder;
@@ -175,7 +187,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
             if (result[0]) {
               const location = result[0].geometry.location;
               this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, location.lat(), location.lng(), 0,
-                categories, limitPerson, '', price, discountPrice, 0, refund_policy, notice, check_list, include, exclude, 0, MeetingStatus.CREATED, options)
+                categories, maxParticipation, minParticipation, '', price, discountPrice, 0, refund_policy, notice, check_list, include, exclude, 0, MeetingStatus.CREATED, options)
             }
             else {
               alert('주소 검색 결과가 없습니다.')
@@ -271,8 +283,8 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   }
 
   add() {
-    const { title, subTitle, fileSource, categories, address, detailAddress,
-      limitPerson, price, discountPrice, desc, refund_policy, notice, check_list, include, exclude, options } = this.meetingForm.value;
+    const { title, subTitle, fileSource, categories, address, detailAddress, maxParticipation, minParticipation,
+      price, discountPrice, desc, refund_policy, notice, check_list, include, exclude, options } = this.meetingForm.value;
     this.mapsAPILoader.load().then(() => {
       this.geoCoder = new google.maps.Geocoder;
       this.geoCoder.geocode({ address }, (result, status) => {
@@ -293,7 +305,8 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
             formData.append('detailed_address', detailAddress);
             formData.append('lat', lat);
             formData.append('lon', lon);
-            formData.append('limitPerson', `${limitPerson}`);
+            formData.append('maxParticipation', `${maxParticipation}`);
+            formData.append('minParticipation', `${minParticipation}`);
             formData.append('price', `${price}`);
             formData.append('discountPrice', `${discount}`);
             formData.append('desc', desc);

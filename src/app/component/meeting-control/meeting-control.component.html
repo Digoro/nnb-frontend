@@ -15,7 +15,7 @@
         <ion-icon *ngIf="formGroup.controls.title.invalid || formGroup.controls.subTitle.invalid"
           name="checkmark-circle-outline"></ion-icon>
         <ion-icon *ngIf="formGroup.controls.title.valid && formGroup.controls.subTitle.valid" name="checkmark-circle"
-          style="color:#28a745">
+          style="color:#007bff">
         </ion-icon>
         모임 이름
       </button>
@@ -23,7 +23,7 @@
     <div class="step" data-target="#test-l-2">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.fileSource.invalid" name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.fileSource.valid" name="checkmark-circle" style="color:#28a745">
+        <ion-icon *ngIf="formGroup.controls.fileSource.valid" name="checkmark-circle" style="color:#007bff">
         </ion-icon>
         대표 이미지
       </button>
@@ -31,7 +31,7 @@
     <div class="step" data-target="#test-l-3">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.categories.invalid" name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.categories.valid" name="checkmark-circle" style="color:#28a745">
+        <ion-icon *ngIf="formGroup.controls.categories.valid" name="checkmark-circle" style="color:#007bff">
         </ion-icon>
         카테고리
       </button>
@@ -41,15 +41,17 @@
         <ion-icon *ngIf="formGroup.controls.address.invalid || formGroup.controls.detailAddress.invalid"
           name="checkmark-circle-outline"></ion-icon>
         <ion-icon *ngIf="formGroup.controls.address.valid && formGroup.controls.detailAddress.valid"
-          name="checkmark-circle" style="color:#28a745">
+          name="checkmark-circle" style="color:#007bff">
         </ion-icon>
         장소
       </button>
     </div>
     <div class="step" data-target="#test-l-5">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.limitPerson.invalid" name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.limitPerson.valid" name="checkmark-circle" style="color:#28a745">
+        <ion-icon *ngIf="formGroup.controls.maxParticipation.invalid ||formGroup.controls.minParticipation.invalid "
+          name="checkmark-circle-outline"></ion-icon>
+        <ion-icon *ngIf="formGroup.controls.maxParticipation.valid && formGroup.controls.minParticipation.valid "
+          name="checkmark-circle" style="color:#007bff">
         </ion-icon>
         인원
       </button>
@@ -59,7 +61,7 @@
         <ion-icon *ngIf="formGroup.controls.price.invalid || formGroup.controls.discountPrice.invalid"
           name="checkmark-circle-outline"></ion-icon>
         <ion-icon *ngIf="formGroup.controls.price.valid &&formGroup.controls.discountPrice.valid"
-          name="checkmark-circle" style="color:#28a745">
+          name="checkmark-circle" style="color:#007bff">
         </ion-icon>
         가격
       </button>
@@ -67,7 +69,7 @@
     <div class="step" data-target="#test-l-7">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.options.invalid" name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.options.valid" name="checkmark-circle" style="color:#28a745">
+        <ion-icon *ngIf="formGroup.controls.options.valid" name="checkmark-circle" style="color:#007bff">
         </ion-icon>
         구매 옵션
       </button>
@@ -75,7 +77,7 @@
     <div class="step" data-target="#test-l-8">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.desc.invalid" name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.desc.valid" name="checkmark-circle" style="color:#28a745">
+        <ion-icon *ngIf="formGroup.controls.desc.valid" name="checkmark-circle" style="color:#007bff">
         </ion-icon>
         소개
       </button>
@@ -87,7 +89,7 @@
           name="checkmark-circle-outline"></ion-icon>
         <ion-icon
           *ngIf="formGroup.controls.check_list.valid && formGroup.controls.include.valid && formGroup.controls.exclude.valid"
-          name="checkmark-circle" style="color:#28a745">
+          name="checkmark-circle" style="color:#007bff">
         </ion-icon>
         준비물
       </button>
@@ -97,7 +99,7 @@
         <ion-icon *ngIf="formGroup.controls.refund_policy.invalid || formGroup.controls.notice.invalid"
           name="checkmark-circle-outline"></ion-icon>
         <ion-icon *ngIf="formGroup.controls.refund_policy.valid && formGroup.controls.notice.valid"
-          name="checkmark-circle" style="color:#28a745">
+          name="checkmark-circle" style="color:#007bff">
         </ion-icon>
         환불 및 유의사항
       </button>
@@ -221,11 +223,29 @@
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
           <ion-item lines="none">
-            <ion-label position="floating">인원 제한(명)<span class="invalid-input">*</span></ion-label>
-            <ion-input type="number" [formControlName]="'limitPerson'" clearInput></ion-input>
+            <ion-label position="floating">최소 인원(명)<span class="invalid-input">*</span></ion-label>
+            <ion-input type="number" [formControlName]="'minParticipation'" (ngModelChange)="checkMinParticipation()"
+              clearInput></ion-input>
           </ion-item>
           <hr>
-          <div ngxErrors="limitPerson">
+          <div ngxErrors="minParticipation">
+            <div ngxError="max" [when]="['dirty']">
+              <p class="invalid-input">1000명 제한입니다.</p>
+            </div>
+            <div ngxError="required" [when]="['dirty']">
+              <p class="invalid-input">필수 입력 항목입니다.</p>
+            </div>
+            <div ngxError="isUpper" [when]="['dirty']">
+              <p class="invalid-input">최대 인원보다 더 높을 수 없습니다.</p>
+            </div>
+          </div>
+          <ion-item lines="none">
+            <ion-label position="floating">최대 인원(명)<span class="invalid-input">*</span></ion-label>
+            <ion-input type="number" [formControlName]="'maxParticipation'" (ngModelChange)="checkMinParticipation()"
+              clearInput></ion-input>
+          </ion-item>
+          <hr>
+          <div ngxErrors="maxParticipation">
             <div ngxError="max" [when]="['dirty']">
               <p class="invalid-input">1000명 제한입니다.</p>
             </div>
