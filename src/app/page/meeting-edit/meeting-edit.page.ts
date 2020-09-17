@@ -350,6 +350,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
             const location = result[0].geometry.location;
             const lat = `${location.lat()}`;
             const lon = `${location.lng()}`;
+            const discount = discountPrice ? discountPrice : 0;
 
             const formData = new FormData();
             formData.append('title', title);
@@ -362,7 +363,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
             formData.append('lon', lon);
             formData.append('limitPerson', `${limitPerson}`);
             formData.append('price', `${price}`);
-            formData.append('discountPrice', `${discountPrice}`);
+            formData.append('discountPrice', `${discount}`);
             formData.append('desc', desc);
             formData.append('host', `${uid}`);
             formData.append('refund_policy', refund_policy);
