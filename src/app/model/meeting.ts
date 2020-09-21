@@ -48,6 +48,11 @@ export class MeetingOption {
         public optionPrice: number,
         public optionTo: string,
         public optionFrom: string,
+        public optionMinParticipation: number,
+        public optionMaxParticipation: number,
+        public isOld: boolean
+    ) { }
+}
         public isOld: boolean
     ) { }
 }

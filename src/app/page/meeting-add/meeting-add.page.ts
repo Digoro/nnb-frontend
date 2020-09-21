@@ -149,6 +149,8 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       oid: [''],
       optionTitle: ['', this.formService.getValidators(100)],
       optionPrice: ['', this.formService.getValidators(10, [Validators.max(10000000)])],
+      optionMinParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
+      optionMaxParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
       optionTo: ['', Validators.required],
       optionFrom: ['', Validators.required],
     });
@@ -157,6 +159,8 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   addItem(): void {
     this.options = this.meetingForm.get('options') as FormArray;
     this.options.push(this.createItem());
+    console.log(this.meetingForm.get('options')['controls']);
+
   }
 
   minusItem(index: number): void {
@@ -320,7 +324,8 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
 
             this.meetingService.addMeeting(formData).subscribe(meeting => {
               const optionList = options.map(option => {
-                return new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom, false)
+                return new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom,
+                  option.optionMinParticipation, option.optionMaxParticipation, false)
               })
               this.meetingService.addMeetingOptions(meeting.mid, optionList).subscribe(resp => {
                 alert('모임을 생성하였습니다.');

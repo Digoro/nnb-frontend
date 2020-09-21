@@ -165,6 +165,8 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
       oid: [''],
       optionTitle: ['', this.formService.getValidators(100)],
       optionPrice: ['', this.formService.getValidators(10, [Validators.max(10000000)])],
+      optionMinParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
+      optionMaxParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
       optionTo: ['', Validators.required],
       optionFrom: ['', Validators.required],
     });
@@ -226,6 +228,8 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
         oid: [option.oid],
         optionTitle: [option.optionTitle, this.formService.getValidators(100)],
         optionPrice: [option.optionPrice, this.formService.getValidators(10, [Validators.max(10000000)])],
+        optionMinParticipation: [option.optionMinParticipation, this.formService.getValidators(10, [Validators.max(1000)])],
+        optionMaxParticipation: [option.optionMaxParticipation, this.formService.getValidators(10, [Validators.max(1000)])],
         optionTo: [option.optionTo, Validators.required],
         optionFrom: [option.optionFrom, Validators.required],
       });
@@ -397,29 +401,35 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
               const writtenOptions = (options as MeetingOption[]);
               const newWrittenOptions = writtenOptions
                 .filter(option => !option.oid)
-                .map(option => new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom, false))
+                .map(option => new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom, option.optionMinParticipation,
+                  option.optionMaxParticipation, false))
 
               const deletedOptions = this.oldOptions
                 .filter(old => !writtenOptions.find(option => old.oid === option.oid))
-                .map(option => new MeetingOption(option.oid, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom, true))
+                .map(option => new MeetingOption(option.oid, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom,
+                  option.optionMinParticipation, option.optionMaxParticipation, true))
 
               const changedOldOptions: MeetingOption[] = [];
               const changedNewOptions = writtenOptions
                 .filter(option => !!option.oid)
                 .filter(option => {
-                  const newO = new MeetingOption(option.oid, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom, false);
+                  const newO = new MeetingOption(option.oid, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom,
+                    option.optionMinParticipation, option.optionMaxParticipation, false);
                   const oldO = this.oldOptions.find(oldO => oldO.oid === newO.oid);
                   const isEditable =
                     newO.optionTo !== oldO.optionTo ||
                     newO.optionFrom !== oldO.optionFrom ||
                     newO.optionPrice !== oldO.optionPrice ||
+                    newO.optionMinParticipation !== oldO.optionMinParticipation ||
+                    newO.optionMaxParticipation !== oldO.optionMaxParticipation ||
                     newO.optionTitle !== oldO.optionTitle
                   if (isEditable) {
                     changedOldOptions.push(oldO)
                   }
                   return isEditable;
                 })
-                .map(option => new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom, false))
+                .map(option => new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom,
+                  option.optionMinParticipation, option.optionMaxParticipation, false))
 
               const addOptions = newWrittenOptions.concat(changedNewOptions);
               const editOptions = changedOldOptions.map(option => {

@@ -14,6 +14,7 @@ import { environment } from './../environments/environment';
 import { CommentComponent } from './component/comment/comment.component';
 import { EmptyMeetingCardComponent } from './component/empty-meeting-card/empty-meeting-card.component';
 import { FooterComponent } from './component/footer/footer.component';
+import { FormErrorsComponent } from './component/form-errors/form-errors.component';
 import { HorizontalSliderComponent } from './component/horizontal-slider/horizontal-slider.component';
 import { MeetingCardComponent } from './component/meeting-card/meeting-card.component';
 import { MeetingControlComponent } from './component/meeting-control/meeting-control.component';
@@ -35,7 +36,8 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     InputDigitsOnlyDirective,
     FooterComponent,
     MeetingPreviewComponent,
-    MeetingControlComponent
+    MeetingControlComponent,
+    FormErrorsComponent
   ],
   imports: [
     CommonModule,
@@ -97,7 +99,8 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     MeetingPreviewComponent,
     TableModule,
     CalendarModule,
-    MeetingControlComponent
+    MeetingControlComponent,
+    FormErrorsComponent
   ],
 })
 export class SharedModule { }
