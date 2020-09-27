@@ -12,8 +12,6 @@ export class Meeting {
         public lon: number,
         public host: number,
         public categories: Category[],
-        public maxParticipation: number,
-        public minParticipation: number,
         public file: string,
         public price: number,
         public discountPrice: number,

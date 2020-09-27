@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CalendarModule } from 'ion2-calendar';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClipboardModule } from 'ngx-clipboard';
+import { NgxCronUiModule } from 'ngx-cron-ui';
 import { TableModule } from 'ngx-easy-table';
 import { QuillModule } from 'ngx-quill';
 import { NgxUploaderModule } from 'ngx-uploader';
@@ -74,7 +75,8 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     ClipboardModule,
     ModalModule.forRoot(),
     TableModule,
-    CalendarModule
+    CalendarModule,
+    NgxCronUiModule
   ],
   exports: [
     HorizontalSliderComponent,
@@ -100,7 +102,8 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     TableModule,
     CalendarModule,
     MeetingControlComponent,
-    FormErrorsComponent
+    FormErrorsComponent,
+    NgxCronUiModule
   ],
 })
 export class SharedModule { }

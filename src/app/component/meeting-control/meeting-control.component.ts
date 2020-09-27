@@ -26,7 +26,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   @Output() onFileChangeEvent = new EventEmitter();
   @Output() onMarkerDragEndEvent = new EventEmitter();
   @Output() onCheckDiscountPriceEvent = new EventEmitter();
-  @Output() onCheckMinParticipationEvent = new EventEmitter();
   @Output() onAddItemEvent = new EventEmitter();
   @Output() onMinusItemEvent = new EventEmitter();
   @Output() onGetEditorInstanceEvent = new EventEmitter();
@@ -38,6 +37,12 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   isShowMenu = false;
   @ViewChild('quill') quill: QuillEditorComponent
 
+  config = { option: { minute: false } }
+
+  onChange(event) {
+    console.log(event);
+
+  }
   constructor(
     private cds: CheckDesktopService
   ) { }
@@ -76,10 +81,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
   checkDiscountPrice() {
     this.onCheckDiscountPriceEvent.emit();
-  }
-
-  checkMinParticipation() {
-    this.onCheckMinParticipationEvent.emit();
   }
 
   addItem() {

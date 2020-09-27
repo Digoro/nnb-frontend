@@ -48,16 +48,6 @@
     </div>
     <div class="step" data-target="#test-l-5">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.maxParticipation.invalid ||formGroup.controls.minParticipation.invalid "
-          name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.maxParticipation.valid && formGroup.controls.minParticipation.valid "
-          name="checkmark-circle" style="color:#007bff">
-        </ion-icon>
-        인원
-      </button>
-    </div>
-    <div class="step" data-target="#test-l-6">
-      <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.price.invalid || formGroup.controls.discountPrice.invalid"
           name="checkmark-circle-outline"></ion-icon>
         <ion-icon *ngIf="formGroup.controls.price.valid &&formGroup.controls.discountPrice.valid"
@@ -66,7 +56,7 @@
         가격
       </button>
     </div>
-    <div class="step" data-target="#test-l-7">
+    <div class="step" data-target="#test-l-6">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.options.invalid" name="checkmark-circle-outline"></ion-icon>
         <ion-icon *ngIf="formGroup.controls.options.valid" name="checkmark-circle" style="color:#007bff">
@@ -74,7 +64,7 @@
         구매 옵션
       </button>
     </div>
-    <div class="step" data-target="#test-l-8">
+    <div class="step" data-target="#test-l-7">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.desc.invalid" name="checkmark-circle-outline"></ion-icon>
         <ion-icon *ngIf="formGroup.controls.desc.valid" name="checkmark-circle" style="color:#007bff">
@@ -82,7 +72,7 @@
         소개
       </button>
     </div>
-    <div class="step" data-target="#test-l-9">
+    <div class="step" data-target="#test-l-8">
       <button class="trigger">
         <ion-icon
           *ngIf="formGroup.controls.check_list.invalid || formGroup.controls.include.invalid || formGroup.controls.exclude.invalid"
@@ -94,7 +84,7 @@
         준비물
       </button>
     </div>
-    <div class="step" data-target="#test-l-10">
+    <div class="step" data-target="#test-l-9">
       <button class="trigger">
         <ion-icon *ngIf="formGroup.controls.refund_policy.invalid || formGroup.controls.notice.invalid"
           name="checkmark-circle-outline"></ion-icon>
@@ -104,7 +94,7 @@
         환불 및 유의사항
       </button>
     </div>
-    <div class="step" data-target="#test-l-11">
+    <div class="step" data-target="#test-l-10">
       <button class="trigger" (click)="lastCheck()" [disabled]="formGroup.invalid"
         [ngStyle]="{'cursor':formGroup.invalid ? 'not-allowed':'pointer'}">최종 확인</button>
     </div>
@@ -222,43 +212,7 @@
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
-          <ion-item lines="none">
-            <ion-label position="floating">최소 인원(명)<span class="invalid-input">*</span></ion-label>
-            <ion-input type="number" [formControlName]="'minParticipation'" (ngModelChange)="checkMinParticipation()"
-              clearInput></ion-input>
-          </ion-item>
-          <hr>
-          <div ngxErrors="minParticipation">
-            <div ngxError="max" [when]="['dirty']">
-              <p class="invalid-input">1000명 제한입니다.</p>
-            </div>
-            <div ngxError="required" [when]="['dirty']">
-              <p class="invalid-input">필수 입력 항목입니다.</p>
-            </div>
-            <div ngxError="isUpper" [when]="['dirty']">
-              <p class="invalid-input">최대 인원보다 더 높을 수 없습니다.</p>
-            </div>
-          </div>
-          <ion-item lines="none">
-            <ion-label position="floating">최대 인원(명)<span class="invalid-input">*</span></ion-label>
-            <ion-input type="number" [formControlName]="'maxParticipation'" (ngModelChange)="checkMinParticipation()"
-              clearInput></ion-input>
-          </ion-item>
-          <hr>
-          <div ngxErrors="maxParticipation">
-            <div ngxError="max" [when]="['dirty']">
-              <p class="invalid-input">1000명 제한입니다.</p>
-            </div>
-            <div ngxError="required" [when]="['dirty']">
-              <p class="invalid-input">필수 입력 항목입니다.</p>
-            </div>
-          </div>
-        </div>
-        <div id="test-l-6" class="content">
-          <div class="next-prev">
-            <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next()">다음</ion-button>
-          </div>
+          <span class="desc">노출되는 상품 가격입니다.</span>
           <ion-item lines="none">
             <ion-label position="floating">가격<span class="invalid-input">*</span></ion-label>
             <ion-input type="number" formControlName="price" (ngModelChange)="checkDiscountPrice()" clearInput>
@@ -304,7 +258,7 @@
             <span *ngIf="formGroup.controls.price.value === 0" class="price">무료</span>
           </div>
         </div>
-        <div id="test-l-7" class="content">
+        <div id="test-l-6" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
@@ -347,13 +301,22 @@
                     <form-errors [formGroup]="group" [controlName]="'optionMaxParticipation'"
                       [errors]="[{key:'max',meesage:'1000명 제한입니다.'}]"> </form-errors>
                     <ion-item lines="none">
+                      <ion-label position="floating">스케줄<span class="invalid-input">*</span></ion-label>
+                      <br>
+                      <!-- <cron-jobs [formControlName]="'schedule'" [config]="cronConfig"></cron-jobs> -->
+                      <ngx-cron-ui (onChangeEvent)="onChange($event)" [config]="config"></ngx-cron-ui>
+                    </ion-item>
+                    <hr>
+                    <form-errors [formGroup]="group" [controlName]="'schedule'"></form-errors>
+                    <ion-item lines="none">
                       <ion-label position="floating">시작 일시<span class="invalid-input">*</span></ion-label>
                       <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [formControlName]="'optionTo'"></ion-datetime>
                     </ion-item>
                     <hr>
                     <ion-item lines="none">
                       <ion-label position="floating">종료 일시<span class="invalid-input">*</span></ion-label>
-                      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [formControlName]="'optionFrom'"></ion-datetime>
+                      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [formControlName]="'optionFrom'">
+                      </ion-datetime>
                     </ion-item>
                     <hr>
                     <ion-item lines="none">
@@ -368,7 +331,7 @@
             </ion-button>
           </div>
         </div>
-        <div id="test-l-8" class="content">
+        <div id="test-l-7" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
@@ -385,7 +348,7 @@
             </div>
           </div>
         </div>
-        <div id="test-l-9" class="content">
+        <div id="test-l-8" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
@@ -434,7 +397,7 @@
             </div>
           </div>
         </div>
-        <div id="test-l-10" class="content">
+        <div id="test-l-9" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()" [disabled]="formGroup.invalid">다음</ion-button>
@@ -470,7 +433,7 @@
             </div>
           </div>
         </div>
-        <div id="test-l-11" class="content">
+        <div id="test-l-10" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" [disabled]="formGroup.invalid" (click)="add()">{{submitMessage}}
