@@ -155,6 +155,10 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
     this.options.removeAt(index)
   }
 
+  changeSchedule(event) {
+    console.log(`dd:${event}`);
+  }
+
   next() {
     const index = this.stepper['_currentIndex'];
     if (index === 9) {

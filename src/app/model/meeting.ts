@@ -51,6 +51,3 @@ export class MeetingOption {
         public isOld: boolean
     ) { }
 }
-        public isOld: boolean
-    ) { }
-}

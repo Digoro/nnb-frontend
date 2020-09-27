@@ -298,27 +298,27 @@
                       <ion-input type="number" [formControlName]="'optionMaxParticipation'" clearInput></ion-input>
                     </ion-item>
                     <hr>
-                    <form-errors [formGroup]="group" [controlName]="'optionMaxParticipation'"
-                      [errors]="[{key:'max',meesage:'1000명 제한입니다.'}]"> </form-errors>
-                    <ion-item lines="none">
-                      <ion-label position="floating">스케줄<span class="invalid-input">*</span></ion-label>
-                      <br>
-                      <!-- <cron-jobs [formControlName]="'schedule'" [config]="cronConfig"></cron-jobs> -->
-                      <ngx-cron-ui (onChangeEvent)="onChange($event)" [config]="config"></ngx-cron-ui>
-                    </ion-item>
-                    <hr>
-                    <form-errors [formGroup]="group" [controlName]="'schedule'"></form-errors>
-                    <ion-item lines="none">
-                      <ion-label position="floating">시작 일시<span class="invalid-input">*</span></ion-label>
-                      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [formControlName]="'optionTo'"></ion-datetime>
-                    </ion-item>
-                    <hr>
-                    <ion-item lines="none">
-                      <ion-label position="floating">종료 일시<span class="invalid-input">*</span></ion-label>
-                      <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [formControlName]="'optionFrom'">
-                      </ion-datetime>
-                    </ion-item>
-                    <hr>
+                    <div style="padding:20px; border: 1px solid grey">
+                      <ion-item lines="none">
+                        <ion-label position="floating">시작 일시<span class="invalid-input">*</span></ion-label>
+                        <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [formControlName]="'optionTo'"></ion-datetime>
+                      </ion-item>
+                      <hr>
+                      <ion-item lines="none">
+                        <ion-label position="floating">종료 일시<span class="invalid-input">*</span></ion-label>
+                        <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [formControlName]="'optionFrom'">
+                        </ion-datetime>
+                      </ion-item>
+                      <hr>
+                      <form-errors [formGroup]="group" [controlName]="'optionMaxParticipation'"
+                        [errors]="[{key:'max',meesage:'1000명 제한입니다.'}]"> </form-errors>
+                      <ion-item lines="none">
+                        <ion-label position="floating">스케줄<span class="invalid-input">*</span></ion-label>
+                        <br>
+                        <ngx-cron-ui (onChangeEvent)="changeSchedule($event)" [config]="config"></ngx-cron-ui>
+                      </ion-item>
+                      <hr>
+                    </div>
                     <ion-item lines="none">
                       <ion-button slot="end" (click)="minusItem(i)" color="danger">삭제</ion-button>
                     </ion-item>
