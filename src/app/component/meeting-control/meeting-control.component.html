@@ -43,7 +43,7 @@
         <ion-icon *ngIf="formGroup.controls.address.valid && formGroup.controls.detailAddress.valid"
           name="checkmark-circle" style="color:#007bff">
         </ion-icon>
-        장소
+        장소/소요시간
       </button>
     </div>
     <div class="step" data-target="#test-l-5">
@@ -157,7 +157,7 @@
           </div>
           <ion-item lines="none">
             <ion-label position="floating">카테고리<span class="invalid-input">*</span></ion-label>
-            <ion-select value="brown" okText="확인" cancelText="취소" [formControlName]="'categories'">
+            <ion-select okText="확인" cancelText="취소" [formControlName]="'categories'">
               <ion-select-option *ngFor="let category of categories" [value]="category">{{category}}
               </ion-select-option>
             </ion-select>
@@ -206,6 +206,26 @@
               <p class="invalid-input">필수 입력 항목입니다.</p>
             </div>
           </div>
+          <ion-row>
+            <ion-item lines="none">
+              <ion-label position="fixed">소요 시간<span class="invalid-input">*</span></ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-select okText="확인" cancelText="취소" (ionChange)="changeHours($event)" style="min-width: 70px;">
+                <ion-select-option *ngFor="let hour of hours" [value]="hour">{{hour}}
+                </ion-select-option>
+              </ion-select>
+              <span>시간</span>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-select okText="확인" cancelText="취소" (ionChange)="changeMinutes($event)" style="min-width: 70px;">
+                <ion-select-option *ngFor="let minute of minutes" [value]="minute">{{minute}}
+                </ion-select-option>
+              </ion-select>
+              <span>분</span>
+            </ion-item>
+          </ion-row>
+          <hr>
         </div>
         <div id="test-l-5" class="content">
           <div class="next-prev">

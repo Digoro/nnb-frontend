@@ -98,6 +98,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       categories: new FormControl('', this.formService.getValidators(10)),
       address: new FormControl('', this.formService.getValidators(500)),
       detailAddress: new FormControl('', this.formService.getValidators(500)),
+      runningMinutes: new FormControl('', this.formService.getValidators(4, [Validators.max(1440)])),
       price: new FormControl('', this.formService.getValidators(10, [Validators.max(10000000)])),
       discountPrice: new FormControl(0, [Validators.max(10000000), this.validateDiscountPrice('price')]),
       desc: new FormControl('', Validators.required),
@@ -173,7 +174,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
 
   makePreviewMeeting() {
     if (this.meetingForm.valid) {
-      const { title, subTitle, fileSource, categories, address, detailAddress,
+      const { title, subTitle, fileSource, categories, address, detailAddress, runningMinutes,
         price, discountPrice, desc, refund_policy, notice, check_list, include, exclude, options } = this.meetingForm.value;
       this.mapsAPILoader.load().then(() => {
         this.geoCoder = new google.maps.Geocoder;
@@ -181,7 +182,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
           if (status == "OK") {
             if (result[0]) {
               const location = result[0].geometry.location;
-              this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, location.lat(), location.lng(), 0,
+              this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, runningMinutes, location.lat(), location.lng(), 0,
                 categories, '', price, discountPrice, 0, refund_policy, notice, check_list, include, exclude, 0, MeetingStatus.CREATED, options)
             }
             else {
@@ -278,7 +279,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   }
 
   add() {
-    const { title, subTitle, fileSource, categories, address, detailAddress,
+    const { title, subTitle, fileSource, categories, address, detailAddress, runningMinutes,
       price, discountPrice, desc, refund_policy, notice, check_list, include, exclude, options } = this.meetingForm.value;
     this.mapsAPILoader.load().then(() => {
       this.geoCoder = new google.maps.Geocoder;
@@ -298,6 +299,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
             formData.append('categories', `${Category[categories]}`);
             formData.append('address', `${address}`);
             formData.append('detailed_address', detailAddress);
+            formData.append('runningMinutes', `${runningMinutes}`);
             formData.append('lat', lat);
             formData.append('lon', lon);
             formData.append('price', `${price}`);

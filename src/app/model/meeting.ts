@@ -8,6 +8,7 @@ export class Meeting {
         public desc: string,
         public address: string,
         public detailed_address: string,
+        public runningMinutes: number,
         public lat: number,
         public lon: number,
         public host: number,

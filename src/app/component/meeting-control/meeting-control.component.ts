@@ -39,6 +39,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   @ViewChild('quill') quill: QuillEditorComponent
 
   config = { option: { minute: false, year: false } }
+  hours = [];
+  minutes = [];
 
   constructor(
     private cds: CheckDesktopService
@@ -46,6 +48,12 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
+    for (let i = 1; i < 24; i++) {
+      this.hours.push(i)
+    }
+    for (let i = 1; i < 60; i++) {
+      this.minutes.push(i)
+    }
   }
 
   ngAfterViewInit(): void {
@@ -78,6 +86,25 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
   checkDiscountPrice() {
     this.onCheckDiscountPriceEvent.emit();
+  }
+
+
+  changeHours(event) {
+    const selectedMinutes = event.detail.value * 60;
+    const oldValue = this.formGroup.controls.runningMinutes.value;
+    const oldHours = Math.floor(oldValue / 60);
+    const oldMinutes = oldValue - (oldHours * 60);
+    const result = oldMinutes + selectedMinutes;
+    this.formGroup.controls.runningMinutes.patchValue(result)
+  }
+
+  changeMinutes(event) {
+    const selectedMinutes = event.detail.value;
+    const oldValue = this.formGroup.controls.runningMinutes.value;
+    const oldHours = Math.floor(oldValue / 60);
+    const oldMinutes = oldValue - (oldHours * 60);
+    const result = oldValue - oldMinutes + selectedMinutes;
+    this.formGroup.controls.runningMinutes.patchValue(result)
   }
 
   addItem() {
