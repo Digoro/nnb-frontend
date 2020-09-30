@@ -2,6 +2,9 @@ import { AgmCoreModule } from '@agm/core';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
+import interactionPlugin from '@fullcalendar/interaction'; // a plugin
 import { NgxErrorsModule } from '@hackages/ngxerrors';
 import { IonicModule } from '@ionic/angular';
 import { CalendarModule } from 'ion2-calendar';
@@ -24,6 +27,10 @@ import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { HideToolbarDirective } from './directive/hide-toolbar.directive';
 import { InputDigitsOnlyDirective } from './directive/input.digits.only.directive';
 import { TruncatePipe } from './pipe/truncate.pipe';
+
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin, interactionPlugin
+]);
 
 @NgModule({
   declarations: [
@@ -76,7 +83,8 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     ModalModule.forRoot(),
     TableModule,
     CalendarModule,
-    NgxCronUiModule
+    NgxCronUiModule,
+    FullCalendarModule
   ],
   exports: [
     HorizontalSliderComponent,
@@ -103,7 +111,8 @@ import { TruncatePipe } from './pipe/truncate.pipe';
     CalendarModule,
     MeetingControlComponent,
     FormErrorsComponent,
-    NgxCronUiModule
+    NgxCronUiModule,
+    FullCalendarModule
   ],
 })
 export class SharedModule { }

@@ -1,6 +1,10 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CalendarOptions, EventClickArg, FullCalendarComponent } from '@fullcalendar/angular';
+import * as CronParser from 'cron-parser';
+import * as moment from 'moment';
 import { QuillEditorComponent } from 'ngx-quill';
+import { FormService } from 'src/app/service/form.service';
 import { Meeting } from '../../model/meeting';
 import { CheckDesktopService } from './../../service/check-desktop.service';
 
@@ -38,12 +42,27 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   isShowMenu = false;
   @ViewChild('quill') quill: QuillEditorComponent
 
-  config = { option: { minute: false, year: false } }
+  ngxCronUiConfig = { option: { minute: false, hour: false, day: false, year: false } }
+
+  @ViewChild('calendar') calendarComponent: FullCalendarComponent;
+  calendarOptions: CalendarOptions = {
+    initialView: 'dayGridMonth',
+    editable: false,
+    selectable: true,
+    eventClick: (selectInfo: EventClickArg) => {
+      console.log(selectInfo);
+    }
+  };
   hours = [];
   minutes = [];
 
+  optionFormGroup: FormGroup;
+  min = moment().format('YYYY-MM-DD')
+  max = moment().add(100, 'year').format('YYYY-MM-DD')
+
   constructor(
-    private cds: CheckDesktopService
+    private cds: CheckDesktopService,
+    private formService: FormService
   ) { }
 
   ngOnInit() {
@@ -54,6 +73,64 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     for (let i = 1; i < 60; i++) {
       this.minutes.push(i)
     }
+    this.optionFormGroup = new FormGroup({
+      oid: new FormControl(''),
+      optionTitle: new FormControl('', this.formService.getValidators(100)),
+      optionPrice: new FormControl('', this.formService.getValidators(10, [Validators.min(0), Validators.max(10000000)])),
+      optionMinParticipation: new FormControl('', this.formService.getValidators(10, [Validators.min(1), Validators.max(1000)])),
+      optionMaxParticipation: new FormControl('', this.formService.getValidators(10, [Validators.min(1), Validators.max(1000)])),
+      optionTo: new FormControl('', Validators.required),
+      optionFrom: new FormControl('', Validators.required),
+      schedule: new FormControl('', Validators.required),
+    })
+
+    this.optionFormGroup.valueChanges.subscribe(value => {
+      const min = this.optionFormGroup.controls.optionMinParticipation;
+      const to = this.optionFormGroup.controls.optionTo;
+      const from = this.optionFormGroup.controls.optionFrom;
+
+      if (value.optionMinParticipation && value.optionMaxParticipation) {
+        if (value.optionMinParticipation > value.optionMaxParticipation) {
+          min.setErrors({ 'isUpper': true })
+        } else {
+          if (min.hasError('isUpper')) {
+            const { isUpper, ...errors } = min.errors;
+            min.setErrors(errors);
+            min.updateValueAndValidity({ emitEvent: false })
+          }
+        }
+      }
+
+      if (value.optionTo && value.optionFrom) {
+        if (moment(value.optionTo).isSameOrAfter(moment(value.optionFrom))) {
+          to.setErrors({ 'isAfter': true })
+        } else {
+          if (to.hasError('isAfter')) {
+            const { isAfter, ...errors } = to.errors;
+            to.setErrors(errors);
+            to.updateValueAndValidity({ emitEvent: false })
+          }
+
+          if (moment(value.optionFrom).diff(moment(value.optionTo), 'days') > 365) {
+            from.setErrors({ 'maxDurationDays': true })
+          } else {
+            if (from.hasError('maxDurationDays')) {
+              const { maxDurationDays, ...errors } = from.errors;
+              from.setErrors(errors);
+              from.updateValueAndValidity({ emitEvent: false })
+            }
+          }
+        }
+      }
+    })
+  }
+
+  updateCalendarSize() {
+    setTimeout(() => {
+      const api = this.calendarComponent.getApi();
+      api.setOption('locale', 'ko')
+      api.updateSize();
+    })
   }
 
   ngAfterViewInit(): void {
@@ -64,11 +141,13 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     this.isShowMenu = !this.isShowMenu;
   }
 
-  next() {
+  next(isMeetingOptionView?: boolean) {
+    if (isMeetingOptionView) this.updateCalendarSize();
     this.onNextEvent.emit();
   }
 
-  prev() {
+  prev(isMeetingOptionView?: boolean) {
+    if (isMeetingOptionView) this.updateCalendarSize();
     this.onPrevEvent.emit();
   }
 
@@ -88,6 +167,35 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     this.onCheckDiscountPriceEvent.emit();
   }
 
+  applySchedule() {
+    const to = moment(this.optionFormGroup.controls.optionTo.value).format('YYYY-MM-DD');
+    const from = moment(this.optionFormGroup.controls.optionFrom.value).format('YYYY-MM-DD');
+    const cron = this.optionFormGroup.controls.schedule.value;
+    const options = {
+      currentDate: to,
+      endDate: from,
+      iterator: true
+    };
+    let newEvents = [];
+    const interval = CronParser.parseExpression(cron, options);
+    while (interval.hasNext()) {
+      const date = moment(interval.next()['value'].toString()).toDate();
+      newEvents.push({ date });
+    }
+    const api = this.calendarComponent.getApi();
+    const originEvents = api.getEvents();
+    if (originEvents.length !== 0) {
+      const filteredEvents = newEvents.filter(newEvent => {
+        return !originEvents.find(origin => {
+          return moment(origin.start).isSame(moment(newEvent.date))
+        });
+      })
+      if (filteredEvents.length !== newEvents.length) alert('요청하신 옵션 중 동일한 일시의 옵션을 제외하고 추가하였습니다.')
+      api.addEventSource(filteredEvents)
+    } else {
+      api.addEventSource(newEvents);
+    }
+  }
 
   changeHours(event) {
     const selectedMinutes = event.detail.value * 60;
@@ -124,6 +232,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   }
 
   changeSchedule(event) {
-    this.onChangeScheduleEvent.emit(event);
+    this.optionFormGroup.controls.schedule.patchValue(event);
   }
 }

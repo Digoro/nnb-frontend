@@ -18,6 +18,7 @@ import { MeetingManagementPage } from './page/meeting-management/meeting-managem
 import { CsrfInterceptor } from './service/csrf.interceptor';
 import { TabService } from './service/tab.service';
 import { SharedModule } from './shared.module';
+
 @NgModule({
   declarations: [
     AppComponent,
