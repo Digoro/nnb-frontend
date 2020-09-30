@@ -148,29 +148,8 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
     }
   }
 
-  createItem() {
-    return this.fb.group({
-      oid: [''],
-      optionTitle: ['', this.formService.getValidators(100)],
-      optionPrice: ['', this.formService.getValidators(10, [Validators.max(10000000)])],
-      optionMinParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
-      optionMaxParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
-      optionDate: ['', Validators.required],
-    });
-  }
-
-  addItem(): void {
-    this.options = this.meetingForm.get('options') as FormArray;
-    this.options.push(this.createItem());
-  }
-
-  minusItem(index: number): void {
-    this.options = this.meetingForm.get('options') as FormArray;
-    this.options.removeAt(index)
-  }
-
   private setFileFormControl() {
-    this.http.get(this.meeting.file.replace('http', 'https'), { responseType: 'blob' }).subscribe(resp => {
+    this.http.get(this.meeting.file, { responseType: 'blob' }).subscribe(resp => {
       const splitted = this.meeting.file.split("/");
       const name = splitted[splitted.length - 1];
       const decoded = decodeURI(name);

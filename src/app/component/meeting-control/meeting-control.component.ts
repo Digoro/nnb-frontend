@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CalendarOptions, EventClickArg, FullCalendarComponent } from '@fullcalendar/angular';
 import * as CronParser from 'cron-parser';
 import * as moment from 'moment';
@@ -31,8 +31,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   @Output() onFileChangeEvent = new EventEmitter();
   @Output() onMarkerDragEndEvent = new EventEmitter();
   @Output() onCheckDiscountPriceEvent = new EventEmitter();
-  @Output() onAddItemEvent = new EventEmitter();
-  @Output() onMinusItemEvent = new EventEmitter();
   @Output() onGetEditorInstanceEvent = new EventEmitter();
   @Output() onAddEvent = new EventEmitter();
 
@@ -63,9 +61,12 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   min = moment().format('YYYY-MM-DD')
   max = moment().add(100, 'year').format('YYYY-MM-DD')
 
+  options: FormArray;
+
   constructor(
     private cds: CheckDesktopService,
-    private formService: FormService
+    private formService: FormService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -106,21 +107,21 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
       if (value.optionFrom && value.optionTo) {
         if (moment(value.optionFrom).isSameOrAfter(moment(value.optionTo))) {
-          to.setErrors({ 'isAfter': true })
+          from.setErrors({ 'isAfter': true })
         } else {
-          if (to.hasError('isAfter')) {
-            const { isAfter, ...errors } = to.errors;
-            to.setErrors(errors);
-            to.updateValueAndValidity({ emitEvent: false })
+          if (from.hasError('isAfter')) {
+            const { isAfter, ...errors } = from.errors;
+            from.setErrors(errors);
+            from.updateValueAndValidity({ emitEvent: false })
           }
 
           if (moment(value.optionTo).diff(moment(value.optionFrom), 'days') > 365) {
-            from.setErrors({ 'maxDurationDays': true })
+            to.setErrors({ 'maxDurationDays': true })
           } else {
-            if (from.hasError('maxDurationDays')) {
-              const { maxDurationDays, ...errors } = from.errors;
-              from.setErrors(errors);
-              from.updateValueAndValidity({ emitEvent: false })
+            if (to.hasError('maxDurationDays')) {
+              const { maxDurationDays, ...errors } = to.errors;
+              to.setErrors(errors);
+              to.updateValueAndValidity({ emitEvent: false })
             }
           }
         }
@@ -131,6 +132,17 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   updateCalendarSize() {
     setTimeout(() => {
       const api = this.calendarComponent.getApi();
+      api.addEventSource(this.formGroup.controls.options.value.map(option => {
+        return {
+          oid: option.oid,
+          optionTitle: option.optionTitle,
+          optionPrice: option.optionPrice,
+          optionMinParticipation: option.optionMinParticipation,
+          optionMaxParticipation: option.optionMaxParticipation,
+          optionDate: option.optionDate,
+          date: option.optionDate
+        }
+      }))
       api.setOption('locale', 'ko')
       api.updateSize();
     })
@@ -171,6 +183,10 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   }
 
   addSchedule() {
+    const title = this.optionFormGroup.controls.optionTitle.value;
+    const price = this.optionFormGroup.controls.optionPrice.value;
+    const min = this.optionFormGroup.controls.optionMinParticipation.value;
+    const max = this.optionFormGroup.controls.optionMaxParticipation.value;
     const from = moment(this.optionFormGroup.controls.optionFrom.value).format('YYYY-MM-DD');
     const to = moment(this.optionFormGroup.controls.optionTo.value).format('YYYY-MM-DD');
     const cron = this.optionFormGroup.controls.schedule.value;
@@ -183,7 +199,15 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     const interval = CronParser.parseExpression(cron, options);
     while (interval.hasNext()) {
       const date = moment(interval.next()['value'].toString()).toDate();
-      newEvents.push({ date });
+      newEvents.push({
+        oid: '',
+        optionTitle: title,
+        optionPrice: price,
+        optionMinParticipation: min,
+        optionMaxParticipation: max,
+        optionDate: date,
+        date: date
+      });
     }
     const api = this.calendarComponent.getApi();
     const originEvents = api.getEvents();
@@ -194,10 +218,30 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         });
       })
       if (filteredEvents.length !== newEvents.length) alert('요청하신 옵션 중 동일한 일시의 옵션을 제외하고 추가하였습니다.')
-      api.addEventSource(filteredEvents)
+      api.addEventSource(filteredEvents);
+      this.addItem(filteredEvents);
     } else {
       api.addEventSource(newEvents);
+      this.addItem(newEvents);
     }
+  }
+
+  addItem(events: any[]) {
+    this.options = this.formGroup.get('options') as FormArray;
+    events.forEach(event => {
+      this.options.push(this.createItem(event))
+    })
+  }
+
+  createItem(event: any) {
+    return this.fb.group({
+      oid: [''],
+      optionTitle: [event.optionTitle, this.formService.getValidators(100)],
+      optionPrice: [event.optionPrice, this.formService.getValidators(10, [Validators.max(10000000)])],
+      optionMinParticipation: [event.optionMinParticipation, this.formService.getValidators(10, [Validators.max(1000)])],
+      optionMaxParticipation: [event.optionMaxParticipation, this.formService.getValidators(10, [Validators.max(1000)])],
+      optionDate: [event.date, Validators.required]
+    });
   }
 
   changeHours(event) {
@@ -218,14 +262,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     const oldMinutes = oldValue - (oldHours * 60);
     const result = oldValue - oldMinutes + selectedMinutes;
     control.patchValue(result);
-  }
-
-  addItem() {
-    this.onAddItemEvent.emit();
-  }
-
-  minusItem(index: number) {
-    this.onMinusItemEvent.emit(index);
   }
 
   getEditorInstance(editorInstance: any) {

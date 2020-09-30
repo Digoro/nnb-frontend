@@ -107,7 +107,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       check_list: new FormControl('', this.formService.getValidators(500)),
       include: new FormControl('', Validators.maxLength(500)),
       exclude: new FormControl('', Validators.maxLength(500)),
-      options: this.fb.array([this.createItem()], Validators.required)
+      options: this.fb.array([], Validators.required)
     })
     this.loadMap();
   }
@@ -130,29 +130,6 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       discountPrice.setErrors({ 'isUpper': null });
       discountPrice.updateValueAndValidity();
     }
-  }
-
-  createItem() {
-    return this.fb.group({
-      oid: [''],
-      optionTitle: ['', this.formService.getValidators(100)],
-      optionPrice: ['', this.formService.getValidators(10, [Validators.max(10000000)])],
-      optionMinParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
-      optionMaxParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
-      optionDate: ['', Validators.required]
-    });
-  }
-
-  addItem(): void {
-    this.options = this.meetingForm.get('options') as FormArray;
-    this.options.push(this.createItem());
-    console.log(this.meetingForm.get('options')['controls']);
-
-  }
-
-  minusItem(index: number): void {
-    this.options = this.meetingForm.get('options') as FormArray;
-    this.options.removeAt(index)
   }
 
   next() {
