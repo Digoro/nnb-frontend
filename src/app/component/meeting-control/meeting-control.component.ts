@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CalendarOptions, EventClickArg, FullCalendarComponent } from '@fullcalendar/angular';
 import * as CronParser from 'cron-parser';
 import * as moment from 'moment';
+import { NgxCronUiConfig } from 'ngx-cron-ui/lib/model/model';
 import { QuillEditorComponent } from 'ngx-quill';
 import { FormService } from 'src/app/service/form.service';
 import { Meeting } from '../../model/meeting';
@@ -30,7 +31,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   @Output() onFileChangeEvent = new EventEmitter();
   @Output() onMarkerDragEndEvent = new EventEmitter();
   @Output() onCheckDiscountPriceEvent = new EventEmitter();
-  @Output() onChangeScheduleEvent = new EventEmitter();
   @Output() onAddItemEvent = new EventEmitter();
   @Output() onMinusItemEvent = new EventEmitter();
   @Output() onGetEditorInstanceEvent = new EventEmitter();
@@ -42,7 +42,10 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   isShowMenu = false;
   @ViewChild('quill') quill: QuillEditorComponent
 
-  ngxCronUiConfig = { option: { minute: false, hour: false, day: false, year: false } }
+  ngxCronUiConfig: NgxCronUiConfig = {
+    option: { minute: false, hour: false, year: false },
+    isSetDefaultValue: true
+  }
 
   @ViewChild('calendar') calendarComponent: FullCalendarComponent;
   calendarOptions: CalendarOptions = {
@@ -167,7 +170,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     this.onCheckDiscountPriceEvent.emit();
   }
 
-  applySchedule() {
+  addSchedule() {
     const to = moment(this.optionFormGroup.controls.optionTo.value).format('YYYY-MM-DD');
     const from = moment(this.optionFormGroup.controls.optionFrom.value).format('YYYY-MM-DD');
     const cron = this.optionFormGroup.controls.schedule.value;
@@ -232,6 +235,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   }
 
   changeSchedule(event) {
+    console.log(event);
+
     this.optionFormGroup.controls.schedule.patchValue(event);
   }
 }
