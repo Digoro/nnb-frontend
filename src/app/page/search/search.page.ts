@@ -51,7 +51,7 @@ export class SearchPage implements OnInit {
             this.meetings = meetings.filter(meeting => {
               if (meeting.options) {
                 return meeting.options.find(option => {
-                  const start = moment(option.optionTo);
+                  const start = moment(option.optionDate);
                   return start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
                 });
               } else return false;

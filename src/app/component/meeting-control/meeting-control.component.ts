@@ -70,10 +70,10 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
-    for (let i = 1; i < 24; i++) {
+    for (let i = 0; i < 24; i++) {
       this.hours.push(i)
     }
-    for (let i = 1; i < 60; i++) {
+    for (let i = 0; i < 60; i += 15) {
       this.minutes.push(i)
     }
     this.optionFormGroup = new FormGroup({
@@ -82,15 +82,15 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       optionPrice: new FormControl('', this.formService.getValidators(10, [Validators.min(0), Validators.max(10000000)])),
       optionMinParticipation: new FormControl('', this.formService.getValidators(10, [Validators.min(1), Validators.max(1000)])),
       optionMaxParticipation: new FormControl('', this.formService.getValidators(10, [Validators.min(1), Validators.max(1000)])),
-      optionTo: new FormControl('', Validators.required),
       optionFrom: new FormControl('', Validators.required),
+      optionTo: new FormControl('', Validators.required),
       schedule: new FormControl('', Validators.required),
     })
 
     this.optionFormGroup.valueChanges.subscribe(value => {
       const min = this.optionFormGroup.controls.optionMinParticipation;
-      const to = this.optionFormGroup.controls.optionTo;
       const from = this.optionFormGroup.controls.optionFrom;
+      const to = this.optionFormGroup.controls.optionTo;
 
       if (value.optionMinParticipation && value.optionMaxParticipation) {
         if (value.optionMinParticipation > value.optionMaxParticipation) {
@@ -104,8 +104,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         }
       }
 
-      if (value.optionTo && value.optionFrom) {
-        if (moment(value.optionTo).isSameOrAfter(moment(value.optionFrom))) {
+      if (value.optionFrom && value.optionTo) {
+        if (moment(value.optionFrom).isSameOrAfter(moment(value.optionTo))) {
           to.setErrors({ 'isAfter': true })
         } else {
           if (to.hasError('isAfter')) {
@@ -114,7 +114,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
             to.updateValueAndValidity({ emitEvent: false })
           }
 
-          if (moment(value.optionFrom).diff(moment(value.optionTo), 'days') > 365) {
+          if (moment(value.optionTo).diff(moment(value.optionFrom), 'days') > 365) {
             from.setErrors({ 'maxDurationDays': true })
           } else {
             if (from.hasError('maxDurationDays')) {
@@ -171,12 +171,12 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   }
 
   addSchedule() {
-    const to = moment(this.optionFormGroup.controls.optionTo.value).format('YYYY-MM-DD');
     const from = moment(this.optionFormGroup.controls.optionFrom.value).format('YYYY-MM-DD');
+    const to = moment(this.optionFormGroup.controls.optionTo.value).format('YYYY-MM-DD');
     const cron = this.optionFormGroup.controls.schedule.value;
     const options = {
-      currentDate: to,
-      endDate: from,
+      currentDate: from,
+      endDate: to,
       iterator: true
     };
     let newEvents = [];
@@ -201,21 +201,23 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   }
 
   changeHours(event) {
+    const control = this.formGroup.controls.runningMinutes;
     const selectedMinutes = event.detail.value * 60;
-    const oldValue = this.formGroup.controls.runningMinutes.value;
+    const oldValue = control.value;
     const oldHours = Math.floor(oldValue / 60);
     const oldMinutes = oldValue - (oldHours * 60);
     const result = oldMinutes + selectedMinutes;
-    this.formGroup.controls.runningMinutes.patchValue(result)
+    control.patchValue(result);
   }
 
   changeMinutes(event) {
+    const control = this.formGroup.controls.runningMinutes;
     const selectedMinutes = event.detail.value;
-    const oldValue = this.formGroup.controls.runningMinutes.value;
+    const oldValue = control.value;
     const oldHours = Math.floor(oldValue / 60);
     const oldMinutes = oldValue - (oldHours * 60);
     const result = oldValue - oldMinutes + selectedMinutes;
-    this.formGroup.controls.runningMinutes.patchValue(result)
+    control.patchValue(result);
   }
 
   addItem() {
@@ -235,8 +237,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   }
 
   changeSchedule(event) {
-    console.log(event);
-
     this.optionFormGroup.controls.schedule.patchValue(event);
   }
 }

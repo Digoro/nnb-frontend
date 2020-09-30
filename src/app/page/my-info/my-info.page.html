@@ -42,7 +42,7 @@
                 </ion-chip>
                 <ng-container *ngFor="let option of options;let last = last">
                   <p>옵션: {{option.option.optionTitle}}</p>
-                  <p>시작일: {{option.option.optionTo|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+                  <p>시작일: {{option.option.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
                   <p>가격: {{option.option.optionPrice}}원</p>
                   <p>수량: {{option.count}}개</p>
                   <hr *ngIf="!last">

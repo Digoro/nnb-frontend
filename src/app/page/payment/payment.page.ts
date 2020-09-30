@@ -85,7 +85,7 @@ export class PaymentPage implements OnInit {
               monthPickerFormat: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
               daysConfig: this.meeting.options.map(option => {
                 return {
-                  date: moment(option.optionTo).toDate(),
+                  date: moment(option.optionDate).toDate(),
                   marked: true,
                   disable: false,
                   // title: option.optionTitle,
@@ -126,8 +126,8 @@ export class PaymentPage implements OnInit {
     // select calendar date
     else {
       const selectedOptions = this.meeting.options.filter(option => {
-        const optionMonth = +moment(option.optionTo).format('M');
-        const optionDay = +moment(option.optionTo).format('D');
+        const optionMonth = +moment(option.optionDate).format('M');
+        const optionDay = +moment(option.optionDate).format('D');
         return month === optionMonth && day === optionDay;
       })
       this.selectedOptionsFromCalendar = selectedOptions;
@@ -218,7 +218,7 @@ export class PaymentPage implements OnInit {
       optionTitle: [option.optionTitle, Validators.required],
       optionPrice: [option.optionPrice, Validators.required],
       optionCount: [1, this.formService.getValidators(10, [Validators.min(1), Validators.max(999)])],
-      optionTo: [option.optionTo]
+      optionDate: [option.optionDate]
     });
   }
 
@@ -236,8 +236,8 @@ export class PaymentPage implements OnInit {
 
   sortSelectedOptions(controls: AbstractControl[]) {
     return controls.sort((a, b) => {
-      if (moment(a.value.optionTo).isBefore(b.value.optionTo)) return -1;
-      else if (moment(a.value.optionTo).isSame(b.value.optionTo)) return 0;
+      if (moment(a.value.optionDate).isBefore(b.value.optionDate)) return -1;
+      else if (moment(a.value.optionDate).isSame(b.value.optionDate)) return 0;
       else return 1;
     })
   }

@@ -226,6 +226,9 @@
             </ion-item>
           </ion-row>
           <hr>
+          <div *ngIf="formGroup.controls.runningMinutes.hasError('min')">
+            <p class="invalid-input">0분이 될 수 없습니다.</p>
+          </div>
         </div>
         <div id="test-l-5" class="content">
           <div class="next-prev">
@@ -326,19 +329,19 @@
                   <ion-col>
                     <ion-item lines="none">
                       <ion-label position="floating">시작 일시<span class="invalid-input">*</span></ion-label>
-                      <ion-datetime displayFormat="YYYY-MM-DD" [min]="min" [max]="max" [formControlName]="'optionTo'">
-                      </ion-datetime>
-                    </ion-item>
-                    <hr>
-                    <form-errors [formGroup]="optionFormGroup" [controlName]="'optionTo'"
-                      [errors]="[{key:'isAfter',meesage:'종료일시보다 이전이어야 합니다.'}]"> </form-errors>
-                    <ion-item lines="none">
-                      <ion-label position="floating">종료 일시<span class="invalid-input">*</span></ion-label>
                       <ion-datetime displayFormat="YYYY-MM-DD" [min]="min" [max]="max" [formControlName]="'optionFrom'">
                       </ion-datetime>
                     </ion-item>
                     <hr>
                     <form-errors [formGroup]="optionFormGroup" [controlName]="'optionFrom'"
+                      [errors]="[{key:'isAfter',meesage:'종료일시보다 이전이어야 합니다.'}]"> </form-errors>
+                    <ion-item lines="none">
+                      <ion-label position="floating">종료 일시<span class="invalid-input">*</span></ion-label>
+                      <ion-datetime displayFormat="YYYY-MM-DD" [min]="min" [max]="max" [formControlName]="'optionTo'">
+                      </ion-datetime>
+                    </ion-item>
+                    <hr>
+                    <form-errors [formGroup]="optionFormGroup" [controlName]="'optionTo'"
                       [errors]="[{key:'maxDurationDays',meesage:'총 기간은 최대 1년까지 입력가능합니다.'}]"> </form-errors>
                     <ion-item lines="none">
                       <ion-label position="floating">스케줄<span class="invalid-input">*</span></ion-label>

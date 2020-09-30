@@ -37,7 +37,7 @@
                 <ion-label class="ion-text-wrap">
                   <p class="black-label">{{option.optionTitle}}</p>
                   <p class="black-label">가격: {{option.optionPrice}}</p>
-                  <p class="black-label">일시: {{option.optionTo|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+                  <p class="black-label">일시: {{option.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
                 </ion-label>
                 <ion-checkbox [checked]="!!option['checked']" (ionChange)="selectMeetingOption($event, option)">
                 </ion-checkbox>

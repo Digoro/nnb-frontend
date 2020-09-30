@@ -102,7 +102,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
       categories: new FormControl('', this.formService.getValidators(10)),
       address: new FormControl('', this.formService.getValidators(500)),
       detailAddress: new FormControl('', this.formService.getValidators(500)),
-      runningMinutes: new FormControl('', this.formService.getValidators(4, [Validators.max(1440)])),
+      runningMinutes: new FormControl('', this.formService.getValidators(4, [Validators.max(1440), Validators.min(1)])),
       price: new FormControl('', this.formService.getValidators(10, [Validators.max(10000000)])),
       discountPrice: new FormControl(0, [Validators.max(10000000), this.validateDiscountPrice('price')]),
       desc: new FormControl('', Validators.required),
@@ -155,8 +155,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
       optionPrice: ['', this.formService.getValidators(10, [Validators.max(10000000)])],
       optionMinParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
       optionMaxParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
-      optionTo: ['', Validators.required],
-      optionFrom: ['', Validators.required],
+      optionDate: ['', Validators.required],
     });
   }
 
@@ -217,8 +216,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
         optionPrice: [option.optionPrice, this.formService.getValidators(10, [Validators.max(10000000)])],
         optionMinParticipation: [option.optionMinParticipation, this.formService.getValidators(10, [Validators.max(1000)])],
         optionMaxParticipation: [option.optionMaxParticipation, this.formService.getValidators(10, [Validators.max(1000)])],
-        optionTo: [option.optionTo, Validators.required],
-        optionFrom: [option.optionFrom, Validators.required],
+        optionDate: [option.optionDate, Validators.required]
       });
       this.options.push(form);
     })
@@ -387,24 +385,23 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
               const writtenOptions = (options as MeetingOption[]);
               const newWrittenOptions = writtenOptions
                 .filter(option => !option.oid)
-                .map(option => new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom, option.optionMinParticipation,
+                .map(option => new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionDate, option.optionMinParticipation,
                   option.optionMaxParticipation, false))
 
               const deletedOptions = this.oldOptions
                 .filter(old => !writtenOptions.find(option => old.oid === option.oid))
-                .map(option => new MeetingOption(option.oid, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom,
+                .map(option => new MeetingOption(option.oid, meeting.mid, option.optionTitle, option.optionPrice, option.optionDate,
                   option.optionMinParticipation, option.optionMaxParticipation, true))
 
               const changedOldOptions: MeetingOption[] = [];
               const changedNewOptions = writtenOptions
                 .filter(option => !!option.oid)
                 .filter(option => {
-                  const newO = new MeetingOption(option.oid, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom,
+                  const newO = new MeetingOption(option.oid, meeting.mid, option.optionTitle, option.optionPrice, option.optionDate,
                     option.optionMinParticipation, option.optionMaxParticipation, false);
                   const oldO = this.oldOptions.find(oldO => oldO.oid === newO.oid);
                   const isEditable =
-                    newO.optionTo !== oldO.optionTo ||
-                    newO.optionFrom !== oldO.optionFrom ||
+                    newO.optionDate !== oldO.optionDate ||
                     newO.optionPrice !== oldO.optionPrice ||
                     newO.optionMinParticipation !== oldO.optionMinParticipation ||
                     newO.optionMaxParticipation !== oldO.optionMaxParticipation ||
@@ -414,7 +411,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
                   }
                   return isEditable;
                 })
-                .map(option => new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom,
+                .map(option => new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionDate,
                   option.optionMinParticipation, option.optionMaxParticipation, false))
 
               const addOptions = newWrittenOptions.concat(changedNewOptions);

@@ -98,7 +98,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       categories: new FormControl('', this.formService.getValidators(10)),
       address: new FormControl('', this.formService.getValidators(500)),
       detailAddress: new FormControl('', this.formService.getValidators(500)),
-      runningMinutes: new FormControl('', this.formService.getValidators(4, [Validators.max(1440)])),
+      runningMinutes: new FormControl('', this.formService.getValidators(4, [Validators.max(1440), Validators.min(1)])),
       price: new FormControl('', this.formService.getValidators(10, [Validators.max(10000000)])),
       discountPrice: new FormControl(0, [Validators.max(10000000), this.validateDiscountPrice('price')]),
       desc: new FormControl('', Validators.required),
@@ -139,8 +139,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       optionPrice: ['', this.formService.getValidators(10, [Validators.max(10000000)])],
       optionMinParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
       optionMaxParticipation: ['', this.formService.getValidators(10, [Validators.max(1000)])],
-      optionTo: ['', Validators.required],
-      optionFrom: ['', Validators.required],
+      optionDate: ['', Validators.required]
     });
   }
 
@@ -311,7 +310,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
 
             this.meetingService.addMeeting(formData).subscribe(meeting => {
               const optionList = options.map(option => {
-                return new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionTo, option.optionFrom,
+                return new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionDate,
                   option.optionMinParticipation, option.optionMaxParticipation, false)
               })
               this.meetingService.addMeetingOptions(meeting.mid, optionList).subscribe(resp => {

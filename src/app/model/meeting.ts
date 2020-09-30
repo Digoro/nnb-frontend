@@ -45,8 +45,7 @@ export class MeetingOption {
         public meeting: number,
         public optionTitle: string,
         public optionPrice: number,
-        public optionTo: string,
-        public optionFrom: string,
+        public optionDate: string,
         public optionMinParticipation: number,
         public optionMaxParticipation: number,
         public isOld: boolean

@@ -84,8 +84,8 @@ export class MeetingService {
         options = options
           .filter(option => !option.isOld)
           .sort((a, b) => {
-            if (moment(a.optionTo).isBefore(b.optionTo)) return -1
-            else if (moment(a.optionTo).isAfter(b.optionTo)) return 1;
+            if (moment(a.optionDate).isBefore(b.optionDate)) return -1
+            else if (moment(a.optionDate).isAfter(b.optionDate)) return 1;
             else return 0;
           })
         data[0].options = options;

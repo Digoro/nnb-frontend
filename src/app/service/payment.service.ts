@@ -176,10 +176,10 @@ export class PaymentService {
   private sendAlimtalk(user: User, options: MeetingOption[], result: PaymentResult, phone: string) {
     // TODO: 알림톡 시간 타임존 문제
     const payTime = moment(result.PCD_PAY_TIME, 'YYYYMMDDHHmmss').format('MM월 DD일 HH:mm');
-    const optionTo = moment(options[0].optionTo).format('MM월 DD일 HH:mm');
+    const optionDate = moment(options[0].optionDate).format('MM월 DD일 HH:mm');
     const option = options.map(option => option.optionTitle).join(", ")
     const paymentResult = new AlimtalkPaymentResult(phone, user.nickName, user.nickName, result.PCD_PAY_OID, +result.PCD_PAY_TOTAL,
-      payTime, result.PCD_PAY_GOODS, option, optionTo, result.mid)
+      payTime, result.PCD_PAY_GOODS, option, optionDate, result.mid)
     this.alimtalkService.sendPaymentResult(paymentResult).subscribe(resp => {
       console.log('알림톡 전송 완료');
     })
