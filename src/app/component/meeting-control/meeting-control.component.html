@@ -286,78 +286,83 @@
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
-          <ion-card>
-            <ion-card-content>
-              <form [formGroup]="optionFormGroup">
-                <ion-row>
-                  <ion-col>
-                    <ion-label position="floating">구매 옵션<span class="invalid-input">*</span></ion-label><br>
-                    <ion-item lines="none">
-                      <ion-label position="floating">옵션 설명<span class="invalid-input">*</span></ion-label>
-                      <!-- FIXED -->
-                      <ion-input type="text" [formControlName]="'oid'" clearInput hidden></ion-input>
-                      <ion-input type="text" [formControlName]="'optionTitle'" clearInput></ion-input>
-                    </ion-item>
-                    <hr>
-                    <form-errors [formGroup]="optionFormGroup" [controlName]="'optionTitle'"
-                      [errors]="[{key:'maxlength',meesage:'100자 제한입니다.'}]"></form-errors>
-                    <ion-item lines="none">
-                      <ion-label position="floating">가격<span class="invalid-input">*</span></ion-label>
-                      <ion-input type="number" [formControlName]="'optionPrice'" clearInput></ion-input>
-                    </ion-item>
-                    <hr>
-                    <form-errors [formGroup]="optionFormGroup" [controlName]="'optionPrice'"
-                      [errors]="[{key:'min',meesage:'0원 이상이어야 합니다.'},{key:'max',meesage:'10000000원 제한입니다.'}]">
-                    </form-errors>
-                    <ion-item lines="none">
-                      <ion-label position="floating">최소 인원(명)<span class="invalid-input">*</span></ion-label>
-                      <ion-input type="number" [formControlName]="'optionMinParticipation'" clearInput></ion-input>
-                    </ion-item>
-                    <hr>
-                    <form-errors [formGroup]="optionFormGroup" [controlName]="'optionMinParticipation'"
-                      [errors]="[{key:'min',meesage:'1명 이상이어야 합니다.'},{key:'max',meesage:'1000명 제한입니다.'},{key:'isUpper',meesage:'최대 인원보다 더 높을 수 없습니다.'}]">
-                    </form-errors>
-                    <ion-item lines="none">
-                      <ion-label position="floating">최대 인원(명)<span class="invalid-input">*</span></ion-label>
-                      <ion-input type="number" [formControlName]="'optionMaxParticipation'" clearInput></ion-input>
-                    </ion-item>
-                    <hr>
-                    <form-errors [formGroup]="optionFormGroup" [controlName]="'optionMaxParticipation'"
-                      [errors]="[{key:'min',meesage:'1명 이상이어야 합니다.'},{key:'max',meesage:'1000명 제한입니다.'}]">
-                    </form-errors>
-                  </ion-col>
-                  <ion-col>
-                    <ion-item lines="none">
-                      <ion-label position="floating">시작 일시<span class="invalid-input">*</span></ion-label>
-                      <ion-datetime displayFormat="YYYY-MM-DD" [min]="min" [max]="max" [formControlName]="'optionFrom'">
-                      </ion-datetime>
-                    </ion-item>
-                    <hr>
-                    <form-errors [formGroup]="optionFormGroup" [controlName]="'optionFrom'"
-                      [errors]="[{key:'isAfter',meesage:'종료일시보다 이전이어야 합니다.'}]"> </form-errors>
-                    <ion-item lines="none">
-                      <ion-label position="floating">종료 일시<span class="invalid-input">*</span></ion-label>
-                      <ion-datetime displayFormat="YYYY-MM-DD" [min]="min" [max]="max" [formControlName]="'optionTo'">
-                      </ion-datetime>
-                    </ion-item>
-                    <hr>
-                    <form-errors [formGroup]="optionFormGroup" [controlName]="'optionTo'"
-                      [errors]="[{key:'maxDurationDays',meesage:'총 기간은 최대 1년까지 입력가능합니다.'}]"> </form-errors>
-                    <ion-item lines="none">
-                      <ion-label position="floating">스케줄<span class="invalid-input">*</span></ion-label>
-                      <br>
-                      <ngx-cron-ui (onChangeEvent)="changeSchedule($event)" [config]="ngxCronUiConfig"></ngx-cron-ui>
-                    </ion-item>
-                    <hr>
-                    <ion-item lines="none">
-                      <ion-button slot="end" (click)="addSchedule()" [disabled]="optionFormGroup.invalid"
-                        color="primary">추가하기</ion-button>
-                    </ion-item>
-                  </ion-col>
-                </ion-row>
-              </form>
-            </ion-card-content>
-          </ion-card>
+          <ion-button color="medium" (click)="openModal(addTpl)">스케줄 등록하기</ion-button>
+
+          <ng-template #addTpl>
+            <div class="modal-header">
+              <p class="modal-title pull-left">스케줄 등록하기</p>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <ion-card>
+                <ion-card-content>
+                  <form [formGroup]="optionFormGroup">
+                    <ion-row>
+                      <ion-col>
+                        <ion-label position="floating">구매 옵션<span class="invalid-input">*</span></ion-label><br>
+                        <ion-item lines="none">
+                          <ion-label position="floating">옵션 설명<span class="invalid-input">*</span></ion-label>
+                          <!-- FIXED -->
+                          <ion-input type="text" [formControlName]="'oid'" clearInput hidden></ion-input>
+                          <ion-input type="text" [formControlName]="'optionTitle'" clearInput></ion-input>
+                        </ion-item>
+                        <hr>
+                        <form-errors [formGroup]="optionFormGroup" [controlName]="'optionTitle'"
+                          [errors]="[{key:'maxlength',meesage:'100자 제한입니다.'}]"></form-errors>
+                        <ion-item lines="none">
+                          <ion-label position="floating">가격<span class="invalid-input">*</span></ion-label>
+                          <ion-input type="number" [formControlName]="'optionPrice'" clearInput></ion-input>
+                        </ion-item>
+                        <hr>
+                        <form-errors [formGroup]="optionFormGroup" [controlName]="'optionPrice'"
+                          [errors]="[{key:'min',meesage:'0원 이상이어야 합니다.'},{key:'max',meesage:'10000000원 제한입니다.'}]">
+                        </form-errors>
+                        <ion-item lines="none">
+                          <ion-label position="floating">최소 인원(명)<span class="invalid-input">*</span></ion-label>
+                          <ion-input type="number" [formControlName]="'optionMinParticipation'" clearInput></ion-input>
+                        </ion-item>
+                        <hr>
+                        <form-errors [formGroup]="optionFormGroup" [controlName]="'optionMinParticipation'"
+                          [errors]="[{key:'min',meesage:'1명 이상이어야 합니다.'},{key:'max',meesage:'1000명 제한입니다.'},{key:'isUpper',meesage:'최대 인원보다 더 높을 수 없습니다.'}]">
+                        </form-errors>
+                        <ion-item lines="none">
+                          <ion-label position="floating">최대 인원(명)<span class="invalid-input">*</span></ion-label>
+                          <ion-input type="number" [formControlName]="'optionMaxParticipation'" clearInput></ion-input>
+                        </ion-item>
+                        <hr>
+                        <form-errors [formGroup]="optionFormGroup" [controlName]="'optionMaxParticipation'"
+                          [errors]="[{key:'min',meesage:'1명 이상이어야 합니다.'},{key:'max',meesage:'1000명 제한입니다.'}]">
+                        </form-errors>
+                      </ion-col>
+                      <ion-col>
+                        <ion-item lines="none">
+                          <ion-label position="fixed">스케줄 기간<span class="invalid-input">*</span></ion-label>
+                          <input type="text" placeholder="Daterangepicker" class="form-control"
+                            [formControlName]="'optionPeriod'" bsDaterangepicker>
+                        </ion-item>
+                        <hr>
+                        <form-errors [formGroup]="optionFormGroup" [controlName]="'optionPeriod'"
+                          [errors]="[{key:'maxDurationDays',meesage:'총 기간은 최대 1년까지 입력가능합니다.'}]"> </form-errors>
+                        <ion-item lines="none">
+                          <ion-label position="floating">스케줄<span class="invalid-input">*</span></ion-label>
+                          <br>
+                          <ngx-cron-ui (onChangeEvent)="changeSchedule($event)" [config]="ngxCronUiConfig">
+                          </ngx-cron-ui>
+                        </ion-item>
+                        <hr>
+                        <ion-item lines="none">
+                          <ion-button slot="end" (click)="addSchedule()" [disabled]="optionFormGroup.invalid"
+                            color="primary">추가하기</ion-button>
+                        </ion-item>
+                      </ion-col>
+                    </ion-row>
+                  </form>
+                </ion-card-content>
+              </ion-card>
+            </div>
+          </ng-template>
 
           <full-calendar #calendar [options]="calendarOptions"></full-calendar>
 

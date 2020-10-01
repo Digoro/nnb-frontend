@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CalendarOptions, EventClickArg, FullCalendarComponent } from '@fullcalendar/angular';
 import * as CronParser from 'cron-parser';
 import * as moment from 'moment';
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxCronUiConfig } from 'ngx-cron-ui/lib/model/model';
 import { QuillEditorComponent } from 'ngx-quill';
 import { FormService } from 'src/app/service/form.service';
@@ -62,11 +64,14 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   max = moment().add(100, 'year').format('YYYY-MM-DD')
 
   options: FormArray;
+  modalRef: BsModalRef;
 
   constructor(
     private cds: CheckDesktopService,
     private formService: FormService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private modalService: BsModalService,
+    private localeService: BsLocaleService
   ) { }
 
   ngOnInit() {
@@ -83,15 +88,13 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       optionPrice: new FormControl('', this.formService.getValidators(10, [Validators.min(0), Validators.max(10000000)])),
       optionMinParticipation: new FormControl('', this.formService.getValidators(10, [Validators.min(1), Validators.max(1000)])),
       optionMaxParticipation: new FormControl('', this.formService.getValidators(10, [Validators.min(1), Validators.max(1000)])),
-      optionFrom: new FormControl('', Validators.required),
-      optionTo: new FormControl('', Validators.required),
+      optionPeriod: new FormControl('', Validators.required),
       schedule: new FormControl('', Validators.required),
     })
 
     this.optionFormGroup.valueChanges.subscribe(value => {
       const min = this.optionFormGroup.controls.optionMinParticipation;
-      const from = this.optionFormGroup.controls.optionFrom;
-      const to = this.optionFormGroup.controls.optionTo;
+      const period = this.optionFormGroup.controls.optionPeriod;
 
       if (value.optionMinParticipation && value.optionMaxParticipation) {
         if (value.optionMinParticipation > value.optionMaxParticipation) {
@@ -105,28 +108,39 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         }
       }
 
-      if (value.optionFrom && value.optionTo) {
-        if (moment(value.optionFrom).isSameOrAfter(moment(value.optionTo))) {
-          from.setErrors({ 'isAfter': true })
+      if (value.optionPeriod) {
+        const fromValue = value.optionPeriod[0];
+        const toValue = value.optionPeriod[1];
+        if (moment(fromValue).isSameOrAfter(moment(toValue))) {
+          period.setErrors({ 'isAfter': true })
         } else {
-          if (from.hasError('isAfter')) {
-            const { isAfter, ...errors } = from.errors;
-            from.setErrors(errors);
-            from.updateValueAndValidity({ emitEvent: false })
+          if (period.hasError('isAfter')) {
+            const { isAfter, ...errors } = period.errors;
+            period.setErrors(errors);
+            period.updateValueAndValidity({ emitEvent: false })
           }
 
-          if (moment(value.optionTo).diff(moment(value.optionFrom), 'days') > 365) {
-            to.setErrors({ 'maxDurationDays': true })
+          if (Math.abs(moment(toValue).diff(moment(fromValue), 'days')) > 365) {
+            period.setErrors({ 'maxDurationDays': true })
           } else {
-            if (to.hasError('maxDurationDays')) {
-              const { maxDurationDays, ...errors } = to.errors;
-              to.setErrors(errors);
-              to.updateValueAndValidity({ emitEvent: false })
+            if (period.hasError('maxDurationDays')) {
+              const { maxDurationDays, ...errors } = period.errors;
+              period.setErrors(errors);
+              period.updateValueAndValidity({ emitEvent: false })
             }
           }
         }
       }
     })
+    this.localeService.use('ko');
+  }
+
+  openModal(template: TemplateRef<any>) {
+    const config = {
+      class: 'modal-lg',
+      animated: true
+    }
+    this.modalRef = this.modalService.show(template, config);
   }
 
   updateCalendarSize() {
@@ -187,12 +201,11 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     const price = this.optionFormGroup.controls.optionPrice.value;
     const min = this.optionFormGroup.controls.optionMinParticipation.value;
     const max = this.optionFormGroup.controls.optionMaxParticipation.value;
-    const from = moment(this.optionFormGroup.controls.optionFrom.value).format('YYYY-MM-DD');
-    const to = moment(this.optionFormGroup.controls.optionTo.value).format('YYYY-MM-DD');
+    const period = this.optionFormGroup.controls.optionPeriod.value;
     const cron = this.optionFormGroup.controls.schedule.value;
     const options = {
-      currentDate: from,
-      endDate: to,
+      currentDate: moment(period[0]).format("YYYY-MM-DD"),
+      endDate: moment(period[1]).format("YYYY-MM-DD"),
       iterator: true
     };
     let newEvents = [];
@@ -217,13 +230,17 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
           return moment(origin.start).isSame(moment(newEvent.date))
         });
       })
-      if (filteredEvents.length !== newEvents.length) alert('요청하신 옵션 중 동일한 일시의 옵션을 제외하고 추가하였습니다.')
       api.addEventSource(filteredEvents);
       this.addItem(filteredEvents);
+      if (filteredEvents.length !== newEvents.length) alert('요청하신 옵션 중 동일한 일시의 옵션을 제외하고 추가하였습니다.')
+      else alert('스케줄이 등록되었습니다.')
     } else {
       api.addEventSource(newEvents);
       this.addItem(newEvents);
+      alert('스케줄이 등록되었습니다.')
     }
+    this.optionFormGroup.reset();
+    this.modalRef.hide();
   }
 
   addItem(events: any[]) {

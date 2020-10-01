@@ -149,7 +149,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
   }
 
   private setFileFormControl() {
-    this.http.get(this.meeting.file, { responseType: 'blob' }).subscribe(resp => {
+    this.http.get(this.meeting.file.replace('http', 'https'), { responseType: 'blob' }).subscribe(resp => {
       const splitted = this.meeting.file.split("/");
       const name = splitted[splitted.length - 1];
       const decoded = decodeURI(name);

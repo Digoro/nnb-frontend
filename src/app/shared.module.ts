@@ -2,12 +2,16 @@ import { AgmCoreModule } from '@agm/core';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import interactionPlugin from '@fullcalendar/interaction'; // a plugin
 import { NgxErrorsModule } from '@hackages/ngxerrors';
 import { IonicModule } from '@ionic/angular';
 import { CalendarModule } from 'ion2-calendar';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { koLocale } from 'ngx-bootstrap/locale';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxCronUiModule } from 'ngx-cron-ui';
@@ -27,6 +31,7 @@ import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { HideToolbarDirective } from './directive/hide-toolbar.directive';
 import { InputDigitsOnlyDirective } from './directive/input.digits.only.directive';
 import { TruncatePipe } from './pipe/truncate.pipe';
+defineLocale('ko', koLocale);
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin, interactionPlugin
@@ -84,7 +89,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     TableModule,
     CalendarModule,
     NgxCronUiModule,
-    FullCalendarModule
+    FullCalendarModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
   ],
   exports: [
     HorizontalSliderComponent,
@@ -112,7 +119,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MeetingControlComponent,
     FormErrorsComponent,
     NgxCronUiModule,
-    FullCalendarModule
+    FullCalendarModule,
+    BsDatepickerModule
   ],
 })
 export class SharedModule { }
