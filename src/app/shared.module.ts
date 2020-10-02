@@ -2,7 +2,6 @@ import { AgmCoreModule } from '@agm/core';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import interactionPlugin from '@fullcalendar/interaction'; // a plugin
@@ -90,7 +89,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CalendarModule,
     NgxCronUiModule,
     FullCalendarModule,
-    BrowserAnimationsModule,
     BsDatepickerModule.forRoot(),
   ],
   exports: [

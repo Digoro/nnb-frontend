@@ -118,3 +118,21 @@ agm-map {
 .next-prev {
     margin-bottom: 10px;
 }
+
+.tableFixHead {
+    overflow-y: auto;
+    height: 450px;
+}
+
+.tableFixHead thead th {
+    position: sticky;
+    top: -2px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    background: #eee;
+}

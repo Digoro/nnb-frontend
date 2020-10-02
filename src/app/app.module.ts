@@ -2,6 +2,7 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -30,7 +31,9 @@ import { SharedModule } from './shared.module';
   ],
   entryComponents: [],
   imports: [
-    BrowserModule, IonicModule.forRoot(),
+    BrowserModule,
+    BrowserAnimationsModule,
+    IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
     SharedModule
