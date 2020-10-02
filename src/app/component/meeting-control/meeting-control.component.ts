@@ -68,6 +68,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   searchedOptions: any[];
   options: FormArray;
   modalRef: BsModalRef;
+  isInitialOptionLoad = true;
 
   constructor(
     private cds: CheckDesktopService,
@@ -146,18 +147,21 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   setCalendar() {
     setTimeout(() => {
       const api = this.calendarComponent.getApi();
-      api.addEventSource(this.formGroup.controls.options.value.map(option => {
-        return {
-          id: option.oid,
-          oid: option.oid,
-          optionTitle: option.optionTitle,
-          optionPrice: option.optionPrice,
-          optionMinParticipation: option.optionMinParticipation,
-          optionMaxParticipation: option.optionMaxParticipation,
-          optionDate: option.optionDate,
-          date: option.optionDate
-        }
-      }))
+      if (this.isInitialOptionLoad) {
+        api.addEventSource(this.formGroup.controls.options.value.map(option => {
+          return {
+            id: option.oid,
+            oid: option.oid,
+            optionTitle: option.optionTitle,
+            optionPrice: option.optionPrice,
+            optionMinParticipation: option.optionMinParticipation,
+            optionMaxParticipation: option.optionMaxParticipation,
+            optionDate: option.optionDate,
+            date: option.optionDate
+          }
+        }))
+        this.isInitialOptionLoad = false;
+      }
       api.setOption('locale', 'ko')
       api.updateSize();
     })
