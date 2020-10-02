@@ -58,7 +58,11 @@
               <div formArrayName="options" *ngFor="let option of form.get('options')['controls']; let i = index;">
                 <div [formGroupName]="i">
                   <ion-item>
-                    <ion-label class="ion-text-wrap black-label">{{option.value.optionTitle}}</ion-label>
+                    <ion-label class="ion-text-wrap">
+                      <p class="black-label">{{option.value.optionTitle}}</p>
+                      <p class="black-label">가격: {{option.value.optionPrice}}</p>
+                      <p class="black-label">일시: {{option.value.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+                    </ion-label>
                     <div style="display: flex;">
                       <ion-icon name="remove-circle-outline" style="font-size: 25px" (click)="changeCount(false, i)">
                       </ion-icon>
