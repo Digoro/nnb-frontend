@@ -19,10 +19,11 @@
               <p>{{meeting.subTitle}}</p>
               <p *ngIf="meeting.price !== 0">{{meeting.price|number}}원</p>
               <p *ngIf="meeting.price === 0">무료</p>
+              <ion-badge color="light">{{getStatusLabel(meeting.status)}}</ion-badge>
             </ion-label>
             <div *ngIf="isDesktop">
               <ion-button color="medium" (click)="edit(meeting.mid)">수정하기</ion-button>
-              <ion-button color="danger" (click)="delete(meeting.mid)">삭제</ion-button>
+              <ion-button color="danger" (click)="disableMeeting(meeting.mid)">삭제</ion-button>
             </div>
             <ion-icon *ngIf="!isDesktop" name="ellipsis-vertical-outline" style="float: right; padding:20px 20px"
               class="more" (click)="presentActionSheet(meeting.mid)"></ion-icon>

@@ -112,7 +112,7 @@ export class AdminPage {
 
   toggleMeeting(event, meeting: Meeting) {
     const status = event.detail.checked ? MeetingStatus.ENTERED : MeetingStatus.CREATED
-    this.meetingService.editMeetingStatus(meeting.mid, status).subscribe(resp => {
+    this.meetingService.updateMeetingStatus(meeting.mid, status).subscribe(resp => {
       this.setMeetings();
     }, err => this.setMeetings())
   }

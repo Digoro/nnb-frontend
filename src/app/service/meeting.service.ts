@@ -64,7 +64,7 @@ export class MeetingService {
     return forkJoin(requests);
   }
 
-  editMeetingStatus(mid: number, status: MeetingStatus) {
+  updateMeetingStatus(mid: number, status: MeetingStatus) {
     return this.http.post(`/admin/meetings/status`, { mid, status })
   }
 
@@ -117,5 +117,18 @@ export class MeetingService {
         return forkJoin(requests);
       })
     )
+  }
+
+  getStatusLabel(status) {
+    switch (status) {
+      case MeetingStatus.ALL: return "전체";
+      case MeetingStatus.CREATED: return "생성";
+      case MeetingStatus.INSPACTED: return "검토";
+      case MeetingStatus.ENTERED: return "전시";
+      case MeetingStatus.UPDATED: return "수정";
+      case MeetingStatus.DISABLED: return "비활성";
+      case MeetingStatus.COMPLETED: return "완료";
+      case MeetingStatus.DELETED: return "삭제";
+    }
   }
 }

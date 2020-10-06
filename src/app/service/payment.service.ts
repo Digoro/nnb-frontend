@@ -173,6 +173,10 @@ export class PaymentService {
     return this.http.get(`payment/payment_option_maps?pid=${pid}`)
   }
 
+  getPaymentsFromMeeting(mid: number): Observable<PaymentResult[]> {
+    return this.http.get<PaymentResult[]>(`payment?mid=${mid}`)
+  }
+
   private sendAlimtalk(user: User, options: MeetingOption[], result: PaymentResult, phone: string) {
     // TODO: 알림톡 시간 타임존 문제
     const payTime = moment(result.PCD_PAY_TIME, 'YYYYMMDDHHmmss').format('MM월 DD일 HH:mm');

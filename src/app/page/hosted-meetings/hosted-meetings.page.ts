@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
-import { Meeting } from 'src/app/model/meeting';
+import { Meeting, MeetingStatus } from 'src/app/model/meeting';
 import { AuthService } from 'src/app/service/auth.service';
 import { CheckDesktopService } from 'src/app/service/check-desktop.service';
 import { MeetingService } from 'src/app/service/meeting.service';
+import { PaymentService } from './../../service/payment.service';
 
 @Component({
   selector: 'hosted-meetings',
@@ -20,7 +21,8 @@ export class HostedMeetingsPage implements OnInit {
     private meetingService: MeetingService,
     private router: Router,
     public actionSheetController: ActionSheetController,
-    private cds: CheckDesktopService
+    private cds: CheckDesktopService,
+    private paymentService: PaymentService
   ) { }
 
   ngOnInit() {
@@ -34,6 +36,10 @@ export class HostedMeetingsPage implements OnInit {
     this.meetingService.getHostedMeetings().subscribe(meetings => {
       this.hostedMeetings = meetings;
     });
+  }
+
+  getStatusLabel(status) {
+    return this.meetingService.getStatusLabel(status);
   }
 
   segmentChanged(event) {
@@ -52,12 +58,21 @@ export class HostedMeetingsPage implements OnInit {
     this.router.navigate(['/host/meeting-management/meeting-edit', mid])
   }
 
-  delete(mid: number) {
+  disableMeeting(mid: number) {
     const isDelete = confirm('정말로 삭제하시겠습니까?');
     if (isDelete) {
-      this.meetingService.deleteMeeting(mid).subscribe(resp => {
-        alert('모임을 삭제하였습니다.');
-        this.setHostedMeetings();
+      this.paymentService.getPaymentsFromMeeting(mid).subscribe(resp => {
+        if (resp.length !== 0) {
+          this.meetingService.updateMeetingStatus(mid, MeetingStatus.DISABLED).subscribe(resp => {
+            alert('결제한 고객이 있어 모임을 삭제 하지않고 비활성하였습니다.');
+            this.setHostedMeetings();
+          })
+        } else {
+          this.meetingService.deleteMeeting(mid).subscribe(resp => {
+            alert('모임을 삭제하였습니다.');
+            this.setHostedMeetings();
+          })
+        }
       })
     }
   }
@@ -80,7 +95,7 @@ export class HostedMeetingsPage implements OnInit {
         role: 'destructive',
         icon: '',
         handler: () => {
-          this.delete(mid);
+          this.disableMeeting(mid);
         }
       }, {
         text: '취소',

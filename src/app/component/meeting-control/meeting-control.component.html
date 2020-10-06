@@ -38,9 +38,11 @@
     </div>
     <div class="step" data-target="#test-l-4">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.address.invalid || formGroup.controls.detailAddress.invalid"
+        <ion-icon
+          *ngIf="formGroup.controls.address.invalid || formGroup.controls.detailAddress.invalid || formGroup.controls.runningMinutes.invalid"
           name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.address.valid && formGroup.controls.detailAddress.valid"
+        <ion-icon
+          *ngIf="formGroup.controls.address.valid && formGroup.controls.detailAddress.valid && formGroup.controls.runningMinutes.valid"
           name="checkmark-circle" style="color:#007bff">
         </ion-icon>
         장소/소요시간
@@ -227,7 +229,7 @@
           </ion-row>
           <hr>
           <div *ngIf="formGroup.controls.runningMinutes.hasError('min')">
-            <p class="invalid-input">0분이 될 수 없습니다.</p>
+            <p class="invalid-input">0분이 이상을 입력해주세요.</p>
           </div>
         </div>
         <div id="test-l-5" class="content">
@@ -266,16 +268,17 @@
           <br>
           <span class="desc">다음과 같이 표시됩니다.</span>
           <div style="padding: 20px; border: 1px solid #c8c7c7;border-radius: 4px;max-width: 240px;">
-            <span *ngIf="formGroup.controls.price.value !== 0" class="price">
-              <ng-container *ngIf="!!formGroup.controls.discountPrice.value &&
-               formGroup.controls.discountPrice.value !== 0 &&
+            <span *ngIf="formGroup.controls.price.value !== 0 && formGroup.controls.price.value !== ''" class="price">
+              <ng-container *ngIf="!!formGroup.controls.discountPrice.value && 
+              formGroup.controls.discountPrice.value !== 0 &&
               formGroup.controls.price.valid">
                 <span class="origin">{{formGroup.controls.price.value | number}}원</span>
                 <span class="discount">{{formGroup.controls.discountPrice.value | number}}원</span>
               </ng-container>
               <ng-container
-                *ngIf="formGroup.controls.discountPrice.value === 0 || !formGroup.controls.discountPrice.value">
-                <p class="discount" style="margin-bottom: 0px;">{{formGroup.controls.price.value | number}}원</p>
+                *ngIf="!formGroup.controls.discountPrice.value  || formGroup.controls.discountPrice.value === 0">
+                <p class="discount" style="margin-bottom: 0px;">
+                  {{formGroup.controls.price.value | number}}원</p>
               </ng-container>
             </span>
             <span *ngIf="formGroup.controls.price.value === 0" class="price">무료</span>
