@@ -55,10 +55,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       today: '오늘'
     },
     editable: false,
-    selectable: true,
-    eventClick: (selectInfo: EventClickArg) => {
-      console.log(selectInfo);
-    }
+    selectable: true
   };
   hours = [];
   minutes = [];
@@ -80,6 +77,10 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
+    this.calendarOptions.eventClick = (selectInfo: EventClickArg) => {
+      const { optionTitle, optionDate, optionMaxParticipation, optionMinParticipation, optionPrice } = selectInfo.event._def.extendedProps;
+      alert(`옵션: ${optionTitle}\n가격: ${optionPrice}원\n최소인원: ${optionMinParticipation}명\n최대인원: ${optionMaxParticipation}명`)
+    }
     for (let i = 0; i < 24; i++) {
       this.hours.push(i)
     }
@@ -157,7 +158,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
             optionMinParticipation: option.optionMinParticipation,
             optionMaxParticipation: option.optionMaxParticipation,
             optionDate: option.optionDate,
-            date: option.optionDate
+            date: option.optionDate,
+            title: option.optionTitle
           }
         }))
         this.isInitialOptionLoad = false;
@@ -233,7 +235,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         optionMinParticipation: min,
         optionMaxParticipation: max,
         optionDate: event.format(),
-        date: event.format()
+        date: event.format(),
+        title: title
       })
     }
     const api = this.calendarComponent.getApi();
@@ -344,7 +347,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
     this.searchedOptions.forEach(option => {
       const date = option.optionDate.split("(")[0];
-      const find = api.getEvents().find(event => {
+      api.getEvents().find(event => {
         return moment(event._def.extendedProps.optionDate).isSame(moment(date))
       }).remove();
       const value = this.options.value.find(o => {

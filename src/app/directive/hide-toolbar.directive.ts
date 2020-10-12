@@ -25,9 +25,7 @@ export class HideToolbarDirective {
   async onContentScroll($event: any) {
     const scrollElement = await $event.target.getScrollElement();
     const scrollHeight = scrollElement.scrollHeight - scrollElement.clientHeight;
-    // console.log({ scrollHeight });
     const currentScrollDepth = $event.detail.scrollTop;
-    // console.log({ currentScrollDepth });
 
     if (scrollHeight <= currentScrollDepth) return;
     if (currentScrollDepth > this.lastY) {

@@ -288,7 +288,6 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
   }
 
   markerDragEnd($event: any) {
-    console.log($event);
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
     this.zoom = 15;
@@ -297,8 +296,6 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
 
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-      console.log(results);
-      console.log(status);
       if (status === 'OK') {
         if (results[0]) {
           this.address = results[0].formatted_address;
@@ -353,8 +350,6 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
             formData.append('include', include);
             formData.append('exclude', exclude);
             formData.append('likes', `${this.meeting.likes}`);
-            console.log(this.meeting);
-            console.log(this.oldOptions);
 
             this.meetingService.editMeeting(this.meeting.mid, formData).subscribe(meeting => {
               // newWrittenOptions: 새롭게 쓰인 옵션

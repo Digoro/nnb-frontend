@@ -219,7 +219,6 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   }
 
   markerDragEnd($event: any) {
-    console.log($event);
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
     this.zoom = 15;
@@ -228,8 +227,6 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
 
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-      console.log(results);
-      console.log(status);
       if (status === 'OK') {
         if (results[0]) {
           const address = results[0].formatted_address;
