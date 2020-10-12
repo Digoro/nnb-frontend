@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CalendarOptions, EventClickArg, FullCalendarComponent } from '@fullcalendar/angular';
-import * as CronParser from 'cron-parser';
+import * as CronConverter from 'cron-converter';
 import * as moment from 'moment';
 import 'moment/locale/ko';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
@@ -213,24 +213,28 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     const max = this.optionAddFormGroup.controls.optionMaxParticipation.value;
     const period = this.optionAddFormGroup.controls.optionPeriod.value;
     const cron = this.optionAddFormGroup.controls.schedule.value;
-    const options = {
-      currentDate: moment(period[0]).format("YYYY-MM-DD"),
-      endDate: moment(period[1]).format("YYYY-MM-DD"),
-      iterator: true
-    };
+    const start = moment(period[0]).format("YYYY-MM-DD");
+    const end = moment(period[1]).format("YYYY-MM-DD");
     let newEvents = [];
-    const interval = CronParser.parseExpression(cron, options);
-    while (interval.hasNext()) {
-      const date = moment(interval.next()['value'].toString()).toDate();
+    let cronInstance = new CronConverter();
+    cronInstance.fromString(cron);
+    let schedule = cronInstance.schedule();
+    schedule = cronInstance.schedule(start);
+    while (true) {
+      const event = schedule.next();
+      const date = event.format("YYYY-MM-DD");
+      if (moment(date).isAfter(moment(end))) {
+        break;
+      }
       newEvents.push({
         oid: '',
         optionTitle: title,
         optionPrice: price,
         optionMinParticipation: min,
         optionMaxParticipation: max,
-        optionDate: date,
-        date: date
-      });
+        optionDate: event.format(),
+        date: event.format()
+      })
     }
     const api = this.calendarComponent.getApi();
     const originEvents = api.getEvents();
@@ -274,18 +278,22 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   searchSchedule() {
     const period = this.optionDeleteFormGroup.controls.optionPeriod.value;
     const cron = this.optionDeleteFormGroup.controls.schedule.value;
-    const options = {
-      currentDate: moment(period[0]).format("YYYY-MM-DD"),
-      endDate: moment(period[1]).format("YYYY-MM-DD"),
-      iterator: true
-    };
+    const start = moment(period[0]).format("YYYY-MM-DD");
+    const end = moment(period[1]).format("YYYY-MM-DD");
     let searchOptions = [];
-    const interval = CronParser.parseExpression(cron, options);
-    while (interval.hasNext()) {
-      const date = moment(interval.next()['value'].toString()).toDate();
-      searchOptions.push(date);
-    }
 
+    let cronInstance = new CronConverter();
+    cronInstance.fromString(cron);
+    let schedule = cronInstance.schedule();
+    schedule = cronInstance.schedule(start);
+    while (true) {
+      const event = schedule.next();
+      const date = event.format("YYYY-MM-DD");
+      if (moment(date).isAfter(moment(end))) {
+        break;
+      }
+      searchOptions.push(event.format())
+    }
     const api = this.calendarComponent.getApi();
     const originEvents = api.getEvents();
 
@@ -333,12 +341,16 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   deleteSchedule() {
     this.options = this.formGroup.get('options') as FormArray;
     const api = this.calendarComponent.getApi();
-    console.log(api.getEvents());
 
     this.searchedOptions.forEach(option => {
-      api.getEventById(`${option.id}`).remove();
-      const value = this.options.value.find(o => o.oid === option.oid)
-      const index = this.options.value.indexOf(value)
+      const date = option.optionDate.split("(")[0];
+      const find = api.getEvents().find(event => {
+        return moment(event._def.extendedProps.optionDate).isSame(moment(date))
+      }).remove();
+      const value = this.options.value.find(o => {
+        return moment(o.optionDate).isSame(moment(date))
+      })
+      const index = this.options.value.indexOf(value);
       this.options.removeAt(index);
     });
     alert('삭제하였습니다')
