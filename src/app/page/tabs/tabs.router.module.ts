@@ -25,7 +25,7 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'more', children: [{
+        path: 'more', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>
             import('../more/more.module').then(m => m.MorePageModule)
         }]

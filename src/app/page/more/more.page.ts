@@ -54,9 +54,7 @@ export class MorePage implements OnInit {
           ]
         })
       })
-    }, error => {
-      this.router.navigate(['/tabs/login']);
-    });
+    })
   }
 
   editUser() {
