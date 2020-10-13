@@ -1,9 +1,5 @@
 <ion-content>
   <ion-grid fixed>
-    <ion-button *ngIf="!user" color="warning" expand="full" (click)="login('kakao')">
-      <img width="28" height="28" src="../../../assets/kakaotalk_logo.png">
-      <span style="color: black">카카오톡 계정으로 로그인</span>
-    </ion-button>
     <ng-container *ngIf="!!user && !!kakaoUser && !!kakaoUser.properties">
       <ion-list style="margin: 30px 0px 25px 0px">
         <ion-item lines="none">
