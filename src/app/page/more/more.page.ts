@@ -31,6 +31,10 @@ export class MorePage implements OnInit {
   }
 
   ngOnInit() {
+
+  }
+
+  ionViewDidEnter() {
     this.authService.getCurrentUser().subscribe(resp => {
       this.user = resp.user;
       this.kakaoUser = resp.kakaoUser;
