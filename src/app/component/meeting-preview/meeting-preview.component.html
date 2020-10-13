@@ -61,9 +61,6 @@
         <a *ngIf="meeting.notice" href="javascript:document.getElementById('section-6').scrollIntoView(true);">
           <p>유의 사항</p>
         </a>
-        <a *ngIf="meeting.refund_policy" href="javascript:document.getElementById('section-7').scrollIntoView(true);">
-          <p>환불 정책</p>
-        </a>
       </div>
 
       <main>
@@ -122,16 +119,6 @@
               <ion-col>
                 <p class="title">유의 사항</p>
                 <p class="pre-wrap">{{meeting.notice}}</p>
-              </ion-col>
-            </ion-row>
-          </section>
-        </ng-container>
-        <ng-container *ngIf="meeting.refund_policy">
-          <section id="section-7">
-            <ion-row>
-              <ion-col>
-                <p class="title">환불 정책</p>
-                <p class="pre-wrap">{{meeting.refund_policy}}</p>
               </ion-col>
             </ion-row>
           </section>

@@ -17,7 +17,6 @@ export class Meeting {
         public price: number,
         public discountPrice: number,
         public likes: number,
-        public refund_policy: string,
         public notice: string,
         public check_list: string,
         public include: string,

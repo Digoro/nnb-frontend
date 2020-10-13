@@ -88,12 +88,10 @@
     </div>
     <div class="step" data-target="#test-l-9">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.refund_policy.invalid || formGroup.controls.notice.invalid"
-          name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.refund_policy.valid && formGroup.controls.notice.valid"
-          name="checkmark-circle" style="color:#007bff">
+        <ion-icon *ngIf="formGroup.controls.notice.invalid" name="checkmark-circle-outline"></ion-icon>
+        <ion-icon *ngIf="formGroup.controls.notice.valid" name="checkmark-circle" style="color:#007bff">
         </ion-icon>
-        환불 및 유의사항
+        유의사항
       </button>
     </div>
     <div class="step" data-target="#test-l-10">
@@ -367,23 +365,6 @@
             <ion-button color="primary" (click)="next()" [disabled]="formGroup.invalid">다음</ion-button>
           </div>
           <ion-item lines="none">
-            <ion-label position="floating">환불 정책<span class="invalid-input">*</span></ion-label>
-            <ion-textarea rows="7" maxlength="500" [formControlName]="'refund_policy'" clearInput></ion-textarea>
-          </ion-item>
-          <hr>
-          <p *ngIf="formGroup.controls.refund_policy.valid && formGroup.controls.refund_policy.value.length>0"
-            class="maximun-info">
-            {{formGroup.controls.refund_policy.value.length}} / 최대 500자
-          </p>
-          <div ngxErrors="refund_policy">
-            <div ngxError="maxlength" [when]="['dirty']">
-              <p class="invalid-input">500자 제한입니다.</p>
-            </div>
-            <div ngxError="required" [when]="['dirty']">
-              <p class="invalid-input">필수 입력 항목입니다.</p>
-            </div>
-          </div>
-          <ion-item lines="none">
             <ion-label position="floating">유의 사항</ion-label>
             <ion-textarea rows="7" maxlength="500" [formControlName]="'notice'" clearInput></ion-textarea>
           </ion-item>
@@ -551,3 +532,5 @@
     </ion-card>
   </div>
 </ng-template>
+
+{{formGroup.value|json}}
