@@ -78,13 +78,9 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       input.onchange = () => {
         const file = input.files[0];
         this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
-          try {
-            const editor = this.quill.quillEditor;
-            const range = editor.getSelection();
-            editor.insertEmbed(range.index, 'image', `${res.Location}`, 'user');
-          } catch (err) {
-            alert(JSON.stringify(err))
-          }
+          const editor = this.quill.quillEditor;
+          const range = editor.getSelection();
+          editor.insertEmbed(range.index, 'image', `${res.Location}`, 'user');
         })
       };
     })
@@ -138,7 +134,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
 
   next() {
     const index = this.stepper['_currentIndex'];
-    if (index === 9) {
+    if (index === 8) {
       this.makePreviewMeeting();
     }
     this.stepper.next();

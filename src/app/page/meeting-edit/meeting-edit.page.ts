@@ -203,7 +203,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
 
   next() {
     const index = this.stepper['_currentIndex'];
-    if (index === 9) {
+    if (index === 8) {
       this.makePreviewMeeting();
     }
     this.stepper.next();
