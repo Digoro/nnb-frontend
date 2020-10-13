@@ -174,7 +174,7 @@ export class PaymentService {
   }
 
   getPaymentsFromMeeting(mid: number): Observable<PaymentResult[]> {
-    return this.http.get<PaymentResult[]>(`payment?mid=${mid}`)
+    return this.http.get<PaymentResult[]>(`payment_by_meeting?mid=${mid}`)
   }
 
   private sendAlimtalk(user: User, options: MeetingOption[], result: PaymentResult, phone: string) {
