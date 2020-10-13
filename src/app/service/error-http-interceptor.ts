@@ -14,8 +14,10 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
           console.log('서버 사이드 에러 발생!!');
           console.log(`에러 코드: ${error.status},  메시지: ${error.message}`);
         }
-        if (!!error.error) alert(error.error);
-        else alert('알 수 없는 오류 발생')
+        if (error.status >= 500) {
+          if (!!error.error) alert(error.error);
+          else alert('알 수 없는 오류 발생')
+        }
         return throwError(error.message);
       })
     )
