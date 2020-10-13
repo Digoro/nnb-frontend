@@ -410,8 +410,6 @@
   </ion-col>
 </ion-row>
 
-
-
 <ng-template #addTpl>
   <div class="modal-header">
     <p class="modal-title pull-left">일괄 추가하기</p>
@@ -499,8 +497,12 @@
         <form [formGroup]="optionDeleteFormGroup">
           <ion-item lines="none">
             <ion-label position="fixed">스케줄 기간<span class="invalid-input">*</span></ion-label>
-            <input type="text" class="form-control" [formControlName]="'optionPeriod'" bsDaterangepicker>
+            <input *ngIf="isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
+              bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:2}">
           </ion-item>
+          <input *ngIf="!isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
+            bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:1}"
+            (onShown)="onShowPicker($event)">
           <hr>
           <ion-item lines="none">
             <ion-label position="floating">스케줄<span class="invalid-input">*</span></ion-label>
