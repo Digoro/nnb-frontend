@@ -61,21 +61,22 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     QuillModule.forRoot({
       modules: {
         toolbar: [
-          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-          // ['blockquote', 'code-block'],
-          [
-            { 'list': 'ordered' },
-            { 'list': 'bullet' },
-            { 'align': [] }
-          ],
-          // [{ 'indent': '-1' }, { 'indent': '+1' }],
-          [
-            { 'header': [3, 4, false] },
-            { 'color': [] },
-            // { 'size': ['small', 'large', 'huge'] },
-          ],
-          // { 'background': [] }
-          ['link', 'image', 'video']
+          ['strike', { 'color': [] }, 'link', 'image', 'video']
+          // ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+          // // ['blockquote', 'code-block'],
+          // [
+          //   { 'list': 'ordered' },
+          //   { 'list': 'bullet' },
+          //   { 'align': [] }
+          // ],
+          // // [{ 'indent': '-1' }, { 'indent': '+1' }],
+          // [
+          //   { 'header': [3, 4, false] },
+          //   { 'color': [] },
+          //   // { 'size': ['small', 'large', 'huge'] },
+          // ],
+          // // { 'background': [] }
+          // ['link', 'image', 'video']
         ]
       }
     }),
