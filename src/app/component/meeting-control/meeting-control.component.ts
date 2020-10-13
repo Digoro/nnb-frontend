@@ -4,7 +4,7 @@ import { CalendarOptions, EventClickArg, FullCalendarComponent } from '@fullcale
 import * as CronConverter from 'cron-converter';
 import * as moment from 'moment';
 import 'moment/locale/ko';
-import { BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { BsDaterangepickerDirective, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxCronUiConfig } from 'ngx-cron-ui/lib/model/model';
 import { QuillEditorComponent } from 'ngx-quill';
@@ -66,6 +66,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   options: FormArray;
   modalRef: BsModalRef;
   isInitialOptionLoad = true;
+  @ViewChild(BsDaterangepickerDirective, { static: false }) datapickerDirective;
 
   constructor(
     private cds: CheckDesktopService,
@@ -143,6 +144,18 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       animated: true
     }
     this.modalRef = this.modalService.show(template, config);
+  }
+
+  onShowPicker(event) {
+    const dayHoverHandler = event.dayHoverHandler;
+    const hoverWrapper = (hoverEvent) => {
+      const { cell, isHovered } = hoverEvent;
+      if ((isHovered && !!navigator.platform && /iPad|iPhone|iPod|Apple/.test(navigator.platform)) && 'ontouchstart' in window) {
+        (this.datapickerDirective as any)._datepickerRef.instance.daySelectHandler(cell);
+      }
+      return dayHoverHandler(hoverEvent);
+    };
+    event.dayHoverHandler = hoverWrapper;
   }
 
   setCalendar() {
