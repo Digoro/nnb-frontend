@@ -17,6 +17,7 @@ import { MeetingAddPage } from './page/meeting-add/meeting-add.page';
 import { MeetingEditPage } from './page/meeting-edit/meeting-edit.page';
 import { MeetingManagementPage } from './page/meeting-management/meeting-management.page';
 import { CsrfInterceptor } from './service/csrf.interceptor';
+import { ErrorHttpInterceptor } from './service/error-http-interceptor';
 import { TabService } from './service/tab.service';
 import { SharedModule } from './shared.module';
 
@@ -45,6 +46,7 @@ import { SharedModule } from './shared.module';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true },
     CookieService,
     TabService
   ],
