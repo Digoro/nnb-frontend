@@ -70,24 +70,24 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   }
 
   getEditorInstance(editorInstance: any) {
-    try {
-      let toolbar = editorInstance.getModule('toolbar');
-      toolbar.addHandler('image', () => {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.click();
-        input.onchange = () => {
-          const file = input.files[0];
-          this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
+    let toolbar = editorInstance.getModule('toolbar');
+    toolbar.addHandler('image', () => {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.click();
+      input.onchange = () => {
+        const file = input.files[0];
+        this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
+          try {
             const editor = this.quill.quillEditor;
             const range = editor.getSelection();
             editor.insertEmbed(range.index, 'image', `${res.Location}`, 'user');
-          })
-        };
-      });
-    } catch (err) {
-      alert(JSON.stringify(err))
-    }
+          } catch (err) {
+            alert(JSON.stringify(err))
+          }
+        })
+      };
+    })
   }
 
   ngOnInit() {
