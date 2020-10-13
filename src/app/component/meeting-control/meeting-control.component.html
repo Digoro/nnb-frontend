@@ -426,10 +426,10 @@
           <ion-item lines="none">
             <ion-label position="fixed">스케줄 기간<span class="invalid-input">*</span></ion-label>
             <input *ngIf="isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
-              bsDaterangepicker [bsConfig]="{containerClass: 'theme-default'}">
+              bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:2}">
           </ion-item>
           <input *ngIf="!isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
-            bsDaterangepicker [bsConfig]="{containerClass: 'theme-default'}">
+            bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:1}">
           <hr>
           <form-errors [formGroup]=" optionAddFormGroup" [controlName]="'optionPeriod'"
             [errors]="[{key:'maxDurationDays',meesage:'총 기간은 최대 1년까지 입력가능합니다.'}]"> </form-errors>
