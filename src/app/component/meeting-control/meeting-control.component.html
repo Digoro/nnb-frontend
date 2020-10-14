@@ -377,6 +377,9 @@
               <p class="invalid-input">500자 제한입니다.</p>
             </div>
           </div>
+          <ion-checkbox type="checkbox" [checked]="noticeChcked" (ionChange)="checkAllowPolicy($event)">
+          </ion-checkbox>
+          노는법 정책을 따르겠습니다.
         </div>
         <div id="test-l-10" class="content">
           <div class="next-prev">
