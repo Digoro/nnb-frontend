@@ -162,18 +162,20 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   checkAllowPolicy(event) {
     const isChecked = event.target.checked;
     this.noticeChcked = isChecked;
+    const value = `✔ 최소 인원 모객 미달로 인해 모임 오픈이 취소되는 경우 참가비는 전액 환불됩니다.
+✔ 노는법의 모든 모임은 다수의 인원이 참여하는 프로그램이므로, 발열/호흡기 관련 증상, 감기 등의 질병이 발생한 분들은 참여를 지양해주세요.
+✔ 모임 참가 시에는 마스크 착용, 손 소독제 활용 등으로 안전에 특히 유의해주세요.
+✔ 일정 변동 없이 진행되는 모임은 하단의 환불 규정을 따릅니다. 참여가 우려되시는 분들은 구매 시 신중한 선택 부탁드리며, 환불 규정을 숙지하여 기한 내 환불 신청 바랍니다.`
     if (isChecked) {
       if (this.formGroup.controls.notice.value !== '') {
         const result = confirm("기존 작성한 유의사항 내용이 사라집니다.");
         if (result) {
-          const value = `✔ 최소 인원 모객 미달로 인해 모임 오픈이 취소되는 경우 참가비는 전액 환불됩니다.
-✔ 노는법의 모든 모임은 다수의 인원이 참여하는 프로그램이므로, 발열/호흡기 관련 증상, 감기 등의 질병이 발생한 분들은 참여를 지양해주세요.
-✔ 모임 참가 시에는 마스크 착용, 손 소독제 활용 등으로 안전에 특히 유의해주세요.
-✔ 일정 변동 없이 진행되는 모임은 하단의 환불 규정을 따릅니다. 참여가 우려되시는 분들은 구매 시 신중한 선택 부탁드리며, 환불 규정을 숙지하여 기한 내 환불 신청 바랍니다.`
           this.formGroup.controls.notice.setValue(value);
         } else {
           setTimeout(() => this.noticeChcked = false)
         }
+      } else {
+        this.formGroup.controls.notice.setValue(value);
       }
     }
   }
