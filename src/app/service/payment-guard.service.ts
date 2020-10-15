@@ -27,8 +27,8 @@ export class PaymentGuard implements CanActivateChild {
         return this.meetingService.getPurchasedMeetings(user.uid)
       }),
       map(purchasedMeetings => {
-        const isPurchased = purchasedMeetings.filter(m => m.mid === +mid).length === 1;
-        if (isPurchased) {
+        const isPurchased = purchasedMeetings.find(m => m.payment.mid === +mid);
+        if (!!isPurchased) {
           alert('이미 결제한 모임입니다.');
           return false;
         } else return true;

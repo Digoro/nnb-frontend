@@ -133,18 +133,21 @@ export class PaymentService {
       }
     };
     switch (method) {
+      // [from docs.payple.kr] 앱카드 결제
       // 카드 일반 결제 (다날 결제)
       case PayMethod.CARD: {
         obj['PCD_CARD_VER'] = "02"; // 카드 결제에만 쓰임
         obj['PCD_PAY_TYPE'] = "card";
         break;
       }
+      // [from docs.payple.kr] 일회성 간편 결제
       // 계좌 일반 결제
       case PayMethod.TRANSFER: {
         obj['PCD_PAY_TYPE'] = "transfer";
         obj['PCD_TAXSAVE_FLAG'] = "N" // 계좌 결제에만 쓰임, 현금영수증 N
         break;
       }
+      // [from docs.payple.kr] 계좌: 비밀번호 간편결제, 카드: 비밀번호 간편결제
       // 간편 결제(계좌 or 카드)
       case PayMethod.SIMPLE_TRANSFER: {
         obj['PCD_PAYER_AUTHTYPE'] = "pwd"; // PCD_SIMPLE_FLAG=Y일 때는 필수 파라미터
@@ -222,5 +225,11 @@ export class PaymentService {
   // 결제 결과 저장
   addPaymentResult(result: PaymentResult) {
     return this.http.post(`/payment/callback`, result)
+  }
+
+  refund(pid: number, PCD_PAY_OID: string, PCD_PAY_DATE: string, PCD_REFUND_TOTAL: string) {
+    //TODO: 환불 정책에 따라 PCD_REFUND_TOTAL 변경해야 함
+    //TODO: 포인트/쿠폰도 환불 적용해야함
+    return this.http.post('payment/refund', { pid: pid, PCD_PAY_OID, PCD_PAY_DATE, PCD_REFUND_TOTAL });
   }
 }

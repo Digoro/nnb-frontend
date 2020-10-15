@@ -4,60 +4,22 @@
       <ion-segment-button value="join">
         <ion-label>등록한 모임</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="like">
+      <!-- <ion-segment-button value="like">
         <ion-label>찜한 모임</ion-label>
-      </ion-segment-button>
+      </ion-segment-button> -->
       <!-- <ion-segment-button value="comment">
         <ion-label>내가 쓴 댓글</ion-label>
       </ion-segment-button> -->
-      <!-- <ion-segment-button value="refund">
+      <ion-segment-button value="refund">
         <ion-label>환불 내역</ion-label>
-      </ion-segment-button> -->
+      </ion-segment-button>
     </ion-segment>
     <br>
 
     <ng-container *ngIf="selectedMenu === 'join'">
-      <ng-container *ngFor="let options of purchasedMeetings">
-        <ion-card>
-          <ion-row>
-            <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12" size="12">
-              <img style="max-height: 275px;" [src]="options[0].payment.mid.file"
-                (click)="goDetailPage(options[0].payment.mid)" />
-              <ion-card-header (click)="goDetailPage(options[0].payment.mid)">
-                <ion-card-title>{{options[0].payment.mid.title}}</ion-card-title>
-                <ion-card-subtitle>{{options[0].payment.mid.subTitle}}</ion-card-subtitle>
-              </ion-card-header>
-            </ion-col>
-            <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12" size="12">
-              <ion-card-content>
-                <ion-chip outline color="tertiary">
-                  <ion-label>결제 정보</ion-label>
-                </ion-chip>
-                <p>주문번호: {{options[0].payment.PCD_PAY_OID}}</p>
-                <p>결제일시: {{options[0].payment.PCD_PAY_TIME}}</p>
-                <p>결제금액: {{options[0].payment.PCD_PAY_TOTAL|number}}원</p>
-                <br>
-                <ion-chip outline color="primary">
-                  <ion-label>구매 옵션</ion-label>
-                </ion-chip>
-                <ng-container *ngFor="let option of options;let last = last">
-                  <p>옵션: {{option.option.optionTitle}}</p>
-                  <p>시작일: {{option.option.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
-                  <p>가격: {{option.option.optionPrice}}원</p>
-                  <p>수량: {{option.count}}개</p>
-                  <hr *ngIf="!last">
-                </ng-container>
-                <ng-container *ngIf="options[0].payment.couponId">
-                  <br>
-                  <ion-chip outline color="success">
-                    <ion-label>쿠폰</ion-label>
-                  </ion-chip>
-                  <p>{{options[0].payment.couponId.title}} ({{options[0].payment.couponId.price|number}}원)</p>
-                </ng-container>
-              </ion-card-content>
-            </ion-col>
-          </ion-row>
-        </ion-card>
+      <ng-container *ngFor="let purchasedMeeting of purchasedMeetings">
+        <myinfo-meeting [meeting]="purchasedMeeting" (onGoDetailPage)="goDetailPage($event)"
+          (onCancelEvent)="cancel($event)"></myinfo-meeting>
       </ng-container>
       <ng-container *ngIf="!purchasedMeetings">
         <div style="text-align: center; opacity: 0.4;">
@@ -67,23 +29,25 @@
         </div>
       </ng-container>
     </ng-container>
-    <ion-row *ngIf="selectedMenu === 'refund'">
-      <ion-col>
+    <ng-container *ngIf="selectedMenu === 'refund'">
+      <ng-container *ngFor="let refundMeeting of refundMeetings">
+        <myinfo-meeting [meeting]="refundMeeting" (onGoDetailPage)="goDetailPage($event)"
+          (onCancelEvent)="cancel($event)"></myinfo-meeting>
+      </ng-container>
+      <ng-container *ngIf="!refundMeetings">
         <div style="text-align: center; opacity: 0.4;">
           <ion-chip outline>
-            <ion-label color="primary">서비스 추가 예정입니다.</ion-label>
+            <ion-label color="primary">환불 내역이 없습니다.</ion-label>
           </ion-chip>
         </div>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="selectedMenu === 'like'">
-      <ion-col>
-        <div style="text-align: center; opacity: 0.4;">
-          <ion-chip outline>
-            <ion-label color="primary">서비스 추가 예정입니다.</ion-label>
-          </ion-chip>
-        </div>
-      </ion-col>
-    </ion-row>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="selectedMenu === 'like'">
+      <div style="text-align: center; opacity: 0.4;">
+        <ion-chip outline>
+          <ion-label color="primary">서비스 추가 예정입니다.</ion-label>
+        </ion-chip>
+      </div>
+    </ng-container>
   </ion-grid>
 </ion-content>

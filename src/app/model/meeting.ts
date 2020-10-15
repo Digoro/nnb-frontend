@@ -1,4 +1,5 @@
 import { Category } from './category';
+import { PaymentResult } from './payment';
 
 export class Meeting {
     constructor(
@@ -49,4 +50,9 @@ export class MeetingOption {
         public optionMaxParticipation: number,
         public isOld: boolean
     ) { }
+}
+
+export interface PurchasedMeeting {
+    payment: PaymentResult,
+    options: MeetingOption
 }

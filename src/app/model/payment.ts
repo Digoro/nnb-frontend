@@ -1,6 +1,8 @@
 export class PaymentResult {
     constructor(
         public pid: number,
+        public mid: number,
+        public uid: number,
         public phone: string,
         public PCD_PAY_RST: string,
         public PCD_PAY_MSG: string,
@@ -26,8 +28,20 @@ export class PaymentResult {
         public PCD_TAXSAVE_FLAG: string,
         public PCD_TAXSAVE_RST: string,
         public PCD_TAXSAVE_MGTNUM: string,
-        public mid: number,
-        public uid: number,
+        public PCD_PAYER_NAME: string,
+        public PCD_RST_URL: string,
+        public PCD_PAYER_EMAIL: string,
+        public PCD_PAY_CARDNAME: string,
+        public PCD_PAY_CARDNUM: string,
+        public PCD_PAY_CARDTRADENUM: string,
+        public PCD_PAY_CARDAUTHNO: string,
+        public PCD_PAY_CARDRECEIPT: string,
+        public PCD_CARD_VER: string,
+        public PCD_PAYER_HP: string,
+        public PCD_PAY_BANKACCTYPE: string,
+        public PCD_PAY_REFUND_CARDRECEIPT: string,
+        public PCD_REFUND_TOTAL: string,
+        public isRefund: string,
         public couponId?: number,
         public options?: any[]
     ) { }

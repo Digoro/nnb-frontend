@@ -271,10 +271,13 @@ export class PaymentPage implements OnInit {
     const { phone, options } = this.form.value
     const now = moment();
     const time = now.format('YYYYMMDDHHmmss');
-    const payment = new PaymentResult(0, phone, 'success', '무료모임 등록성공', undefined, undefined, undefined,
-      `nonunbub${this.user.uid}${this.meeting.mid}`, undefined, undefined, undefined, undefined, undefined,
-      undefined, undefined, this.meeting.title, '0', undefined, undefined, undefined, undefined, undefined,
-      time, undefined, undefined, undefined, this.meeting.mid, this.user.uid);
+
+
+    const payment = new PaymentResult(0, this.meeting.mid, this.user.uid, phone, 'success', '무료모임 등록 성공',
+      undefined, undefined, undefined, `nonunbub${this.user.uid}${this.meeting.mid}`, undefined, undefined
+      , undefined, undefined, undefined, undefined, undefined, this.meeting.title, '0', undefined, undefined
+      , undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined
+      , undefined, undefined, undefined, undefined, phone, undefined, undefined, undefined, undefined, undefined)
     this.paymentService.joinFreeMeeting(payment, options, phone, this.user);
   }
 

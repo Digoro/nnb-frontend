@@ -26,6 +26,7 @@ import { HorizontalSliderComponent } from './component/horizontal-slider/horizon
 import { MeetingCardComponent } from './component/meeting-card/meeting-card.component';
 import { MeetingControlComponent } from './component/meeting-control/meeting-control.component';
 import { MeetingPreviewComponent } from './component/meeting-preview/meeting-preview.component';
+import { MyinfoMeetingComponent } from './component/myinfo-meeting/myinfo-meeting.component';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { HideToolbarDirective } from './directive/hide-toolbar.directive';
 import { InputDigitsOnlyDirective } from './directive/input.digits.only.directive';
@@ -49,7 +50,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FooterComponent,
     MeetingPreviewComponent,
     MeetingControlComponent,
-    FormErrorsComponent
+    FormErrorsComponent,
+    MyinfoMeetingComponent
   ],
   imports: [
     CommonModule,
@@ -98,6 +100,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     EmptyMeetingCardComponent,
     SkeletonComponent,
     CommentComponent,
+    MyinfoMeetingComponent,
     CommonModule,
     IonicModule,
     FormsModule,

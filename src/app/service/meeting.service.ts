@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
-import { Meeting, MeetingOption, MeetingStatus } from '../model/meeting';
+import { Meeting, MeetingOption, MeetingStatus, PurchasedMeeting } from '../model/meeting';
 import { PaymentService } from './payment.service';
 import { UrlService } from './url.service';
 import { UtilService } from './util.service';
@@ -109,12 +109,22 @@ export class MeetingService {
     return this.http.delete(`${this.urlPrefix}/meetings/${mid}`);
   }
 
-  getPurchasedMeetings(uid: number) {
+  getPurchasedMeetings(uid: number): Observable<PurchasedMeeting[]> {
     return this.paymentService.getPurchasedInfo(uid).pipe(
       concatMap(info => {
         const requests = info.map(p => this.paymentService.getPaymentOptionMaps(p.pid).toPromise())
         if (requests.length === 0) return of([]);
         return forkJoin(requests);
+      }),
+      map(payments => {
+        return payments.map(paymentList => {
+          return {
+            payment: paymentList[0].payment,
+            options: paymentList.map(payment => {
+              return { ...payment.option, count: payment.count }
+            })
+          }
+        })
       })
     )
   }
