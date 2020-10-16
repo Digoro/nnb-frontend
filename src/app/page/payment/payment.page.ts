@@ -245,6 +245,7 @@ export class PaymentPage implements OnInit {
   pay() {
     const { phone, options, coupon } = this.form.value;
     let method, selectedAccount;
+    let isOk = true;
     switch (this.paymentMethod) {
       case 'card': method = PayMethod.CARD; break;
       case 'transfer': method = PayMethod.TRANSFER; break;
@@ -252,12 +253,18 @@ export class PaymentPage implements OnInit {
         method = PayMethod.SIMPLE_TRANSFER;
         selectedAccount = this.accounts.find(a => a.PCD_PAYER_ID === this.selectedPayerId);
         if (this.selectedPayerId) method = PayMethod.SIMPLE_TRANSFER;
-        else alert('간편결제 방법을 선택해주세요')
+        else {
+          isOk = false;
+          alert('간편결제 방법을 선택해주세요')
+        }
         break;
       };
-      default: alert('결제 방법을 선택해주세요');
+      default: {
+        isOk = false;
+        alert('결제 방법을 선택해주세요');
+      }
     }
-    this.paymentService.pay(method, this.user, this.meeting, phone, this.price, options, coupon, selectedAccount);
+    if (isOk) this.paymentService.pay(method, this.user, this.meeting, phone, this.price, options, coupon, selectedAccount);
   }
 
   ionViewDidLeave() {

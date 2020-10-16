@@ -8,7 +8,7 @@ import { PaymentOptionMap, PaymentResult } from 'src/app/model/payment';
 import { Coupon } from '../model/coupon';
 import { PayMethod, UserPaymentInfo } from '../model/payment-user-info';
 import { AlimtalkPaymentResult } from './../model/alimtalk-payment-result';
-import { Meeting, MeetingOption } from './../model/meeting';
+import { Meeting, MeetingOption, PurchasedMeeting } from './../model/meeting';
 import { User } from './../model/user';
 import { AlimtalkService } from './alimtalk.service';
 import { UrlService } from './url.service';
