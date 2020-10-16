@@ -235,7 +235,7 @@ export class PaymentService {
       couponId: couponId,
       PCD_PAY_OID: meeting.payment.PCD_PAY_OID,
       PCD_PAY_DATE: moment().format("YYYYMMDD"),
-      PCD_REFUND_TOTAL: meeting.payment.PCD_PAY_TOTAL
+      PCD_REFUND_TOTAL: 1000
     });
   }
 }
