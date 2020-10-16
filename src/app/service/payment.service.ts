@@ -232,6 +232,7 @@ export class PaymentService {
     //TODO: 쿠폰 환불 해야함
     // const couponId = meeting.payment.couponId ? meeting.payment.couponId['couponId'] : undefined;
     return this.http.post('payment/refund', {
+      pomid: option['pomid'],
       pid: meeting.payment.pid,
       couponId: undefined,
       PCD_PAY_OID: meeting.payment.PCD_PAY_OID,

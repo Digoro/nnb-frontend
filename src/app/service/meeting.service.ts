@@ -124,6 +124,7 @@ export class MeetingService {
             options: paymentList.map(payment => {
               return {
                 ...payment.option,
+                pomid: payment.pomid,
                 count: payment.count,
                 PCD_PAY_REFUND_CARDRECEIPT: payment.PCD_PAY_REFUND_CARDRECEIPT,
                 PCD_REFUND_TOTAL: payment.PCD_REFUND_TOTAL,
