@@ -1,7 +1,7 @@
 <ion-card *ngIf="!!meeting">
   <ion-row>
     <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12" size="12">
-      <img style="max-height: 275px;" [src]="$any(meeting.payment.mid).file"
+      <img style="max-height: 275px; cursor: pointer;" [src]="$any(meeting.payment.mid).file"
         (click)="goDetailPage(meeting.payment.mid)" />
       <ion-card-header (click)="goDetailPage(meeting.payment.mid)">
         <ion-card-title>{{$any(meeting.payment.mid).title}}</ion-card-title>

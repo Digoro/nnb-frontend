@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
-import * as moment from 'moment';
 import { Coupon } from 'src/app/model/coupon';
 import { Meeting } from 'src/app/model/meeting';
 import { User } from 'src/app/model/user';
@@ -59,11 +58,10 @@ export class MyInfoPage {
     this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
   }
 
-  cancel(payment: PurchasedMeeting) {
-    this.paymentService.refund(payment.payment.pid, payment.payment.PCD_PAY_OID,
-      moment().format("YYYYMMDD"), payment.payment.PCD_PAY_TOTAL).subscribe(resp => {
-        alert("환불 되었습니다.");
-        this.setMyMeetings();
-      })
+  cancel(meeting: PurchasedMeeting) {
+    this.paymentService.refund(meeting).subscribe(resp => {
+      alert("환불 되었습니다.");
+      this.setMyMeetings();
+    })
   }
 }
