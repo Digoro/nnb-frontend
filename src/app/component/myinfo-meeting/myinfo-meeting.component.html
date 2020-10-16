@@ -16,15 +16,12 @@
         <p>주문번호: {{meeting.payment.PCD_PAY_OID}}</p>
         <p>결제일시: {{meeting.payment.PCD_PAY_TIME}}</p>
         <p>결제금액: {{meeting.payment.PCD_PAY_TOTAL|number}}원</p>
-        <p *ngIf="meeting.payment.isRefund">환불금액: {{meeting.payment.PCD_REFUND_TOTAL|number}}원</p>
 
         <ng-container *ngIf="meeting.payment.PCD_PAY_TYPE === 'card'">
           <p>카드사: {{meeting.payment.PCD_PAY_CARDNAME}}</p>
           <p>카드번호: {{meeting.payment.PCD_PAY_CARDNUM}}</p>
-          <p *ngIf="!meeting.payment.isRefund"><a [href]="meeting.payment.PCD_PAY_CARDRECEIPT" target="_blank">매출전표
+          <p><a [href]="meeting.payment.PCD_PAY_CARDRECEIPT" target="_blank">매출전표
               확인하기</a></p>
-          <p *ngIf="meeting.payment.isRefund"><a [href]="meeting.payment.PCD_PAY_REFUND_CARDRECEIPT"
-              target="_blank">매출전표 확인하기</a></p>
         </ng-container>
 
         <ng-container *ngIf="meeting.payment.PCD_PAY_TYPE === 'transfer'">
@@ -39,7 +36,13 @@
           <p>옵션: {{option.optionTitle}}</p>
           <p>시작일: {{option.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
           <p>가격: {{option.optionPrice}}원</p>
-          <p>수량: {{$any(option).count}}개</p>
+          <p>수량: {{option.count}}개</p>
+          <p *ngIf="option.isRefund">환불금액: {{option.PCD_REFUND_TOTAL|number}}원</p>
+          <p *ngIf="option.isRefund"><a [href]="option.PCD_PAY_REFUND_CARDRECEIPT" target="_blank">
+              매출전표 확인하기</a></p>
+          <ion-button *ngIf="!option.isRefund" color="medium" size="small" (click)="cancel(meeting, option)">취소하기
+          </ion-button>
+          <ion-button *ngIf="option.isRefund" color="medium" size="small" disabled>환불 완료된 옵션입니다.</ion-button>
           <hr *ngIf="!last">
         </ng-container>
         <ng-container *ngIf="meeting.payment.couponId">
@@ -52,9 +55,6 @@
           </p>
         </ng-container>
         <br>
-        <!-- <ion-button *ngIf="!meeting.payment.isRefund" color="medium" size="small" (click)="cancel(meeting)">취소하기
-        </ion-button> -->
-        <ion-button *ngIf="meeting.payment.isRefund" color="medium" size="small" disabled>환불 완료된 모임입니다.</ion-button>
       </ion-card-content>
     </ion-col>
   </ion-row>

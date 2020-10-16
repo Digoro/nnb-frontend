@@ -284,7 +284,7 @@ export class PaymentPage implements OnInit {
       undefined, undefined, undefined, `nonunbub${this.user.uid}${this.meeting.mid}`, undefined, undefined
       , undefined, undefined, undefined, undefined, undefined, this.meeting.title, '0', undefined, undefined
       , undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined
-      , undefined, undefined, undefined, undefined, phone, undefined, undefined, undefined, undefined, undefined)
+      , undefined, undefined, undefined, undefined, phone, undefined)
     this.paymentService.joinFreeMeeting(payment, options, phone, this.user);
   }
 

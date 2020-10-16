@@ -1,3 +1,5 @@
+import { MeetingOption } from './meeting';
+
 export class PaymentResult {
     constructor(
         public pid: number,
@@ -39,9 +41,6 @@ export class PaymentResult {
         public PCD_CARD_VER: string,
         public PCD_PAYER_HP: string,
         public PCD_PAY_BANKACCTYPE: string,
-        public PCD_PAY_REFUND_CARDRECEIPT: string,
-        public PCD_REFUND_TOTAL: string,
-        public isRefund: string,
         public couponId?: number,
         public options?: any[]
     ) { }
@@ -50,9 +49,12 @@ export class PaymentResult {
 export class PaymentOptionMap {
     constructor(
         public pomid: number,
-        public payment: number,
-        public option: number,
-        public count: number
+        public payment: PaymentResult | number,
+        public option: MeetingOption | number,
+        public count: number,
+        public PCD_PAY_REFUND_CARDRECEIPT: string = "",
+        public PCD_REFUND_TOTAL: number = 0,
+        public isRefund: boolean = false,
     ) { }
 }
 

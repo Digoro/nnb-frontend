@@ -227,15 +227,16 @@ export class PaymentService {
     return this.http.post(`/payment/callback`, result)
   }
 
-  refund(meeting: PurchasedMeeting) {
+  refund(meeting: PurchasedMeeting, option: MeetingOption) {
     //TODO: 환불 정책에 따라 PCD_REFUND_TOTAL 변경해야 함
-    const couponId = meeting.payment.couponId ? meeting.payment.couponId['couponId'] : undefined;
+    //TODO: 쿠폰 환불 해야함
+    // const couponId = meeting.payment.couponId ? meeting.payment.couponId['couponId'] : undefined;
     return this.http.post('payment/refund', {
       pid: meeting.payment.pid,
-      couponId: couponId,
+      couponId: undefined,
       PCD_PAY_OID: meeting.payment.PCD_PAY_OID,
       PCD_PAY_DATE: moment().format("YYYYMMDD"),
-      PCD_REFUND_TOTAL: meeting.payment.PCD_PAY_TOTAL
+      PCD_REFUND_TOTAL: option.optionPrice * option['count']
     });
   }
 }

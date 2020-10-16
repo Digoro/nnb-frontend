@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
-import { Meeting, MeetingOption, MeetingStatus, PurchasedMeeting } from '../model/meeting';
+import { Meeting, MeetingStatus } from '../model/meeting';
+import { MeetingOption, PurchasedMeeting } from './../model/meeting';
 import { PaymentService } from './payment.service';
 import { UrlService } from './url.service';
 import { UtilService } from './util.service';
@@ -121,7 +122,13 @@ export class MeetingService {
           return {
             payment: paymentList[0].payment,
             options: paymentList.map(payment => {
-              return { ...payment.option, count: payment.count }
+              return {
+                ...payment.option,
+                count: payment.count,
+                PCD_PAY_REFUND_CARDRECEIPT: payment.PCD_PAY_REFUND_CARDRECEIPT,
+                PCD_REFUND_TOTAL: payment.PCD_REFUND_TOTAL,
+                isRefund: payment.isRefund
+              }
             })
           }
         })

@@ -7,7 +7,7 @@ import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { PaymentService } from 'src/app/service/payment.service';
-import { PurchasedMeeting } from './../../model/meeting';
+import { MeetingOption, PurchasedMeeting } from './../../model/meeting';
 
 @Component({
   selector: "my-info",
@@ -17,7 +17,6 @@ import { PurchasedMeeting } from './../../model/meeting';
 export class MyInfoPage {
   user: User;
   purchasedMeetings: PurchasedMeeting[];
-  refundMeetings: PurchasedMeeting[];
   selectedMenu: string;
   Coupon: Coupon;
 
@@ -38,13 +37,12 @@ export class MyInfoPage {
     this.authService.getCurrentNonunbubUser().subscribe(currentUser => {
       this.user = currentUser;
       this.meetingService.getPurchasedMeetings(this.user.uid).subscribe(meetings => {
+        console.log(meetings);
         if (meetings.length === 0) {
           this.purchasedMeetings = undefined;
-          this.refundMeetings = undefined;
         }
         else {
-          this.purchasedMeetings = meetings.filter(meeting => !meeting.payment.isRefund);
-          this.refundMeetings = meetings.filter(meeting => meeting.payment.isRefund);
+          this.purchasedMeetings = meetings;
         }
       });
     });
@@ -58,8 +56,10 @@ export class MyInfoPage {
     this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
   }
 
-  cancel(meeting: PurchasedMeeting) {
-    this.paymentService.refund(meeting).subscribe(resp => {
+  cancel(event: { meeting: PurchasedMeeting, option: MeetingOption }) {
+    const purchasedMeeting = event.meeting;
+    const option = event.option
+    this.paymentService.refund(purchasedMeeting, option).subscribe(resp => {
       alert("환불 되었습니다.");
       this.setMyMeetings();
     })

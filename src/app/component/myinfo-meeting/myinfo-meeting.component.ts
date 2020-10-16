@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PurchasedMeeting } from './../../model/meeting';
+import { MeetingOption, PurchasedMeeting } from './../../model/meeting';
 
 @Component({
   selector: 'myinfo-meeting',
@@ -20,7 +20,7 @@ export class MyinfoMeetingComponent implements OnInit {
     this.onGoDetailPage.emit(mid);
   }
 
-  cancel(meeting: PurchasedMeeting) {
-    this.onCancelEvent.emit(meeting);
+  cancel(meeting: PurchasedMeeting, option: MeetingOption) {
+    this.onCancelEvent.emit({ meeting, option });
   }
 }
