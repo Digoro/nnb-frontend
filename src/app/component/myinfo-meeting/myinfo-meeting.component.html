@@ -16,6 +16,21 @@
         <p>주문번호: {{meeting.payment.PCD_PAY_OID}}</p>
         <p>결제일시: {{meeting.payment.PCD_PAY_TIME}}</p>
         <p>결제금액: {{meeting.payment.PCD_PAY_TOTAL|number}}원</p>
+        <p *ngIf="meeting.payment.isRefund">환불금액: {{meeting.payment.PCD_REFUND_TOTAL|number}}원</p>
+
+        <ng-container *ngIf="meeting.payment.PCD_PAY_TYPE === 'card'">
+          <p>카드사: {{meeting.payment.PCD_PAY_CARDNAME}}</p>
+          <p>카드번호: {{meeting.payment.PCD_PAY_CARDNUM}}</p>
+          <p *ngIf="!meeting.payment.isRefund"><a [href]="meeting.payment.PCD_PAY_CARDRECEIPT" target="_blank">매출전표
+              확인하기</a></p>
+          <p *ngIf="meeting.payment.isRefund"><a [href]="meeting.payment.PCD_PAY_REFUND_CARDRECEIPT"
+              target="_blank">매출전표 확인하기</a></p>
+        </ng-container>
+
+        <ng-container *ngIf="meeting.payment.PCD_PAY_TYPE === 'transfer'">
+          <p>은행명: {{meeting.payment.PCD_PAY_BANKNAME}}</p>
+          <p>계좌번호: {{meeting.payment.PCD_PAY_BANKNUM}}</p>
+        </ng-container>
         <br>
         <ion-chip outline color="primary">
           <ion-label>구매 옵션</ion-label>
