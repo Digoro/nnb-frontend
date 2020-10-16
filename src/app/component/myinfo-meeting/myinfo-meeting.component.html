@@ -37,8 +37,8 @@
           </p>
         </ng-container>
         <br>
-        <!-- <ion-button *ngIf="!meeting.payment.isRefund" color="medium" size="small" (click)="cancel(meeting)">취소하기
-        </ion-button> -->
+        <ion-button *ngIf="!meeting.payment.isRefund" color="medium" size="small" (click)="cancel(meeting)">취소하기
+        </ion-button>
         <ion-button *ngIf="meeting.payment.isRefund" color="medium" size="small" disabled>환불 완료된 모임입니다.</ion-button>
       </ion-card-content>
     </ion-col>
