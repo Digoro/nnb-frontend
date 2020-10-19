@@ -110,6 +110,8 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
       check_list: new FormControl('', this.formService.getValidators(500)),
       include: new FormControl('', Validators.maxLength(500)),
       exclude: new FormControl('', Validators.maxLength(500)),
+      refundPolicy100: new FormControl('', this.formService.getValidators(4, [Validators.max(9999), Validators.min(0), this.validateRefundPolicy0('refundPolicy100')])),
+      refundPolicy0: new FormControl('', this.formService.getValidators(4, [Validators.max(9999), Validators.min(0)])),
       options: this.fb.array([], Validators.required)
     })
     this.route.params.subscribe(params => {
@@ -144,6 +146,26 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
     } else {
       discountPrice.setErrors({ 'isUpper': null });
       discountPrice.updateValueAndValidity();
+    }
+  }
+
+  validateRefundPolicy0(controlName: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } => {
+      const refundPolicy0 = control.value;
+      const refundPolicy100 = control.root.value[controlName];
+      const isUpper = refundPolicy100 < refundPolicy0 + 2;
+      return isUpper ? { 'isUpper': { isUpper } } : null;
+    };
+  }
+
+  checkRefundPolicy0() {
+    const refundPolicy100 = this.meetingForm.controls.refundPolicy100;
+    const refundPolicy0 = this.meetingForm.controls.refundPolicy0;
+    if (refundPolicy100.value < refundPolicy0.value) {
+      refundPolicy0.setErrors({ 'isUpper': true })
+    } else {
+      refundPolicy0.setErrors({ 'isUpper': null });
+      refundPolicy0.updateValueAndValidity();
     }
   }
 
@@ -184,6 +206,8 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
     this.meetingForm.controls.check_list.setValue(check);
     this.meetingForm.controls.include.setValue(inc);
     this.meetingForm.controls.exclude.setValue(ex);
+    this.meetingForm.controls.refundPolicy100.setValue(meeting.refundPolicy100);
+    this.meetingForm.controls.refundPolicy0.setValue(meeting.refundPolicy0);
     meeting.options.forEach(option => {
       this.options = this.meetingForm.get('options') as FormArray;
       const form = this.fb.group({
@@ -200,7 +224,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
 
   next() {
     const index = this.stepper['_currentIndex'];
-    if (index === 8) {
+    if (index === 9) {
       this.makePreviewMeeting();
     }
     this.stepper.next();
@@ -213,7 +237,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
   makePreviewMeeting() {
     if (this.meetingForm.valid) {
       const { title, subTitle, fileSource, categories, address, detailAddress, runningMinutes,
-        price, discountPrice, desc, notice, check_list, include, exclude, options } = this.meetingForm.value;
+        price, discountPrice, desc, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
       this.mapsAPILoader.load().then(() => {
         this.geoCoder = new google.maps.Geocoder;
         this.geoCoder.geocode({ address }, (result, status) => {
@@ -221,7 +245,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
             if (result[0]) {
               const location = result[0].geometry.location;
               this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, runningMinutes, location.lat(), location.lng(), 0,
-                categories, '', price, discountPrice, 0, notice, check_list, include, exclude, 0, MeetingStatus.CREATED, options)
+                categories, '', price, discountPrice, 0, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, 0, MeetingStatus.CREATED, options)
             }
             else {
               alert('주소 검색 결과가 없습니다.')
@@ -315,7 +339,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
 
   edit() {
     const { title, subTitle, fileSource, categories, address, detailAddress, runningMinutes,
-      price, discountPrice, desc, notice, check_list, include, exclude, options } = this.meetingForm.value;
+      price, discountPrice, desc, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
     this.mapsAPILoader.load().then(() => {
       this.geoCoder = new google.maps.Geocoder;
       this.geoCoder.geocode({ address }, (result, status) => {
@@ -345,6 +369,8 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
             formData.append('check_list', check_list);
             formData.append('include', include);
             formData.append('exclude', exclude);
+            formData.append('refundPolicy100', refundPolicy100);
+            formData.append('refundPolicy0', refundPolicy0);
             formData.append('likes', `${this.meeting.likes}`);
 
             this.meetingService.editMeeting(this.meeting.mid, formData).subscribe(meeting => {

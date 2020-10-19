@@ -22,6 +22,8 @@ export class Meeting {
         public check_list: string,
         public include: string,
         public exclude: string,
+        public refundPolicy100: number,
+        public refundPolicy0: number,
         public order: number,
         public status: MeetingStatus,
         public options?: MeetingOption[]
@@ -52,7 +54,25 @@ export class MeetingOption {
     ) { }
 }
 
+export class PurchasedMeetingOption extends MeetingOption {
+    constructor(
+        oid: number,
+        meeting: number,
+        optionTitle: string,
+        optionPrice: number,
+        optionDate: string,
+        optionMinParticipation: number,
+        optionMaxParticipation: number,
+        isOld: boolean,
+        public pomid: number,
+        public count: number,
+        public PCD_PAY_REFUND_CARDRECEIPT: string,
+        public PCD_REFUND_TOTAL: number,
+        public isRefund: boolean
+    ) { super(oid, meeting, optionTitle, optionPrice, optionDate, optionMinParticipation, optionMaxParticipation, isOld) }
+}
+
 export interface PurchasedMeeting {
     payment: PaymentResult,
-    options: MeetingOption
+    options: PurchasedMeetingOption
 }

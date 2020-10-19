@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { Coupon } from 'src/app/model/coupon';
-import { Meeting } from 'src/app/model/meeting';
+import { Meeting, PurchasedMeetingOption } from 'src/app/model/meeting';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { PaymentService } from 'src/app/service/payment.service';
-import { MeetingOption, PurchasedMeeting } from './../../model/meeting';
+import { PurchasedMeeting } from './../../model/meeting';
 
 @Component({
   selector: "my-info",
@@ -56,7 +56,7 @@ export class MyInfoPage {
     this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
   }
 
-  cancel(event: { meeting: PurchasedMeeting, option: MeetingOption }) {
+  cancel(event: { meeting: PurchasedMeeting, option: PurchasedMeetingOption }) {
     const purchasedMeeting = event.meeting;
     const option = event.option
     this.paymentService.refund(purchasedMeeting, option).subscribe(resp => {

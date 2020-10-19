@@ -27,6 +27,11 @@ hr {
     margin: 0px
 }
 
+.refund-day {
+    width: 50px;
+    padding: 0px 0px 0px 5px;
+}
+
 :host::ng-deep .ql-editor {
     overflow-y: auto;
     height: 500px;

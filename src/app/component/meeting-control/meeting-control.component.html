@@ -95,6 +95,16 @@
       </button>
     </div>
     <div class="step" data-target="#test-l-10">
+      <button class="trigger">
+        <ion-icon *ngIf="formGroup.controls.refundPolicy100.invalid ||
+        formGroup.controls.refundPolicy0.invalid" name="checkmark-circle-outline"></ion-icon>
+        <ion-icon *ngIf="formGroup.controls.refundPolicy100.valid &&
+        formGroup.controls.refundPolicy0.valid" name="checkmark-circle" style="color:#007bff">
+        </ion-icon>
+        환불 정책
+      </button>
+    </div>
+    <div class="step" data-target="#test-l-11">
       <button class="trigger" (click)="lastCheck()" [disabled]="formGroup.invalid"
         [ngStyle]="{'cursor':formGroup.invalid ? 'not-allowed':'pointer'}">최종 확인</button>
     </div>
@@ -362,7 +372,7 @@
         <div id="test-l-9" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next()" [disabled]="formGroup.invalid">다음</ion-button>
+            <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
           <ion-item lines="none">
             <ion-label position="floating">유의 사항</ion-label>
@@ -382,6 +392,36 @@
           노는법 정책을 따르겠습니다.
         </div>
         <div id="test-l-10" class="content">
+          <div class="next-prev">
+            <ion-button color="light" (click)="prev()">이전</ion-button>
+            <ion-button color="primary" (click)="next()" [disabled]="formGroup.invalid">다음</ion-button>
+          </div>
+          <ion-item lines="none">
+            <ion-label position="floating">환불 정책</ion-label>
+            <br> <br>
+            <p class="desc">시간은 자정 기준입니다.</p>
+            <div style="display: flex;">
+              <p>상품 시작일 기준 &nbsp;</p><input type="number" [formControlName]="'refundPolicy100'"
+                (ngModelChange)="checkRefundPolicy0()" class="form-control refund-day">&nbsp;일 전까지 100% 환불
+            </div>
+            <form-errors [formGroup]="formGroup" [controlName]="'refundPolicy100'"
+              [errors]="[{key:'min',meesage:'0일 이상 입력할 수 있습니다.'},{key:'max',meesage:'9999일까지 입력할 수 있습니다.'}]">
+            </form-errors>
+            <div style="display: flex;">
+              <p>상품 시작일 기준 &nbsp;</p><input type="number" class="form-control refund-day"
+                [value]="formGroup.controls.refundPolicy0.value+1" disabled>&nbsp;일 전까지 50% 환불
+            </div>
+            <div style="display: flex;">
+              <p>상품 시작일 기준 &nbsp;</p><input type="number" [formControlName]="'refundPolicy0'"
+                class="form-control refund-day">&nbsp;일 전 이후 환불 불가
+            </div>
+            <form-errors [formGroup]="formGroup" [controlName]="'refundPolicy0'" [errors]="[{key:'min',meesage:'0일 이상 입력할 수 있습니다.'},{key:'max',meesage:'9999일까지 입력할 수 있습니다.'},
+              {key:'isUpper',meesage:'(100% 환불 기준일 - 1) 일보다 작아야 합니다.'}]">
+            </form-errors>
+          </ion-item>
+          <hr>
+        </div>
+        <div id="test-l-11" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" [disabled]="formGroup.invalid" (click)="add()">{{submitMessage}}

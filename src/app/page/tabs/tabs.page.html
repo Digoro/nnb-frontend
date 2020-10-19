@@ -11,13 +11,37 @@
     </ion-tab-bar>
   </ion-tabs>
 
-  <ion-header class="ion-no-border">
+  <!-- <ion-header class="ion-no-border">
     <ion-grid fixed style="padding: 0px">
       <ion-toolbar>
         <ion-title mode=ios>
           <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
             <img src="../../../assets/nonunbub_logo.png" height="32" width="51">
           </a>
+        </ion-title>
+        <ion-buttons slot="start" *ngIf="!isHome">
+          <ion-button (click)="back()">
+            <ion-icon slot="icon-only" name="chevron-back-outline" class="icon"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button (click)="search($event)">
+            <ion-icon slot="icon-only" name="search-outline" class="icon"></ion-icon>
+          </ion-button>
+          <ion-button [routerLink]="'/tabs/more'">
+            <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-grid>
+  </ion-header> -->
+
+  <ion-header class="ion-no-border">
+    <ion-grid fixed style="padding: 0px;">
+      <ion-toolbar>
+        <ion-title *ngIf="isHome">
+          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
+            <img src="../../../assets/nonunbub_logo.png" height="42" width="68">&nbsp;&nbsp;</a>
         </ion-title>
         <ion-buttons slot="start" *ngIf="!isHome">
           <ion-button (click)="back()">

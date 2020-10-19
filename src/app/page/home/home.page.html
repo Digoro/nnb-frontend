@@ -1,5 +1,13 @@
 <ion-content>
   <ion-grid [fixed]="isDesktop" [ngStyle]="{'padding':isDesktop?'':'0px'}">
+    <br>
+    <ion-row>
+      <ion-col>
+        <p class="main_sentence">꽃중년은 뭐하고 놀지?</p>
+        <p class="main_sentence" style="margin-bottom: 10px;"><span class="count"></span>가지 노는 방법, <span
+            class="brand">노는법</span></p>
+      </ion-col>
+    </ion-row>
     <ion-row>
       <ion-col [ngStyle]="{'padding':isDesktop?'':'0px'}">
         <ion-slides [options]="bannerSliderConfig" pager="true">
