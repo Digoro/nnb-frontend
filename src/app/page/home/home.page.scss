@@ -26,7 +26,9 @@
 
 .count {
     animation: counter 1.5s ease-in-out;
+    -webkit-animation: counter 1.5s ease-in-out;
     counter-reset: num var(--num);
+    -webkit-counter-reset: num var(--num);
 }
 
 .count::after {
@@ -36,10 +38,12 @@
 @keyframes counter {
     from {
         --num: 288;
+        -webkit--num: 288;
     }
 
     to {
         --num: 3000;
+        -webkit--num: 3000;
     }
 }
 
