@@ -26,11 +26,7 @@
 
 .count {
     -webkit-animation: counter 1.5s ease-in-out;
-    -moz-animation: counter 1.5s ease-in-out;
     animation: counter 1.5s ease-in-out;
-
-    -webkit-counter-reset: num var(--num);
-    -moz-counter-reset: num var(--num);
     counter-reset: num var(--num);
 }
 
@@ -38,16 +34,22 @@
     content: counter(num);
 }
 
-@keyframes counter {
+@-webkit-keyframes counter {
     from {
-        -webkit--num: 288;
-        -moz--num: 288;
         --num: 288;
     }
 
     to {
-        -webkit--num: 3000;
-        -moz--num: 288;
+        --num: 3000;
+    }
+}
+
+@keyframes counter {
+    from {
+        --num: 288;
+    }
+
+    to {
         --num: 3000;
     }
 }
