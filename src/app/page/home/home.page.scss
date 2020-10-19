@@ -30,7 +30,7 @@
     counter-reset: num var(--num);
 }
 
-.count:after {
+.count::after {
     content: counter(num);
 }
 
