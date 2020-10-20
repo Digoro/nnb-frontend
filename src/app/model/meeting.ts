@@ -74,5 +74,5 @@ export class PurchasedMeetingOption extends MeetingOption {
 
 export interface PurchasedMeeting {
     payment: PaymentResult,
-    options: PurchasedMeetingOption
+    options: PurchasedMeetingOption[]
 }
