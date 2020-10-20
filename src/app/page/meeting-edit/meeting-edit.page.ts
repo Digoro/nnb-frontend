@@ -110,8 +110,8 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
       check_list: new FormControl('', this.formService.getValidators(500)),
       include: new FormControl('', Validators.maxLength(500)),
       exclude: new FormControl('', Validators.maxLength(500)),
-      refundPolicy100: new FormControl('', this.formService.getValidators(4, [Validators.max(9999), Validators.min(0), this.validateRefundPolicy0('refundPolicy100')])),
-      refundPolicy0: new FormControl('', this.formService.getValidators(4, [Validators.max(9999), Validators.min(0)])),
+      refundPolicy100: new FormControl(5, this.formService.getValidators(4, [Validators.max(9999), Validators.min(0)])),
+      refundPolicy0: new FormControl(0, this.formService.getValidators(4, [Validators.max(9999), Validators.min(0), this.validateRefundPolicy0('refundPolicy100')])),
       options: this.fb.array([], Validators.required)
     })
     this.route.params.subscribe(params => {
@@ -145,8 +145,8 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
       discountPrice.setErrors({ 'isUpper': true })
     } else {
       discountPrice.setErrors({ 'isUpper': null });
-      discountPrice.updateValueAndValidity();
     }
+    discountPrice.updateValueAndValidity();
   }
 
   validateRefundPolicy0(controlName: string): ValidatorFn {
@@ -161,12 +161,12 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
   checkRefundPolicy0() {
     const refundPolicy100 = this.meetingForm.controls.refundPolicy100;
     const refundPolicy0 = this.meetingForm.controls.refundPolicy0;
-    if (refundPolicy100.value < refundPolicy0.value) {
+    if (refundPolicy100.value - 2 < refundPolicy0.value) {
       refundPolicy0.setErrors({ 'isUpper': true })
     } else {
       refundPolicy0.setErrors({ 'isUpper': null });
-      refundPolicy0.updateValueAndValidity();
     }
+    refundPolicy0.updateValueAndValidity();
   }
 
   private setFileFormControl() {

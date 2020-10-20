@@ -257,9 +257,6 @@
             </ion-input>
           </ion-item>
           <hr>
-          <form-errors [formGroup]="formGroup" [controlName]="'price'"
-            [errors]="[{key:'max',meesage:'10000000원 제한입니다.'}]">
-          </form-errors>
           <div ngxErrors="price">
             <div ngxError="max" [when]="['dirty']">
               <p class="invalid-input">10000000원 제한입니다.</p>
@@ -273,14 +270,9 @@
             <ion-input type="number" formControlName="discountPrice" clearInput></ion-input>
           </ion-item>
           <hr>
-          <div ngxErrors="discountPrice">
-            <div ngxError="max" [when]="['dirty']">
-              <p class="invalid-input">10000000원 제한입니다.</p>
-            </div>
-            <div ngxError="isUpper" [when]="['dirty']">
-              <p class="invalid-input">할인가격이 더 클 수 없습니다.</p>
-            </div>
-          </div>
+          <form-errors [formGroup]="formGroup" [controlName]="'discountPrice'" [errors]="[{key:'max',meesage:'10000000원 제한입니다.'},
+              {key:'isUpper',meesage:'할인가격이 더 클 수 없습니다.'}]" [isUnUseDirty]="true">
+          </form-errors>
           <br>
           <span class="desc">다음과 같이 표시됩니다.</span>
           <div style="padding: 20px; border: 1px solid #c8c7c7;border-radius: 4px;max-width: 240px;">
@@ -429,7 +421,7 @@
                 class="form-control refund-day">&nbsp;일 전 이후 환불 불가
             </div>
             <form-errors [formGroup]="formGroup" [controlName]="'refundPolicy0'" [errors]="[{key:'min',meesage:'0일 이상 입력할 수 있습니다.'},{key:'max',meesage:'9999일까지 입력할 수 있습니다.'},
-              {key:'isUpper',meesage:'(100% 환불 기준일 - 1) 일보다 작아야 합니다.'}]">
+              {key:'isUpper',meesage:'(100% 환불 기준일 - 1) 일보다 작아야 합니다.'}]" [isUnUseDirty]="true">
             </form-errors>
           </ion-item>
           <hr>

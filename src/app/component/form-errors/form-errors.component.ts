@@ -11,6 +11,7 @@ export class FormErrorsComponent implements OnInit {
   @Input() controlName: string;
   @Input() errors: { key: string, meesage: string }[];
   @Input() isRequired = true;
+  @Input() isUnUseDirty = false;
 
   constructor() { }
 

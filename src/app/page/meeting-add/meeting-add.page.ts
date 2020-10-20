@@ -129,8 +129,8 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       discountPrice.setErrors({ 'isUpper': true })
     } else {
       discountPrice.setErrors({ 'isUpper': null });
-      discountPrice.updateValueAndValidity();
     }
+    discountPrice.updateValueAndValidity();
   }
 
   validateRefundPolicy0(controlName: string): ValidatorFn {
@@ -145,12 +145,12 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   checkRefundPolicy0() {
     const refundPolicy100 = this.meetingForm.controls.refundPolicy100;
     const refundPolicy0 = this.meetingForm.controls.refundPolicy0;
-    if (refundPolicy100.value < refundPolicy0.value) {
+    if (refundPolicy100.value - 2 < refundPolicy0.value) {
       refundPolicy0.setErrors({ 'isUpper': true })
     } else {
       refundPolicy0.setErrors({ 'isUpper': null });
-      refundPolicy0.updateValueAndValidity();
     }
+    refundPolicy0.updateValueAndValidity();
   }
 
   next() {
