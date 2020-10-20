@@ -44,8 +44,8 @@
           <p *ngIf="option.isRefund">환불금액: {{option.PCD_REFUND_TOTAL|number}}원</p>
           <p *ngIf="option.isRefund"><a [href]="option.PCD_PAY_REFUND_CARDRECEIPT" target="_blank">
               매출전표 확인하기</a></p>
-          <ion-button *ngIf="!option.isRefund && !meeting.payment.couponId" color="medium" size="small"
-            (click)="cancel(meeting, option)">취소하기</ion-button>
+          <!-- <ion-button *ngIf="!option.isRefund && !meeting.payment.couponId" color="medium" size="small"
+            (click)="cancel(meeting, option)">취소하기</ion-button> -->
           <ion-button *ngIf="option.isRefund" color="medium" size="small" disabled>환불 완료된 옵션입니다.</ion-button>
           <hr *ngIf="!last">
         </ng-container>
