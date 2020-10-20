@@ -252,6 +252,9 @@
             </ion-input>
           </ion-item>
           <hr>
+          <form-errors [formGroup]="formGroup" [controlName]="'price'"
+            [errors]="[{key:'max',meesage:'10000000원 제한입니다.'}]">
+          </form-errors>
           <div ngxErrors="price">
             <div ngxError="max" [when]="['dirty']">
               <p class="invalid-input">10000000원 제한입니다.</p>
