@@ -1,0 +1,18 @@
+<div class="desc-wrap">
+  <p class="title">{{description.title}}</p>
+  <ng-container *ngFor="let desc of description.descList">
+    <p class="description">{{desc}}</p>
+  </ng-container>
+  <div class="link-wrap" *ngIf="!!description.moreDescList">
+    <div class="light">💡</div>
+    <div>
+      <ng-container *ngFor="let desc of description.moreDescList">
+        <p class="link">{{desc}}</p>
+      </ng-container>
+    </div>
+  </div>
+  <br>
+  <img *ngIf="!!description.image" [src]="description.image">
+</div>
+
+<br>

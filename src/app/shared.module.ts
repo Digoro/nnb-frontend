@@ -27,6 +27,7 @@ import { MeetingCardComponent } from './component/meeting-card/meeting-card.comp
 import { MeetingControlComponent } from './component/meeting-control/meeting-control.component';
 import { MeetingPreviewComponent } from './component/meeting-preview/meeting-preview.component';
 import { MyinfoMeetingComponent } from './component/myinfo-meeting/myinfo-meeting.component';
+import { NotionDescComponent } from './component/notion-desc/notion-desc.component';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { HideToolbarDirective } from './directive/hide-toolbar.directive';
 import { InputDigitsOnlyDirective } from './directive/input.digits.only.directive';
@@ -51,7 +52,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MeetingPreviewComponent,
     MeetingControlComponent,
     FormErrorsComponent,
-    MyinfoMeetingComponent
+    MyinfoMeetingComponent,
+    NotionDescComponent
   ],
   imports: [
     CommonModule,
@@ -101,6 +103,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     SkeletonComponent,
     CommentComponent,
     MyinfoMeetingComponent,
+    NotionDescComponent,
     CommonModule,
     IonicModule,
     FormsModule,

@@ -1,0 +1,39 @@
+.desc-wrap {
+    margin-top: 30px;
+    padding: 16px 16px 16px 12px;
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    background: rgba(235, 236, 237, 0.3);
+
+    .title {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .description {
+        margin: 0px;
+    }
+
+    .link-wrap {
+        display: flex;
+        margin-top: 20px;
+        padding: 16px 16px 5px 12px;
+        border-radius: 3px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparent;
+        background: #d1d4d74d;
+
+        .light {
+            font-size: 29px;
+            margin-right: 15px;
+            margin-top: 6px;
+        }
+
+        .link {
+            margin: 0px;
+        }
+    }
+}

@@ -17,7 +17,7 @@
         <ion-icon *ngIf="formGroup.controls.title.valid && formGroup.controls.subTitle.valid" name="checkmark-circle"
           style="color:#007bff">
         </ion-icon>
-        모임 이름
+        상품 제목
       </button>
     </div>
     <div class="step" data-target="#test-l-2">
@@ -114,8 +114,9 @@
       <form [formGroup]="formGroup">
         <div id="test-l-1" class="content">
           <ion-button class="next-prev" color="primary" (click)="next()">다음</ion-button>
+          <notion-desc [description]="descriptions[0]"></notion-desc>
           <ion-item lines="none">
-            <ion-label position="floating">모임 이름<span class="invalid-input">*</span>
+            <ion-label position="floating">상품 제목<span class="invalid-input">*</span>
             </ion-label>
             <ion-input type="text" [formControlName]="'title'" clearInput></ion-input>
           </ion-item>
@@ -153,6 +154,7 @@
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
+          <notion-desc [description]="descriptions[1]"></notion-desc>
           <ion-item lines="none">
             <ion-label position="fixed">이미지<span class="invalid-input">*</span></ion-label>
             <input #fileInput id="file" type="file" class="form-control" (change)="onFileChange($event)">
@@ -165,6 +167,7 @@
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
+          <notion-desc [description]="descriptions[2]"></notion-desc>
           <ion-item lines="none">
             <ion-label position="floating">카테고리<span class="invalid-input">*</span></ion-label>
             <ion-select okText="확인" cancelText="취소" [formControlName]="'categories'">
@@ -179,6 +182,7 @@
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
+          <notion-desc [description]="descriptions[3]"></notion-desc>
           <ion-item lines="none">
             <ion-label position="floating">장소<span class="invalid-input">*</span></ion-label>
             <ion-input type="text" id="addressInput" (keydown.enter)="$event.preventDefault()" type="text"
@@ -245,6 +249,7 @@
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next(true)">다음</ion-button>
           </div>
+          <notion-desc [description]="descriptions[4]"></notion-desc>
           <span class="desc">노출되는 상품 가격입니다.</span>
           <ion-item lines="none">
             <ion-label position="floating">가격<span class="invalid-input">*</span></ion-label>
@@ -300,6 +305,7 @@
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
+          <notion-desc [description]="descriptions[5]"></notion-desc>
           <ion-button color="primary" (click)="openModal(addTpl)">일괄 추가하기</ion-button>
           <ion-button color="medium" (click)="openModal(deleteTpl)">일괄 삭제하기</ion-button>
 
@@ -311,10 +317,11 @@
             <ion-button color="light" (click)="prev(true)">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
+          <notion-desc [description]="descriptions[6]"></notion-desc>
           <ion-item lines="none">
             <ion-label position="fixed">소개<span class="invalid-input">*</span></ion-label>
           </ion-item>
-          <quill-editor #quill style="-webkit-user-select: text" formControlName="desc" [placeholder]="'모임에 대해 설명해주세요.'"
+          <quill-editor #quill style="-webkit-user-select: text" formControlName="desc" [placeholder]="'상품에 대해 설명해주세요.'"
             [styles]="quillStyle" (onEditorCreated)="getEditorInstance($event)">
           </quill-editor>
           <div ngxErrors="desc">
@@ -328,6 +335,7 @@
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
+          <notion-desc [description]="descriptions[7]"></notion-desc>
           <ion-item lines="none">
             <ion-label position="floating">준비물<span class="invalid-input">*</span></ion-label>
             <ion-textarea rows="7" maxlength="500" [formControlName]="'check_list'" clearInput></ion-textarea>
@@ -377,6 +385,7 @@
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
+          <notion-desc [description]="descriptions[8]"></notion-desc>
           <ion-item lines="none">
             <ion-label position="floating">유의 사항</ion-label>
             <ion-textarea rows="7" maxlength="500" [formControlName]="'notice'" clearInput></ion-textarea>
@@ -399,6 +408,7 @@
             <ion-button color="light" (click)="prev()">이전</ion-button>
             <ion-button color="primary" (click)="next()" [disabled]="formGroup.invalid">다음</ion-button>
           </div>
+          <notion-desc [description]="descriptions[9]"></notion-desc>
           <ion-item lines="none">
             <ion-label position="floating">환불 정책</ion-label>
             <br> <br>
@@ -430,6 +440,7 @@
             <ion-button color="primary" [disabled]="formGroup.invalid" (click)="add()">{{submitMessage}}
             </ion-button>
           </div>
+          <notion-desc [description]="descriptions[10]"></notion-desc>
           <meeting-preview [meeting]="previewMeeting" [previewImage]="previewImage"></meeting-preview>
         </div>
       </form>
