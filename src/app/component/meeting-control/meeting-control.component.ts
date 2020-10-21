@@ -158,7 +158,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         ]
       },
       {
-        title: '깜빡 잊은 바람에 못챙겨올 수 있는 물건을 세심하게 한 번 더 챙겨주셔도 좋아요.',
+        title: '참여자에게 당부하거나 중요하게 안내하고 싶은 사항에 관해 기입해 주세요.',
         descList: [
           "최소 인원 모객 미달 또는 천재 지변으로 인한 취소 등 안내사항에 관해 언급해 주세요.",
           "딱히 유의사항이 생각나지 않는다면 '노는법 정책을 따르겠습니다'를 체크해 주세요.",
@@ -187,6 +187,10 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
     ]
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
+    this.modalService.onHidden.subscribe(() => {
+      this.optionAddFormGroup.reset();
+      this.optionDeleteFormGroup.reset();
+    })
     this.calendarOptions.eventClick = (selectInfo: EventClickArg) => {
       const { optionTitle, optionDate, optionMaxParticipation, optionMinParticipation, optionPrice } = selectInfo.event._def.extendedProps;
       alert(`옵션: ${optionTitle}\n가격: ${optionPrice}원\n최소인원: ${optionMinParticipation}명\n최대인원: ${optionMaxParticipation}명`)
@@ -250,7 +254,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   openModal(template: TemplateRef<any>) {
     const config = {
       class: 'modal-lg',
-      animated: true
+      animated: true,
+      backdrop: 'static' as any
     }
     this.modalRef = this.modalService.show(template, config);
   }
@@ -350,9 +355,18 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     this.onCheckRefundPolicy0Event.emit();
   }
 
-  changeSchedule(event, isAdd: boolean) {
-    isAdd ? this.optionAddFormGroup.controls.schedule.patchValue(event) :
-      this.optionDeleteFormGroup.controls.schedule.patchValue(event);
+  changeSchedule(cron, isAdd: boolean) {
+    if (cron === "* * * * *") {
+      this.optionAddFormGroup.controls.schedule.setErrors({ 'required': true })
+      this.optionDeleteFormGroup.controls.schedule.setErrors({ 'required': true })
+      return;
+    }
+
+    if (isAdd) {
+      this.optionAddFormGroup.controls.schedule.patchValue(cron)
+    } else {
+      this.optionDeleteFormGroup.controls.schedule.patchValue(cron)
+    }
   }
 
   addSchedule() {
