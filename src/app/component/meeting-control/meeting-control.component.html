@@ -549,33 +549,42 @@
         </form>
         <ng-container *ngIf="searchedOptions">
           <hr style="margin-top: 20px; margin-bottom: 20px;">
-          <ion-item lines="none">
-            <ion-button slot="end" (click)="deleteSchedule()" color="primary">
-              삭제하기
-            </ion-button>
-          </ion-item>
-          <div class="tableFixHead">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>일시</th>
-                  <th>설명</th>
-                  <th>가격</th>
-                  <th>최소인원</th>
-                  <th>최대인원</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let option of searchedOptions">
-                  <td>{{option.optionDate}}</td>
-                  <td>{{option.optionTitle}}</td>
-                  <td>{{option.optionPrice}}</td>
-                  <td>{{option.optionMinParticipation}}</td>
-                  <td>{{option.optionMaxParticipation}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <ng-container *ngIf="searchedOptions.length > 0">
+            <ion-item lines="none">
+              <ion-button slot="end" (click)="deleteSchedule()" color="medium">
+                조회항목 전체삭제
+              </ion-button>
+            </ion-item>
+            <div class="tableFixHead">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>일시</th>
+                    <th>설명</th>
+                    <th>가격</th>
+                    <th>최소인원</th>
+                    <th>최대인원</th>
+                    <th>삭제하기</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let option of searchedOptions">
+                    <td>{{option.optionDate}}</td>
+                    <td>{{option.optionTitle}}</td>
+                    <td>{{option.optionPrice}}</td>
+                    <td>{{option.optionMinParticipation}}</td>
+                    <td>{{option.optionMaxParticipation}}</td>
+                    <td>
+                      <ion-button color="medium" style="width: 54px; height: 25px;font-size: 12px;"
+                        (click)="removeFromSearched(option)">삭제하기
+                      </ion-button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="searchedOptions.length === 0">일치하는 구매옵션이 없습니다.😧😧</ng-container>
         </ng-container>
       </ion-card-content>
     </ion-card>

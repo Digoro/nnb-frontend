@@ -172,8 +172,14 @@ export class PaymentService {
     return forkJoin(requests)
   }
 
-  getPaymentOptionMaps(pid: number) {
-    return this.http.get(`payment/payment_option_maps?pid=${pid}`)
+  getPaymentOptionMaps(pid?: number, oid?: number) {
+    if (pid && oid) {
+      return this.http.get(`payment/payment_option_maps?pid=${pid}&oid=${oid}`)
+    } else if (pid) {
+      return this.http.get(`payment/payment_option_maps?pid=${pid}`)
+    } else if (oid) {
+      return this.http.get(`payment/payment_option_maps?oid=${oid}`)
+    }
   }
 
   getPaymentsFromMeeting(mid: number): Observable<PaymentResult[]> {
@@ -231,33 +237,44 @@ export class PaymentService {
     //TODO: 환불 정책에 따라 PCD_REFUND_TOTAL 변경해야 함
     //TODO: 쿠폰 환불 해야함
     // const couponId = meeting.payment.couponId ? meeting.payment.couponId['couponId'] : undefined;
-    const tempOption = { ...option };
-    const refundPolicy100 = meeting.payment.mid['refundPolicy100'];
-    const refundPolicy0 = meeting.payment.mid['refundPolicy0'];
-    const diff = Math.ceil(moment.duration(moment(tempOption.optionDate).diff(moment())).asDays())
+    if (+meeting.payment.PCD_PAY_TOTAL === 0) {
+      return this.http.post('payment/refund', {
+        pomid: option.pomid,
+        pid: meeting.payment.pid,
+        couponId: undefined,
+        PCD_PAY_OID: meeting.payment.PCD_PAY_OID,
+        PCD_PAY_DATE: moment().format("YYYYMMDD"),
+        PCD_REFUND_TOTAL: option.optionPrice
+      });
+    } else {
+      const tempOption = { ...option };
+      const refundPolicy100 = meeting.payment.mid['refundPolicy100'];
+      const refundPolicy0 = meeting.payment.mid['refundPolicy0'];
+      const diff = Math.ceil(moment.duration(moment(tempOption.optionDate).diff(moment())).asDays())
 
-    if (diff >= refundPolicy100) tempOption.optionPrice = tempOption.optionPrice * tempOption.count;
-    else if (diff > refundPolicy0 && diff < refundPolicy100) tempOption.optionPrice = tempOption.optionPrice * 0.5 * tempOption.count;
-    else if (diff <= refundPolicy0) tempOption.optionPrice = 0;
+      if (diff >= refundPolicy100) tempOption.optionPrice = tempOption.optionPrice * tempOption.count;
+      else if (diff > refundPolicy0 && diff < refundPolicy100) tempOption.optionPrice = tempOption.optionPrice * 0.5 * tempOption.count;
+      else if (diff <= refundPolicy0) tempOption.optionPrice = 0;
 
-    const isOk = confirm(`구매 옵션일 기준 ${diff}일 전입니다. 따라서 환불 정책에 의한 환불 금액은 ${tempOption.optionPrice}원 입니다. 계속 진행하시겠습니까?
+      const isOk = confirm(`구매 옵션일 기준 ${diff}일 전입니다. 따라서 환불 정책에 의한 환불 금액은 ${tempOption.optionPrice}원 입니다. 계속 진행하시겠습니까?
     
 [환불 정책]
 - ${refundPolicy100}일 전: 결제 금액의 100%
 - ${refundPolicy0 + 1}일 전: 결제 금액의 50%
 - ${refundPolicy0}일 전 이후: 환불 불가
     `);
-    if (isOk) {
-      return this.http.post('payment/refund', {
-        pomid: tempOption.pomid,
-        pid: meeting.payment.pid,
-        couponId: undefined,
-        PCD_PAY_OID: meeting.payment.PCD_PAY_OID,
-        PCD_PAY_DATE: moment().format("YYYYMMDD"),
-        PCD_REFUND_TOTAL: tempOption.optionPrice
-      });
-    } else {
-      return of()
+      if (isOk) {
+        return this.http.post('payment/refund', {
+          pomid: tempOption.pomid,
+          pid: meeting.payment.pid,
+          couponId: undefined,
+          PCD_PAY_OID: meeting.payment.PCD_PAY_OID,
+          PCD_PAY_DATE: moment().format("YYYYMMDD"),
+          PCD_REFUND_TOTAL: tempOption.optionPrice
+        });
+      } else {
+        return of()
+      }
     }
   }
 }

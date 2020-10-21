@@ -178,6 +178,9 @@ export class PaymentPage implements OnInit {
     } else {
       this.price = 0;
     }
+
+    if (this.price !== 0) this.isFree = false;
+    else this.isFree = true;
   }
 
   selectCoupon(event) {
@@ -273,17 +276,15 @@ export class PaymentPage implements OnInit {
     this.selectedOptionsFromCheckbox = [];
   }
 
-
   join() {
     const { phone, options } = this.form.value
     const now = moment();
     const time = now.format('YYYYMMDDHHmmss');
 
-
     const payment = new PaymentResult(0, this.meeting.mid, this.user.uid, phone, 'success', '무료모임 등록 성공',
       undefined, undefined, undefined, `nonunbub${this.user.uid}${this.meeting.mid}`, undefined, undefined
       , undefined, undefined, undefined, undefined, undefined, this.meeting.title, '0', undefined, undefined
-      , undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined
+      , undefined, undefined, undefined, time, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined
       , undefined, undefined, undefined, undefined, phone, undefined)
     this.paymentService.joinFreeMeeting(payment, options, phone, this.user);
   }

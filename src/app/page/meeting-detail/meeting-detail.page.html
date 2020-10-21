@@ -62,7 +62,7 @@
         <a *ngIf="meeting.notice" href="javascript:document.getElementById('section-6').scrollIntoView(true);">
           <p>유의 사항</p>
         </a>
-        <a href="javascript:document.getElementById('section-7').scrollIntoView(true);">
+        <a *ngIf="meeting.price !== 0" href="javascript:document.getElementById('section-7').scrollIntoView(true);">
           <p>환불 정책</p>
         </a>
         <a *ngIf="!!host" href="javascript:document.getElementById('section-8').scrollIntoView(true);">
@@ -133,7 +133,7 @@
             </ion-row>
           </section>
         </ng-container>
-        <section id="section-7">
+        <section id="section-7" *ngIf="meeting.price !== 0">
           <ion-row>
             <ion-col>
               <p class="title">환불 정책</p>

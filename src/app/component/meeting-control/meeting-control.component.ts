@@ -190,6 +190,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     this.modalService.onHidden.subscribe(() => {
       this.optionAddFormGroup.reset();
       this.optionDeleteFormGroup.reset();
+      this.searchedOptions = undefined;
     })
     this.calendarOptions.eventClick = (selectInfo: EventClickArg) => {
       const { optionTitle, optionDate, optionMaxParticipation, optionMinParticipation, optionPrice } = selectInfo.event._def.extendedProps;
@@ -478,7 +479,14 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         }
       })
     } else {
-      alert('이벤트가 없습니다.')
+      alert('일치하는 구매옵션이 없습니다.😧😧')
+    }
+  }
+
+  removeFromSearched(option) {
+    if (confirm('정말로 삭제하시겠습니까?')) {
+      this.removeOption(option);
+      alert('삭제하였습니다.');
     }
   }
 
@@ -503,23 +511,29 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   }
 
   deleteSchedule() {
+    if (confirm('정말로 삭제하시겠습니까?')) {
+      this.searchedOptions.forEach(option => {
+        this.removeOption(option);
+      });
+      alert('삭제하였습니다.');
+      this.searchedOptions = [];
+    }
+  }
+
+  private removeOption(option: any) {
     this.options = this.formGroup.get('options') as FormArray;
     const api = this.calendarComponent.getApi();
 
-    this.searchedOptions.forEach(option => {
-      const date = option.optionDate.split("(")[0];
-      api.getEvents().find(event => {
-        return moment(event._def.extendedProps.optionDate).isSame(moment(date))
-      }).remove();
-      const value = this.options.value.find(o => {
-        return moment(o.optionDate).isSame(moment(date))
-      })
-      const index = this.options.value.indexOf(value);
-      this.options.removeAt(index);
+    const date = option.optionDate.split("(")[0];
+    api.getEvents().find(event => {
+      return moment(event._def.extendedProps.optionDate).isSame(moment(date));
+    }).remove();
+    const value = this.options.value.find(o => {
+      return moment(o.optionDate).isSame(moment(date));
     });
-    alert('삭제하였습니다')
-    this.modalRef.hide();
-    this.searchedOptions = undefined;
+    const index = this.options.value.indexOf(value);
+    this.options.removeAt(index);
+    this.searchedOptions = this.searchedOptions.filter(o => o.oid !== option.oid);
   }
 
   getEditorInstance(editorInstance: any) {
