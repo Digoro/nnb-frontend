@@ -250,7 +250,6 @@
             <ion-button color="primary" (click)="next(true)">다음</ion-button>
           </div>
           <notion-desc [description]="descriptions[4]"></notion-desc>
-          <span class="desc">노출되는 상품 가격입니다.</span>
           <ion-item lines="none">
             <ion-label position="floating">가격<span class="invalid-input">*</span></ion-label>
             <ion-input type="number" formControlName="price" (ngModelChange)="checkDiscountPrice()" clearInput>
@@ -298,8 +297,8 @@
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
           <notion-desc [description]="descriptions[5]"></notion-desc>
-          <ion-button color="primary" (click)="openModal(addTpl)">일괄 추가하기</ion-button>
-          <ion-button color="medium" (click)="openModal(deleteTpl)">일괄 삭제하기</ion-button>
+          <ion-button color="primary" (click)="openModal(addTpl,'add')">일괄 추가하기</ion-button>
+          <ion-button color="medium" (click)="openModal(deleteTpl, 'delete')">일괄 삭제하기</ion-button>
 
           <hr style="margin-top:20px; margin-bottom:20px">
           <full-calendar #calendar [options]="calendarOptions"></full-calendar>
@@ -443,7 +442,7 @@
 <ng-template #addTpl>
   <div class="modal-header">
     <p class="modal-title pull-left">일괄 추가하기</p>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="addModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -455,6 +454,7 @@
             <ion-label position="fixed">스케줄 기간<span class="invalid-input">*</span></ion-label>
             <input *ngIf="isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
               bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:2}">
+            <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'period')"></ion-icon>
           </ion-item>
           <input *ngIf="!isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
             bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:1}"
@@ -463,24 +463,27 @@
           <form-errors [formGroup]=" optionAddFormGroup" [controlName]="'optionPeriod'"
             [errors]="[{key:'maxDurationDays',meesage:'총 기간은 최대 1년까지 입력가능합니다.'}]"> </form-errors>
           <ion-item lines="none">
-            <ion-label position="floating">스케줄<span class="invalid-input">*</span></ion-label>
+            <ion-label position="fixed">스케줄<span class="invalid-input">*</span></ion-label>
             <br>
             <ngx-cron-ui (onChangeEvent)="changeSchedule($event, true)" [config]="ngxCronUiConfig">
             </ngx-cron-ui>
+            <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'schedule')"></ion-icon>
           </ion-item>
           <hr>
           <ion-item lines="none">
-            <ion-label position="floating">옵션 설명<span class="invalid-input">*</span></ion-label>
+            <ion-label position="fixed">옵션 설명<span class="invalid-input">*</span></ion-label>
             <!-- FIXED -->
             <ion-input type="text" [formControlName]="'oid'" clearInput hidden></ion-input>
             <ion-input type="text" [formControlName]="'optionTitle'" clearInput></ion-input>
+            <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'desc')"></ion-icon>
           </ion-item>
           <hr>
           <form-errors [formGroup]="optionAddFormGroup" [controlName]="'optionTitle'"
             [errors]="[{key:'maxlength',meesage:'100자 제한입니다.'}]"></form-errors>
           <ion-item lines="none">
-            <ion-label position="floating">가격<span class="invalid-input">*</span></ion-label>
+            <ion-label position="fixed">가격<span class="invalid-input">*</span></ion-label>
             <ion-input type="number" [formControlName]="'optionPrice'" clearInput></ion-input>
+            <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'price')"></ion-icon>
           </ion-item>
           <hr>
           <form-errors [formGroup]="optionAddFormGroup" [controlName]="'optionPrice'"
@@ -517,7 +520,7 @@
 <ng-template #deleteTpl>
   <div class="modal-header">
     <p class="modal-title pull-left">일괄 삭제하기</p>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -529,6 +532,7 @@
             <ion-label position="fixed">스케줄 기간<span class="invalid-input">*</span></ion-label>
             <input *ngIf="isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
               bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:2}">
+            <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'period-delete')"></ion-icon>
           </ion-item>
           <input *ngIf="!isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
             bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:1}"
@@ -539,6 +543,7 @@
             <br>
             <ngx-cron-ui (onChangeEvent)="changeSchedule($event,false)" [config]="ngxCronUiConfig">
             </ngx-cron-ui>
+            <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'schedule-delete')"></ion-icon>
           </ion-item>
           <ion-item lines="none">
             <ion-button slot="end" (click)="searchSchedule()" [disabled]="optionDeleteFormGroup.invalid"
@@ -588,5 +593,19 @@
         </ng-container>
       </ion-card-content>
     </ion-card>
+  </div>
+</ng-template>
+
+<ng-template #descTpl>
+  <div class="modal-header">
+    <p class="modal-title pull-left">{{inputDesc.title}}</p>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ng-container *ngFor="let desc of inputDesc.descList">
+      <p>{{desc}}</p>
+    </ng-container>
   </div>
 </ng-template>

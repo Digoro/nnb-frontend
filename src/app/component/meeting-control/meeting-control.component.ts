@@ -66,10 +66,14 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   searchedOptions: any[];
   options: FormArray;
   modalRef: BsModalRef;
+  addModalRef: BsModalRef;
+  deleteModalRef: BsModalRef;
+
   isInitialOptionLoad = true;
   @ViewChild(BsDaterangepickerDirective, { static: false }) datapickerDirective;
   noticeChcked = false;
   descriptions: { title: string, descList: string[], moreDescList?: string[], link?: string, image?: string }[];
+  inputDesc: { title: string, descList: string[] }
 
   constructor(
     private cds: CheckDesktopService,
@@ -132,9 +136,16 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         ]
       },
       {
-        title: '구매 옵션을 설정해 주세요',
+        title: '상품의 옵션을 설정해 주세요.',
         descList: [
-          "일괄 추가하기 기능을 통해 상품을 진행할 스케줄을 간편하게 설정하세요!"
+          "상품의 구성(이름, 가격 등)이 여러 개인 경우 구매 옵션을 나누어 설정할 수 있습니다.",
+          "모이는 장소가 다른 경우는 '구매 옵션'을 나누지 마시고 상품을 새로 등록해 주세요.",
+          "'일괄 추가하기' 버튼을 누르고 등록할 상품의 옵션을 간편하게 추가하세요.",
+          "'일괄 삭제하기' 버튼을 누르고 등록한 상품의 옵션을 간편하게 삭제할 수 있습니다."
+        ],
+        moreDescList: [
+          "구매 옵션이 무엇인지 이해가 잘 안 되시나요?",
+          "구매 옵션 가이드에서 다양한 사례와 팁을 참고해 보세요!"
         ]
       },
       {
@@ -184,7 +195,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
           "상품 등록이 완료되면 승인을 위한 심사가 진행됩니다.",
         ]
       },
-
     ]
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
     this.modalService.onHidden.subscribe(() => {
@@ -252,13 +262,87 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     this.localeService.use('ko');
   }
 
-  openModal(template: TemplateRef<any>) {
+  openModal(template: TemplateRef<any>, key?: string) {
     const config = {
-      class: 'modal-lg',
-      animated: true,
-      backdrop: 'static' as any
+      class: 'modal-sm',
+      animated: false,
+      backdrop: false
     }
-    this.modalRef = this.modalService.show(template, config);
+    switch (key) {
+      case 'period': {
+        this.inputDesc = {
+          title: '스케줄 기간', descList: [
+            '옵션을 언제부터 언제까지 판매할 건지 전체 기간을 설정해 주세요.',
+            '(ex. 10월 1일 ~ 12월 31일)'
+          ]
+        }
+        this.modalRef = this.modalService.show(template, config);
+        break;
+      };
+      case 'schedule': {
+        this.inputDesc = {
+          title: '스케줄', descList: [
+            '상품을 매월 / 매주 / 매일 중 어떤 루틴으로 진행할 지 먼저 선택해 주세요. ',
+            '요일 / 일 / 시간은 복수 선택이 가능합니다. (CTRL을 누른 채로 클릭하세요)',
+            '(ex. 매월 5일 15일 25일 12:00시 / 매주 화, 수, 목 10:00시, 14:00시 / 매일 18:00시)'
+          ]
+        }
+        this.modalRef = this.modalService.show(template, config);
+        break;
+      };
+      case 'desc': {
+        this.inputDesc = {
+          title: '옵션 설명', descList: [
+            '옵션을 구분할 수 있는 설명을 짧고 간결하게 작성해 주세요.',
+            '(ex. 자전거 인문학 투어 60분 코스 / 훌라댄스 원데이클래스 1시간)'
+          ]
+        }
+        this.modalRef = this.modalService.show(template, config);
+        break;
+      };
+      case 'price': {
+        this.inputDesc = {
+          title: '가격', descList: [
+            '고객이 결제할 실제 가격을 기입해 주세요.'
+          ]
+        }
+        this.modalRef = this.modalService.show(template, config);
+        break;
+      };
+      case 'period-delete': {
+        this.inputDesc = {
+          title: '스케줄 기간', descList: [
+            '삭제하고자 하는 옵션의 전체 기간을 설정해 주세요.',
+            '(ex. 10월 1일 ~ 12월 31일)'
+          ]
+        }
+        this.modalRef = this.modalService.show(template, config);
+        break;
+      };
+      case 'schedule-delete': {
+        this.inputDesc = {
+          title: '스케줄', descList: [
+            '삭제하고자 하는 옵션의 스케줄을 시간/분 단위까지 입력한 후 조회하기를 누르세요.'
+          ]
+        }
+        this.modalRef = this.modalService.show(template, config);
+        break;
+      };
+      case 'add': {
+        config.class = 'modal-lg';
+        config.animated = true;
+        config.backdrop = 'static' as any;
+        this.addModalRef = this.modalService.show(template, config);
+        break;
+      };
+      case 'delete': {
+        config.class = 'modal-lg';
+        config.animated = true;
+        config.backdrop = 'static' as any;
+        this.deleteModalRef = this.modalService.show(template, config);
+        break;
+      };
+    }
   }
 
   onShowPicker(event) {
