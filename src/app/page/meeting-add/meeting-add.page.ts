@@ -80,7 +80,12 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
         this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
           const editor = this.quill.quillEditor;
           const range = editor.getSelection();
-          editor.insertEmbed(range.index, 'image', `${res.Location}`, 'user');
+          this.s3Service.resizeImage(res.Key).subscribe(resp => {
+            console.log(resp);
+            const link = res.Location.replace("/meetings", "/meetings-resized");
+            editor.insertEmbed(range.index, 'image', `${link}`, 'user');
+          })
+          // editor.insertEmbed(range.index, 'image', `${link}`, 'user');
         })
       };
     })

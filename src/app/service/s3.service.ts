@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as AWS from 'aws-sdk';
 import * as S3 from 'aws-sdk/clients/s3';
@@ -13,7 +14,9 @@ export class S3Service {
   private REGION = environment.REGION;
   private BUCKET = environment.BUCKET;
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   uploadFile(file, folder: string, link?: string): Promise<any> {
     const contentType = file.type;
@@ -103,5 +106,11 @@ export class S3Service {
         resolve(true);
       })
     })
+  }
+
+  // key: meetings/test.png
+  resizeImage(key: string) {
+    const url = "https://w89q51ldo2.execute-api.ap-northeast-2.amazonaws.com/image-resizer-stage/image-resizer";
+    return this.http.post(url, { key })
   }
 }
