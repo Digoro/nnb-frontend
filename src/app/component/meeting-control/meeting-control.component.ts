@@ -380,7 +380,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   }
 
   getEditorInstance(editorInstance: any) {
-
+    const fileTypes = ["image/gif", "image/jpeg", "image/png"];
     let toolbar = editorInstance.getModule('toolbar');
     toolbar.addHandler('image', () => {
       const input = document.createElement('input');
@@ -392,14 +392,20 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         editor.insertEmbed(range.index, 'image', '/assets/loading.gif');
         editor.formatText(range.index, 1, 'width', '25px');
         const file = input.files[0];
-        this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
-          this.s3Service.resizeImage(res.Key).subscribe(resp => {
-            console.log(resp);
-            const link = res.Location.replace("/meetings", "/meetings-resized");
-            editor.deleteText(range.index, 1);
-            editor.insertEmbed(range.index, 'image', `${link}`, 'user');
+
+        if (fileTypes.find(t => t === file.type)) {
+          this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
+            this.s3Service.resizeImage(res.Key).subscribe(resp => {
+              console.log(resp);
+              const link = res.Location.replace("/meetings", "/meetings-resized");
+              editor.deleteText(range.index, 1);
+              editor.insertEmbed(range.index, 'image', `${link}`, 'user');
+            })
           })
-        })
+        } else {
+          alert(`이미지 형식만 가능합니다. (${fileTypes})`);
+          editor.deleteText(range.index, 1);
+        }
       };
     })
   }
