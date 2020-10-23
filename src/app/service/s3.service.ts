@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as AWS from 'aws-sdk';
 import * as S3 from 'aws-sdk/clients/s3';
@@ -110,14 +110,7 @@ export class S3Service {
 
   // key: meetings/test.png
   resizeImage(key: string) {
-    const url = "https://w39lkl7tk1.execute-api.ap-northeast-2.amazonaws.com/v1/image-resize";
-    let headers = new HttpHeaders({
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': '*',
-      'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-      // "Access-Control-Allow-Credentials": true
-    });
-    let options = { headers: headers };
-    return this.http.post(url, { key }, options)
+    const url = "https://w39lkl7tk1.execute-api.ap-northeast-2.amazonaws.com/v2/image-resize";
+    return this.http.post(url, { key })
   }
 }
