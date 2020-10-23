@@ -10,7 +10,9 @@ import { NgxCronUiConfig } from 'ngx-cron-ui/lib/model/model';
 import { QuillEditorComponent } from 'ngx-quill';
 import { Meeting } from 'src/app/model/meeting';
 import { FormService } from 'src/app/service/form.service';
+import { environment } from 'src/environments/environment';
 import { CheckDesktopService } from './../../service/check-desktop.service';
+import { S3Service } from './../../service/s3.service';
 
 @Component({
   selector: 'meeting-control',
@@ -35,9 +37,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   @Output() onMarkerDragEndEvent = new EventEmitter();
   @Output() onCheckDiscountPriceEvent = new EventEmitter();
   @Output() onCheckRefundPolicy0Event = new EventEmitter();
-  @Output() onGetEditorInstanceEvent = new EventEmitter();
   @Output() onAddEvent = new EventEmitter();
-
   @Output() onQuillLoadEvent = new EventEmitter();
 
   isDesktop = false;
@@ -80,7 +80,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     private formService: FormService,
     private fb: FormBuilder,
     private modalService: BsModalService,
-    private localeService: BsLocaleService
+    private localeService: BsLocaleService,
+    private s3Service: S3Service
   ) { }
 
   ngOnInit() {
@@ -378,6 +379,31 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     }
   }
 
+  getEditorInstance(editorInstance: any) {
+
+    let toolbar = editorInstance.getModule('toolbar');
+    toolbar.addHandler('image', () => {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.click();
+      input.onchange = () => {
+        const editor = this.quill.quillEditor;
+        const range = editor.getSelection();
+        editor.insertEmbed(range.index, 'image', '/assets/loading.gif');
+        editor.formatText(range.index, 1, 'width', '25px');
+        const file = input.files[0];
+        this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
+          this.s3Service.resizeImage(res.Key).subscribe(resp => {
+            console.log(resp);
+            const link = res.Location.replace("/meetings", "/meetings-resized");
+            editor.deleteText(range.index, 1);
+            editor.insertEmbed(range.index, 'image', `${link}`, 'user');
+          })
+        })
+      };
+    })
+  }
+
   setCalendar() {
     setTimeout(() => {
       const api = this.calendarComponent.getApi();
@@ -618,10 +644,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     const index = this.options.value.indexOf(value);
     this.options.removeAt(index);
     this.searchedOptions = this.searchedOptions.filter(o => o.oid !== option.oid);
-  }
-
-  getEditorInstance(editorInstance: any) {
-    this.onGetEditorInstanceEvent.emit(editorInstance);
   }
 
   add() {

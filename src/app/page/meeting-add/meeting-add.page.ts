@@ -10,8 +10,6 @@ import { Meeting, MeetingOption, MeetingStatus } from 'src/app/model/meeting';
 import { AuthService } from 'src/app/service/auth.service';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { FormService } from '../../service/form.service';
-import { S3Service } from '../../service/s3.service';
-import { environment } from './../../../environments/environment';
 import { User } from './../../model/user';
 import { UtilService } from './../../service/util.service';
 
@@ -51,8 +49,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
     private utilService: UtilService,
     private authService: AuthService,
     private fb: FormBuilder,
-    private meetingService: MeetingService,
-    private s3Service: S3Service
+    private meetingService: MeetingService
   ) { }
 
   ngAfterViewInit(): void {
@@ -67,28 +64,6 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
 
   quillLoad(event) {
     this.quill = event;
-  }
-
-  getEditorInstance(editorInstance: any) {
-    let toolbar = editorInstance.getModule('toolbar');
-    toolbar.addHandler('image', () => {
-      const input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.click();
-      input.onchange = () => {
-        const file = input.files[0];
-        this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
-          const editor = this.quill.quillEditor;
-          const range = editor.getSelection();
-          this.s3Service.resizeImage(res.Key).subscribe(resp => {
-            console.log(resp);
-            const link = res.Location.replace("/meetings", "/meetings-resized");
-            editor.insertEmbed(range.index, 'image', `${link}`, 'user');
-          })
-          // editor.insertEmbed(range.index, 'image', `${link}`, 'user');
-        })
-      };
-    })
   }
 
   ngOnInit() {
