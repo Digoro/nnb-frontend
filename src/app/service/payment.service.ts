@@ -191,11 +191,15 @@ export class PaymentService {
     const payTime = moment(result.PCD_PAY_TIME, 'YYYYMMDDHHmmss').format('MM월 DD일 HH:mm');
     const optionDate = moment(options[0].optionDate).format('MM월 DD일 HH:mm');
     const option = options.map(option => option.optionTitle).join(", ")
-    const paymentResult = new AlimtalkPaymentResult(phone, user.nickName, user.nickName, result.PCD_PAY_OID, +result.PCD_PAY_TOTAL,
+    let paymentResult = new AlimtalkPaymentResult(phone, user.nickName, user.nickName, result.PCD_PAY_OID, +result.PCD_PAY_TOTAL,
       payTime, result.PCD_PAY_GOODS, option, optionDate, result.mid)
     this.alimtalkService.sendPaymentResult(paymentResult).subscribe(resp => {
-      console.log('알림톡 전송 완료');
-    })
+      console.log('구매자 알림톡 전송 완료');
+      paymentResult.receiver_1 = '010-6687-1917';
+      this.alimtalkService.sendPaymentResult(paymentResult).subscribe(resp => {
+        console.log('관리자 알림톡 전송 완료');
+      })
+    });
   }
 
   // 카드 혹은 계좌 등록
