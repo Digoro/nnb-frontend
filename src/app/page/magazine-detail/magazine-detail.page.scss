@@ -64,3 +64,8 @@
     letter-spacing: -0.3px;
     margin: 0px;
 }
+
+:host::ng-deep .ql-video {
+    width: 800px;
+    height: 300px;
+}

@@ -92,6 +92,11 @@ hr {
     margin: 0px;
 }
 
+:host::ng-deep .ql-video {
+    width: 800px;
+    height: 300px;
+}
+
 agm-map {
     height: 300px;
 }

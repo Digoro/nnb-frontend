@@ -90,6 +90,11 @@ agm-map {
     margin: 0px;
 }
 
+:host::ng-deep .ql-video {
+    width: 800px;
+    height: 300px;
+}
+
 .host {
     display: flex;
 
