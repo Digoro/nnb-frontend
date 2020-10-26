@@ -183,7 +183,7 @@
     <ion-grid fixed style="padding: 0px">
       <ion-toolbar class="join-btn">
         <ion-button *ngIf="meeting.status !== 5" expand="full" size="large" style="margin: 0px;  color:#007bff"
-          (click)="join(meeting)" disabled>
+          (click)="join(meeting)">
           모임 참여하기
         </ion-button>
         <ion-button *ngIf="meeting.status === 5" expand="full" size="large" style="margin: 0px;  color:#007bff"
