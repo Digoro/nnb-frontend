@@ -56,7 +56,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       today: '오늘'
     },
     editable: false,
-    selectable: true
+    selectable: true,
+    height: 600
   };
   hours = [];
   minutes = [];
