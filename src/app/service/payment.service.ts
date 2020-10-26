@@ -107,31 +107,34 @@ export class PaymentService {
     obj['PCD_PAYER_HP'] = user.phone;
     obj['PCD_PAYER_EMAIL'] = user.email;
     obj['PCD_PAY_WORK'] = "PAY";
-    obj['PCD_USER_DEFINE1'] = phone;
-    obj['callbackFunction'] = (result: PaymentResult) => {
-      if (coupon) {
-        result.couponId = coupon.couponId;
-      }
-      result.uid = user.uid;
-      result.mid = meeting.mid;
-      console.log("PAY 결과");
-      console.log(result);
-      for (const [key, value] of Object.entries(result)) {
-        if (!value) result[key] = ""
-      }
-      if (result.PCD_PAY_RST === 'success') {
-        this.addPaymentResult(result).subscribe((paymentResult: PaymentResult) => {
-          this.addPaymentOptionMaps(paymentResult.pid, options).subscribe(resp => {
-            alert('등록한 모임으로 이동합니다.');
-            this.router.navigate(['/tabs/my-info']);
-            this.sendAlimtalk(user, options, paymentResult, phone);
-          })
-        })
-      } else {
-        alert('결제가 실패하였습니다.');
-        this.router.navigate([`/tabs/meeting-detail/${meeting.mid}`]);
-      }
-    };
+    // obj['PCD_USER_DEFINE1'] = phone;
+    obj['PCD_RST_URL'] = "http://localhost:8000/payment/callback";
+    const data = encodeURIComponent(JSON.stringify({ phone, uid: user.uid, mid: meeting.mid, couponId: coupon ? coupon.couponId : '', options: options }))
+    obj['PCD_USER_DEFINE1'] = data;
+    // obj['callbackFunction'] = (result: PaymentResult) => {
+    //   if (coupon) {
+    //     result.couponId = coupon.couponId;
+    //   }
+    //   result.uid = user.uid;
+    //   result.mid = meeting.mid;
+    //   console.log("PAY 결과");
+    //   console.log(result);
+    //   for (const [key, value] of Object.entries(result)) {
+    //     if (!value) result[key] = ""
+    //   }
+    //   if (result.PCD_PAY_RST === 'success') {
+    //     this.addPaymentResult(result).subscribe((paymentResult: PaymentResult) => {
+    //       this.addPaymentOptionMaps(paymentResult.pid, options).subscribe(resp => {
+    //         alert('등록한 모임으로 이동합니다.');
+    //         this.router.navigate(['/tabs/my-info']);
+    //         this.sendAlimtalk(user, options, paymentResult, phone);
+    //       })
+    //     })
+    //   } else {
+    //     alert('결제가 실패하였습니다.');
+    //     this.router.navigate([`/tabs/meeting-detail/${meeting.mid}`]);
+    //   }
+    // };
     switch (method) {
       // [from docs.payple.kr] 앱카드 결제
       // 카드 일반 결제 (다날 결제)
