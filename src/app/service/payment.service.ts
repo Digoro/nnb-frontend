@@ -107,10 +107,14 @@ export class PaymentService {
     obj['PCD_PAYER_HP'] = user.phone;
     obj['PCD_PAYER_EMAIL'] = user.email;
     obj['PCD_PAY_WORK'] = "PAY";
-    // obj['PCD_USER_DEFINE1'] = phone;
     obj['PCD_RST_URL'] = "https://nonunbub.com/payment/callback";
-    const data = encodeURIComponent(JSON.stringify({ phone, uid: user.uid, mid: meeting.mid, couponId: coupon ? coupon.couponId : '', options: options }))
-    obj['PCD_USER_DEFINE1'] = data;
+    const userDefine = encodeURIComponent(JSON.stringify({
+      phone, uid: user.uid,
+      mid: meeting.mid,
+      couponId: coupon ? coupon.couponId : '',
+      options: options,
+    }))
+    obj['PCD_USER_DEFINE1'] = userDefine;
     // obj['callbackFunction'] = (result: PaymentResult) => {
     //   if (coupon) {
     //     result.couponId = coupon.couponId;
