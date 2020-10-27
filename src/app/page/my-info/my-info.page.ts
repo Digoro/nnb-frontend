@@ -42,7 +42,7 @@ export class MyInfoPage {
           this.purchasedMeetings = undefined;
         }
         else {
-          this.purchasedMeetings = meetings;
+          this.purchasedMeetings = meetings.reverse();
         }
       });
     });

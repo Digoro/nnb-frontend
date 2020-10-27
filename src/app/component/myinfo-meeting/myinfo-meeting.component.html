@@ -20,8 +20,8 @@
         <ng-container *ngIf="meeting.payment.PCD_PAY_TYPE === 'card'">
           <p>카드사: {{meeting.payment.PCD_PAY_CARDNAME}}</p>
           <p>카드번호: {{meeting.payment.PCD_PAY_CARDNUM}}</p>
-          <p><a [href]="meeting.payment.PCD_PAY_CARDRECEIPT" target="_blank">매출전표
-              확인하기</a></p>
+          <p><a *ngIf="meeting.payment.PCD_PAY_CARDRECEIPT!=''" [href]="meeting.payment.PCD_PAY_CARDRECEIPT"
+              target="_blank">매출전표 확인하기</a></p>
         </ng-container>
 
         <ng-container *ngIf="meeting.payment.PCD_PAY_TYPE === 'transfer'">
