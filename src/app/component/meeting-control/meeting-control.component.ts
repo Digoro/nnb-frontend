@@ -607,26 +607,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     }
   }
 
-  changeHours(event) {
-    const control = this.formGroup.controls.runningMinutes;
-    const selectedMinutes = event.detail.value * 60;
-    const oldValue = control.value;
-    const oldHours = Math.floor(oldValue / 60);
-    const oldMinutes = oldValue - (oldHours * 60);
-    const result = oldMinutes + selectedMinutes;
-    control.patchValue(result);
-  }
-
-  changeMinutes(event) {
-    const control = this.formGroup.controls.runningMinutes;
-    const selectedMinutes = event.detail.value;
-    const oldValue = control.value;
-    const oldHours = Math.floor(oldValue / 60);
-    const oldMinutes = oldValue - (oldHours * 60);
-    const result = oldValue - oldMinutes + selectedMinutes;
-    control.patchValue(result);
-  }
-
   deleteSchedule() {
     if (confirm('정말로 삭제하시겠습니까?')) {
       this.searchedOptions.forEach(option => {
