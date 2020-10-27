@@ -3,7 +3,7 @@
     <ion-row>
       <ion-col *ngFor="let category of categories" size="6">
         <ion-card (click)="click(category.key)">
-          <ion-icon [name]="category.icon"></ion-icon>
+          <img [src]="category.image">
           <ion-card-header>
             <ion-card-subtitle style="font-size:18px">{{category.title}}</ion-card-subtitle>
           </ion-card-header>

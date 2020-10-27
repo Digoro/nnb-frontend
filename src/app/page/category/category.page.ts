@@ -11,36 +11,35 @@ export class CategoryPage implements OnInit {
   categories = [
     {
       title: "여행",
-      icon: "airplane-outline",
+      image: '/assets/category/travel.png',
       key: '여행'
     },
     {
       title: "취미",
-      icon: "brush-outline",
+      image: '/assets/category/hobby.png',
       key: '취미'
     },
     {
-      title: "교육",
-      icon: "book-outline",
-      key: '교육'
-    },
-    {
-      title: "모임",
-      icon: "people-outline",
-      key: '모임'
-    },
-    {
       title: "운동",
-      icon: "bicycle-outline",
+      image: '/assets/category/exersise.png',
       key: '운동'
     },
     {
+      title: "모임",
+      image: '/assets/category/meeting.png',
+      key: '모임'
+    },
+    {
+      title: "교육",
+      image: '/assets/category/education.png',
+      key: '교육'
+    },
+    {
       title: "사회공헌",
-      icon: "body-outline",
+      image: '/assets/category/social.png',
       key: '사회공헌'
     },
-  ];
-
+  ]
   constructor(
     private router: Router
   ) { }
