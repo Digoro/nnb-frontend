@@ -29,7 +29,7 @@
       <ion-row style="margin-bottom: 20px;">
         <ion-col style="font-size: 15px;font-weight: 300;">
           <p class="basic-info">
-            <ion-chip>
+            <ion-chip color="primary">
               <ion-label>{{meeting.categories}}</ion-label>
             </ion-chip>
           </p>
@@ -42,8 +42,16 @@
             <span *ngIf="runningMinutes!=0">{{runningMinutes}}분</span> 소요
           </p>
           <p class="basic-info">
-            <ion-icon name="calendar-outline"></ion-icon>{{meeting.options[0].optionDate|date:'yyyy-MM-dd HH:mm'}}
-            <span *ngIf="meeting.options.length > 1">외 {{meeting.options.length}}개의 일정</span>
+            <ng-container *ngIf="meeting.options.length!==0">
+              <ion-icon name="calendar-outline"></ion-icon>{{meeting.options[0].optionDate|date:'yyyy-MM-dd HH:mm'}}
+              <span *ngIf="meeting.options.length > 1">외 {{meeting.options.length}}개의 일정</span>
+            </ng-container>
+            <ng-container *ngIf="meeting.options.length===0">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <ion-chip color="warning">
+                <ion-label>일정이 없습니다.</ion-label>
+              </ion-chip>
+            </ng-container>
           </p>
           <p class="basic-info" style="display: flex; justify-content: flex-start;">
             <ion-button color="danger" expand="block" style="min-width: 190px;">
