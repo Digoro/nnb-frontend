@@ -2,6 +2,8 @@ import { Location } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Tab } from 'src/app/model/tab';
+import { AuthService } from 'src/app/service/auth.service';
+import { KakaoUser } from './../../model/user';
 import { CheckDesktopService } from './../../service/check-desktop.service';
 
 @Component({
@@ -22,11 +24,13 @@ export class TabsPage implements OnInit {
     new Tab('category', 'search', '카테고리'),
     new Tab('my-info', 'apps', '내모임'),
   ];
+  kakaoUser: KakaoUser;
 
   constructor(
     private cds: CheckDesktopService,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -40,6 +44,9 @@ export class TabsPage implements OnInit {
         this.isHome = event.url === '/tabs/home';
       }
     });
+    this.authService.getCurrentUser().subscribe(user => {
+      this.kakaoUser = user.kakaoUser;
+    })
   }
 
   search(event) {
