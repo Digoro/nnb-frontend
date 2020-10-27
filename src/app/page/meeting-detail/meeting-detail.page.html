@@ -1,10 +1,10 @@
 <ng-container *ngIf="!!meeting">
   <ion-content scroll-events="true" (ionScroll)="onScroll($event)">
-    <ion-grid [fixed]="isDesktop" [ngStyle]="{'padding':isDesktop?'':'0px'}">
+    <ion-grid [fixed]="isDesktop">
       <ion-row>
         <ion-col>
           <ion-row>
-            <ion-col [ngStyle]="{'padding':isDesktop?'':'0px'}">
+            <ion-col>
               <img [src]="meeting.file" class="main-image" />
             </ion-col>
           </ion-row>

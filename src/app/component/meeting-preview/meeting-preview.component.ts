@@ -19,9 +19,11 @@ export class MeetingPreviewComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.meeting.firstChange && !!changes.meeting.currentValue) {
-      this.runningHours = Math.floor(this.meeting.runningMinutes / 60);
-      this.runningMinutes = this.meeting.runningMinutes % 60;
+    if (!!changes.meeting) {
+      if (!changes.meeting.firstChange && !!changes.meeting.currentValue) {
+        this.runningHours = Math.floor(this.meeting.runningMinutes / 60);
+        this.runningMinutes = this.meeting.runningMinutes % 60;
+      }
     }
   }
 

@@ -536,7 +536,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       alert('스케줄이 등록되었습니다.')
     }
     this.optionAddFormGroup.reset();
-    this.modalRef.hide();
+    this.addModalRef.hide();
   }
 
   addOptionForm(events: any[]) {
