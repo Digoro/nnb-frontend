@@ -32,8 +32,8 @@
             <ion-icon name="navigate-outline"></ion-icon>{{meeting.address}}, {{meeting.detailed_address}}
           </p>
           <p class="basic-info">
-            <ion-icon name="time-outline"></ion-icon>약 <span *ngIf="runningHours!=0">{{runningHours}}</span>시간
-            {{runningMinutes}}분 소요
+            <ion-icon name="time-outline"></ion-icon>
+            약 <span *ngIf="runningHours!=0">{{runningHours}}시간 </span>{{runningMinutes}}분 소요
           </p>
           <p class="basic-info">
             <ion-icon name="calendar-outline"></ion-icon>{{meeting.options[0].optionDate|date:'yyyy-MM-dd HH:mm'}}
