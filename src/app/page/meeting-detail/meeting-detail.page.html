@@ -2,14 +2,13 @@
   <ion-content scroll-events="true" (ionScroll)="onScroll($event)">
     <ion-grid [fixed]="isDesktop" [ngStyle]="{'padding':isDesktop?'':'0px'}">
       <ion-row>
-        <ion-col [ngStyle]="{'padding':isDesktop?'':'0px'}">
-          <img [src]="meeting.file" class="main-image" />
+        <ion-col>
+          <ion-row>
+            <ion-col [ngStyle]="{'padding':isDesktop?'':'0px'}">
+              <img [src]="meeting.file" class="main-image" />
+            </ion-col>
+          </ion-row>
         </ion-col>
-      </ion-row>
-    </ion-grid>
-
-    <ion-grid fixed>
-      <ion-row>
         <ion-col>
           <p class="desc">{{meeting.subTitle}}</p>
           <h4><strong>{{meeting.title}}</strong></h4>
@@ -23,14 +22,22 @@
             </ng-container>
           </span>
           <span *ngIf="meeting.price === 0" class="price">무료</span>
-        </ion-col>
-      </ion-row>
-      <hr>
-      <ion-row style="margin-bottom: 20px;">
-        <ion-col style="font-size: 15px;font-weight: 300;">
+          <hr>
           <p class="basic-info">
-            <ion-icon name="at-outline" style="color:#2c353e"></ion-icon>{{meeting.address}}
-            {{meeting.detailed_address}}
+            <ion-chip>
+              <ion-label>{{categories}}</ion-label>
+            </ion-chip>
+          </p>
+          <p class="basic-info">
+            <ion-icon name="navigate-outline"></ion-icon>{{meeting.address}}, {{meeting.detailed_address}}
+          </p>
+          <p class="basic-info">
+            <ion-icon name="time-outline"></ion-icon>약 <span *ngIf="runningHours!=0">{{runningHours}}</span>시간
+            {{runningMinutes}}분 소요
+          </p>
+          <p class="basic-info">
+            <ion-icon name="calendar-outline"></ion-icon>{{meeting.options[0].optionDate|date:'yyyy-MM-dd HH:mm'}}
+            <span *ngIf="meeting.options.length > 1">외 {{meeting.options.length}}개의 일정</span>
           </p>
           <p class="basic-info" [ngStyle]="{ 'justify-content': isDesktop? 'flex-start': 'space-between'}"
             style="display: flex;;">
@@ -43,6 +50,9 @@
           </p>
         </ion-col>
       </ion-row>
+    </ion-grid>
+
+    <ion-grid fixed>
       <div class="menu">
         <a href="javascript:document.getElementById('section-1').scrollIntoView(true);">
           <p>모임 소개</p>

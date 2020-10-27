@@ -13,7 +13,7 @@ export class Meeting {
         public lat: number,
         public lon: number,
         public host: number,
-        public categories: Category[],
+        public categories: Category,
         public file: string,
         public price: number,
         public discountPrice: number,

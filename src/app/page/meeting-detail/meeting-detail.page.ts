@@ -9,12 +9,12 @@ import { ClipboardService } from 'ngx-clipboard';
 import { Meeting } from 'src/app/model/meeting';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { environment } from './../../../environments/environment';
+import { Category } from './../../model/category';
 import { Comment } from './../../model/comment';
 import { User } from './../../model/user';
 import { AuthService } from './../../service/auth.service';
 import { CheckDesktopService } from './../../service/check-desktop.service';
 import { CommentService } from './../../service/comment.service';
-import { PaymentService } from './../../service/payment.service';
 import { TimeUtilService } from './../../service/time-util.service';
 import { TitleService } from './../../service/title.service';
 import { UserService } from './../../service/user.service';
@@ -51,6 +51,9 @@ export class MeetingDetailPage implements OnInit {
   selectedMeeting: Meeting;
 
   isDesktop = true;
+  runningHours;
+  runningMinutes;
+  categories;
 
   constructor(
     private router: Router,
@@ -66,7 +69,6 @@ export class MeetingDetailPage implements OnInit {
     private authService: AuthService,
     public cds: CheckDesktopService,
     private titleService: TitleService,
-    private paymentService: PaymentService
   ) {
     this.utilService.loadScript('https://developers.kakao.com/sdk/js/kakao.js')
   }
@@ -85,6 +87,9 @@ export class MeetingDetailPage implements OnInit {
           this.userService.get(this.meeting.host).subscribe(user => {
             this.host = user;
           });
+          this.runningHours = Math.floor(meeting.runningMinutes / 60);
+          this.runningMinutes = meeting.runningMinutes % 60;
+          this.categories = Category[meeting.categories]
           this.getComments();
         }, error => {
           if ((error as HttpErrorResponse).status === 404) {
