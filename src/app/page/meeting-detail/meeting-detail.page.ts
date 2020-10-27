@@ -235,6 +235,10 @@ export class MeetingDetailPage implements OnInit {
     toast.present();
   }
 
+  question() {
+    window.open('https://nonunbub.channel.io');
+  }
+
 
   like(meeting: Meeting) {
     alert('서비스 준비중입니다 ^^');
