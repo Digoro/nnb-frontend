@@ -49,9 +49,9 @@
           </ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button (click)="search($event)">
+          <!-- <ion-button (click)="search($event)">
             <ion-icon slot="icon-only" name="search-outline" class="icon"></ion-icon>
-          </ion-button>
+          </ion-button> -->
           <ion-button [routerLink]="'/tabs/more'">
             <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
           </ion-button>
@@ -76,9 +76,9 @@
               {{tab.label}}
             </ion-button>
           </ng-container>
-          <ion-button (click)="search($event)">
+          <!-- <ion-button (click)="search($event)">
             <ion-icon slot="icon-only" name="search-outline"></ion-icon>
-          </ion-button>
+          </ion-button> -->
           <ion-button [routerLink]="'/tabs/more'">
             <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
           </ion-button>

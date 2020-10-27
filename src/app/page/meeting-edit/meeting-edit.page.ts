@@ -84,7 +84,8 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
       categories: new FormControl('', this.formService.getValidators(10)),
       address: new FormControl('', this.formService.getValidators(500)),
       detailAddress: new FormControl('', this.formService.getValidators(500)),
-      runningMinutes: new FormControl('', this.formService.getValidators(4, [Validators.max(1440), Validators.min(1)])),
+      runningHours: new FormControl('', this.formService.getValidators(2, [Validators.max(23), Validators.min(0)])),
+      runningMinutes: new FormControl('', this.formService.getValidators(2, [Validators.max(45), Validators.min(0)])),
       price: new FormControl('', this.formService.getValidators(10, [Validators.max(10000000)])),
       discountPrice: new FormControl(0, [Validators.max(10000000), this.validateDiscountPrice('price')]),
       desc: new FormControl('', Validators.required),
@@ -180,7 +181,8 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
     this.meetingForm.controls.categories.setValue(Category[+meeting.categories]);
     this.meetingForm.controls.address.setValue(meeting.address);
     this.meetingForm.controls.detailAddress.setValue(meeting.detailed_address);
-    this.meetingForm.controls.runningMinutes.setValue(meeting.runningMinutes);
+    this.meetingForm.controls.runningHours.setValue(Math.floor(meeting.runningMinutes / 60));
+    this.meetingForm.controls.runningMinutes.setValue(meeting.runningMinutes % 60);
     this.meetingForm.controls.price.setValue(meeting.price);
     this.meetingForm.controls.discountPrice.setValue(meeting.discountPrice);
     this.meetingForm.controls.desc.setValue(meeting.desc);
@@ -218,7 +220,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
 
   makePreviewMeeting() {
     if (this.meetingForm.valid) {
-      const { title, subTitle, fileSource, categories, address, detailAddress, runningMinutes,
+      const { title, subTitle, fileSource, categories, address, detailAddress, runningHours, runningMinutes,
         price, discountPrice, desc, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
       this.mapsAPILoader.load().then(() => {
         this.geoCoder = new google.maps.Geocoder;
@@ -226,7 +228,8 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
           if (status == "OK") {
             if (result[0]) {
               const location = result[0].geometry.location;
-              this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, runningMinutes, location.lat(), location.lng(), 0,
+              const minutes = runningHours * 60 + runningMinutes;
+              this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, minutes, location.lat(), location.lng(), 0,
                 categories, '', price, discountPrice, 0, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, 0, MeetingStatus.CREATED, options)
             }
             else {
@@ -320,7 +323,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
   }
 
   edit() {
-    const { title, subTitle, fileSource, categories, address, detailAddress, runningMinutes,
+    const { title, subTitle, fileSource, categories, address, detailAddress, runningHours, runningMinutes,
       price, discountPrice, desc, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
     this.mapsAPILoader.load().then(() => {
       this.geoCoder = new google.maps.Geocoder;
@@ -332,6 +335,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
             const lat = `${location.lat()}`;
             const lon = `${location.lng()}`;
             const discount = discountPrice ? discountPrice : 0;
+            const minutes = runningHours * 60 + runningMinutes;
 
             const formData = new FormData();
             formData.append('title', title);
@@ -340,7 +344,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
             formData.append('categories', `${Category[categories]}`);
             formData.append('address', `${address}`);
             formData.append('detailed_address', detailAddress);
-            formData.append('runningMinutes', `${runningMinutes}`);
+            formData.append('runningMinutes', `${minutes}`);
             formData.append('lat', lat);
             formData.append('lon', lon);
             formData.append('price', `${price}`);

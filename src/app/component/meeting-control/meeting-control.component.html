@@ -225,14 +225,14 @@
               <ion-label position="fixed">소요 시간<span class="invalid-input">*</span></ion-label>
             </ion-item>
             <ion-item lines="none">
-              <ion-select okText="확인" cancelText="취소" (ionChange)="changeHours($event)" style="min-width: 70px;">
+              <ion-select okText="확인" cancelText="취소" [formControlName]="'runningHours'" style="min-width: 70px;">
                 <ion-select-option *ngFor="let hour of hours" [value]="hour">{{hour}}
                 </ion-select-option>
               </ion-select>
               <span>시간</span>
             </ion-item>
             <ion-item lines="none">
-              <ion-select okText="확인" cancelText="취소" (ionChange)="changeMinutes($event)" style="min-width: 70px;">
+              <ion-select okText="확인" cancelText="취소" [formControlName]="'runningMinutes'" style="min-width: 70px;">
                 <ion-select-option *ngFor="let minute of minutes" [value]="minute">{{minute}}
                 </ion-select-option>
               </ion-select>
