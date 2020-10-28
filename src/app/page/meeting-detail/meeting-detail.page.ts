@@ -101,6 +101,10 @@ export class MeetingDetailPage implements OnInit {
     });
   }
 
+  goToCategory(category) {
+    this.router.navigate(['/tabs/meetings'], { queryParams: { key: category } })
+  }
+
   onScroll(event) {
     const currentScrollDepth = event.detail.scrollTop;
     document.querySelectorAll(".menu a").forEach(link => {

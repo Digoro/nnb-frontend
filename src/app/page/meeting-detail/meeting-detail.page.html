@@ -24,7 +24,7 @@
           <span *ngIf="meeting.price === 0" class="price">무료</span>
           <hr>
           <p class="basic-info">
-            <ion-chip color="primary">
+            <ion-chip color="primary" (click)="goToCategory(meeting.categories)">
               <ion-label>{{categories}}</ion-label>
             </ion-chip>
           </p>
