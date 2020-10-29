@@ -179,7 +179,7 @@ export class PaymentService {
     return forkJoin(requests)
   }
 
-  getPaymentOptionMaps(pid?: number, oid?: number) {
+  getPaymentOptionMaps(pid?: number, oid?: number): Observable<any> {
     if (pid && oid) {
       return this.http.get(`payment/payment_option_maps?pid=${pid}&oid=${oid}`)
     } else if (pid) {

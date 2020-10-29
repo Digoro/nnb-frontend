@@ -110,6 +110,26 @@ export class MeetingService {
     return this.http.delete(`${this.urlPrefix}/meetings/${mid}`);
   }
 
+  getPurchasedMeeting(pid: number): Observable<PurchasedMeeting> {
+    return this.paymentService.getPaymentOptionMaps(pid).pipe(
+      map(maps => {
+        return {
+          payment: maps[0].payment,
+          options: maps.map(payment => {
+            return {
+              ...payment.option,
+              pomid: payment.pomid,
+              count: payment.count,
+              PCD_PAY_REFUND_CARDRECEIPT: payment.PCD_PAY_REFUND_CARDRECEIPT,
+              PCD_REFUND_TOTAL: payment.PCD_REFUND_TOTAL,
+              isRefund: payment.isRefund
+            }
+          })
+        }
+      })
+    )
+  }
+
   getPurchasedMeetings(uid: number): Observable<PurchasedMeeting[]> {
     return this.paymentService.getPurchasedInfo(uid).pipe(
       concatMap(info => {

@@ -29,6 +29,7 @@ import { MeetingPreviewComponent } from './component/meeting-preview/meeting-pre
 import { MyinfoMeetingComponent } from './component/myinfo-meeting/myinfo-meeting.component';
 import { NotionDescComponent } from './component/notion-desc/notion-desc.component';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
+import { DebounceClickDirective } from './directive/debounce-click.directive';
 import { HideToolbarDirective } from './directive/hide-toolbar.directive';
 import { InputDigitsOnlyDirective } from './directive/input.digits.only.directive';
 import { TruncatePipe } from './pipe/truncate.pipe';
@@ -48,6 +49,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CommentComponent,
     HideToolbarDirective,
     InputDigitsOnlyDirective,
+    DebounceClickDirective,
     FooterComponent,
     MeetingPreviewComponent,
     MeetingControlComponent,
@@ -117,6 +119,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ModalModule,
     HideToolbarDirective,
     InputDigitsOnlyDirective,
+    DebounceClickDirective,
     FooterComponent,
     MeetingPreviewComponent,
     TableModule,

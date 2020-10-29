@@ -428,8 +428,10 @@
         <div id="test-l-11" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" [disabled]="formGroup.invalid" (click)="add()">{{submitMessage}}
-            </ion-button>
+            <button style="margin-top: 11px;" class="btn btn-primary" [disabled]="formGroup.invalid" debounce-click
+              (debounceClick)="add()">
+              {{submitMessage}}
+            </button>
           </div>
           <notion-desc [description]="descriptions[10]"></notion-desc>
           <meeting-preview [meeting]="previewMeeting" [previewImage]="previewImage"></meeting-preview>

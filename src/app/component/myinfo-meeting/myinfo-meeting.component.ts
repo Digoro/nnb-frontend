@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PurchasedMeeting, PurchasedMeetingOption } from './../../model/meeting';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PurchasedMeeting } from './../../model/meeting';
 
 @Component({
   selector: 'myinfo-meeting',
@@ -8,25 +9,19 @@ import { PurchasedMeeting, PurchasedMeetingOption } from './../../model/meeting'
 })
 export class MyinfoMeetingComponent implements OnInit {
   @Input() meeting: PurchasedMeeting;
-  @Output() onGoDetailPage = new EventEmitter();
-  @Output() onCancelEvent = new EventEmitter();
-  isAllCanceled: boolean;
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    this.isAllCanceled = !!this.meeting.options.find(option => !option.isRefund)
   }
 
-  goDetailPage(mid: number) {
-    this.onGoDetailPage.emit(mid);
+  goMeetingPage(mid: number) {
+    this.router.navigate(['./tabs/meeting-detail', mid]);
   }
 
-  cancel(meeting: PurchasedMeeting, option: PurchasedMeetingOption) {
-    this.onCancelEvent.emit({ meeting, option });
-  }
-
-  question() {
-    window.open('https://nonunbub.channel.io')
+  goDetailPage(pid: number) {
+    this.router.navigate(['./tabs/my-info-detail', pid]);
   }
 }

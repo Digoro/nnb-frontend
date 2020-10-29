@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { Coupon } from 'src/app/model/coupon';
-import { Meeting, PurchasedMeetingOption } from 'src/app/model/meeting';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { MeetingService } from 'src/app/service/meeting.service';
-import { PaymentService } from 'src/app/service/payment.service';
 import { PurchasedMeeting } from './../../model/meeting';
 
 @Component({
@@ -23,9 +20,7 @@ export class MyInfoPage {
   constructor(
     private authService: AuthService,
     private meetingService: MeetingService,
-    private router: Router,
     public actionSheetController: ActionSheetController,
-    private paymentService: PaymentService
   ) { }
 
   ionViewDidEnter() {
@@ -50,18 +45,5 @@ export class MyInfoPage {
 
   segmentChanged(event) {
     this.selectedMenu = event.detail.value;
-  }
-
-  goDetailPage(meeting: Meeting) {
-    this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
-  }
-
-  cancel(event: { meeting: PurchasedMeeting, option: PurchasedMeetingOption }) {
-    const purchasedMeeting = event.meeting;
-    const option = event.option
-    this.paymentService.refund(purchasedMeeting, option).subscribe(resp => {
-      alert("환불 되었습니다.");
-      this.setMyMeetings();
-    })
   }
 }

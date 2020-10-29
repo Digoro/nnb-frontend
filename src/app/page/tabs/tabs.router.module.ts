@@ -25,6 +25,12 @@ const routes: Routes = [
         }]
       },
       {
+        path: 'my-info-detail/:id', canActivateChild: [AuthGuard], children: [{
+          path: '', loadChildren: () =>
+            import('../my-info-detail/my-info-detail.module').then(m => m.MyInfoDetailPageModule)
+        }]
+      },
+      {
         path: 'more', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>
             import('../more/more.module').then(m => m.MorePageModule)
@@ -83,6 +89,18 @@ const routes: Routes = [
         path: 'payment/:mid', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>
             import('../payment/payment.module').then(m => m.PaymentPageModule)
+        }]
+      },
+      {
+        path: 'payment-success/:id', canActivateChild: [AuthGuard], children: [{
+          path: '', loadChildren: () =>
+            import('../payment-success/payment-success.module').then(m => m.PaymentSuccessPageModule)
+        }]
+      },
+      {
+        path: 'payment-fail', canActivateChild: [AuthGuard], children: [{
+          path: '', loadChildren: () =>
+            import('../payment-fail/payment-fail.module').then(m => m.PaymentFailPageModule)
         }]
       },
       {

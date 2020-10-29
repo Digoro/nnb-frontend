@@ -7,20 +7,12 @@
       <ion-segment-button value="like">
         <ion-label>찜한 모임</ion-label>
       </ion-segment-button>
-      <!-- <ion-segment-button value="comment">
-        <ion-label>내가 쓴 댓글</ion-label>
-      </ion-segment-button> -->
-      <!-- <ion-segment-button value="refund">
-        <ion-label>환불 내역</ion-label>
-      </ion-segment-button> -->
     </ion-segment>
     <br>
 
     <ng-container *ngIf="selectedMenu === 'join'">
       <ng-container *ngFor="let purchasedMeeeting of purchasedMeetings">
-        <myinfo-meeting [meeting]="purchasedMeeeting" (onGoDetailPage)="goDetailPage($event)"
-          (onCancelEvent)="cancel($event)">
-        </myinfo-meeting>
+        <myinfo-meeting [meeting]="purchasedMeeeting"></myinfo-meeting>
       </ng-container>
       <ng-container *ngIf="!purchasedMeetings">
         <div style="text-align: center; opacity: 0.4;">
@@ -30,19 +22,7 @@
         </div>
       </ng-container>
     </ng-container>
-    <!-- <ng-container *ngIf="selectedMenu === 'refund'">
-      <ng-container *ngFor="let refundedMap of refundedMaps">
-        <myinfo-meeting [map]="refundedMap" (onGoDetailPage)="goDetailPage($event)" (onCancelEvent)="cancel($event)">
-        </myinfo-meeting>
-      </ng-container>
-      <ng-container *ngIf="!refundedMaps">
-        <div style="text-align: center; opacity: 0.4;">
-          <ion-chip outline>
-            <ion-label color="primary">환불 내역이 없습니다.</ion-label>
-          </ion-chip>
-        </div>
-      </ng-container>
-    </ng-container> -->
+
     <ng-container *ngIf="selectedMenu === 'like'">
       <div style="text-align: center; opacity: 0.4;">
         <ion-chip outline>
