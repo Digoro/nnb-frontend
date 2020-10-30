@@ -16,8 +16,8 @@ export class SignupPage implements OnInit {
   method: string;
   sexs = ['남', '여', 'Other'];
   checkAllFlag = false;
-  termsOfService = 'https://www.notion.so/gdgdaejeon/99e6bfa922f64cfea1e24c5d000d829e';
-  collectPersonal = 'https://www.notion.so/gdgdaejeon/f31e801783a84d86b96b2406f0d3e074';
+  termsOfService = 'https://www.notion.so/gdgdaejeon/43b16b117aa840d397a71350a8d08412';
+  collectPersonal = 'https://www.notion.so/gdgdaejeon/5ad28ab509bb461090e2bca00af5ac59';
 
   constructor(
     private formService: FormService,
