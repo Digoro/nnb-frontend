@@ -73,7 +73,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   isInitialOptionLoad = true;
   @ViewChild(BsDaterangepickerDirective, { static: false }) datapickerDirective;
   noticeChcked = false;
-  descriptions: { title: string, descList: string[], moreDescList?: string[], link?: string, image?: string }[];
+  descriptions: { title: string, descList: string[], moreDescList?: string[], image?: string }[];
   inputDesc: { title: string, descList: string[] }
 
   constructor(
@@ -96,8 +96,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
           '캐치프레이즈는 제목과 연결되는 매력 포인트를 적어 주세요.'],
         moreDescList: [
           '어떤 제목과 캐치프레이즈가 좋을지 여전히 고민이신가요?',
-          '제목 가이드에서 다양한 사례와 팁을 참고해 보세요!'],
-        link: ''
+          '<a target="_blank"  href="https://www.notion.so/gdgdaejeon/22a178f222b743e09925324db6028677">제목 가이드</a>에서 다양한 사례와 팁을 참고해 보세요!']
       },
       {
         title: '고객의 클릭을 유도하는 대표 이미지를 등록해 주세요',
@@ -108,18 +107,13 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
           '이미지 사이즈는 1440 x 1080px 또는 4:3 비율로 만들어 주세요.'],
         moreDescList: [
           '대표 이미지가 상품의 첫 인상을 결정해요!',
-          '대표 이미지 가이드에서 다양한 사례와 팁을 참고해 보세요!'],
-        link: ''
+          '<a target="_blank"  href="https://www.notion.so/gdgdaejeon/2654a665f54947cabfe835d7307116c8">대표 이미지 가이드</a>에서 다양한 사례와 팁을 참고해 보세요!']
       },
       {
         title: '상품이 속하는 카테고리를 하나 선택해 주세요',
         descList: [
           '한 개의 카테고리만 선택할 수 있습니다.',
-          '상품의 성격과 맞지 않는 카테고리를 선택할 경우 임의로 수정될 수 있습니다.'],
-        moreDescList: [
-          '내 상품이 어떤 카테고리에 속하는지 잘 모르겠다면',
-          '카테고리 예시에서 다양한 사례와 팁을 참고해 보세요!'],
-        link: ''
+          '상품의 성격과 맞지 않는 카테고리를 선택할 경우 임의로 수정될 수 있습니다.']
       },
       {
         title: '만남을 위한 구체적인 장소와 소요시간을 알려주세요.',
@@ -147,7 +141,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         ],
         moreDescList: [
           "구매 옵션이 무엇인지 이해가 잘 안 되시나요?",
-          "구매 옵션 가이드에서 다양한 사례와 팁을 참고해 보세요!"
+          '<a target="_blank"  href="https://www.notion.so/gdgdaejeon/74bcdc48ed7a427596e1e89fa8c2624a">구매 옵션 가이드</a>에서 다양한 사례와 팁을 참고해 보세요!'
         ]
       },
       {
@@ -159,9 +153,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         ],
         moreDescList: [
           '어떻게 써야 할지 도저히 감이 잡히지 않는다면',
-          '상품 소개 예시에서 다양한 사례와 팁을 참고해 보세요!'
-        ],
-        link: ''
+          '<a target="_blank"  href="https://www.notion.so/gdgdaejeon/feba97e2a6974efaaedbac4e4eaca40e">상품 소개 예시</a>에서 다양한 사례와 팁을 참고해 보세요!'
+        ]
       },
       {
         title: '참여자가 직접 준비해야 할 것을 기입해 주세요.',
