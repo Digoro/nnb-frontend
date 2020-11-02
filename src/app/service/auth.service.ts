@@ -14,11 +14,11 @@ import { UtilService } from './util.service';
   providedIn: 'root'
 })
 export class AuthService {
-  profile = new KakaoProperties('nickname', '/assets/banner/banner01.jpeg', '/assets/banner/banner01.jpeg');
-  account = new KakaoAccount(true, new KakaoProfile('nickname', '/assets/banner/banner01.jpeg', '/assets/banner/banner01.jpeg'), true, true, true, true, 'email', true, true, 'age_range', true, true, 'birthday', 'birthday_type', true, true, 'gender')
+  profile = new KakaoProperties('상훈이', '/assets/user.png', '/assets/user.png');
+  account = new KakaoAccount(true, new KakaoProfile('상훈이', '/assets/user.png', '/assets/user.png'), true, true, true, true, 'lsh00124@naver.com', true, true, '20-30', true, true, '1992.01.24', 'birthday_type', true, true, 'male')
   kakaoUser = new KakaoUser(0, 0, "", this.profile, this.account)
-  user = new User(1, 'nonunbub@gmail.com', '노는법', '노는법', '2020.01.01', Gender.male, '010-9640-9225', '/assets/user.png',
-    new Location(0, 0, 'address'), 0, '신중년 여가 활동 소셜 커뮤니티 플랫폼', '안녕하세요! 신중년을 위한 여가 활동 소셜 커뮤니티 플랫폼 노는법입니다.', '1234', 'nonunbub', 1257467175, true);
+  user = new User(1, 'lsh00124@naver.com', '이상훈', '이상훈', '1900.01.01', Gender.male, '', '/assets/user.png',
+    new Location(0, 0, 'address'), 0, '', '', '', 'kakotalk', 1257467175, true);
   ADMIN_ID = 1;
 
   constructor(
