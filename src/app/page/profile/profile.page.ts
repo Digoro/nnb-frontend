@@ -33,7 +33,7 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      const id = params.id
+      const id = params.id;
       this.userService.get(id).subscribe(user => {
         this.user = user;
         this.commentService.getCommentsByUser(user.uid).subscribe(comments => {

@@ -36,7 +36,9 @@ export class UserService {
     return this.http.get<User>(`${this.urlPrefix}/users/${nid}`);
   }
 
-  edit(user: User) {
-    return this.http.put(`${this.urlPrefix}/users/${user.uid}`, user)
+  edit(uid, nickname, catchphrase, introduction) {
+    return this.http.put(`/users?uid=${uid}`, {
+      nickname, catchphrase, introduction
+    })
   }
 }

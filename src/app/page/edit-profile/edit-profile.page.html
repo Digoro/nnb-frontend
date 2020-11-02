@@ -3,7 +3,7 @@
     <ion-row style="margin-top:20px;">
       <ion-col class="center">
         <ion-avatar style="width: 80px; height: 80px;">
-          <img [src]="kakaoUser.properties.thumbnail_image">
+          <img [src]="user.image">
         </ion-avatar>
       </ion-col>
     </ion-row>
@@ -28,9 +28,9 @@
       </ion-item>
       <ion-item>
         <ion-label position="fixed">설명</ion-label>
-        <ion-textarea rows="2" placeholder="" maxlength="300" [formControlName]="'description'">
+        <ion-textarea rows="2" placeholder="" maxlength="300" [formControlName]="'introduction'">
         </ion-textarea>
-        <div ngxErrors="description">
+        <div ngxErrors="introduction">
           <div ngxError="maxlength" [when]="['dirty']">
             <p class="invalid-input">300자 제한입니다.</p>
           </div>

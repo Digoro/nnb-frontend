@@ -58,8 +58,8 @@ export class MorePage implements OnInit {
   }
 
   editUser() {
-    alert('서비스 준비중입니다 ^^')
-    // this.router.navigate(['/tabs/edit-profile']);
+    // alert('서비스 준비중입니다 ^^')
+    this.router.navigate(['/tabs/edit-profile']);
   }
 
   goToHost() {

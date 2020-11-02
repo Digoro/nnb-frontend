@@ -3,8 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { FormService } from 'src/app/service/form.service';
-import { UserService } from '../../service/user.service';
-import { KakaoUser } from './../../model/user';
+import { UserService } from './../../service/user.service';
 
 @Component({
   selector: 'edit-profile',
@@ -13,7 +12,6 @@ import { KakaoUser } from './../../model/user';
 })
 export class EditProfilePage implements OnInit {
   user: User;
-  kakaoUser: KakaoUser;
   form: FormGroup;
 
   constructor(
@@ -23,21 +21,24 @@ export class EditProfilePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.authService.getCurrentUser().subscribe(resp => {
-      this.user = resp.user;
-      this.kakaoUser = resp.kakaoUser;
+    this.setUser();
+  }
+
+  setUser() {
+    this.authService.getCurrentNonunbubUser().subscribe(resp => {
+      this.user = resp;
       this.form = new FormGroup({
-        nickname: new FormControl('', this.formService.getValidators(30)),
-        catchphrase: new FormControl('', this.formService.getValidators(30)),
-        description: new FormControl('', this.formService.getValidators(300)),
+        nickname: new FormControl(resp.nickName, this.formService.getValidators(30)),
+        catchphrase: new FormControl(resp.catch_phrase, this.formService.getValidators(30)),
+        introduction: new FormControl(resp.introduction, this.formService.getValidators(300)),
       });
     });
   }
 
   editUser() {
-    // this.userService.edit(undefined).subscribe(resp => {
-    //   alert(resp)
-    // })
-    alert('서비스 준비중입니다 ^^');
+    const { nickname, catchphrase, introduction } = this.form.value;
+    this.userService.edit(this.user.uid, nickname, catchphrase, introduction).subscribe(resp => {
+      this.setUser()
+    })
   }
 }
