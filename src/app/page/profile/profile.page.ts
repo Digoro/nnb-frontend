@@ -40,9 +40,7 @@ export class ProfilePage implements OnInit {
           this.hostedMeetings = meetings
           meetings.forEach(meeting => {
             this.commentService.getCommentsByMeeting(meeting.mid).subscribe(comments => {
-              if (comments.length > 0) {
-                this.comments.concat([...comments])
-              }
+              comments.forEach(comment => this.comments.push(comment))
             });
           })
         })
