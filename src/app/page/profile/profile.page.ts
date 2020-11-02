@@ -33,6 +33,7 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
+      this.comments = [];
       const id = params.id;
       this.userService.get(id).subscribe(user => {
         this.user = user;
@@ -50,7 +51,6 @@ export class ProfilePage implements OnInit {
             if (!exists) {
               arr.push(item);
             }
-
             return arr;
           }, []);
         })
