@@ -18,7 +18,7 @@ import { PurchasedMeeting } from './../../model/meeting';
 export class ProfilePage implements OnInit {
   user: User;
   kakaoUser: KakaoUser;
-  comments: Comment[];
+  comments: Comment[] = [];
   joinedMeeting: PurchasedMeeting[];
   hostedMeetings: Meeting[];
 
@@ -50,6 +50,7 @@ export class ProfilePage implements OnInit {
             if (!exists) {
               arr.push(item);
             }
+
             return arr;
           }, []);
         })
