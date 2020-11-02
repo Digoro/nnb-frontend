@@ -1,12 +1,12 @@
 <ion-content>
   <ion-grid fixed>
-    <ng-container *ngIf="!!user && !!kakaoUser && !!kakaoUser.properties">
+    <ng-container *ngIf="!!user">
       <ion-list style="margin: 30px 0px 25px 0px">
         <ion-item lines="none">
-          <ion-avatar slot="start" style="width: 80px; height: 80px;margin-left:20px">
-            <img [src]="kakaoUser.properties.thumbnail_image">
+          <ion-avatar (click)="goToProfile(user.uid)" slot="start" style="width: 80px; height: 80px;margin-left:20px">
+            <img [src]="user.image">
           </ion-avatar>
-          <ion-label style="color: #3f3e3e;">{{kakaoUser.properties.nickname}}</ion-label>
+          <ion-label (click)="goToProfile(user.uid)" style="color: #3f3e3e;">{{user.nickName}}</ion-label>
           <div style="display: flex; flex-direction: column;">
             <ion-chip color="primary" (click)="editUser()">
               <ion-icon name="settings-outline"></ion-icon>

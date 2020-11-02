@@ -7,7 +7,6 @@ import { PaymentService } from 'src/app/service/payment.service';
 import { UtilService } from 'src/app/service/util.service';
 import { environment } from './../../../environments/environment';
 import { MoreMenuGroup, MoreMenuItem } from './../../model/more-menu';
-import { KakaoUser } from './../../model/user';
 declare var Kakao;
 
 @Component({
@@ -17,7 +16,6 @@ declare var Kakao;
 })
 export class MorePage implements OnInit {
   user: User;
-  kakaoUser: KakaoUser;
   menus: MoreMenuGroup[];
 
   constructor(
@@ -35,10 +33,9 @@ export class MorePage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.authService.getCurrentUser().subscribe(resp => {
-      this.user = resp.user;
-      this.kakaoUser = resp.kakaoUser;
-      this.couponService.getCoupons(resp.user.uid, false).subscribe(coupons => {
+    this.authService.getCurrentNonunbubUser().subscribe(resp => {
+      this.user = resp;
+      this.couponService.getCoupons(resp.uid, false).subscribe(coupons => {
         this.paymentService.getUserPaymentAccounts(this.user.uid).subscribe(accounts => {
           this.menus = [
             new MoreMenuGroup('계정 관리', [
@@ -58,13 +55,15 @@ export class MorePage implements OnInit {
   }
 
   editUser() {
-    // alert('서비스 준비중입니다 ^^')
     this.router.navigate(['/tabs/edit-profile']);
   }
 
   goToHost() {
-    // alert('서비스 준비중입니다 ^^')
     window.open('https://nonunbub.com/host/meeting-management');
+  }
+
+  goToProfile(uid: number) {
+    this.router.navigate(['/tabs/profile', uid])
   }
 
   login(method: string) {
