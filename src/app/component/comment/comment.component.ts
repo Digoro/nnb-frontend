@@ -31,22 +31,26 @@ export class CommentComponent implements OnInit, OnChanges {
   ) { this.DELETE_FLAG = CommentService.DELETE_FLAG }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!changes.comments.firstChange && !!changes.comments.currentValue) {
-      this.comments.map(comment => {
-        if (!!this.currentUser) {
-          if (comment['writer']['uid'] === this.currentUser.uid) comment.canDelete = true;
-        }
-        return comment;
-      })
-      let parents = this.comments.filter(comment => comment.parentCid === 0);
-      let children = this.comments.filter(comment => comment.parentCid !== 0);
-      this.comments = parents.map(parent => {
-        parent.children = children.filter(child => child.parentCid === parent.cid)
-        return parent;
-      })
+    if (!!changes.comments) {
+      if (!changes.comments.firstChange && !!changes.comments.currentValue) {
+        this.comments.map(comment => {
+          if (!!this.currentUser) {
+            if (comment['writer']['uid'] === this.currentUser.uid) comment.canDelete = true;
+          }
+          return comment;
+        })
+        let parents = this.comments.filter(comment => comment.parentCid === 0);
+        let children = this.comments.filter(comment => comment.parentCid !== 0);
+        this.comments = parents.map(parent => {
+          parent.children = children.filter(child => child.parentCid === parent.cid)
+          return parent;
+        })
+      }
     }
-    if (changes.currentUser && !changes.currentUser.currentValue) {
-      this.canWrite = false;
+    if (!!changes.currentUser) {
+      if (changes.currentUser && !changes.currentUser.currentValue) {
+        this.canWrite = false;
+      }
     }
   }
 
