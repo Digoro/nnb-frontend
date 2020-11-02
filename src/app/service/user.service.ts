@@ -37,7 +37,7 @@ export class UserService {
   }
 
   edit(uid, nickname, catchphrase, introduction) {
-    return this.http.put(`/users?uid=${uid}`, {
+    return this.http.put(`/users/management?uid=${uid}`, {
       nickname, catchphrase, introduction
     })
   }
