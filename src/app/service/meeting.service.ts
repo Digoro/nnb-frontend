@@ -101,9 +101,9 @@ export class MeetingService {
     )
   }
 
-  getHostedMeetings(): Observable<Meeting[]> {
-    // return this.getAllMeetings(MeetingStatus.ENTERED);
-    return this.http.get<Meeting[]>(`/hosted_meetings`);
+  getHostedMeetings(uid?: number): Observable<Meeting[]> {
+    // return this.getAllMeetings(MeetingStatus.ALL);
+    return this.http.get<Meeting[]>(`/hosted_meetings?uid=${uid}`);
   }
 
   deleteMeeting(mid: number) {
