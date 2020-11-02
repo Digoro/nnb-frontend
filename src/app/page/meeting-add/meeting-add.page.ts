@@ -69,6 +69,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   ngOnInit() {
     this.authService.getCurrentNonunbubUser().subscribe(user => {
       this.user = user;
+      this.loadMap();
     });
     this.quillStyle = this.utilService.getQuillStyle();
     this.meetingForm = this.fb.group({
@@ -91,7 +92,7 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
       refundPolicy0: new FormControl(0, this.formService.getValidators(4, [Validators.max(9999), Validators.min(0), this.validateRefundPolicy0('refundPolicy100')])),
       options: this.fb.array([], Validators.required)
     })
-    this.loadMap();
+
   }
 
   validateDiscountPrice(controlName: string): ValidatorFn {
@@ -207,18 +208,21 @@ export class MeetingAddPage implements OnInit, AfterViewInit {
   }
 
   setAutoComplete() {
-    const nativeHomeInputBox = document.getElementById('addressInput').getElementsByTagName('input')[0];
-    const autocomplete = new google.maps.places.Autocomplete(nativeHomeInputBox, {});
-    autocomplete.addListener("place_changed", () => {
-      this.ngZone.run(() => {
-        let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-        if (!place.geometry) return;
-        this.latitude = place.geometry.location.lat();
-        this.longitude = place.geometry.location.lng();
-        this.zoom = 15;
-        this.getAddress(this.latitude, this.longitude);
+    setTimeout(() => {
+      const nativeHomeInputBox = document.getElementById('addressInput').getElementsByTagName('input')[0];
+      console.log(nativeHomeInputBox);
+      const autocomplete = new google.maps.places.Autocomplete(nativeHomeInputBox, {});
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          if (!place.geometry) return;
+          this.latitude = place.geometry.location.lat();
+          this.longitude = place.geometry.location.lng();
+          this.zoom = 15;
+          this.getAddress(this.latitude, this.longitude);
+        });
       });
-    });
+    }, 2000)
   }
 
   markerDragEnd($event: any) {

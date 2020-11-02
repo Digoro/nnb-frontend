@@ -279,18 +279,21 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
   }
 
   setAutoComplete() {
-    const nativeHomeInputBox = document.getElementById('addressInput').getElementsByTagName('input')[0];
-    const autocomplete = new google.maps.places.Autocomplete(nativeHomeInputBox, {});
-    autocomplete.addListener("place_changed", () => {
-      this.ngZone.run(() => {
-        let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-        if (!place.geometry) return;
-        this.latitude = place.geometry.location.lat();
-        this.longitude = place.geometry.location.lng();
-        this.zoom = 15;
-        this.getAddress(this.latitude, this.longitude);
+    setTimeout(() => {
+      const nativeHomeInputBox = document.getElementById('addressInput').getElementsByTagName('input')[0];
+      console.log(nativeHomeInputBox);
+      const autocomplete = new google.maps.places.Autocomplete(nativeHomeInputBox, {});
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          if (!place.geometry) return;
+          this.latitude = place.geometry.location.lat();
+          this.longitude = place.geometry.location.lng();
+          this.zoom = 15;
+          this.getAddress(this.latitude, this.longitude);
+        });
       });
-    });
+    }, 2000)
   }
 
   markerDragEnd($event: any) {
