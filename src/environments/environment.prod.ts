@@ -5,6 +5,10 @@ export const environment = {
   SECREATE_ACCESS_KEY: '',
   REGION: '',
   BUCKET: '',
-  FOLDER: '',
+  folder: {
+    meeting: '',
+    banner: '',
+    user: ''
+  },
   KAKAO_AUTH_KEY: ''
 };
