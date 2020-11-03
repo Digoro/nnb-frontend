@@ -339,10 +339,14 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
             const lon = `${location.lng()}`;
             const discount = discountPrice ? discountPrice : 0;
             const minutes = runningHours * 60 + runningMinutes;
+            let subTitleTemp = subTitle
+            if (!subTitle.includes('상상우리')) {
+              subTitleTemp = `${subTitle}#상상우리`
+            }
 
             const formData = new FormData();
             formData.append('title', title);
-            formData.append('subTitle', subTitle);
+            formData.append('subTitle', subTitleTemp);
             formData.append('file', fileSource);
             formData.append('categories', `${Category[categories]}`);
             formData.append('address', `${address}`);
