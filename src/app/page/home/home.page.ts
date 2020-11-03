@@ -88,7 +88,11 @@ export class HomePage implements OnInit, OnDestroy {
     this.toWeek = now.format('MM.DD');
     this.fromWeek = weekEnd.format('MM.DD');
     this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
-      this.meetings = meetings.filter(meeting => !meeting.subTitle.includes('숲찾사') && !meeting.subTitle.includes('제주'))
+      this.meetings = meetings.filter(meeting =>
+        !meeting.subTitle.includes('숲찾사') &&
+        !meeting.subTitle.includes('제주') &&
+        !meeting.subTitle.includes('상상우리')
+      )
       this.fastMeetings = meetings.filter(meeting => {
         if (meeting.options) {
           return meeting.options.find(option => {
