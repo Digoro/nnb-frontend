@@ -42,6 +42,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
   isDesktop = false;
   isShowMenu = false;
+  isLoad = false;
   @ViewChild('quill') quill: QuillEditorComponent
 
   ngxCronUiConfig: NgxCronUiConfig = {
@@ -86,6 +87,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    this.isLoad = false;
     this.descriptions = [
       {
         title: '상품을 잘 표현하는 직관적인 한 문장을 만들어 주세요',
@@ -628,5 +630,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
   add() {
     this.onAddEvent.emit();
+    this.isLoad = true;
   }
 }

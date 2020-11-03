@@ -428,8 +428,8 @@
         <div id="test-l-11" class="content">
           <div class="next-prev">
             <ion-button color="light" (click)="prev()">이전</ion-button>
-            <button style="margin-top: 11px;" class="btn btn-primary" [disabled]="formGroup.invalid" debounce-click
-              (debounceClick)="add()">
+            <button style="margin-top: 11px;" class="btn btn-primary" [disabled]="formGroup.invalid || isLoad"
+              debounce-click (debounceClick)="add()">
               {{submitMessage}}
             </button>
           </div>
