@@ -42,12 +42,6 @@ export class SearchPage implements OnInit {
             this.meetings = meetings.filter(m => m.subTitle.includes('제주'))
           }); break;
         }
-        case 'sangsang': {
-          this.isForest = false;
-          this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
-            this.meetings = meetings.filter(m => m.subTitle.includes('상상우리'))
-          }); break;
-        }
         case 'week': {
           this.isForest = false;
           this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
