@@ -6,6 +6,7 @@ import { MeetingAddPage } from './page/meeting-add/meeting-add.page';
 import { MeetingEditPage } from './page/meeting-edit/meeting-edit.page';
 import { MeetingManagementPage } from './page/meeting-management/meeting-management.page';
 import { AuthGuard } from './service/auth-guard.service';
+import { CanDeactivateGuard } from './service/can-deactivate.guard';
 
 const routes: Routes = [
   {
@@ -22,11 +23,11 @@ const routes: Routes = [
             path: 'hosted-meetings', component: HostedMeetingsPage
           },
           {
-            path: 'meeting-add', component: MeetingAddPage
+            path: 'meeting-add', component: MeetingAddPage, canDeactivate: [CanDeactivateGuard]
           },
           {
             //RoleGuard 추가 필요
-            path: 'meeting-edit/:id', component: MeetingEditPage
+            path: 'meeting-edit/:id', component: MeetingEditPage, canDeactivate: [CanDeactivateGuard]
           },
         ]
       },
@@ -39,15 +40,15 @@ const routes: Routes = [
   { path: '', loadChildren: () => import('./page/tabs/tabs.module').then(m => m.TabsPageModule) },
   {
     path: 'my-info-detail',
-    loadChildren: () => import('./page/my-info-detail/my-info-detail.module').then( m => m.MyInfoDetailPageModule)
+    loadChildren: () => import('./page/my-info-detail/my-info-detail.module').then(m => m.MyInfoDetailPageModule)
   },
   {
     path: 'payment-success',
-    loadChildren: () => import('./page/payment-success/payment-success.module').then( m => m.PaymentSuccessPageModule)
+    loadChildren: () => import('./page/payment-success/payment-success.module').then(m => m.PaymentSuccessPageModule)
   },
   {
     path: 'payment-fail',
-    loadChildren: () => import('./page/payment-fail/payment-fail.module').then( m => m.PaymentFailPageModule)
+    loadChildren: () => import('./page/payment-fail/payment-fail.module').then(m => m.PaymentFailPageModule)
   }
 ];
 @NgModule({

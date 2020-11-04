@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CalendarOptions, EventClickArg, FullCalendarComponent } from '@fullcalendar/angular';
 import * as CronConverter from 'cron-converter';
@@ -85,6 +85,11 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     private localeService: BsLocaleService,
     private s3Service: S3Service
   ) { }
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    $event.returnValue = true;
+  }
 
   ngOnInit() {
     this.isLoad = false;
