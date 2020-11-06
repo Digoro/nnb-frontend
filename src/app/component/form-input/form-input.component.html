@@ -1,7 +1,7 @@
 <div [formGroup]="group" [class.invalid]="group.controls[controlName].dirty && group.controls[controlName].invalid"
   [class.valid]="group.controls[controlName].dirty && group.controls[controlName].valid" style="margin-bottom: 5px;">
   <ion-item [lines]="group.controls[controlName].pristine ? '':'none'">
-    <ion-label position="floating">{{name}}<span class="invalid-input" *ngIf="isRequired">*</span>
+    <ion-label position="floating">{{name}}&nbsp;<span class="invalid-input" *ngIf="isRequired">*</span>
     </ion-label>
     <ion-input *ngIf="type!='textarea'" [disabled]="disabled" [type]="type" [formControlName]="controlName" clearInput
       (ngModelChange)="changeEvent($event)">

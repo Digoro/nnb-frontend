@@ -155,7 +155,7 @@
           <ion-row>
             <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12" size="12">
               <form-input [disabled]="true" id="addressInput" [name]="'장소'" [controlName]="'address'" [type]="'text'"
-                [group]="formGroup" [maxLength]="0" [isUnUseDirty]="true">
+                [group]="formGroup" [maxLength]="0">
               </form-input>
             </ion-col>
             <div class="col">
@@ -170,7 +170,7 @@
             [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]"></form-input>
           <ion-row>
             <ion-item lines="none">
-              <ion-label position="fixed">소요 시간<span class="invalid-input">*</span></ion-label>
+              <ion-label position="fixed">소요 시간</ion-label>
             </ion-item>
             <ion-item lines="none">
               <ion-select okText="확인" cancelText="취소" [formControlName]="'runningHours'" style="min-width: 70px;">
@@ -203,7 +203,7 @@
           </form-input>
           <form-input [name]="'할인된 가격'" [controlName]="'discountPrice'" [type]="'number'" [group]="formGroup"
             [errors]="[{key:'max',message:'10000000원 제한입니다.'},{key:'isUpper',message:'할인된 가격이 더 클 수 없습니다.'}]"
-            [isUnUseDirty]="true">
+            [isUnUseDirty]="true" [isRequired]="false">
           </form-input>
           <br>
           <span class="desc">다음과 같이 표시됩니다.</span>
