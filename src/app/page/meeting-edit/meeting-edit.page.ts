@@ -1,75 +1,38 @@
 import { MapsAPILoader } from '@agm/core';
-import { Location } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AfterViewInit, Component, NgZone, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import Stepper from 'bs-stepper';
-import { QuillEditorComponent } from 'ngx-quill';
 import { Category } from 'src/app/model/category';
-import { Meeting, MeetingOption, MeetingStatus } from 'src/app/model/meeting';
-import { User } from 'src/app/model/user';
+import { Meeting, MeetingOption } from 'src/app/model/meeting';
 import { AuthService } from 'src/app/service/auth.service';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { FormService } from '../../service/form.service';
-import { S3Service } from '../../service/s3.service';
 import { UtilService } from './../../service/util.service';
+import { MeetingControl } from './../meeting-add/meeting-control';
 
 @Component({
   selector: 'meeting-edit',
   templateUrl: './meeting-edit.page.html',
   styleUrls: ['./meeting-edit.page.scss'],
 })
-export class MeetingEditPage implements OnInit, AfterViewInit {
-  user: User;
-  quillStyle;
-  quill: QuillEditorComponent;
+export class MeetingEditPage extends MeetingControl implements OnInit, AfterViewInit {
   meeting: Meeting;
   oldOptions: MeetingOption[];
-  previewMeeting: Meeting;
-  meetingForm: FormGroup;
-  @ViewChild('fileInput') fileInput: ElementRef<any>;
-  categories = Object.values(Category).filter(v => typeof Category[v] === 'number');
-
-  options: FormArray;
-  stepper: Stepper;
-  @ViewChild('stepperRef') stepperRef: ElementRef;
-
-  geoCoder: google.maps.Geocoder;
-  latitude: number;
-  longitude: number;
-  address: string;
-  zoom: number;
-
-  previewImage: string | ArrayBuffer;
 
   constructor(
     private formService: FormService,
     private router: Router,
-    private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone,
-    private location: Location,
+    public mapsAPILoader: MapsAPILoader,
+    public ngZone: NgZone,
     private utilService: UtilService,
     private authService: AuthService,
     private fb: FormBuilder,
     private meetingService: MeetingService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private s3Service: S3Service
-  ) { }
-
-  ngAfterViewInit(): void {
-    this.stepper = new Stepper(this.stepperRef.nativeElement, {
-      linear: false,
-      animation: true,
-      selectors: {
-        trigger: '.trigger',
-      }
-    });
-  }
-
-  quillLoad(event) {
-    this.quill = event;
+  ) {
+    super(mapsAPILoader, ngZone)
   }
 
   ngOnInit() {
@@ -82,7 +45,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
       subTitle: new FormControl('', this.formService.getValidators(40)),
       fileSource: new FormControl(null, Validators.required),
       categories: new FormControl('', this.formService.getValidators(10)),
-      address: new FormControl('', this.formService.getValidators(500)),
+      address: new FormControl('', this.formService.getValidators(1000)),
       detailAddress: new FormControl('', this.formService.getValidators(500)),
       runningHours: new FormControl('', this.formService.getValidators(2, [Validators.max(23), Validators.min(0)])),
       runningMinutes: new FormControl('', this.formService.getValidators(2, [Validators.max(45), Validators.min(0)])),
@@ -206,123 +169,12 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
     })
   }
 
-  next() {
-    const index = this.stepper['_currentIndex'];
-    if (index === 9) {
-      this.makePreviewMeeting();
-    }
-    this.stepper.next();
-  }
-
-  prev() {
-    this.stepper.previous();
-  }
-
-  makePreviewMeeting() {
-    if (this.meetingForm.valid) {
-      const { title, subTitle, fileSource, categories, address, detailAddress, runningHours, runningMinutes,
-        price, discountPrice, desc, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
-      this.mapsAPILoader.load().then(() => {
-        this.geoCoder = new google.maps.Geocoder;
-        this.geoCoder.geocode({ address }, (result, status) => {
-          if (status == "OK") {
-            if (result[0]) {
-              const location = result[0].geometry.location;
-              const minutes = runningHours * 60 + runningMinutes;
-              this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, minutes, location.lat(), location.lng(), 0,
-                categories, '', price, discountPrice, 0, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, 0, MeetingStatus.CREATED, options)
-            }
-            else {
-              alert('주소 검색 결과가 없습니다.')
-            }
-          }
-          else {
-            alert('올바른 주소를 입력해주세요: ' + status);
-          }
-        });
-      });
-    }
-  }
-
-  readURL(event): void {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = e => {
-        this.previewImage = reader.result
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  onFileChange(event) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.meetingForm.patchValue({
-        fileSource: file
-      });
-      this.readURL(event);
-    } else {
-      this.previewImage = undefined;
-    }
-  }
-
   loadMap(meeting: Meeting) {
     this.mapsAPILoader.load().then(() => {
       this.latitude = meeting.lat
       this.longitude = meeting.lon;
       this.zoom = 15;
-      this.geoCoder = new google.maps.Geocoder;
-      this.getAddress(this.latitude, this.longitude);
-      this.setAutoComplete();
     });
-  }
-
-  setAutoComplete() {
-    setTimeout(() => {
-      const nativeHomeInputBox = document.getElementById('addressInput').getElementsByTagName('input')[0];
-      console.log(nativeHomeInputBox);
-      const autocomplete = new google.maps.places.Autocomplete(nativeHomeInputBox, {});
-      autocomplete.addListener("place_changed", () => {
-        this.ngZone.run(() => {
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-          if (!place.geometry) return;
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-          this.zoom = 15;
-          this.getAddress(this.latitude, this.longitude);
-        });
-      });
-    }, 2000)
-  }
-
-  markerDragEnd($event: any) {
-    this.latitude = $event.coords.lat;
-    this.longitude = $event.coords.lng;
-    this.zoom = 15;
-    this.getAddress(this.latitude, this.longitude);
-  }
-
-  getAddress(latitude, longitude) {
-    this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-      if (status === 'OK') {
-        if (results[0]) {
-          this.address = results[0].formatted_address;
-          this.meetingForm.controls['address'].setValue(this.address);
-        } else {
-          alert('주소 검색 결과가 없습니다.');
-        }
-      } else {
-        alert('올바른 주소를 입력해주세요: ' + status);
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    this.stepper.reset();
-    this.meetingForm.reset();
-    this.previewImage = undefined;
-    // this.fileInput.nativeElement.value = '';
   }
 
   edit() {
@@ -408,6 +260,7 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
               this.meetingService.addMeetingOptions(meeting.mid, addOptions).subscribe(resp => {
                 this.meetingService.editMeetingOptions(editOptions).subscribe(resp => {
                   alert('모임을 수정하였습니다.');
+                  this.passDeactivate = true;
                   this.router.navigate(['./tabs/meeting-detail', meeting['mid']]);
                   this.meetingForm.reset();
                 });
@@ -423,9 +276,5 @@ export class MeetingEditPage implements OnInit, AfterViewInit {
         }
       });
     });
-  }
-
-  back() {
-    this.location.back();
   }
 }

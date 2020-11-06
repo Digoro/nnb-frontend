@@ -22,6 +22,7 @@ import { CommentComponent } from './component/comment/comment.component';
 import { EmptyMeetingCardComponent } from './component/empty-meeting-card/empty-meeting-card.component';
 import { FooterComponent } from './component/footer/footer.component';
 import { FormErrorsComponent } from './component/form-errors/form-errors.component';
+import { FormInputComponent } from './component/form-input/form-input.component';
 import { HorizontalSliderComponent } from './component/horizontal-slider/horizontal-slider.component';
 import { MeetingCardComponent } from './component/meeting-card/meeting-card.component';
 import { MeetingControlComponent } from './component/meeting-control/meeting-control.component';
@@ -47,6 +48,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     EmptyMeetingCardComponent,
     SkeletonComponent,
     CommentComponent,
+    FormInputComponent,
     HideToolbarDirective,
     InputDigitsOnlyDirective,
     DebounceClickDirective,
@@ -106,6 +108,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CommentComponent,
     MyinfoMeetingComponent,
     NotionDescComponent,
+    FormInputComponent,
     CommonModule,
     IonicModule,
     FormsModule,

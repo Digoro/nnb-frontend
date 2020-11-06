@@ -9,7 +9,7 @@ import { FormGroup } from '@angular/forms';
 export class FormErrorsComponent implements OnInit {
   @Input() formGroup: FormGroup;
   @Input() controlName: string;
-  @Input() errors: { key: string, meesage: string }[];
+  @Input() errors: { key: string, message: string }[];
   @Input() isRequired = true;
   @Input() isUnUseDirty = false;
 

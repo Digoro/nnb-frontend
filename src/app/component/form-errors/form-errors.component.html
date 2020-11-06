@@ -5,7 +5,7 @@
     </div>
     <div *ngFor="let error of errors">
       <div *ngIf="formGroup.controls[controlName].errors[error.key]">
-        <p class="invalid-input">{{error.meesage}}</p>
+        <p class="invalid-input">{{error.message}}</p>
       </div>
     </div>
   </ng-container>
@@ -19,7 +19,7 @@
       </div>
       <div *ngFor="let error of errors">
         <div *ngIf="formGroup.controls[controlName].errors[error.key]">
-          <p class="invalid-input">{{error.meesage}}</p>
+          <p class="invalid-input">{{error.message}}</p>
         </div>
       </div>
     </ng-container>

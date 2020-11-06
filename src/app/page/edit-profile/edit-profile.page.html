@@ -19,7 +19,7 @@
           {{form.controls.nickname.value.length}} / 최대 30자
         </p>
         <form-errors [formGroup]="form" [controlName]="'nickname'" [isRequired]="false"
-          [errors]="[{key:'maxlength',meesage:'30자까지 입력할 수 있습니다.'}]">
+          [errors]="[{key:'maxlength',message:'30자까지 입력할 수 있습니다.'}]">
         </form-errors>
       </ion-item>
       <ion-item>
@@ -29,7 +29,7 @@
           {{form.controls.catchphrase.value.length}} / 최대 30자
         </p>
         <form-errors [formGroup]="form" [controlName]="'catchphrase'" [isRequired]="false"
-          [errors]="[{key:'maxlength',meesage:'30자까지 입력할 수 있습니다.'}]">
+          [errors]="[{key:'maxlength',message:'30자까지 입력할 수 있습니다.'}]">
         </form-errors>
       </ion-item>
       <ion-item>
@@ -40,7 +40,7 @@
           {{form.controls.introduction.value.length}} / 최대 300자
         </p>
         <form-errors [formGroup]="form" [controlName]="'introduction'" [isRequired]="false"
-          [errors]="[{key:'maxlength',meesage:'300자까지 입력할 수 있습니다.'}]">
+          [errors]="[{key:'maxlength',message:'300자까지 입력할 수 있습니다.'}]">
         </form-errors>
       </ion-item>
     </form>

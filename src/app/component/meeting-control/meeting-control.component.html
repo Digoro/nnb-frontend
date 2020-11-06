@@ -12,26 +12,25 @@
        'height':isShowMenu?'auto':'0px'}" size-lg="2" size-md="2" size-sm="12" size-xs="12" size="12" class="step-col">
     <div class="step" data-target="#test-l-1">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.title.invalid || formGroup.controls.subTitle.invalid"
-          name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.title.valid && formGroup.controls.subTitle.valid" name="checkmark-circle"
-          style="color:#007bff">
+        <ion-icon
+          [name]="formGroup.controls.title.valid && formGroup.controls.subTitle.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.title.valid && formGroup.controls.subTitle.valid ? '#2fc552':''}">
         </ion-icon>
         상품 제목
       </button>
     </div>
     <div class="step" data-target="#test-l-2">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.fileSource.invalid" name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.fileSource.valid" name="checkmark-circle" style="color:#007bff">
+        <ion-icon [name]="formGroup.controls.fileSource.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.fileSource.valid ? '#2fc552':''}">
         </ion-icon>
         대표 이미지
       </button>
     </div>
     <div class="step" data-target="#test-l-3">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.categories.invalid" name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.categories.valid" name="checkmark-circle" style="color:#007bff">
+        <ion-icon [name]="formGroup.controls.categories.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.categories.valid ? '#2fc552':''}">
         </ion-icon>
         카테고리
       </button>
@@ -39,37 +38,32 @@
     <div class="step" data-target="#test-l-4">
       <button class="trigger">
         <ion-icon
-          *ngIf="formGroup.controls.address.invalid || formGroup.controls.detailAddress.invalid || formGroup.controls.runningMinutes.invalid"
-          name="checkmark-circle-outline"></ion-icon>
-        <ion-icon
-          *ngIf="formGroup.controls.address.valid && formGroup.controls.detailAddress.valid && formGroup.controls.runningMinutes.valid"
-          name="checkmark-circle" style="color:#007bff">
+          [name]="formGroup.controls.address.valid && formGroup.controls.detailAddress.valid && formGroup.controls.runningMinutes.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.address.valid && formGroup.controls.detailAddress.valid && formGroup.controls.runningMinutes.valid ? '#2fc552':''}">
         </ion-icon>
         장소/소요시간
       </button>
     </div>
     <div class="step" data-target="#test-l-5">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.price.invalid || formGroup.controls.discountPrice.invalid"
-          name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.price.valid &&formGroup.controls.discountPrice.valid"
-          name="checkmark-circle" style="color:#007bff">
+        <ion-icon [name]="formGroup.controls.price.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.price.valid ? '#2fc552':''}">
         </ion-icon>
         가격
       </button>
     </div>
     <div class="step" data-target="#test-l-6">
       <button class="trigger" (click)="setCalendar()">
-        <ion-icon *ngIf="formGroup.controls.options.invalid" name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.options.valid" name="checkmark-circle" style="color:#007bff">
+        <ion-icon [name]="formGroup.controls.options.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.options.valid ? '#2fc552':''}">
         </ion-icon>
         구매 옵션
       </button>
     </div>
     <div class="step" data-target="#test-l-7">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.desc.invalid" name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.desc.valid" name="checkmark-circle" style="color:#007bff">
+        <ion-icon [name]="formGroup.controls.desc.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.desc.valid ? '#2fc552':''}">
         </ion-icon>
         소개
       </button>
@@ -77,36 +71,37 @@
     <div class="step" data-target="#test-l-8">
       <button class="trigger">
         <ion-icon
-          *ngIf="formGroup.controls.check_list.invalid || formGroup.controls.include.invalid || formGroup.controls.exclude.invalid"
-          name="checkmark-circle-outline"></ion-icon>
-        <ion-icon
-          *ngIf="formGroup.controls.check_list.valid && formGroup.controls.include.valid && formGroup.controls.exclude.valid"
-          name="checkmark-circle" style="color:#007bff">
+          [name]="formGroup.controls.check_list.valid && formGroup.controls.include.valid && formGroup.controls.exclude.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.check_list.valid && formGroup.controls.include.valid && formGroup.controls.exclude.valid ? '#2fc552':''}">
         </ion-icon>
         준비물
       </button>
     </div>
     <div class="step" data-target="#test-l-9">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.notice.invalid" name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.notice.valid" name="checkmark-circle" style="color:#007bff">
+        <ion-icon [name]="formGroup.controls.notice.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.notice.valid ? '#2fc552':''}">
         </ion-icon>
         유의사항
       </button>
     </div>
     <div class="step" data-target="#test-l-10">
       <button class="trigger">
-        <ion-icon *ngIf="formGroup.controls.refundPolicy100.invalid ||
-        formGroup.controls.refundPolicy0.invalid" name="checkmark-circle-outline"></ion-icon>
-        <ion-icon *ngIf="formGroup.controls.refundPolicy100.valid &&
-        formGroup.controls.refundPolicy0.valid" name="checkmark-circle" style="color:#007bff">
+        <ion-icon [name]="formGroup.controls.refundPolicy100.valid &&
+        formGroup.controls.refundPolicy0.valid ? 'checkmark-circle':'checkmark-circle-outline'" [ngStyle]="{'color': formGroup.controls.refundPolicy100.valid &&
+          formGroup.controls.refundPolicy0.valid ? '#2fc552':''}">
         </ion-icon>
         환불 정책
       </button>
     </div>
     <div class="step" data-target="#test-l-11">
       <button class="trigger" (click)="lastCheck()" [disabled]="formGroup.invalid"
-        [ngStyle]="{'cursor':formGroup.invalid ? 'not-allowed':'pointer'}">최종 확인</button>
+        [ngStyle]="{'cursor':formGroup.invalid ? 'not-allowed':'pointer'}">
+        <ion-icon [name]="formGroup.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.valid ? '#2fc552':''}">
+        </ion-icon>
+        최종 확인
+      </button>
     </div>
   </ion-col>
   <ion-col size-lg="10" size-md="10" size-sm="12" size-xs="12" size="12">
@@ -115,39 +110,10 @@
         <div id="test-l-1" class="content">
           <ion-button class="next-prev" color="primary" (click)="next()">다음</ion-button>
           <notion-desc [description]="descriptions[0]"></notion-desc>
-          <ion-item lines="none">
-            <ion-label position="floating">상품 제목<span class="invalid-input">*</span>
-            </ion-label>
-            <ion-input type="text" [formControlName]="'title'" clearInput></ion-input>
-          </ion-item>
-          <hr>
-          <p *ngIf="formGroup.controls.title.valid" class="maximun-info">
-            {{formGroup.controls.title.value.length}} / 최대 30자
-          </p>
-          <div ngxErrors="title">
-            <div ngxError="maxlength" [when]="['dirty']">
-              <p class="invalid-input">30자 제한입니다.</p>
-            </div>
-            <div ngxError="required" [when]="['dirty']">
-              <p class="invalid-input">필수 입력 항목입니다.</p>
-            </div>
-          </div>
-          <ion-item lines="none">
-            <ion-label position="floating">캐치 프레이즈<span class="invalid-input">*</span></ion-label>
-            <ion-input type="text" [formControlName]="'subTitle'" clearInput></ion-input>
-          </ion-item>
-          <hr>
-          <p *ngIf="formGroup.controls.subTitle.valid" class="maximun-info">
-            {{formGroup.controls.subTitle.value.length}} / 최대 40자
-          </p>
-          <div ngxErrors="subTitle">
-            <div ngxError="maxlength" [when]="['dirty']">
-              <p class="invalid-input">40자 제한입니다.</p>
-            </div>
-            <div ngxError="required" [when]="['dirty']">
-              <p class="invalid-input">필수 입력 항목입니다.</p>
-            </div>
-          </div>
+          <form-input [name]="'상품 제목'" [controlName]="'title'" [group]="formGroup" [maxLength]="30"
+            [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"></form-input>
+          <form-input [name]="'캐치 프레이즈'" [controlName]="'subTitle'" [group]="formGroup" [maxLength]="40"
+            [errors]="[{key:'maxlength',message:'40자 제한입니다.'}]"></form-input>
         </div>
         <div id="test-l-2" class="content">
           <div class="next-prev">
@@ -183,43 +149,22 @@
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
           <notion-desc [description]="descriptions[3]"></notion-desc>
-          <ion-item lines="none">
-            <ion-label position="floating">장소<span class="invalid-input">*</span></ion-label>
-            <ion-input type="text" id="addressInput" (keydown.enter)="$event.preventDefault()" type="text"
-              [formControlName]="'address'" clearInput></ion-input>
-          </ion-item>
-          <hr>
-          <p *ngIf="formGroup.controls.address.valid" class="maximun-info">
-            {{formGroup.controls.address.value.length}} / 최대 500자
-          </p>
-          <div ngxErrors="address">
-            <div ngxError="maxlength" [when]="['dirty']">
-              <p class="invalid-input">500자 제한입니다.</p>
+          <ion-row>
+            <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12" size="12">
+              <form-input [disabled]="true" id="addressInput" [name]="'장소'" [controlName]="'address'" [type]="'text'"
+                [group]="formGroup" [maxLength]="0" [isUnUseDirty]="true">
+              </form-input>
+            </ion-col>
+            <div class="col">
+              <ion-button size="small" color="primary" (click)="loadPostCode()">주소 검색하기</ion-button>
+              <p class="desc">(도로명 주소로 저장됩니다.)</p>
             </div>
-            <div ngxError="required" [when]="['dirty']">
-              <p class="invalid-input">필수 입력 항목입니다.</p>
-            </div>
-          </div>
+          </ion-row>
           <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
-            <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-              (dragEnd)="markerDragEnd($event)"></agm-marker>
+            <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
           </agm-map>
-          <ion-item lines="none">
-            <ion-label position="floating">상세 장소<span class="invalid-input">*</span></ion-label>
-            <ion-input type="text" [formControlName]="'detailAddress'" clearInput></ion-input>
-          </ion-item>
-          <hr>
-          <p *ngIf="formGroup.controls.detailAddress.valid" class="maximun-info">
-            {{formGroup.controls.detailAddress.value.length}} / 최대 500자
-          </p>
-          <div ngxErrors="detailAddress">
-            <div ngxError="maxlength" [when]="['dirty']">
-              <p class="invalid-input">500자 제한입니다.</p>
-            </div>
-            <div ngxError="required" [when]="['dirty']">
-              <p class="invalid-input">필수 입력 항목입니다.</p>
-            </div>
-          </div>
+          <form-input [name]="'상세 장소'" [controlName]="'detailAddress'" [group]="formGroup" [maxLength]="500"
+            [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]"></form-input>
           <ion-row>
             <ion-item lines="none">
               <ion-label position="fixed">소요 시간<span class="invalid-input">*</span></ion-label>
@@ -250,28 +195,13 @@
             <ion-button color="primary" (click)="next(true)">다음</ion-button>
           </div>
           <notion-desc [description]="descriptions[4]"></notion-desc>
-          <ion-item lines="none">
-            <ion-label position="floating">가격<span class="invalid-input">*</span></ion-label>
-            <ion-input type="number" formControlName="price" (ngModelChange)="checkDiscountPrice()" clearInput>
-            </ion-input>
-          </ion-item>
-          <hr>
-          <div ngxErrors="price">
-            <div ngxError="max" [when]="['dirty']">
-              <p class="invalid-input">10000000원 제한입니다.</p>
-            </div>
-            <div ngxError="required" [when]="['dirty']">
-              <p class="invalid-input">필수 입력 항목입니다.</p>
-            </div>
-          </div>
-          <ion-item lines="none">
-            <ion-label position="floating">할인된 가격</ion-label>
-            <ion-input type="number" formControlName="discountPrice" clearInput></ion-input>
-          </ion-item>
-          <hr>
-          <form-errors [formGroup]="formGroup" [controlName]="'discountPrice'" [errors]="[{key:'max',meesage:'10000000원 제한입니다.'},
-              {key:'isUpper',meesage:'할인가격이 더 클 수 없습니다.'}]" [isUnUseDirty]="true">
-          </form-errors>
+          <form-input [name]="'가격'" [controlName]="'price'" [type]="'number'" [group]="formGroup"
+            (valueChangeEvent)="checkDiscountPrice()" [errors]="[{key:'max',message:'10000000원 제한입니다.'}]">
+          </form-input>
+          <form-input [name]="'할인된 가격'" [controlName]="'discountPrice'" [type]="'number'" [group]="formGroup"
+            [errors]="[{key:'max',message:'10000000원 제한입니다.'},{key:'isUpper',message:'할인된 가격이 더 클 수 없습니다.'}]"
+            [isUnUseDirty]="true">
+          </form-input>
           <br>
           <span class="desc">다음과 같이 표시됩니다.</span>
           <div style="padding: 20px; border: 1px solid #c8c7c7;border-radius: 4px;max-width: 240px;">
@@ -327,49 +257,15 @@
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
           <notion-desc [description]="descriptions[7]"></notion-desc>
-          <ion-item lines="none">
-            <ion-label position="floating">준비물<span class="invalid-input">*</span></ion-label>
-            <ion-textarea rows="7" maxlength="500" [formControlName]="'check_list'" clearInput></ion-textarea>
-          </ion-item>
-          <hr>
-          <p *ngIf="formGroup.controls.check_list.valid && formGroup.controls.check_list.value.length>0"
-            class="maximun-info">
-            {{formGroup.controls.check_list.value.length}} / 최대 500자
-          </p>
-          <div ngxErrors="check_list">
-            <div ngxError="maxlength" [when]="['dirty']">
-              <p class="invalid-input">500자 제한입니다.</p>
-            </div>
-            <div ngxError="required" [when]="['dirty']">
-              <p class="invalid-input">필수 입력 항목입니다.</p>
-            </div>
-          </div>
-          <ion-item lines="none">
-            <ion-label position="floating">포함 사항</ion-label>
-            <ion-textarea rows="7" maxlength="500" [formControlName]="'include'" clearInput></ion-textarea>
-          </ion-item>
-          <hr>
-          <p *ngIf="formGroup.controls.include.valid && formGroup.controls.include.value.length>0" class="maximun-info">
-            {{formGroup.controls.include.value.length}} / 최대 500자
-          </p>
-          <div ngxErrors="include">
-            <div ngxError="maxlength" [when]="['dirty']">
-              <p class="invalid-input">500자 제한입니다.</p>
-            </div>
-          </div>
-          <ion-item lines="none">
-            <ion-label position="floating">불포함 사항</ion-label>
-            <ion-textarea rows="7" maxlength="500" [formControlName]="'exclude'" clearInput></ion-textarea>
-          </ion-item>
-          <hr>
-          <p *ngIf="formGroup.controls.exclude.valid && formGroup.controls.exclude.value.length>0" class="maximun-info">
-            {{formGroup.controls.exclude.value.length}} / 최대 500자
-          </p>
-          <div ngxErrors="exclude">
-            <div ngxError="maxlength" [when]="['dirty']">
-              <p class="invalid-input">500자 제한입니다.</p>
-            </div>
-          </div>
+          <form-input [name]="'준비물'" [controlName]="'check_list'" [type]="'textarea'" [group]="formGroup"
+            [errors]="[{key:'max',message:'500자 제한입니다.'}]" [maxLength]="500">
+          </form-input>
+          <form-input [name]="'포함 사항'" [controlName]="'include'" [type]="'textarea'" [group]="formGroup"
+            [errors]="[{key:'max',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
+          </form-input>
+          <form-input [name]="'불포함 사항'" [controlName]="'exclude'" [type]="'textarea'" [group]="formGroup"
+            [errors]="[{key:'max',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
+          </form-input>
         </div>
         <div id="test-l-9" class="content">
           <div class="next-prev">
@@ -377,19 +273,10 @@
             <ion-button color="primary" (click)="next()">다음</ion-button>
           </div>
           <notion-desc [description]="descriptions[8]"></notion-desc>
-          <ion-item lines="none">
-            <ion-label position="floating">유의 사항</ion-label>
-            <ion-textarea rows="7" maxlength="500" [formControlName]="'notice'" clearInput></ion-textarea>
-          </ion-item>
-          <hr>
-          <p *ngIf="formGroup.controls.notice.valid && formGroup.controls.notice.value.length>0" class="maximun-info">
-            {{formGroup.controls.notice.value.length}} / 최대 500자
-          </p>
-          <div ngxErrors="notice">
-            <div ngxError="maxlength" [when]="['dirty']">
-              <p class="invalid-input">500자 제한입니다.</p>
-            </div>
-          </div>
+          <form-input [name]="'유의 사항'" [controlName]="'notice'" [type]="'textarea'" [group]="formGroup"
+            [errors]="[{key:'max',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
+          </form-input>
+
           <ion-checkbox type="checkbox" [checked]="noticeChcked" (ionChange)="checkAllowPolicy($event)">
           </ion-checkbox>
           노는법 정책을 따르겠습니다.
@@ -409,7 +296,7 @@
                 (ngModelChange)="checkRefundPolicy0()" class="form-control refund-day">&nbsp;일 전까지 100% 환불
             </div>
             <form-errors [formGroup]="formGroup" [controlName]="'refundPolicy100'"
-              [errors]="[{key:'min',meesage:'0일 이상 입력할 수 있습니다.'},{key:'max',meesage:'9999일까지 입력할 수 있습니다.'}]">
+              [errors]="[{key:'min',message:'0일 이상 입력할 수 있습니다.'},{key:'max',message:'9999일까지 입력할 수 있습니다.'}]">
             </form-errors>
             <div style="display: flex;">
               <p>상품 시작일 기준 &nbsp;</p><input type="number" class="form-control refund-day"
@@ -419,8 +306,8 @@
               <p>상품 시작일 기준 &nbsp;</p><input type="number" [formControlName]="'refundPolicy0'"
                 class="form-control refund-day">&nbsp;일 전 이후 환불 불가
             </div>
-            <form-errors [formGroup]="formGroup" [controlName]="'refundPolicy0'" [errors]="[{key:'min',meesage:'0일 이상 입력할 수 있습니다.'},{key:'max',meesage:'9999일까지 입력할 수 있습니다.'},
-              {key:'isUpper',meesage:'(100% 환불 기준일 - 1) 일보다 작아야 합니다.'}]" [isUnUseDirty]="true">
+            <form-errors [formGroup]="formGroup" [controlName]="'refundPolicy0'" [errors]="[{key:'min',message:'0일 이상 입력할 수 있습니다.'},{key:'max',message:'9999일까지 입력할 수 있습니다.'},
+              {key:'isUpper',message:'(100% 환불 기준일 - 1) 일보다 작아야 합니다.'}]" [isUnUseDirty]="true">
             </form-errors>
           </ion-item>
           <hr>
@@ -463,7 +350,7 @@
             (onShown)="onShowPicker($event)">
           <hr>
           <form-errors [formGroup]=" optionAddFormGroup" [controlName]="'optionPeriod'"
-            [errors]="[{key:'maxDurationDays',meesage:'총 기간은 최대 1년까지 입력가능합니다.'}]"> </form-errors>
+            [errors]="[{key:'maxDurationDays',message:'총 기간은 최대 1년까지 입력가능합니다.'}]"> </form-errors>
           <ion-item lines="none">
             <ion-label position="fixed">스케줄<span class="invalid-input">*</span></ion-label>
             <br>
@@ -472,41 +359,19 @@
             <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'schedule')"></ion-icon>
           </ion-item>
           <hr>
-          <ion-item lines="none">
-            <ion-label position="fixed">옵션 설명<span class="invalid-input">*</span></ion-label>
-            <!-- FIXED -->
-            <ion-input type="text" [formControlName]="'oid'" clearInput hidden></ion-input>
-            <ion-input type="text" [formControlName]="'optionTitle'" clearInput></ion-input>
-            <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'desc')"></ion-icon>
-          </ion-item>
-          <hr>
-          <form-errors [formGroup]="optionAddFormGroup" [controlName]="'optionTitle'"
-            [errors]="[{key:'maxlength',meesage:'100자 제한입니다.'}]"></form-errors>
-          <ion-item lines="none">
-            <ion-label position="fixed">가격<span class="invalid-input">*</span></ion-label>
-            <ion-input type="number" [formControlName]="'optionPrice'" clearInput></ion-input>
-            <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'price')"></ion-icon>
-          </ion-item>
-          <hr>
-          <form-errors [formGroup]="optionAddFormGroup" [controlName]="'optionPrice'"
-            [errors]="[{key:'min',meesage:'0원 이상이어야 합니다.'},{key:'max',meesage:'10000000원 제한입니다.'}]">
-          </form-errors>
-          <ion-item lines="none">
-            <ion-label position="floating">최소 인원(명)<span class="invalid-input">*</span></ion-label>
-            <ion-input type="number" [formControlName]="'optionMinParticipation'" clearInput></ion-input>
-          </ion-item>
-          <hr>
-          <form-errors [formGroup]="optionAddFormGroup" [controlName]="'optionMinParticipation'"
-            [errors]="[{key:'min',meesage:'1명 이상이어야 합니다.'},{key:'max',meesage:'1000명 제한입니다.'},{key:'isUpper',meesage:'최대 인원보다 더 높을 수 없습니다.'}]">
-          </form-errors>
-          <ion-item lines="none">
-            <ion-label position="floating">최대 인원(명)<span class="invalid-input">*</span></ion-label>
-            <ion-input type="number" [formControlName]="'optionMaxParticipation'" clearInput></ion-input>
-          </ion-item>
-          <hr>
-          <form-errors [formGroup]="optionAddFormGroup" [controlName]="'optionMaxParticipation'"
-            [errors]="[{key:'min',meesage:'1명 이상이어야 합니다.'},{key:'max',meesage:'1000명 제한입니다.'}]">
-          </form-errors>
+          <form-input [name]="'옵션 설명'" [controlName]="'optionTitle'" [group]="optionAddFormGroup" [maxLength]="100"
+            [errors]="[{key:'maxlength',message:'100자 제한입니다.'}]"></form-input>
+          <form-input [name]="'가격'" [controlName]="'optionPrice'" [type]="'number'" [group]="optionAddFormGroup"
+            [maxLength]="100" [errors]="[{key:'min',message:'0원 이상이어야 합니다.'},{key:'max',message:'10000000원 제한입니다.'}]">
+          </form-input>
+          <form-input [name]="'최소 인원(명)'" [controlName]="'optionMinParticipation'" [type]="'number'"
+            [group]="optionAddFormGroup"
+            [errors]="[{key:'min',message:'1명 이상이어야 합니다.'},{key:'max',message:'1000명 제한입니다.'},{key:'isUpper',message:'최대 인원보다 더 높을 수 없습니다.'}]">
+          </form-input>
+          <form-input [name]="'최대 인원(명)'" [controlName]="'optionMaxParticipation'" [type]="'number'"
+            [group]="optionAddFormGroup"
+            [errors]="[{key:'min',message:'1명 이상이어야 합니다.'},{key:'max',message:'1000명 제한입니다.'}]">
+          </form-input>
           <ion-item lines="none">
             <ion-button slot="end" (click)="addSchedule()" [disabled]="optionAddFormGroup.invalid" color="primary">
               추가하기

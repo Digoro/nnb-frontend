@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CalendarOptions, EventClickArg, FullCalendarComponent } from '@fullcalendar/angular';
 import * as CronConverter from 'cron-converter';
@@ -13,6 +13,7 @@ import { FormService } from 'src/app/service/form.service';
 import { environment } from 'src/environments/environment';
 import { CheckDesktopService } from './../../service/check-desktop.service';
 import { S3Service } from './../../service/s3.service';
+declare var daum: any;
 
 @Component({
   selector: 'meeting-control',
@@ -34,15 +35,16 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   @Output() onPrevEvent = new EventEmitter();
   @Output() onLastCheckEvent = new EventEmitter();
   @Output() onFileChangeEvent = new EventEmitter();
-  @Output() onMarkerDragEndEvent = new EventEmitter();
   @Output() onCheckDiscountPriceEvent = new EventEmitter();
   @Output() onCheckRefundPolicy0Event = new EventEmitter();
+  @Output() onChangeAddressEvent = new EventEmitter();
   @Output() onAddEvent = new EventEmitter();
   @Output() onQuillLoadEvent = new EventEmitter();
 
   isDesktop = false;
   isShowMenu = false;
   isLoad = false;
+
   @ViewChild('quill') quill: QuillEditorComponent
 
   ngxCronUiConfig: NgxCronUiConfig = {
@@ -76,6 +78,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   noticeChcked = false;
   descriptions: { title: string, descList: string[], moreDescList?: string[], image?: string }[];
   inputDesc: { title: string, descList: string[] }
+  daumUrl = "https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js?autoload=false";
+  geoCoder: google.maps.Geocoder;
 
   constructor(
     private cds: CheckDesktopService,
@@ -83,15 +87,35 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private modalService: BsModalService,
     private localeService: BsLocaleService,
-    private s3Service: S3Service
+    private s3Service: S3Service,
+    private el: ElementRef,
   ) { }
 
-  @HostListener('window:beforeunload', ['$event'])
-  unloadNotification($event: any) {
-    $event.returnValue = true;
+  loadDaumApi() {
+    return new Promise((resolve, reject) => {
+      let script = document.createElement('script');
+      script.src = this.daumUrl;
+      script.type = 'text/javascript';
+      script.async = true;
+      this.el.nativeElement.appendChild(script);
+      resolve(true);
+    });
+  }
+
+  loadPostCode() {
+    new daum.postcode.load(() => {
+      new daum.Postcode({
+        oncomplete: (data) => {
+          this.onChangeAddressEvent.emit(data);
+        }
+      }).open();
+    });
   }
 
   ngOnInit() {
+    this.loadDaumApi().then(() => {
+      console.log('Daum api has been loaded.');
+    });
     this.isLoad = false;
     this.descriptions = [
       {
@@ -234,8 +258,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       const min = this.optionAddFormGroup.controls.optionMinParticipation;
       const period = this.optionAddFormGroup.controls.optionPeriod;
 
-      if (value.optionMinParticipation && value.optionMaxParticipation) {
-        if (value.optionMinParticipation > value.optionMaxParticipation) {
+      if (+value.optionMinParticipation && +value.optionMaxParticipation) {
+        if (+value.optionMinParticipation > +value.optionMaxParticipation) {
           min.setErrors({ 'isUpper': true })
         } else {
           if (min.hasError('isUpper')) {
@@ -459,10 +483,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
   onFileChange(event) {
     this.onFileChangeEvent.emit(event);
-  }
-
-  markerDragEnd(event) {
-    this.onMarkerDragEndEvent.emit(event);
   }
 
   checkDiscountPrice() {

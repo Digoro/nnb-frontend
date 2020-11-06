@@ -1,0 +1,20 @@
+.invalid {
+    border: 1px solid red;
+    border-radius: 2px;
+}
+
+.valid {
+    border: 1px solid #2fc552;
+    border-radius: 2px;
+}
+
+.maximun-info {
+    font-size: 13px;
+    color: rgb(133, 138, 141);
+    margin: 0px 0px 3px 15px;
+}
+
+ion-item {
+    --highlight-color-invalid: grey;
+    --highlight-height: 1px;
+}
