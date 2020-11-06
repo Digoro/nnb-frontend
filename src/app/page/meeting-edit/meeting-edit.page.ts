@@ -75,46 +75,6 @@ export class MeetingEditPage extends MeetingControl implements OnInit, AfterView
     })
   }
 
-  validateDiscountPrice(controlName: string): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } => {
-      const discountPrice = control.value;
-      const price = control.root.value[controlName];
-      const isUpper = price < discountPrice;
-      return isUpper ? { 'isUpper': { isUpper } } : null;
-    };
-  }
-
-  checkDiscountPrice() {
-    const price = this.meetingForm.controls.price;
-    const discountPrice = this.meetingForm.controls.discountPrice;
-    if (price.value < discountPrice.value) {
-      discountPrice.setErrors({ 'isUpper': true })
-    } else {
-      discountPrice.setErrors({ 'isUpper': null });
-    }
-    discountPrice.updateValueAndValidity();
-  }
-
-  validateRefundPolicy0(controlName: string): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } => {
-      const refundPolicy0 = control.value;
-      const refundPolicy100 = control.root.value[controlName];
-      const isUpper = refundPolicy100 < refundPolicy0 + 2;
-      return isUpper ? { 'isUpper': { isUpper } } : null;
-    };
-  }
-
-  checkRefundPolicy0() {
-    const refundPolicy100 = this.meetingForm.controls.refundPolicy100;
-    const refundPolicy0 = this.meetingForm.controls.refundPolicy0;
-    if (refundPolicy100.value - 2 < refundPolicy0.value) {
-      refundPolicy0.setErrors({ 'isUpper': true })
-    } else {
-      refundPolicy0.setErrors({ 'isUpper': null });
-    }
-    refundPolicy0.updateValueAndValidity();
-  }
-
   private setFileFormControl() {
     this.http.get(this.meeting.file.replace('http', 'https'), { responseType: 'blob' }).subscribe(resp => {
       const splitted = this.meeting.file.split("/");
