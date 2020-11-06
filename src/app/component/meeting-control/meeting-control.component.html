@@ -122,8 +122,11 @@
           </div>
           <notion-desc [description]="descriptions[1]"></notion-desc>
           <ion-item lines="none">
-            <ion-label position="fixed">이미지<span class="invalid-input">*</span></ion-label>
-            <input #fileInput id="file" type="file" class="form-control" (change)="onFileChange($event)">
+            <ion-label position="fixed">대표 이미지<span class="invalid-input">*</span></ion-label>
+            <button class="btn btn-sm" type="button" (click)="fileInput.click()">
+              <span>업로드</span>
+              <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" />
+            </button>
           </ion-item>
           <img *ngIf="!!previewImage" [src]="previewImage" style="width: 400px; height: 400px" />
           <hr>

@@ -12,7 +12,6 @@ export class MeetingControl implements AfterViewInit {
     quillStyle;
     quill: QuillEditorComponent;
     meetingForm: FormGroup;
-    @ViewChild('fileInput') fileInput: ElementRef<any>;
     categories = Object.values(Category).filter(v => typeof Category[v] === 'number');
 
     options: FormArray;
@@ -158,14 +157,21 @@ export class MeetingControl implements AfterViewInit {
     }
 
     onFileChange(event) {
+        const fileTypes = ["image/gif", "image/jpeg", "image/png"];
         if (event.target.files.length > 0) {
             const file = event.target.files[0];
-            this.meetingForm.patchValue({
-                fileSource: file
-            });
-            this.readURL(event);
+            if (fileTypes.find(t => t === file.type)) {
+                if (file.size < 500000) {
+                    this.meetingForm.patchValue({ fileSource: file });
+                    this.readURL(event);
+                } else {
+                    alert(`이미지 사이즈가 500KB를 넘습니다. (사이즈: 약 ${Math.ceil(file.size / 1000)}KB)`);
+                }
+            } else {
+                alert(`이미지 형식만 가능합니다. (${fileTypes})`);
+            }
         } else {
-            this.previewImage = undefined;
+            alert(`파일이 선택되지 않았습니다.`);
         }
     }
 
@@ -173,6 +179,5 @@ export class MeetingControl implements AfterViewInit {
         this.stepper.reset();
         this.meetingForm.reset();
         this.previewImage = undefined;
-        // this.fileInput.nativeElement.value = '';
     }
 }

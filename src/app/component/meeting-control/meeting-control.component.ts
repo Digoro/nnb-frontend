@@ -80,6 +80,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   inputDesc: { title: string, descList: string[] }
   daumUrl = "https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js?autoload=false";
   geoCoder: google.maps.Geocoder;
+  @ViewChild('fileInput') fileInput: any;
 
   constructor(
     private cds: CheckDesktopService,
@@ -483,6 +484,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
 
   onFileChange(event) {
     this.onFileChangeEvent.emit(event);
+    this.fileInput.nativeElement.value = '';
   }
 
   checkDiscountPrice() {
