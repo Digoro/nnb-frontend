@@ -6,6 +6,7 @@ import { Meeting, MeetingStatus } from 'src/app/model/meeting';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { environment } from './../../../environments/environment';
 import { Configuration } from './../../model/configuration';
+import { RequestMeeting } from './../../model/meeting';
 import { ConfigurationService } from './../../service/configuration.service';
 import { PaymentService } from './../../service/payment.service';
 import { S3Service } from './../../service/s3.service';
@@ -18,9 +19,15 @@ import { S3Service } from './../../service/s3.service';
 export class AdminPage {
   meetings: Meeting[];
   @ViewChild(IonReorderGroup) reorderGroup: IonReorderGroup;
-  configuration: Config;
-  columns: Columns[];
-  data;
+
+  payColumns: Columns[];
+  payData;
+  payConfiguration: Config;
+
+  requestColumns: Columns[];
+  requestData: RequestMeeting[];
+  requestConfiguration: Config;
+
   sigupEvent: Configuration;
   isShow = false;
   banners: { image: string, link: Promise<string> }[];
@@ -57,6 +64,57 @@ export class AdminPage {
     })
   }
 
+  setPay() {
+    this.paymentService.getPurchasedInfoAll(undefined).subscribe(resp => {
+      this.payData = resp;
+      this.payConfiguration = { ...DefaultConfig };
+      this.payConfiguration.searchEnabled = true;
+      this.payConfiguration.horizontalScroll = true;
+      this.payColumns = [
+        { key: 'index', title: '번호' },
+        { key: 'PCD_PAY_TIME', title: '결제 일시' },
+        { key: 'uid', title: '결제자 닉네임' },
+        // { key: 'uid.name', title: '결제자 이름' },
+        { key: 'PCD_PAY_GOODS', title: '모임명' },
+        { key: 'options', title: '구매 옵션' },
+        { key: 'coupon', title: '쿠폰' },
+        { key: 'phone', title: '휴대폰' },
+        { key: 'PCD_PAY_TOTAL', title: '결제 금액' },
+        { key: 'PCD_PAY_OID', title: '주문번호' },
+        { key: 'PCD_PAY_MSG', title: '결제 메시지' },
+        { key: 'PCD_PAY_TYPE', title: '결제 유형' },
+        { key: 'PCD_PAY_RST', title: '결제 결과' },
+        { key: 'mid', title: '모임 식별자' },
+      ];
+    })
+  }
+
+  setRequests() {
+    this.meetingService.getRequestMeetingAll().subscribe(resp => {
+      this.requestData = resp;
+      this.requestConfiguration = { ...DefaultConfig };
+      this.requestConfiguration.searchEnabled = true;
+      this.requestConfiguration.horizontalScroll = true;
+      this.requestConfiguration.groupRows = true;
+      this.requestColumns = [
+        { key: 'index', title: '번호' },
+        { key: 'meeting.title', title: '상품' },
+        { key: 'user.nickName', title: '신청자' },
+        { key: 'phone', title: '연락처' },
+        { key: 'desc', title: '문의 내용' },
+        { key: 'isOld', title: '확인여부' },
+        { key: 'action', title: '버튼' },
+      ];
+    })
+  }
+
+  check(row: RequestMeeting) {
+    row.isOld = true;
+    this.meetingService.checkRequestMeeting(row).subscribe(resp => {
+      this.setRequests();
+    })
+  }
+
   ionViewDidLeave() {
     this.isShow = false;
   }
@@ -70,28 +128,8 @@ export class AdminPage {
         this.setMeetings();
         this.setConfigurations();
         this.setBanners();
-        this.paymentService.getPurchasedInfoAll(undefined).subscribe(resp => {
-          this.data = resp;
-          this.configuration = { ...DefaultConfig };
-          this.configuration.searchEnabled = true;
-          this.configuration.horizontalScroll = true;
-          this.columns = [
-            { key: 'index', title: '번호' },
-            { key: 'PCD_PAY_TIME', title: '결제 일시' },
-            { key: 'uid', title: '결제자 닉네임' },
-            // { key: 'uid.name', title: '결제자 이름' },
-            { key: 'PCD_PAY_GOODS', title: '모임명' },
-            { key: 'options', title: '구매 옵션' },
-            { key: 'coupon', title: '쿠폰' },
-            { key: 'phone', title: '휴대폰' },
-            { key: 'PCD_PAY_TOTAL', title: '결제 금액' },
-            { key: 'PCD_PAY_OID', title: '주문번호' },
-            { key: 'PCD_PAY_MSG', title: '결제 메시지' },
-            { key: 'PCD_PAY_TYPE', title: '결제 유형' },
-            { key: 'PCD_PAY_RST', title: '결제 결과' },
-            { key: 'mid', title: '모임 식별자' },
-          ];
-        })
+        this.setPay();
+        this.setRequests();
       } else {
         alert('비밀번호가 틀렸습니다.');
         this.router.navigate(['/tabs/home']);

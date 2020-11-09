@@ -109,6 +109,16 @@ export class MeetingService {
     return this.http.get<RequestMeeting[]>(`${this.urlPrefix}/requestMeetings?mid=${mid}&isOld=${false}`);
   }
 
+  checkRequestMeeting(meeting: RequestMeeting) {
+    meeting.meeting = meeting.meeting['mid'];
+    meeting.user = meeting.user['uid'];
+    return this.http.put(`${this.urlPrefix}/requestMeetings/${meeting.rid}/`, meeting);
+  }
+
+  getRequestMeetingAll(): Observable<RequestMeeting[]> {
+    return this.http.get<RequestMeeting[]>(`${this.urlPrefix}/requestMeetings`);
+  }
+
   getHostedMeetings(uid?: number): Observable<Meeting[]> {
     // return this.getAllMeetings(MeetingStatus.ALL);
     return this.http.get<Meeting[]>(`/hosted_meetings?uid=${uid}`);

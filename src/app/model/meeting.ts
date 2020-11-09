@@ -80,8 +80,8 @@ export interface PurchasedMeeting {
 export class RequestMeeting {
     constructor(
         public rid: number,
-        public mid: number,
-        public uid: number,
+        public meeting: number,
+        public user: number,
         public peopleNumber: number,
         public phone: string,
         public desc: string,

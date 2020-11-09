@@ -36,7 +36,7 @@ export class MeetingRequestPage implements OnInit {
           this.meeting = meeting;
           this.user = user;
           this.meetingService.getRequestMeeting(this.mid).subscribe(requestMeetings => {
-            this.isRequestedMeeting = !!requestMeetings.find(m => m.uid === this.user.uid);
+            this.isRequestedMeeting = !!requestMeetings.find(m => m.user['uid'] === this.user.uid);
             if (!this.isRequestedMeeting) {
               this.form = new FormGroup({
                 peopleNumber: new FormControl('', this.formService.getValidators(2, [Validators.min(1), Validators.max(99)])),

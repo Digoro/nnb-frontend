@@ -1,8 +1,29 @@
 <ion-content *ngIf="isShow">
   <ion-grid fixed>
-    <ion-list-header>
-      <ion-label>관리자 메뉴</ion-label>
-    </ion-list-header>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>신청 관리</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ngx-table *ngIf="requestData" [id]="'requestTable'" [configuration]="requestConfiguration" [data]="requestData"
+          [groupRowsBy]="'phone'" [columns]="requestColumns">
+          <ng-template let-row let-index="index">
+            <td>{{ index +1 }}</td>
+            <td (click)="goToDetail(row.meeting.mid)" class="link">{{ row.meeting.title }}</td>
+            <td>{{ row.user.nickName}}</td>
+            <td>{{ row.phone}}</td>
+            <td>
+              <pre>{{ row.desc}}</pre>
+            </td>
+            <td>{{row.isOld}}</td>
+            <td>
+              <button class="btn btn-sm btn-info" (click)="check(row)">확인하기</button>
+            </td>
+          </ng-template>
+        </ngx-table>
+      </ion-card-content>
+    </ion-card>
+
     <ion-card>
       <ion-card-header>
         <ion-card-title>이벤트 적용</ion-card-title>
@@ -41,7 +62,8 @@
         <ion-card-title>결제 목록</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ngx-table *ngIf="data" [configuration]="configuration" [data]="data" [columns]="columns">
+        <ngx-table *ngIf="payData" [id]="'payTable'" [configuration]="payConfiguration" [data]="payData"
+          [columns]="payColumns">
           <ng-template let-row let-index="index">
             <td>{{ index +1 }}</td>
             <td>{{ row.PCD_PAY_TIME }}</td>

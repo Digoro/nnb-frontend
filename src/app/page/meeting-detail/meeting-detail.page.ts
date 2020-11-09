@@ -88,7 +88,7 @@ export class MeetingDetailPage implements OnInit {
             if (requestMeetings.length > 0) {
               this.requestNumber = requestMeetings.map(m => m.peopleNumber).reduce((a, b) => a + b);
             }
-            this.isRequestedMeeting = !!requestMeetings.find(m => m.uid === this.user.uid);
+            this.isRequestedMeeting = !!requestMeetings.find(m => m.user['uid'] === this.user.uid);
             const title = `[노는법] ${meeting.title}`
             this.titleService.setTitle(title);
             this.meeting = meeting;
