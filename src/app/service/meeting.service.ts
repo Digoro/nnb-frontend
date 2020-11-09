@@ -106,7 +106,7 @@ export class MeetingService {
   }
 
   getRequestMeeting(mid: number): Observable<RequestMeeting[]> {
-    return this.http.get<RequestMeeting[]>(`${this.urlPrefix}/requestMeetings?mid=${mid}&isOld=${false}`);
+    return this.http.get<RequestMeeting[]>(`${this.urlPrefix}/requestMeetings?meeting=${mid}&isOld=${false}`);
   }
 
   checkRequestMeeting(meeting: RequestMeeting) {
