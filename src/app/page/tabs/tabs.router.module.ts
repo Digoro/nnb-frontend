@@ -37,6 +37,12 @@ const routes: Routes = [
         }]
       },
       {
+        path: 'meeting-request/:id', children: [{
+          path: '', loadChildren: () =>
+            import('../meeting-request/meeting-request.module').then(m => m.MeetingRequestPageModule)
+        }]
+      },
+      {
         path: 'meeting-detail/:id', children: [{
           path: '', loadChildren: () =>
             import('../meeting-detail/meeting-detail.module').then(m => m.MeetingDetailPageModule)

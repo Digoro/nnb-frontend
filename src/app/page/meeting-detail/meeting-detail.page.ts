@@ -55,6 +55,9 @@ export class MeetingDetailPage implements OnInit {
   runningMinutes;
   categories;
 
+  requestNumber = 0;
+  isRequestedMeeting: boolean;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -81,16 +84,22 @@ export class MeetingDetailPage implements OnInit {
       this.route.params.subscribe(params => {
         const id = params.id;
         this.meetingService.getMeeting(id).subscribe(meeting => {
-          const title = `[노는법] ${meeting.title}`
-          this.titleService.setTitle(title);
-          this.meeting = meeting;
-          this.userService.get(this.meeting.host).subscribe(user => {
-            this.host = user;
-          });
-          this.runningHours = Math.floor(meeting.runningMinutes / 60);
-          this.runningMinutes = meeting.runningMinutes % 60;
-          this.categories = Category[meeting.categories]
-          this.getComments();
+          this.meetingService.getRequestMeeting(id).subscribe(requestMeetings => {
+            if (requestMeetings.length > 0) {
+              this.requestNumber = requestMeetings.map(m => m.peopleNumber).reduce((a, b) => a + b);
+            }
+            this.isRequestedMeeting = !!requestMeetings.find(m => m.uid === this.user.uid);
+            const title = `[노는법] ${meeting.title}`
+            this.titleService.setTitle(title);
+            this.meeting = meeting;
+            this.userService.get(this.meeting.host).subscribe(user => {
+              this.host = user;
+            });
+            this.runningHours = Math.floor(meeting.runningMinutes / 60);
+            this.runningMinutes = meeting.runningMinutes % 60;
+            this.categories = Category[meeting.categories]
+            this.getComments();
+          })
         }, error => {
           if ((error as HttpErrorResponse).status === 404) {
             alert('모임이 존재하지 않습니다.');

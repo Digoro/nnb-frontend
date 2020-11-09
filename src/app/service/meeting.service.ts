@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
-import { Meeting, MeetingStatus } from '../model/meeting';
+import { Meeting, MeetingStatus, RequestMeeting } from '../model/meeting';
 import { MeetingOption, PurchasedMeeting } from './../model/meeting';
 import { PaymentService } from './payment.service';
 import { UrlService } from './url.service';
@@ -99,6 +99,14 @@ export class MeetingService {
     return this.http.get<Meeting[]>(`/bmeetings?status=${status}`).pipe(
       map(meetings => meetings.reverse())
     )
+  }
+
+  requestMeeting(requestMeeting: RequestMeeting) {
+    return this.http.post(`${this.urlPrefix}/requestMeetings/`, requestMeeting)
+  }
+
+  getRequestMeeting(mid: number): Observable<RequestMeeting[]> {
+    return this.http.get<RequestMeeting[]>(`${this.urlPrefix}/requestMeetings?mid=${mid}&isOld=${false}`);
   }
 
   getHostedMeetings(uid?: number): Observable<Meeting[]> {

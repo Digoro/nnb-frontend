@@ -261,13 +261,13 @@
           </div>
           <notion-desc [description]="descriptions[7]"></notion-desc>
           <form-input [name]="'준비물'" [controlName]="'check_list'" [type]="'textarea'" [group]="formGroup"
-            [errors]="[{key:'max',message:'500자 제한입니다.'}]" [maxLength]="500">
+            [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500">
           </form-input>
           <form-input [name]="'포함 사항'" [controlName]="'include'" [type]="'textarea'" [group]="formGroup"
-            [errors]="[{key:'max',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
+            [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
           </form-input>
           <form-input [name]="'불포함 사항'" [controlName]="'exclude'" [type]="'textarea'" [group]="formGroup"
-            [errors]="[{key:'max',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
+            [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
           </form-input>
         </div>
         <div id="test-l-9" class="content">

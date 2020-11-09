@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
-import { FormService } from 'src/app/service/form.service';
 import { environment } from 'src/environments/environment';
 import { S3Service } from './../../service/s3.service';
 import { UserService } from './../../service/user.service';
@@ -18,7 +17,6 @@ export class EditProfilePage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private formService: FormService,
     private userService: UserService,
     private s3Service: S3Service
   ) { }

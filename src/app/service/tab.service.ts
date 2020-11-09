@@ -28,7 +28,8 @@ export class TabService {
     'profile',
     'my-info-detail',
     'payment-success',
-    'payment-fail'
+    'payment-fail',
+    'meeting-request'
   ];
 
   constructor(private router: Router, private platform: Platform) {
