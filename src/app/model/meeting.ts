@@ -76,3 +76,15 @@ export interface PurchasedMeeting {
     payment: PaymentResult,
     options: PurchasedMeetingOption[]
 }
+
+export class RequestMeeting {
+    constructor(
+        public rid: number,
+        public mid: number,
+        public uid: number,
+        public peopleNumber: number,
+        public phone: string,
+        public desc: string,
+        public isOld: boolean
+    ) { }
+}
