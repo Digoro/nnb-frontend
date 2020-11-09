@@ -101,6 +101,7 @@ export class AdminPage {
         { key: 'meeting.title', title: '상품' },
         { key: 'user.nickName', title: '신청자' },
         { key: 'phone', title: '연락처' },
+        { key: 'peopleNumber', title: '신청인원' },
         { key: 'desc', title: '문의 내용' },
         { key: 'isOld', title: '확인여부' },
         { key: 'action', title: '버튼' },
