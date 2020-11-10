@@ -75,23 +75,6 @@ export class MeetingEditPage extends MeetingControl implements OnInit, AfterView
     })
   }
 
-  private setFileFormControl() {
-    this.http.get(this.meeting.file.replace('http', 'https'), { responseType: 'blob' }).subscribe(resp => {
-      const splitted = this.meeting.file.split("/");
-      const name = splitted[splitted.length - 1];
-      const decoded = decodeURI(name);
-      const file: File = this.blobToFile(resp, decoded);
-      this.meetingForm.controls.fileSource.setValue(file);
-    });
-  }
-
-  private blobToFile = (blob: Blob, fileName: string): File => {
-    var b: any = blob;
-    b.lastModifiedDate = new Date();
-    b.name = fileName;
-    return new File([blob], fileName)
-  }
-
   private setFormControlsValue(meeting: Meeting) {
     const noti = meeting.notice.replace(/<br>/g, "\n");
     const check = meeting.check_list.replace(/<br>/g, "\n");
@@ -99,7 +82,7 @@ export class MeetingEditPage extends MeetingControl implements OnInit, AfterView
     const ex = meeting.exclude.replace(/<br>/g, "\n");
     this.meetingForm.controls.title.setValue(meeting.title);
     this.meetingForm.controls.subTitle.setValue(meeting.subTitle);
-    this.setFileFormControl();
+    this.meetingForm.controls.fileSource.setValue(meeting.file);
     this.previewImage = meeting.file;
     this.meetingForm.controls.categories.setValue(Category[+meeting.categories]);
     this.meetingForm.controls.address.setValue(meeting.address);

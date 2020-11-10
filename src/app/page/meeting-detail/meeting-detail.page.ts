@@ -88,7 +88,11 @@ export class MeetingDetailPage implements OnInit {
             if (requestMeetings.length > 0) {
               this.requestNumber = requestMeetings.map(m => m.peopleNumber).reduce((a, b) => a + b);
             }
-            this.isRequestedMeeting = !!requestMeetings.find(m => m.user['uid'] === this.user.uid);
+            if (!!this.user) {
+              this.isRequestedMeeting = !!requestMeetings.find(m => m.user['uid'] === this.user.uid);
+            } else {
+              this.isRequestedMeeting = false;
+            }
             const title = `[노는법] ${meeting.title}`
             this.titleService.setTitle(title);
             this.meeting = meeting;
@@ -165,6 +169,10 @@ export class MeetingDetailPage implements OnInit {
       this.router.navigate([`tabs/payment/${meeting.mid}`]);
       // }
     }
+  }
+
+  request() {
+    this.authService.toastNeedLogin();
   }
 
   test(meeting: Meeting) {

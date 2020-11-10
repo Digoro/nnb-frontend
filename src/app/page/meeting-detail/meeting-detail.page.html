@@ -212,20 +212,31 @@
           style="margin: 0px;  color:#007bff" (click)="join(meeting)">
           모임 결제하러 가기!
         </ion-button>
-        <ion-button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && !isRequestedMeeting" expand="full"
-          size="large" style="margin: 0px;  color:#007bff" [routerLink]="['/tabs/meeting-request', meeting.mid]">
-          신청하러 가기!
-          <ion-chip color="secondary">
-            <ion-label color="light">현재 {{requestNumber}}명이 신청했어요!</ion-label>
-          </ion-chip>
-        </ion-button>
-        <ion-button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && isRequestedMeeting" expand="full"
-          size="large" style="margin: 0px;  color:#007bff" disabled>
-          이미 신청한 모임입니다.
-          <ion-chip color="secondary">
-            <ion-label color="light">현재 {{requestNumber}}명이 신청했어요!</ion-label>
-          </ion-chip>
-        </ion-button>
+        <ng-container *ngIf="!!user">
+          <ion-button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && !isRequestedMeeting" expand="full"
+            size="large" style="margin: 0px;  color:#007bff" [routerLink]="['/tabs/meeting-request', meeting.mid]">
+            신청하러 가기!
+            <ion-chip color="secondary">
+              <ion-label color="light">현재 {{requestNumber}}명이 신청했어요!</ion-label>
+            </ion-chip>
+          </ion-button>
+          <ion-button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && isRequestedMeeting" expand="full"
+            size="large" style="margin: 0px;  color:#007bff" disabled>
+            이미 신청한 모임입니다.
+            <ion-chip color="secondary">
+              <ion-label color="light">현재 {{requestNumber}}명이 신청했어요!</ion-label>
+            </ion-chip>
+          </ion-button>
+        </ng-container>
+        <ng-container *ngIf="!user">
+          <ion-button *ngIf="meeting.status !== 5 && meeting.options.length === 0" expand="full" size="large"
+            style="margin: 0px;  color:#007bff" (click)="request()">
+            신청하러 가기!
+            <ion-chip color="secondary">
+              <ion-label color="light">현재 {{requestNumber}}명이 신청했어요!</ion-label>
+            </ion-chip>
+          </ion-button>
+        </ng-container>
         <ion-button *ngIf="meeting.status === 5" expand="full" size="large" style="margin: 0px;  color:#007bff"
           disabled>
           비활성된 상품입니다.
