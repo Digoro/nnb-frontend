@@ -37,7 +37,7 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'meeting-request/:id', children: [{
+        path: 'meeting-request/:id', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>
             import('../meeting-request/meeting-request.module').then(m => m.MeetingRequestPageModule)
         }]
