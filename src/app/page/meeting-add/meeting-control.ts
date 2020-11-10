@@ -6,8 +6,8 @@ import { QuillEditorComponent } from 'ngx-quill';
 import { Category } from 'src/app/model/category';
 import { Meeting, MeetingStatus } from 'src/app/model/meeting';
 import { User } from 'src/app/model/user';
+import { S3Service } from 'src/app/service/s3.service';
 import { environment } from 'src/environments/environment';
-import { S3Service } from './../../service/s3.service';
 
 export class MeetingControl implements AfterViewInit {
     user: User;
