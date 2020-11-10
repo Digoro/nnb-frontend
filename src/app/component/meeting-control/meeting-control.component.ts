@@ -72,6 +72,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   modalRef: BsModalRef;
   addModalRef: BsModalRef;
   deleteModalRef: BsModalRef;
+  canFormRestModal: boolean;
 
   isInitialOptionLoad = true;
   @ViewChild(BsDaterangepickerDirective, { static: false }) datapickerDirective;
@@ -225,9 +226,13 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     ]
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
     this.modalService.onHidden.subscribe(() => {
-      this.optionAddFormGroup.reset();
-      this.optionDeleteFormGroup.reset();
-      this.searchedOptions = undefined;
+      if (this.canFormRestModal) {
+        this.optionAddFormGroup.reset();
+        this.optionDeleteFormGroup.reset();
+        this.searchedOptions = undefined;
+      } else {
+        this.canFormRestModal = true;
+      }
     })
     this.calendarOptions.eventClick = (selectInfo: EventClickArg) => {
       const { optionTitle, optionDate, optionMaxParticipation, optionMinParticipation, optionPrice } = selectInfo.event._def.extendedProps;
@@ -295,6 +300,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       animated: false,
       backdrop: false
     }
+    this.canFormRestModal = false;
     switch (key) {
       case 'period': {
         this.inputDesc = {
@@ -359,6 +365,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         config.class = 'modal-lg';
         config.animated = true;
         config.backdrop = 'static' as any;
+        this.canFormRestModal = true;
         this.addModalRef = this.modalService.show(template, config);
         break;
       };
@@ -366,6 +373,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         config.class = 'modal-lg';
         config.animated = true;
         config.backdrop = 'static' as any;
+        this.canFormRestModal = true;
         this.deleteModalRef = this.modalService.show(template, config);
         break;
       };
