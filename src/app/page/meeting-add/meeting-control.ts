@@ -6,6 +6,8 @@ import { QuillEditorComponent } from 'ngx-quill';
 import { Category } from 'src/app/model/category';
 import { Meeting, MeetingStatus } from 'src/app/model/meeting';
 import { User } from 'src/app/model/user';
+import { environment } from 'src/environments/environment';
+import { S3Service } from './../../service/s3.service';
 
 export class MeetingControl implements AfterViewInit {
     user: User;
@@ -39,6 +41,7 @@ export class MeetingControl implements AfterViewInit {
     constructor(
         public mapsAPILoader: MapsAPILoader,
         public ngZone: NgZone,
+        public s3Service: S3Service
     ) { }
 
     ngAfterViewInit(): void {
@@ -145,15 +148,12 @@ export class MeetingControl implements AfterViewInit {
         }
     }
 
-    readURL(event): void {
-        if (event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = e => {
-                this.previewImage = reader.result
-            };
-            reader.readAsDataURL(file);
-        }
+    readURL(file): void {
+        const reader = new FileReader();
+        reader.onload = e => {
+            this.previewImage = reader.result
+        };
+        reader.readAsDataURL(file);
     }
 
     onFileChange(event) {
@@ -162,8 +162,10 @@ export class MeetingControl implements AfterViewInit {
             const file = event.target.files[0];
             if (fileTypes.find(t => t === file.type)) {
                 if (file.size < 500000) {
-                    this.meetingForm.patchValue({ fileSource: file });
-                    this.readURL(event);
+                    this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
+                        this.meetingForm.controls.fileSource.setValue(res.Location);
+                        this.readURL(file);
+                    })
                 } else {
                     alert(`이미지 사이즈가 500KB를 넘습니다. (사이즈: 약 ${Math.ceil(file.size / 1000)}KB)`);
                 }

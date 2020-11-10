@@ -6,6 +6,7 @@ import { Category } from 'src/app/model/category';
 import { MeetingOption } from 'src/app/model/meeting';
 import { AuthService } from 'src/app/service/auth.service';
 import { MeetingService } from 'src/app/service/meeting.service';
+import { S3Service } from 'src/app/service/s3.service';
 import { FormService } from '../../service/form.service';
 import { UtilService } from './../../service/util.service';
 import { MeetingControl } from './meeting-control';
@@ -21,12 +22,13 @@ export class MeetingAddPage extends MeetingControl implements OnInit, AfterViewI
     private router: Router,
     public mapsAPILoader: MapsAPILoader,
     public ngZone: NgZone,
+    public s3Service: S3Service,
     private utilService: UtilService,
     private authService: AuthService,
     private fb: FormBuilder,
     private meetingService: MeetingService
   ) {
-    super(mapsAPILoader, ngZone);
+    super(mapsAPILoader, ngZone, s3Service);
   }
 
   ngOnInit() {

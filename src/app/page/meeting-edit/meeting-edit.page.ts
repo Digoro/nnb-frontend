@@ -1,5 +1,5 @@
 import { MapsAPILoader } from '@agm/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, NgZone, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { Meeting, MeetingOption } from 'src/app/model/meeting';
 import { AuthService } from 'src/app/service/auth.service';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { FormService } from '../../service/form.service';
+import { S3Service } from './../../service/s3.service';
 import { UtilService } from './../../service/util.service';
 import { MeetingControl } from './../meeting-add/meeting-control';
 
@@ -25,14 +26,14 @@ export class MeetingEditPage extends MeetingControl implements OnInit, AfterView
     private router: Router,
     public mapsAPILoader: MapsAPILoader,
     public ngZone: NgZone,
+    public s3Service: S3Service,
     private utilService: UtilService,
     private authService: AuthService,
     private fb: FormBuilder,
     private meetingService: MeetingService,
     private route: ActivatedRoute,
-    private http: HttpClient,
   ) {
-    super(mapsAPILoader, ngZone)
+    super(mapsAPILoader, ngZone, s3Service)
   }
 
   ngOnInit() {
