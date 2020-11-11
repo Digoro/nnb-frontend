@@ -64,7 +64,10 @@
             </ion-col>
             <ion-col *ngFor="let meeting of joinedMeeting" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
               style="padding:0px">
-              <meeting-card [meeting]="meeting.payment.mid" (clickEvent)="onClick(meeting)"></meeting-card>
+              <a [href]="'/tabs/meeting-detail/' + meeting.payment.mid['mid']"
+                style="text-decoration: none; color:black;">
+                <meeting-card [meeting]="meeting.payment.mid"></meeting-card>
+              </a>
             </ion-col>
           </ion-row>
         </ion-col>
@@ -84,7 +87,9 @@
             </ion-col>
             <ion-col *ngFor="let meeting of hostedMeetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
               style="padding:0px">
-              <meeting-card [meeting]="meeting" (clickEvent)="onClick(meeting)"></meeting-card>
+              <a [href]="'/tabs/meeting-detail/' + meeting.mid" style="text-decoration: none; color:black;">
+                <meeting-card [meeting]="meeting"></meeting-card>
+              </a>
             </ion-col>
           </ion-row>
         </ion-col>

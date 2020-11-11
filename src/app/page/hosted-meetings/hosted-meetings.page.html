@@ -2,20 +2,22 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-button (click)="goToAdd()" size="small">
-          <ion-icon name="add-outline" slot="start"></ion-icon>모임 등록하기
-        </ion-button>
+        <a [href]="'/host/meeting-management/meeting-add'">
+          <button class="btn btn-sm btn-primary">
+            <ion-icon name="add-outline" slot="start"></ion-icon>모임 등록하기
+          </button>
+        </a>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="hostedMeetings">
       <ion-col *ngFor="let meeting of hostedMeetings" size="12">
         <ion-list>
           <ion-item>
-            <ion-thumbnail slot="start" style="cursor: pointer;" (click)="goDetailPage(meeting)">
+            <ion-thumbnail slot="start" style="cursor: pointer;">
               <img [src]="meeting.file" />
             </ion-thumbnail>
             <ion-label class="ion-text-wrap">
-              <h3 style="cursor: pointer; color:#007bff" (click)="goDetailPage(meeting)">{{meeting.title}} </h3>
+              <h3><a [href]="'/tabs/meeting-detail/' + meeting.mid">{{meeting.title}}</a></h3>
               <p>{{meeting.subTitle}}</p>
               <p *ngIf="meeting.price !== 0">{{meeting.price|number}}원</p>
               <p *ngIf="meeting.price === 0">무료</p>

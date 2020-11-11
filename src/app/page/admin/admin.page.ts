@@ -163,10 +163,6 @@ export class AdminPage {
     }, err => this.setConfigurations())
   }
 
-  goToDetail(mid: number) {
-    this.router.navigate(['/tabs/meeting-detail', mid])
-  }
-
   addBanner() {
     this.isUploading = true;
     const file = this.selectedFiles.item(0);

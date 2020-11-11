@@ -11,36 +11,11 @@
     </ion-tab-bar>
   </ion-tabs>
 
-  <!-- <ion-header class="ion-no-border">
-    <ion-grid fixed style="padding: 0px">
-      <ion-toolbar>
-        <ion-title mode=ios>
-          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
-            <img src="../../../assets/nonunbub_logo.png" height="32" width="51">
-          </a>
-        </ion-title>
-        <ion-buttons slot="start" *ngIf="!isHome">
-          <ion-button (click)="back()">
-            <ion-icon slot="icon-only" name="chevron-back-outline" class="icon"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <ion-buttons slot="end">
-          <ion-button (click)="search($event)">
-            <ion-icon slot="icon-only" name="search-outline" class="icon"></ion-icon>
-          </ion-button>
-          <ion-button [routerLink]="'/tabs/more'">
-            <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-grid>
-  </ion-header> -->
-
   <ion-header class="ion-no-border">
     <ion-grid fixed style="padding: 0px;">
       <ion-toolbar mode=md>
         <ion-title *ngIf="isHome">
-          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
+          <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/home'">
             <img src="../../../assets/nonunbub_logo.png" height="42" width="68">&nbsp;&nbsp;</a>
         </ion-title>
         <ion-buttons slot="start" *ngIf="!isHome">
@@ -49,12 +24,11 @@
           </ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <!-- <ion-button (click)="search($event)">
-            <ion-icon slot="icon-only" name="search-outline" class="icon"></ion-icon>
-          </ion-button> -->
-          <ion-button [routerLink]="'/tabs/more'">
-            <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
-          </ion-button>
+          <a [href]="'/tabs/more'" style="text-decoration: none; color: black;">
+            <ion-button>
+              <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
+            </ion-button>
+          </a>
         </ion-buttons>
       </ion-toolbar>
     </ion-grid>
@@ -67,21 +41,22 @@
     <ion-grid fixed>
       <ion-toolbar>
         <ion-title>
-          <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/tabs/home'">
+          <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/home'">
             <img src="../../../assets/nonunbub_logo.png" height="42" width="68">&nbsp;&nbsp;</a>
         </ion-title>
         <ion-buttons slot="secondary">
           <ng-container *ngFor="let tab of descktopMenus">
-            <ion-button [routerLink]="'/tabs/'+tab.name">
-              {{tab.label}}
-            </ion-button>
+            <a [href]="'/tabs/' + tab.name" style="text-decoration: none; color: black;">
+              <ion-button>
+                {{tab.label}}
+              </ion-button>
+            </a>
           </ng-container>
-          <!-- <ion-button (click)="search($event)">
-            <ion-icon slot="icon-only" name="search-outline"></ion-icon>
-          </ion-button> -->
-          <ion-button [routerLink]="'/tabs/more'">
-            <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
-          </ion-button>
+          <a [href]="'/tabs/more'" style="text-decoration: none; color: black;">
+            <ion-button>
+              <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+            </ion-button>
+          </a>
         </ion-buttons>
       </ion-toolbar>
     </ion-grid>

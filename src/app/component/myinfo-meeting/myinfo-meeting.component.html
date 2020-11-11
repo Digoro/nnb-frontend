@@ -1,12 +1,15 @@
 <ion-item *ngIf="!!meeting">
   <ion-thumbnail slot="start">
-    <img style=" cursor: pointer;" [src]="$any(meeting.payment.mid).file"
-      (click)="goMeetingPage($any(meeting.payment.mid).mid)" />
+    <a [href]="'/tabs/meeting-detail/' + $any(meeting.payment.mid).mid" style="text-decoration: none; color: black;">
+      <img style=" cursor: pointer;" [src]="$any(meeting.payment.mid).file" />
+    </a>
   </ion-thumbnail>
   <ion-label>
     <h2>{{$any(meeting.payment.mid).title | truncate:[27]}}</h2>
     <h3>총 결제금액: {{meeting.payment.PCD_PAY_TOTAL|number}}원</h3>
     <p>{{meeting.options.length}}개의 구매옵션</p>
-    <ion-button size="small" color="medium" (click)="goDetailPage(meeting.payment.pid)">결제 상세보기</ion-button>
+    <a [href]="'/tabs/my-info-detail/' + meeting.payment.pid" style="text-decoration: none; color: black;">
+      <ion-button size="small" color="medium">결제 상세보기</ion-button>
+    </a>
   </ion-label>
 </ion-item>

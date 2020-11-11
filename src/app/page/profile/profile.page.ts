@@ -58,10 +58,6 @@ export class ProfilePage implements OnInit {
     })
   }
 
-  onClick(meeting) {
-    this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
-  }
-
   back() {
     this.location.back();
   }

@@ -28,10 +28,6 @@ export class MyInfoDetailPage implements OnInit {
     })
   }
 
-  goDetailPage(mid: number) {
-    this.router.navigate(['./tabs/meeting-detail', mid]);
-  }
-
   cancel(meeting: PurchasedMeeting, option: PurchasedMeetingOption) {
     this.paymentService.refund(meeting, option).subscribe(resp => {
       alert("환불 되었습니다.");

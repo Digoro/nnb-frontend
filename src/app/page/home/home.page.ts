@@ -132,12 +132,4 @@ export class HomePage implements OnInit, OnDestroy {
     const search = event.target.value;
     alert('서비스 준비중입니다 ^^');
   }
-
-  onClick(meeting: Meeting) {
-    this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
-  }
-
-  onShowAll(key: string, title: string) {
-    this.router.navigate(['./tabs/meetings'], { queryParams: { key, title } });
-  }
 }

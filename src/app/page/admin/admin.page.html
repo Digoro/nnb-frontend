@@ -9,7 +9,7 @@
           [groupRowsBy]="'phone'" [columns]="requestColumns">
           <ng-template let-row let-index="index">
             <td>{{ index +1 }}</td>
-            <td (click)="goToDetail(row.meeting.mid)" class="link">{{ row.meeting.title }}</td>
+            <td><a [href]="'/tabs/meeting-detail/' + row.meeting.mid">{{row.meeting.title}}</a></td>
             <td>{{ row.user.nickName}}</td>
             <td>{{ row.phone}}</td>
             <td>{{ row.peopleNumber}}</td>
@@ -48,7 +48,7 @@
         <ion-reorder-group (ionItemReorder)="reorderMeeting($event)" disabled="false">
           <ion-item *ngFor="let meeting of meetings">
             <ion-label class="ion-text-wrap">
-              <p (click)="goToDetail(meeting.mid)" class="link">{{meeting.title}}</p>
+              <a [href]="'/tabs/meeting-detail/' + meeting.mid">{{meeting.title}}</a>
             </ion-label>
             <ion-toggle slot="end" name="show" color="success" [checked]="meeting.status===3"
               (ionChange)="toggleMeeting($event, meeting)"></ion-toggle>
@@ -69,7 +69,7 @@
             <td>{{ index +1 }}</td>
             <td>{{ row.PCD_PAY_TIME }}</td>
             <td>{{ row.uid.nickName }}</td>
-            <td (click)="goToDetail(row.mid.mid)" class="link">{{ row.PCD_PAY_GOODS }}</td>
+            <a [href]="'/tabs/meeting-detail/' + row.mid.mid">{{row.PCD_PAY_GOODS}}</a>
             <td>
               <ng-container *ngFor="let option of row.options; let last = last">
                 <ion-chip *ngIf="!option.option.isOld">

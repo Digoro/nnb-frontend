@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
-import { Meeting, MeetingStatus } from 'src/app/model/meeting';
+import { MeetingStatus } from 'src/app/model/meeting';
 import { AuthService } from 'src/app/service/auth.service';
 import { CheckDesktopService } from 'src/app/service/check-desktop.service';
 import { MeetingService } from 'src/app/service/meeting.service';
@@ -44,14 +44,6 @@ export class HostedMeetingsPage implements OnInit {
 
   segmentChanged(event) {
     console.log(event);
-  }
-
-  goToAdd() {
-    this.router.navigate(['/host/meeting-management/meeting-add']);
-  }
-
-  goDetailPage(meeting: Meeting) {
-    this.router.navigate(['/tabs/meeting-detail', meeting.mid]);
   }
 
   edit(mid: number) {

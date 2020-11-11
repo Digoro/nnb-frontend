@@ -88,8 +88,4 @@ export class SearchPage implements OnInit {
   back() {
     this.location.back();
   }
-
-  goDetailPage(meeting: Meeting) {
-    this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
-  }
 }

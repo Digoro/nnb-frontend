@@ -3,19 +3,27 @@
     <ng-container *ngIf="!!user">
       <ion-list style="margin: 30px 0px 25px 0px">
         <ion-item lines="none">
-          <ion-avatar (click)="goToProfile(user.uid)" slot="start" style="width: 80px; height: 80px;margin-left:20px">
-            <img [src]="user.image">
-          </ion-avatar>
-          <ion-label (click)="goToProfile(user.uid)" style="color: #3f3e3e;">{{user.nickName}}</ion-label>
+          <a [href]="'/tabs/profile/' + user.uid">
+            <ion-avatar slot="start" style="width: 80px; height: 80px;margin-left:20px">
+              <img [src]="user.image">
+            </ion-avatar>
+          </a>
+          <ion-label>
+            <a style="text-decoration: none; color:black" [href]="'/tabs/profile/' + user.uid">{{user.nickName}}</a>
+          </ion-label>
           <div style="display: flex; flex-direction: column;">
-            <ion-chip color="primary" (click)="editUser()">
-              <ion-icon name="settings-outline"></ion-icon>
-              <ion-label>계정 설정</ion-label>
-            </ion-chip>
-            <ion-chip color="tertiary" (click)="goToHost()">
-              <ion-icon name="log-out-outline"></ion-icon>
-              <ion-label>호스트센터</ion-label>
-            </ion-chip>
+            <a [href]="'/tabs/edit-profile'" style="text-decoration: none; color: black;">
+              <ion-chip color="primary">
+                <ion-icon name="settings-outline"></ion-icon>
+                <ion-label>계정 설정</ion-label>
+              </ion-chip>
+            </a>
+            <a [href]="'/host/meeting-management'" style="text-decoration: none; color: black;">
+              <ion-chip color="tertiary">
+                <ion-icon name="log-out-outline"></ion-icon>
+                <ion-label>호스트센터</ion-label>
+              </ion-chip>
+            </a>
           </div>
         </ion-item>
       </ion-list>

@@ -13,10 +13,12 @@
         <ion-card>
           <ion-row>
             <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12" size="12">
-              <ion-card-header (click)="goToDetail(options[0].payment.mid.mid)">
-                <ion-card-title>{{options[0].payment.mid.title}}</ion-card-title>
-                <ion-card-subtitle>{{options[0].payment.mid.subTitle}}</ion-card-subtitle>
-              </ion-card-header>
+              <a [href]="'/tabs/meeting-detail/' + options[0].payment.mid.mid">
+                <ion-card-header>
+                  <ion-card-title>{{options[0].payment.mid.title}}</ion-card-title>
+                  <ion-card-subtitle>{{options[0].payment.mid.subTitle}}</ion-card-subtitle>
+                </ion-card-header>
+              </a>
             </ion-col>
             <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12" size="12">
               <ion-card-content>
@@ -61,7 +63,9 @@
         <td><img [src]="row.mid.file" height="50" width="60"></td>
         <td>{{ row.PCD_PAY_TIME }}</td>
         <td>{{ row.uid.nickName }}</td>
-        <td (click)="goToDetail(row.mid.mid)" class="link">{{ row.PCD_PAY_GOODS }}</td>
+        <td>
+          <a [href]="'/tabs/meeting-detail/' + row.mid.mid">{{ row.PCD_PAY_GOODS }}</a>
+        </td>
         <td>
           <ng-container *ngFor="let option of row.options; let last = last">
             <ion-chip *ngIf="!option.option.isOld">

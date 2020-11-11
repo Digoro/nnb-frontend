@@ -24,9 +24,11 @@
           <span *ngIf="meeting.price === 0" class="price">무료</span>
           <hr>
           <p class="basic-info">
-            <ion-chip color="primary" (click)="goToCategory(meeting.categories)">
-              <ion-label>{{categories}}</ion-label>
-            </ion-chip>
+            <a [href]="'/tabs/meetings?key=' + meeting.categories">
+              <ion-chip color="primary">
+                <ion-label>{{categories}}</ion-label>
+              </ion-chip>
+            </a>
           </p>
           <p class="basic-info">
             <ion-icon name="navigate-outline"></ion-icon>{{meeting.address}}, {{meeting.detailed_address}}
@@ -175,14 +177,16 @@
               <p class="title">호스트 소개</p>
               <div *ngIf="!!host">
                 <div class="host">
-                  <img *ngIf="host.image" [src]="host.image" class="icon-img">
-                  <ion-icon *ngIf="!host.image" name="person-circle-outline" class="icon" (click)="goToHostPage(host)">
-                  </ion-icon>
+                  <a [href]="'/tabs/profile/' + host.uid">
+                    <img *ngIf="host.image" [src]="host.image" class="icon-img">
+                    <ion-icon *ngIf="!host.image" name="person-circle-outline" class="icon">
+                    </ion-icon>
+                  </a>
                   <div class="info">
-                    <div>
-                      <span (click)="goToHostPage(host)" class="name">{{host.nickName}}</span>&nbsp;
+                    <a [href]="'/tabs/profile/' + host.uid" style="text-decoration: none; color:black">
+                      <span class="name">{{host.nickName}}</span>&nbsp;
                       <ion-badge color="medium" class="badge">인기</ion-badge>
-                    </div>
+                    </a>
                     <div class="desc">score: {{host.score}}</div>
                   </div>
                 </div>
@@ -208,18 +212,20 @@
   <ion-footer #footer style="z-index: 101;" class="ion-no-border">
     <ion-grid fixed style="padding: 0px">
       <ion-toolbar class="join-btn">
-        <ion-button *ngIf="meeting.status !== 5 && meeting.options.length !== 0" expand="full" size="large"
-          style="margin: 0px;  color:#007bff" (click)="join(meeting)">
-          모임 결제하러 가기!
-        </ion-button>
         <ng-container *ngIf="!!user">
-          <ion-button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && !isRequestedMeeting" expand="full"
-            size="large" style="margin: 0px;  color:#007bff" [routerLink]="['/tabs/meeting-request', meeting.mid]">
-            신청하러 가기!
-            <ion-chip color="secondary">
-              <ion-label color="light">현재 {{requestNumber}}명이 신청했어요!</ion-label>
-            </ion-chip>
-          </ion-button>
+          <a [href]="'/tabs/payment/' + meeting.mid" style="text-decoration: none; color: black;">
+            <ion-button *ngIf="meeting.status !== 5 && meeting.options.length !== 0" expand="full" size="large"
+              style="margin: 0px;  color:#007bff">
+              모임 결제하러 가기!
+            </ion-button>
+          </a>
+          <a [href]="'/tabs/meeting-request/' + meeting.mid" style="text-decoration: none; color: black;">
+            <ion-button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && !isRequestedMeeting"
+              expand="full" size="large" style="margin: 0px;  color:#007bff"> 신청하러 가기! <ion-chip color="secondary">
+                <ion-label color="light">현재 {{requestNumber}}명이 신청했어요!</ion-label>
+              </ion-chip>
+            </ion-button>
+          </a>
           <ion-button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && isRequestedMeeting" expand="full"
             size="large" style="margin: 0px;  color:#007bff" disabled>
             이미 신청한 모임입니다.
@@ -229,8 +235,12 @@
           </ion-button>
         </ng-container>
         <ng-container *ngIf="!user">
+          <ion-button *ngIf="meeting.status !== 5 && meeting.options.length !== 0" expand="full" size="large"
+            style="margin: 0px;  color:#007bff" (click)="needLogin()">
+            모임 결제하러 가기!
+          </ion-button>
           <ion-button *ngIf="meeting.status !== 5 && meeting.options.length === 0" expand="full" size="large"
-            style="margin: 0px;  color:#007bff" (click)="request()">
+            style="margin: 0px;  color:#007bff" (click)="needLogin()">
             신청하러 가기!
             <ion-chip color="secondary">
               <ion-label color="light">현재 {{requestNumber}}명이 신청했어요!</ion-label>

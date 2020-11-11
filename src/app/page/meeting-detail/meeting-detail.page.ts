@@ -114,10 +114,6 @@ export class MeetingDetailPage implements OnInit {
     });
   }
 
-  goToCategory(category) {
-    this.router.navigate(['/tabs/meetings'], { queryParams: { key: category } })
-  }
-
   onScroll(event) {
     const currentScrollDepth = event.detail.scrollTop;
     document.querySelectorAll(".menu a").forEach(link => {
@@ -129,10 +125,6 @@ export class MeetingDetailPage implements OnInit {
         link.classList.remove("current");
       }
     });
-  }
-
-  onClick(meeting: Meeting) {
-    this.router.navigate(['./tabs/meeting-detail', meeting.mid]);
   }
 
   onShowAll(key: string, title: string) {
@@ -153,25 +145,7 @@ export class MeetingDetailPage implements OnInit {
     })
   }
 
-  join(meeting: Meeting) {
-    if (!this.user) {
-      this.authService.toastNeedLogin();
-    } else {
-      // if (meeting.price === 0) {
-      //   const check = confirm('예약 페이지로 이동합니다. 모임 회차와 날짜를 꼭 확인해주세요~!!');
-      //   if (check) {
-      //     const open = window.open(meeting.purchase_link);
-      //     if (!open) {
-      //       alert('팝업이 차단되었습니다.')
-      //     }
-      //   }
-      // } else {
-      this.router.navigate([`tabs/payment/${meeting.mid}`]);
-      // }
-    }
-  }
-
-  request() {
+  needLogin() {
     this.authService.toastNeedLogin();
   }
 
@@ -263,10 +237,6 @@ export class MeetingDetailPage implements OnInit {
 
   like(meeting: Meeting) {
     alert('서비스 준비중입니다 ^^');
-  }
-
-  goToHostPage(host: User) {
-    this.router.navigate(['./tabs/profile', host.uid]);
   }
 
   onComment(value) {

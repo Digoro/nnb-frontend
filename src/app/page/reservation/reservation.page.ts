@@ -58,8 +58,4 @@ export class ReservationPage implements OnInit {
       });
     })
   }
-
-  goToDetail(mid: number) {
-    this.router.navigate(['/tabs/meeting-detail', mid])
-  }
 }

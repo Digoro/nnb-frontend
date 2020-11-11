@@ -31,15 +31,15 @@
   <ion-header class="ion-no-border" *ngIf="!isDesktop">
     <ion-toolbar>
       <ion-title mode=ios>
-        <a style="text-decoration: none; cursor: pointer;" (click)="goToHome()">
+        <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/home'">
           <img src="../../../assets/nonunbub_logo.png" height="32" width="51">
         </a>&nbsp;
-        <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/host/meeting-management/hosted-meetings'">
+        <a style="text-decoration: none; cursor: pointer;" [href]="'/host/meeting-management/hosted-meetings'">
           <span style="color:#6c757d">호스트센터</span>
         </a>
       </ion-title>
       <ion-buttons slot="end">
-        <ion-button [routerLink]="'/tabs/more'">
+        <ion-button [href]="'/tabs/more'">
           <ion-icon slot="icon-only" name="person-circle-outline" class="icon" style="color:#343a40"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -48,19 +48,20 @@
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
+
   <!-- descktop -->
   <ion-header class="ion-no-border" *ngIf="isDesktop">
     <ion-toolbar>
       <ion-title>
-        <a style="text-decoration: none; cursor: pointer;" (click)="goToHome()">
+        <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/home'">
           <img src="../../../assets/nonunbub_logo.png" height="42" width="68">
         </a>&nbsp;
-        <a style="text-decoration: none; cursor: pointer;" [routerLink]="'/host/meeting-management/hosted-meetings'">
+        <a style="text-decoration: none; cursor: pointer;" [href]="'/host/meeting-management/hosted-meetings'">
           <span style="color:#6c757d">호스트센터</span>
         </a>
       </ion-title>
       <ion-buttons slot="end">
-        <ion-button [routerLink]="'/tabs/more'">
+        <ion-button [href]="'/tabs/more'">
           <ion-icon slot="icon-only" name="person-circle-outline" class="icon"></ion-icon>
         </ion-button>
       </ion-buttons>

@@ -54,18 +54,6 @@ export class MorePage implements OnInit {
     })
   }
 
-  editUser() {
-    this.router.navigate(['/tabs/edit-profile']);
-  }
-
-  goToHost() {
-    window.open('https://nonunbub.com/host/meeting-management');
-  }
-
-  goToProfile(uid: number) {
-    this.router.navigate(['/tabs/profile', uid])
-  }
-
   login(method: string) {
     if (method === 'kakao') {
       if (!Kakao.isInitialized()) {

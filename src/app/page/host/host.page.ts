@@ -21,10 +21,6 @@ export class HostPage implements OnInit {
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
   }
 
-  goToHome() {
-    window.open('https://nonunbub.com/tabs/home');
-  }
-
   openSidebar() {
     this.menu.close();
   }
