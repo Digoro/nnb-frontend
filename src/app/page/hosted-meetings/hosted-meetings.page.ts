@@ -27,9 +27,7 @@ export class HostedMeetingsPage implements OnInit {
 
   ngOnInit() {
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp)
-    this.authService.getCurrentUser().subscribe(currentUser => {
-      this.setHostedMeetings();
-    });
+    this.setHostedMeetings();
   }
 
   private setHostedMeetings() {
