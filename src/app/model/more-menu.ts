@@ -10,6 +10,7 @@ export class MoreMenuGroup {
 export class MoreMenuItem {
     constructor(
         public label: string,
+        public link: string,
         public onClick: Callable,
         public badge = 0,
         public badgeIcon = 'badge-secondary',

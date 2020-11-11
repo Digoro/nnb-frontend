@@ -39,14 +39,14 @@ export class MorePage implements OnInit {
         this.paymentService.getUserPaymentAccounts(this.user.uid).subscribe(accounts => {
           this.menus = [
             new MoreMenuGroup('계정 관리', [
-              new MoreMenuItem('내 쿠폰', () => { this.router.navigate(['/tabs/coupon-list']) }, coupons.length, 'badge-danger', true),
-              new MoreMenuItem('간편결제 관리', () => { this.router.navigate(['/tabs/payment-management']) }, accounts.length, 'badge-secondary', true),
+              new MoreMenuItem('내 쿠폰', '/tabs/coupon-list', undefined, coupons.length, 'badge-danger', true),
+              new MoreMenuItem('간편결제 관리', '/tabs/payment-management', undefined, accounts.length, 'badge-secondary', true),
             ]),
             new MoreMenuGroup('지원', [
-              new MoreMenuItem('이벤트', () => this.router.navigate(['/tabs/event'])),
-              new MoreMenuItem('문의하기', () => window.open('mailto:nonunbub@gmail.com')),
-              new MoreMenuItem('공지사항', () => alert('서비스 준비중입니다 ^^')),
-              new MoreMenuItem('로그아웃', () => this.logout(), 0, '', false, true),
+              new MoreMenuItem('이벤트', '/tabs/event', undefined),
+              new MoreMenuItem('문의하기', 'https://nonunbub.channel.io', undefined),
+              new MoreMenuItem('공지사항', '', () => alert('서비스 준비중입니다 ^^')),
+              new MoreMenuItem('로그아웃', '', () => this.logout(), 0, '', false, true),
             ]),
           ]
         })

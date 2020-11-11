@@ -30,7 +30,13 @@
       <ion-list>
         <ng-container *ngFor="let menu of menus">
           <ng-container *ngFor="let item of menu.items">
-            <ion-item style="cursor: pointer;" (click)="item.onClick()">
+            <a *ngIf="!item.onClick" [href]="item.link" style="text-decoration: none; color:black;">
+              <ion-item style="cursor: pointer;">
+                <ion-label [ngStyle]="{'opacity':item.disable ? 0.3 : 1}">{{item.label}}</ion-label>
+                <span class="badge" [ngClass]="item.badgeIcon" *ngIf="item.isBadge">{{item.badge}}</span>
+              </ion-item>
+            </a>
+            <ion-item *ngIf="item.onClick" (click)="item.onClick()" style="cursor: pointer;">
               <ion-label [ngStyle]="{'opacity':item.disable ? 0.3 : 1}">{{item.label}}</ion-label>
               <span class="badge" [ngClass]="item.badgeIcon" *ngIf="item.isBadge">{{item.badge}}</span>
             </ion-item>
