@@ -18,42 +18,6 @@
     font-size: 27px;
 }
 
-@property --num {
-    syntax: "<integer>";
-    initial-value: 3000;
-    inherits: false;
-}
-
-.count {
-    -webkit-animation: counter 1.5s ease-in-out;
-    animation: counter 1.5s ease-in-out;
-    counter-reset: num var(--num);
-}
-
-.count::after {
-    content: counter(num);
-}
-
-@-webkit-keyframes counter {
-    from {
-        --num: 288;
-    }
-
-    to {
-        --num: 3000;
-    }
-}
-
-@keyframes counter {
-    from {
-        --num: 288;
-    }
-
-    to {
-        --num: 3000;
-    }
-}
-
 .footer {
     background-color: #454545;
     color: #B2B2B2;
