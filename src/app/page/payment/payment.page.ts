@@ -248,7 +248,7 @@ export class PaymentPage implements OnInit {
   pay() {
     const { phone, options, coupon } = this.form.value;
     let optionsTemp = options.map(o => {
-      o.optionDate = moment(o.optionDate).format('YYYY-MM-DD HH:mm:ss')
+      o.optionDate = moment(o.optionDate).format('YYYYMMDDHHmmss')
       return o
     })
     let method, selectedAccount;
