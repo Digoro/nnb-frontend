@@ -12,7 +12,7 @@
     <ion-row>
       <ion-col [ngStyle]="{'padding':isDesktop?'':'0px'}">
         <ion-slides [options]="bannerSliderConfig" pager="true">
-          <ion-slide *ngFor="let banner of banners">
+          <ion-slide *ngFor="let banner of banners" style="cursor: pointer;">
             <img [src]="banner.image" (click)="clickBanner(banner.link)">
           </ion-slide>
 

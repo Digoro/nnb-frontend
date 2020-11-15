@@ -247,6 +247,10 @@ export class PaymentPage implements OnInit {
 
   pay() {
     const { phone, options, coupon } = this.form.value;
+    let optionsTemp = options.map(o => {
+      o.optionDate = moment(o.optionDate).format('YYYY-MM-DD HH:mm:ss')
+      return o
+    })
     let method, selectedAccount;
     let isOk = true;
     switch (this.paymentMethod) {
@@ -267,7 +271,7 @@ export class PaymentPage implements OnInit {
         alert('결제 방법을 선택해주세요');
       }
     }
-    if (isOk) this.paymentService.pay(method, this.user, this.meeting, phone, this.price, options, coupon, selectedAccount);
+    if (isOk) this.paymentService.pay(method, this.user, this.meeting, phone, this.price, optionsTemp, coupon, selectedAccount);
   }
 
   ionViewDidLeave() {
