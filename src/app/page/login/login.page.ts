@@ -50,7 +50,7 @@ export class LoginPage implements OnInit {
           gauth.signIn({
             ux_mode: 'redirect',
             // redirect_uri: 'http://localhost:8000/accounts/google/login/callback',
-            redirect_uri: 'http://nonunbub.com/accounts/google/login/callback/',
+            redirect_uri: 'https://nonunbub.com/accounts/google/login/callback/',
           })
           console.log('init success');
         }, () => {
