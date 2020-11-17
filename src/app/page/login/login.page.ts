@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { environment } from './../../../environments/environment';
 import { FormService } from './../../service/form.service';
 import { UtilService } from './../../service/util.service';
 declare var Kakao;
+declare var gapi;
 
 @Component({
   selector: 'login',
@@ -14,14 +13,14 @@ declare var Kakao;
 })
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
+  gauth: any;
 
   constructor(
     private formService: FormService,
-    private router: Router,
     private utilService: UtilService,
-    private cookieService: CookieService
   ) {
-    this.utilService.loadScript('https://developers.kakao.com/sdk/js/kakao.js')
+    this.utilService.loadScript('https://developers.kakao.com/sdk/js/kakao.js');
+    this.utilService.loadScript('https://apis.google.com/js/platform.js');
   }
 
   ngOnInit() {
@@ -34,13 +33,28 @@ export class LoginPage implements OnInit {
   login(method: string) {
     if (method === 'kakao') {
       if (!Kakao.isInitialized()) {
-        Kakao.init(environment.KAKAO_AUTH_KEY);      // 사용할 앱의 JavaScript 키를 설정
+        Kakao.init(environment.KAKAO_AUTH_KEY);
       }
       Kakao.Auth.authorize({
         redirectUri: 'http://nonunbub.com/accounts/kakao/login/callback/',
       });
     } else if (method === 'email') {
       alert('서비스 준비중입니다 ^^');
+    } else if (method === 'google') {
+      gapi.load('auth2', () => {
+        const gauth = gapi.auth2.init({
+          client_id: '689970304688-lqer5piucseph9jlhjsf9k8qbhuinn6r.apps.googleusercontent.com'
+        });
+        gauth.then(() => {
+          gauth.signIn({
+            ux_mode: 'redirect',
+            redirect_uri: 'http://nonunbub.com/accounts/google/login/callback/',
+          })
+          console.log('init success');
+        }, () => {
+          console.error('init fail');
+        })
+      });
     }
   }
 
@@ -53,4 +67,3 @@ export class LoginPage implements OnInit {
     alert('서비스 준비중입니다 ^^');
   }
 }
-

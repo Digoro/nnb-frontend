@@ -4,10 +4,7 @@ import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { CouponService } from 'src/app/service/coupon.service';
 import { PaymentService } from 'src/app/service/payment.service';
-import { UtilService } from 'src/app/service/util.service';
-import { environment } from './../../../environments/environment';
 import { MoreMenuGroup, MoreMenuItem } from './../../model/more-menu';
-declare var Kakao;
 
 @Component({
   selector: 'more',
@@ -21,11 +18,9 @@ export class MorePage implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private utilService: UtilService,
     private paymentService: PaymentService,
     private couponService: CouponService
   ) {
-    this.utilService.loadScript('https://developers.kakao.com/sdk/js/kakao.js')
   }
 
   ngOnInit() {
@@ -52,19 +47,6 @@ export class MorePage implements OnInit {
         })
       })
     })
-  }
-
-  login(method: string) {
-    if (method === 'kakao') {
-      if (!Kakao.isInitialized()) {
-        Kakao.init(environment.KAKAO_AUTH_KEY);
-      }
-      Kakao.Auth.authorize({
-        redirectUri: 'http://nonunbub.com/accounts/kakao/login/callback/',
-      });
-    } else if (method === 'email') {
-      alert('서비스 준비중입니다 ^^');
-    }
   }
 
   logout() {
