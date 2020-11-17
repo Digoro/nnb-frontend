@@ -6,9 +6,6 @@
             src="../../../assets/kakaotalk_logo.png">
           <span style="color: black">카카오톡 계정으로 로그인</span>
         </ion-button>
-        <ion-button color="danger" expand="full" (click)="login('google')">
-          <span style="color: black">구글 계정으로 로그인</span>
-        </ion-button>
       </ion-col>
     </ion-row>
 
@@ -55,7 +52,7 @@
       <ion-row>
         <ion-col>
           <div style="display: flex; justify-content: center;">
-            <p (click)="findPassword()" style="cursor: pointer;">비밀번호 찾기</p>&nbsp;&nbsp;&nbsp;&nbsp;
+            <p (click)="login('google')" style="cursor: pointer;">비밀번호 찾기</p>&nbsp;&nbsp;&nbsp;&nbsp;
             |&nbsp;&nbsp;&nbsp;
             <p (click)="signup()" style="cursor: pointer;">회원 가입</p>
           </div>
