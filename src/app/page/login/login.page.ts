@@ -36,7 +36,8 @@ export class LoginPage implements OnInit {
         Kakao.init(environment.KAKAO_AUTH_KEY);
       }
       Kakao.Auth.authorize({
-        redirectUri: 'http://nonunbub.com/accounts/kakao/login/callback/',
+        // redirectUri: 'http://localhost:8000/accounts/kakao/login/callback',
+        redirectUri: 'http://nonunbub.com/accounts/kakao/login/callback',
       });
     } else if (method === 'email') {
       alert('서비스 준비중입니다 ^^');
@@ -48,7 +49,8 @@ export class LoginPage implements OnInit {
         gauth.then(() => {
           gauth.signIn({
             ux_mode: 'redirect',
-            redirect_uri: 'http://nonunbub.com/accounts/google/login/callback/',
+            // redirect_uri: 'http://localhost:8000/accounts/google/login/callback',
+            redirect_uri: 'http://nonunbub.com/accounts/google/login/callback',
           })
           console.log('init success');
         }, () => {
