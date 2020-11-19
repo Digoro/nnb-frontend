@@ -19,9 +19,7 @@ import { TimeUtilService } from './../../service/time-util.service';
 import { TitleService } from './../../service/title.service';
 import { UserService } from './../../service/user.service';
 import { UtilService } from './../../service/util.service';
-
 declare var Kakao;
-declare var PaypleCpayAuthCheck;
 
 @Component({
   selector: 'meeting-detail',
@@ -114,11 +112,15 @@ export class MeetingDetailPage implements OnInit {
     });
   }
 
+  setPosition(id) {
+    document.getElementById(`section-${id}`).scrollIntoView(true);
+  }
+
   onScroll(event) {
-    const currentScrollDepth = event.detail.scrollTop;
+    const currentScrollDepth = event.detail.scrollTop + 60;
     document.querySelectorAll(".menu a").forEach(link => {
-      let section = link['href'].match(/section-\d/g)[0];
-      section = document.getElementById(section);
+      let sectionId = (link.classList[0]).match(/section-\d/g)[0];
+      const section = document.getElementById(sectionId);
       if (section.offsetTop <= currentScrollDepth && section.offsetTop + section.offsetHeight > currentScrollDepth) {
         link.classList.add("current");
       } else {
