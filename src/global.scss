@@ -59,3 +59,50 @@
 .pre-wrap {
     white-space: pre-wrap;
 }
+
+
+// new style
+.primary-btn {
+    width: 100%;
+    height: 3.5rem;
+    padding: 1.063rem;
+    border-radius: 5px;
+    background-color: #e5456e;
+
+    font-size: 1.125rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.22;
+    letter-spacing: normal;
+    text-align: center;
+    color: #ffffff;
+}
+
+.primary-btn:disabled {
+    background-color: #e5456e4d;
+}
+
+.underline {
+    border-bottom: 0.19rem solid #fac8d4;
+    box-shadow: inset 0px -0.8rem 0px #fac8d4;
+}
+
+ion-checkbox {
+    --background-checked: #ff4683;
+    --border-color-checked: #ff4683;
+}
+
+ion-radio {
+    --color: #ffb2ca;
+    --color-checked: #ff4683;
+}
+
+ion-segment-button {
+    --color-checked: #ff4683;
+}
+
+ion-chip {
+    --background: #ffb2ca66;
+    --color: #ff4683;
+}

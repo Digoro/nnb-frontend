@@ -184,8 +184,8 @@
           </ng-container>
           <ion-row>
             <ion-col>
-              <ion-button *ngIf="!isFree" expand="block" (click)="pay()" [disabled]="form.invalid">결제하기</ion-button>
-              <ion-button *ngIf="isFree" expand="block" (click)="join()" [disabled]="form.invalid">무료 참여하기</ion-button>
+              <button class="primary-btn" *ngIf="!isFree" (click)="pay()" [disabled]="form.invalid">결제하기</button>
+              <button class="primary-btn" *ngIf="isFree" (click)="join()" [disabled]="form.invalid">무료 참여하기</button>
             </ion-col>
           </ion-row>
         </ng-container>
