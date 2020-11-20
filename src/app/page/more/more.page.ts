@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { CouponService } from 'src/app/service/coupon.service';
@@ -17,7 +16,6 @@ export class MorePage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
     private paymentService: PaymentService,
     private couponService: CouponService
   ) {
@@ -52,7 +50,7 @@ export class MorePage implements OnInit {
   logout() {
     this.authService.logout().subscribe(resp => {
       this.user = undefined;
-      this.router.navigate(['/tabs/home']);
+      window.location.href = '/tabs/home'
     }, error => {
       console.log(error);
     });
