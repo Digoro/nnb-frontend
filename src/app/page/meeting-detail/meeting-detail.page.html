@@ -256,9 +256,6 @@
             <button *ngIf="meeting.status !== 5 && meeting.options.length === 0" class="primary-btn"
               (click)="needLogin()">
               신청하러 가기!
-              <ion-chip color="secondary">
-                <ion-label color="light">현재 {{requestNumber}}명이 신청했어요!</ion-label>
-              </ion-chip>
             </button>
           </ng-container>
           <ion-button *ngIf="meeting.status === 5" expand="full" size="large" style="margin: 0px;  color:#007bff"
