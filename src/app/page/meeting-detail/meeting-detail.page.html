@@ -212,13 +212,25 @@
   <ion-footer style="z-index: 99999;" #footer class="ion-no-border">
     <ion-grid fixed class="join-wrapper">
       <div class="row" style='text-align: center;'>
-        <div class="col-5" style="display: flex; justify-content: space-around;margin-top: 8px;">
-          <div (click)="like(meeting)">
-            <ion-icon name="heart-outline" class="summary-icon"></ion-icon>&nbsp;<span class="join-text">찜</span>
+        <div class="col-5">
+          <div class="row">
+            <div class="col">
+              <ion-chip style="background: #fae1e7;color: #e5456e;height: 1.2rem;"
+                *ngIf="meeting.status !== 5 && meeting.options.length === 0">
+                <ion-label>현재 {{requestNumber}}명 신청</ion-label>
+              </ion-chip>
+            </div>
           </div>
-          <div (click)="openModal(meeting, template)">
-            <ion-icon name="share-social-outline" class="summary-icon"></ion-icon>&nbsp;<span
-              class="join-text">공유</span>
+          <div class="row">
+            <div class="col" style="display: flex; justify-content: space-around;">
+              <div (click)="like(meeting)">
+                <ion-icon name="heart-outline" class="summary-icon"></ion-icon>&nbsp;<span class="join-text">찜</span>
+              </div>
+              <div (click)="openModal(meeting, template)">
+                <ion-icon name="share-social-outline" class="summary-icon"></ion-icon>&nbsp;<span
+                  class="join-text">공유</span>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-7">
@@ -230,18 +242,10 @@
             </a>
             <a [href]="'/tabs/meeting-request/' + meeting.mid" style="text-decoration: none; color: black;">
               <button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && !isRequestedMeeting"
-                class="join-btn"> 신청하러 가기! <ion-chip color="secondary">
-                  <ion-label color="light">현재 {{requestNumber}}명이 신청했어요!</ion-label>
-                </ion-chip>
-              </button>
+                class="join-btn"> 신청하러 가기! </button>
             </a>
             <button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && isRequestedMeeting" class="join-btn"
-              disabled>
-              이미 신청한 모임입니다.
-              <ion-chip color="secondary">
-                <ion-label color="light">현재 {{requestNumber}}명이 신청했어요!</ion-label>
-              </ion-chip>
-            </button>
+              disabled>이미 신청한 모임입니다.</button>
           </ng-container>
           <ng-container *ngIf="!user">
             <button *ngIf="meeting.status !== 5 && meeting.options.length !== 0" class="join-btn" (click)="needLogin()">
