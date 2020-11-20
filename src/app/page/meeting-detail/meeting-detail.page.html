@@ -222,7 +222,8 @@
             </div>
           </div>
           <div class="row">
-            <div class="col" style="display: flex; justify-content: space-around;">
+            <div class="col" style="display: flex; justify-content: space-around;"
+              [ngStyle]="{'margin-top': meeting.status !== 5 && meeting.options.length === 0 ? '':'8px'}">
               <div (click)="like(meeting)">
                 <ion-icon name="heart-outline" class="summary-icon"></ion-icon>&nbsp;<span class="join-text">찜</span>
               </div>

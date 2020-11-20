@@ -41,9 +41,14 @@
 }
 
 .meeting-category {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 1.5rem;
+    font-weight: 650;
     color: rgb(27, 28, 29);
+}
+
+.underline {
+    border-bottom: 0.19rem solid #fac8d4;
+    box-shadow: inset 0px -0.8rem 0px #fac8d4;
 }
 
 .subTitle {
@@ -54,12 +59,11 @@
 }
 
 .all {
-    color: #ff4081 !important;
+    color: #ff4081;
     margin-bottom: 0px;
     float: right;
     font-size: 16px;
-    font-weight: 500;
-    color: #202020;
+    font-weight: 400;
     cursor: pointer;
     text-decoration: none;
 }

@@ -31,7 +31,7 @@ export class HomePage implements OnInit, OnDestroy {
     }
   }
   banners: { image: string, link: Promise<any> }[];
-  mainMeetings: { title: string, subTitle: string, onShowKey: string, onShowTitle: string, meetings: Meeting[] }[]
+  mainMeetings: { title: string, subTitle: string, onShowKey: string, onShowTitle: string, meetings: Meeting[], emoji?: string, }[]
 
   constructor(
     private meetingService: MeetingService,
@@ -113,15 +113,15 @@ export class HomePage implements OnInit, OnDestroy {
           onShowKey: 'week', onShowTitle: `일주일 이내 열리는 모임`, meetings: this.fastMeetings
         },
         {
-          title: '인기 있는 모임 👍👍', subTitle: "지금 노는법에서 가장 인기있는 모임!",
+          title: '인기 있는 모임', emoji: '👍👍', subTitle: "지금 노는법에서 가장 인기있는 모임!",
           onShowKey: 'all', onShowTitle: '인기 있는 모임 👍👍', meetings: this.meetings
         },
         {
-          title: '제주여가마을 🏝️🏝️', subTitle: "제주여가마을",
+          title: '제주여가마을', emoji: '🏝️🏝️', subTitle: "제주여가마을",
           onShowKey: 'jeju', onShowTitle: '제주여가마을 🏝️🏝️', meetings: this.jejuMeetings
         },
         {
-          title: '숲을 찾는 사람들 🌲🌲', subTitle: "길여행가와 떠나는 힐링 여행~",
+          title: '숲을 찾는 사람들', emoji: '🌲🌲', subTitle: "길여행가와 떠나는 힐링 여행~",
           onShowKey: 'forest', onShowTitle: '숲을 찾는 사람들 🌲🌲', meetings: this.forestMeetings
         },
       ]

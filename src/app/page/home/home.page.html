@@ -29,7 +29,8 @@
     <ng-container *ngFor="let meeting of mainMeetings">
       <ion-row style="margin-top: 40px;">
         <ion-col>
-          <strong class="meeting-category">{{meeting.title}}</strong>
+          <span class="underline meeting-category">{{meeting.title}}</span>&nbsp;
+          <span class="meeting-category">{{meeting.emoji}}</span>
           <!-- <p class="subTitle" [ngStyle]="{'margin-left':'13px'}">{{meeting.subTitle}}</p> -->
           <a class="all" [href]="'/tabs/meetings?key=' + meeting.onShowKey + '&title=' + meeting.onShowTitle">전체보기</a>
         </ion-col>
@@ -38,7 +39,7 @@
         <ion-col *ngIf="meeting.meetings.length === 0">
           <div style="opacity: 0.4; padding: 20px">
             <ion-chip outline>
-              <ion-label color="primary">다음 일정을 기대해주세요~!</ion-label>
+              <ion-label>다음 일정을 기대해주세요~!</ion-label>
             </ion-chip>
           </div>
         </ion-col>
