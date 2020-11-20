@@ -37,7 +37,6 @@ export class AuthService {
   async toastNeedLogin() {
     const toast = await this.toastController.create({
       header: '노는법',
-      color: 'dark',
       duration: 5000,
       message: '로그인이 필요합니다.',
       animated: true,

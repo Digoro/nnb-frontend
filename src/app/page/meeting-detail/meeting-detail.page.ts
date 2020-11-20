@@ -151,11 +151,6 @@ export class MeetingDetailPage implements OnInit {
     this.authService.toastNeedLogin();
   }
 
-  test(meeting: Meeting) {
-    const a = prompt('pwd')
-    if (a === 'nnb') this.router.navigate([`tabs/payment/${meeting.mid}`]);
-  }
-
   openModal(meeting: Meeting, template: TemplateRef<any>) {
     const config = {
       class: 'modal-dialog-centered',
@@ -224,10 +219,11 @@ export class MeetingDetailPage implements OnInit {
 
   async toastPasteLink() {
     const toast = await this.toastController.create({
-      message: '주소가 복사되었습니다!',
+      header: '노는법',
       duration: 2000,
-      color: "medium",
+      message: '주소가 복사되었습니다!',
       animated: true,
+      position: 'bottom',
     });
     toast.present();
   }
