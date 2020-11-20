@@ -6,17 +6,16 @@ import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { Gender } from '../model/gender';
 import { Location } from '../model/location';
-import { KakaoAccount, KakaoProfile, KakaoProperties, KakaoUser, User } from './../model/user';
+import { User } from './../model/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  profile = new KakaoProperties('상훈이', '/assets/user.png', '/assets/user.png');
-  account = new KakaoAccount(true, new KakaoProfile('상훈이', '/assets/user.png', '/assets/user.png'), true, true, true, true, 'lsh00124@naver.com', true, true, '20-30', true, true, '1992.01.24', 'birthday_type', true, true, 'male')
-  kakaoUser = new KakaoUser(0, 0, "", this.profile, this.account)
   user = new User(1, 'lsh00124@naver.com', '이상훈', '이상훈', '1900.01.01', Gender.male, '', '/assets/user.png',
-    new Location(0, 0, 'address'), 0, '', '', '', 'kakotalk', 1257467175, true);
+    new Location(0, 0, 'address'), 0, '안녕하세요 노는법 운영진 이상훈입니다!',
+    '우리는 대한민국 신중년 간의 연결을 도와 활기차고 세련된 교류가 있는 신중년 사회를 만들어가고 있습니다. 신중년 종합 포털 서비스, 노는법!',
+    '', 'kakotalk', 1257467175, true);
   ADMIN_ID = 1;
 
   constructor(

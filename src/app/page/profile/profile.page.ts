@@ -1,14 +1,12 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Comment } from 'src/app/model/comment';
 import { Meeting } from 'src/app/model/meeting';
 import { User } from 'src/app/model/user';
-import { KakaoUser } from '../../model/user';
 import { CommentService } from '../../service/comment.service';
 import { MeetingService } from '../../service/meeting.service';
 import { UserService } from '../../service/user.service';
-import { PurchasedMeeting } from './../../model/meeting';
 
 @Component({
   selector: 'profile',
@@ -17,9 +15,7 @@ import { PurchasedMeeting } from './../../model/meeting';
 })
 export class ProfilePage implements OnInit {
   user: User;
-  kakaoUser: KakaoUser;
   comments: Comment[] = [];
-  joinedMeeting: PurchasedMeeting[];
   hostedMeetings: Meeting[];
 
   constructor(
@@ -27,7 +23,6 @@ export class ProfilePage implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private meetingService: MeetingService,
-    private router: Router,
     private commentService: CommentService,
   ) { }
 
@@ -44,15 +39,6 @@ export class ProfilePage implements OnInit {
               comments.forEach(comment => this.comments.push(comment))
             });
           })
-        })
-        this.meetingService.getPurchasedMeetings(user.uid).subscribe(meetings => {
-          this.joinedMeeting = meetings.reduce((arr, item) => {
-            let exists = !!arr.find(m => m.payment.mid.mid === item.payment.mid['mid']);
-            if (!exists) {
-              arr.push(item);
-            }
-            return arr;
-          }, []);
         })
       })
     })

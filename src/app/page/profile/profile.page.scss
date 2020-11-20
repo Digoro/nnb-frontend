@@ -1,66 +1,17 @@
-.card {
-    margin: 0 auto;
-    border: none;
-
-    .header {
-        height: 200px; // 20vh;
-
-        .info {
-            text-align: center;
-            padding-top: 70px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .avatar {
-            width: 130px;
-            height: 130px;
-            position: relative;
-            margin: 0 auto;
-
-            img {
-                display: block;
-                border-radius: 50%;
-                position: absolute;
-                // bottom: calc(-1*(80px + 4px)); // -42px;
-                border: 6px solid #fff;
-                background-color: #fff;
-            }
-        }
-    }
+.catch_phrase {
+    font-size: 1.1rem;
+    font-weight: 300;
 }
 
-.card-body {
-    background-color: #ffffff;
-    padding: 0px;
-    // height: calc(100vh - (200px + 56px));
-    overflow: hidden;
-
-    .user-meta {
-        padding-top: 40px;
-
-        .hostname {
-            font-size: 24px;
-            font-weight: 600;
-            color: #303940;
-        }
-
-        .nickname {
-            font-size: 90%;
-            color: #949ea6;
-            text-transform: uppercase;
-            margin: 0 auto;
-        }
-    }
-
-    .host-subject {
-        font-size: 19px;
-        font-weight: 400;
-        margin: 0px;
-    }
+.image {
+    border-radius: 100%;
+    object-fit: cover;
+    width: 130px;
+    height: 130px;
+    margin-bottom: 0.5rem;
 }
 
-hr {
-    margin: 0px;
+.subject {
+    font-size: 1.5rem;
+    font-weight: 610;
 }
