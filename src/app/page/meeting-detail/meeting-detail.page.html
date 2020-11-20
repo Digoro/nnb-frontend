@@ -57,7 +57,7 @@
     </ion-grid>
     <br>
     <ion-grid fixed>
-      <div class="menu">
+      <div class="menu" [ngStyle]="{top: isDesktop ? '0':'0.7rem'}">
         <a class="section-1" (click)="setPosition(1)">
           <p class="section-menu">모임 소개</p>
         </a>
