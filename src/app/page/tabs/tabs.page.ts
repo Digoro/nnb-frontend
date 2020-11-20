@@ -16,14 +16,14 @@ export class TabsPage implements OnInit {
   isHome = true;
   user: User;
   tabs: Tab[] = [
-    new Tab('home', 'home-sharp', '홈'),
-    new Tab('category', 'apps-sharp', '카테고리'),
-    new Tab('my-info', 'person-sharp', '내모임'),
-    new Tab('more', 'reorder-four-sharp', '더보기')
+    new Tab('home', 'home-outline', '홈'),
+    new Tab('category', 'albums-outline', '카테고리'),
+    new Tab('my-info', 'bookmarks-outline', '내모임'),
+    new Tab('more', 'reorder-four-outline', '더보기')
   ];
   descktopMenus: Tab[] = [
-    new Tab('category', 'search', '카테고리'),
-    new Tab('my-info', 'apps', '내모임'),
+    new Tab('category', 'albums-outline', '카테고리'),
+    new Tab('my-info', 'bookmarks-outline', '내모임'),
     new Tab('more', 'reorder-four-sharp', '더보기'),
   ];
 
