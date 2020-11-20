@@ -2,6 +2,8 @@ import { Location } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Tab } from 'src/app/model/tab';
+import { User } from 'src/app/model/user';
+import { AuthService } from 'src/app/service/auth.service';
 import { CheckDesktopService } from './../../service/check-desktop.service';
 
 @Component({
@@ -12,6 +14,7 @@ import { CheckDesktopService } from './../../service/check-desktop.service';
 export class TabsPage implements OnInit {
   isDesktop = true;
   isHome = true;
+  user: User;
   tabs: Tab[] = [
     new Tab('home', 'home-sharp', '홈'),
     new Tab('category', 'apps-sharp', '카테고리'),
@@ -21,17 +24,22 @@ export class TabsPage implements OnInit {
   descktopMenus: Tab[] = [
     new Tab('category', 'search', '카테고리'),
     new Tab('my-info', 'apps', '내모임'),
+    new Tab('more', 'reorder-four-sharp', '더보기'),
   ];
 
   constructor(
     private cds: CheckDesktopService,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.cds.setIsDesktop(window.innerWidth);
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
+    this.authService.getCurrentNonunbubUser().subscribe(resp => {
+      this.user = resp;
+    })
   }
 
   ionViewWillEnter() {
