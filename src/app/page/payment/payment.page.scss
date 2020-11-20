@@ -1,5 +1,5 @@
 .selected {
-    color: #007bff;
+    color: #ff4081;
 }
 
 .black-label {
@@ -22,6 +22,20 @@
 
 :host::ng-deep ion-calendar .marked>p {
     font-size: 20px !important;
-    color: #0053e6 !important;
+    color: #ff4081 !important;
     font-weight: bold !important;
+}
+
+:host::ng-deep ion-calendar .on-selected {
+    background-color: #ff40806b !important;
+}
+
+ion-checkbox {
+    --background-checked: #ff4683;
+    --border-color-checked: #ff4683;
+}
+
+ion-radio {
+    --color: #ffb2ca;
+    --color-checked: #ff4683;
 }

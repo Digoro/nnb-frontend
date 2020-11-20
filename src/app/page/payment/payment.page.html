@@ -123,7 +123,7 @@
                   <li *ngIf="!!form.controls.coupon.value">쿠폰: {{form.controls.coupon.value.title}}
                     ({{form.controls.coupon.value.price|number}}원)</li>
                 </ul>
-                <p style="margin-left:15px;font-size:21px;color:#007bff"><strong>총 {{price|number}}원</strong></p>
+                <p style="margin-left:15px;font-size:21px;color:#ff4081"><strong>총 {{price|number}}원</strong></p>
               </ion-card-content>
               <ion-card-content *ngIf="form.controls.options.invalid">
                 <p class="invalid-input">구매옵션과 수량 입력이 올바르지 않습니다.</p>
@@ -138,7 +138,7 @@
                 <ion-radio-group (ionChange)="selectPaymentMethod($event)">
                   <ion-item>
                     <ion-label class="ion-text-wrap">간편결제</ion-label>
-                    <ion-radio slot="start" color="primary" [value]="'simple'"></ion-radio>
+                    <ion-radio slot="start" [value]="'simple'"></ion-radio>
                   </ion-item>
                   <ng-container *ngIf="isSimple">
                     <p *ngIf="accounts.length === 0" class="desc" style="margin-left:68px">등록된 카드/계좌가 없습니다.</p>
@@ -161,11 +161,11 @@
                   </ng-container>
                   <ion-item>
                     <ion-label class="ion-text-wrap">카드 일반결제</ion-label>
-                    <ion-radio slot="start" color="primary" [value]="'card'"></ion-radio>
+                    <ion-radio slot="start" [value]="'card'"></ion-radio>
                   </ion-item>
                   <ion-item>
                     <ion-label class="ion-text-wrap">실시간 계좌이체</ion-label>
-                    <ion-radio slot="start" color="primary" [value]="'transfer'"> </ion-radio>
+                    <ion-radio slot="start" [value]="'transfer'"> </ion-radio>
                   </ion-item>
                 </ion-radio-group>
               </ion-card-content>
