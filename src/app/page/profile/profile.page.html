@@ -1,11 +1,22 @@
 <ion-content>
   <ion-grid fixed *ngIf="!!user" style="margin-top:2.7rem; padding: 0rem 1rem 0rem 1rem">
-    <div style="text-align: center;">
-      <p class="catch_phrase">{{user.catch_phrase}}</p>
-      <img class="image" [src]="user.image">
-      <p>{{user.nickName}}</p>
+    <div style="padding: 0px 1rem 0px 1rem">
+      <div style="display: flex;">
+        <div>
+          <img class="image" [src]="user.image">
+          <p class="name" style="text-align: center;">{{user.nickName}}</p>
+        </div>
+        <div>
+          <p class="catch_phrase">{{user.catch_phrase}}</p>
+          <p class="desc" style="margin:0px">
+            <span *ngIf="user">좋아요 {{user.score}}&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <span *ngIf="hostedMeetings">주최한 모임 {{hostedMeetings.length}}&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <span *ngIf="comments">후기 {{comments.length}}</span>
+          </p>
+        </div>
+      </div>
+      <p style="margin:0px">{{user.introduction}}</p><br>
     </div>
-    <p style="margin:0px">{{user.introduction}}</p><br>
     <a href="mailto:nonunbub@gmail.com">
       <ion-button color="light" size="small" style="min-width: 115px;">
         <ion-icon name="hand-left-outline"></ion-icon>&nbsp;&nbsp;&nbsp;사용자 신고하기

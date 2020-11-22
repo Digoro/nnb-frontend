@@ -1,14 +1,20 @@
+.image {
+    border-radius: 100%;
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 0.5rem;
+}
+
 .catch_phrase {
+    padding: 0rem 1rem 0rem 1rem;
+    margin-top: 2rem;
     font-size: 1.1rem;
     font-weight: 300;
 }
 
-.image {
-    border-radius: 100%;
-    object-fit: cover;
-    width: 130px;
-    height: 130px;
-    margin-bottom: 0.5rem;
+.desc {
+    padding: 0rem 1rem 0rem 1rem;
 }
 
 .subject {
