@@ -1,42 +1,3 @@
-.main-image {
-    width: 100%;
-    --aspect-ratio: (4/3);
-}
-
-.basic-info {
-    margin-bottom: 5px;
-}
-
-.basic-info ion-icon {
-    margin-right: 10px;
-}
-
-.price {
-    .origin {
-        color: #848c94;
-        font-size: 14px;
-        margin-right: 4px;
-        text-decoration: line-through;
-    }
-
-    .discount {
-        font-size: 16px;
-        font-weight: 600;
-    }
-}
-
-agm-map {
-    height: 300px;
-}
-
-pre {
-    font-size: 15px;
-    font-weight: normal;
-    line-height: 24px;
-    letter-spacing: -0.3px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
-
 :host::ng-deep .ql-editor {
     padding: 0px;
 }
@@ -108,8 +69,151 @@ pre {
     }
 }
 
+.main-image {
+    width: 100%;
+    --aspect-ratio: (4/3);
+}
+
+.subTitle {
+    margin-bottom: 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #696969;
+}
+
+.title {
+    margin-bottom: 0.938rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: -0.6px;
+}
+
+.price {
+    font-family: Roboto;
+    font-size: 1.125rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+
+    .origin {
+        color: #848c94;
+        font-size: 14px;
+        margin-right: 4px;
+        text-decoration: line-through;
+    }
+
+    .discount {
+        font-size: 16px;
+        font-weight: 600;
+    }
+}
+
+.summary-icon {
+    margin-top: 0.37rem;
+    color: #e5456e;
+    font-size: 1.125rem;
+    background-blend-mode: lighten;
+}
+
+.summary-info {
+    margin-bottom: 0rem;
+    font-size: 1rem;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+.menu {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    z-index: 200;
+    background: white;
+    position: sticky;
+    display: flex;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+
+    a {
+        text-decoration: none;
+        color: rgb(133, 138, 141);
+
+        p {
+            margin: 0px;
+            padding: 10px 10px 10px 5px;
+        }
+    }
+
+    .section-menu {
+        font-size: 0.875rem;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: -0.5px;
+        color: #757575;
+    }
+
+    .current p {
+        font-size: 0.875rem;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: -0.5px;
+        color: #e5456e;
+        box-shadow: 0 -6px #e5456e inset;
+    }
+}
+
+section {
+    // padding-top: 60px;
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: -0.5px;
+        color: #4a4a4a;
+    }
+}
+
+.btn-question {
+    width: 100%;
+    height: 3rem;
+    padding: 0.75rem 0 1rem;
+    border-radius: 5px;
+    background-color: #fae1e7;
+    color: #e5456e;
+    font-weight: bold;
+}
+
+agm-map {
+    height: 15.313rem;
+}
+
 .host {
     display: flex;
+
+    .icon-img {
+        border-radius: 50%;
+        margin-right: 19px;
+        width: 50px;
+        height: 50px;
+    }
 
     .icon {
         cursor: pointer;
@@ -123,21 +227,46 @@ pre {
 
         .name {
             cursor: pointer;
-            font-weight: bold;
+            font-size: 1rem;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
         }
 
         .badge {
             font-size: 10px;
         }
 
-        .desc {
-            font-size: 12px
+        .score {
+            font-size: 0.875rem;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
         }
     }
-}
 
-.catch_phrase {
-    margin-bottom: 6px;
+    .catch_phrase {
+        margin-bottom: 6px;
+        font-size: 1rem;
+        font-weight: 500;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.75;
+        letter-spacing: normal;
+    }
+
+    .introduction {
+        font-size: 1rem;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.75;
+        letter-spacing: normal;
+    }
 }
 
 .sns-share {
@@ -163,43 +292,26 @@ pre {
 
 ion-footer {
     position: absolute;
-    bottom: -4px;
+    bottom: 0px
 }
 
-.title {
-    font-size: 24px;
-    font-weight: bold;
-}
+.join-wrapper {
+    background-color: white;
+    height: 4.75rem;
+    padding: 0.6rem;
+    box-shadow: rgba(0, 0, 0, 0.14) 0px -10px 3px -6px;
 
-.menu {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    z-index: 200;
-    background: white;
-    position: sticky;
-    top: 0;
-    display: flex;
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
-
-    a {
-        text-decoration: none;
-        color: rgb(133, 138, 141);
-
-        p {
-            margin: 0px;
-            padding: 10px 10px 10px 5px;
-        }
+    .join-text {
+        font-size: 1rem;
+        font-weight: 500;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #e5456e;
     }
-}
 
-section {
-    padding-top: 60px;
-}
-
-.current p {
-    color: black !important;
-    font-weight: bold;
-    box-shadow: 0 -6px #bec8d4 inset;
+    .join-btn {
+        padding: 0.7rem;
+    }
 }

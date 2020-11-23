@@ -1,169 +1,177 @@
-<div style="border: 1px solid #e4e4e4;border-radius: 6px;" *ngIf="!!meeting">
-  <ng-container>
-    <ion-grid [fixed] style="padding:0px">
-      <ion-row>
-        <ion-col style="padding:0px">
-          <img [src]="previewImage" class="main-image" />
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-    <ion-grid fixed>
-      <ion-row>
-        <ion-col>
-          <p class="desc">{{meeting.subTitle}}</p>
-          <h4>{{meeting.title}}</h4>
-          <span *ngIf="meeting.price !== 0" class="price">
-            <ng-container *ngIf="meeting.discountPrice !== 0">
-              <span class="origin">{{meeting.price | number}}원</span>
-              <span class="discount">{{meeting.discountPrice | number}}원</span>
-            </ng-container>
-            <ng-container *ngIf="meeting.discountPrice === 0">
-              <p class="discount">{{meeting.price | number}}원</p>
-            </ng-container>
-          </span>
-          <span *ngIf="meeting.price === 0" class="price">무료</span>
-        </ion-col>
-      </ion-row>
-      <hr>
-      <ion-row style="margin-bottom: 20px;">
-        <ion-col style="font-size: 15px;font-weight: 300;">
-          <p class="basic-info">
-            <ion-chip color="primary">
+<ng-container *ngIf="!!meeting">
+  <ion-grid style="padding: 0px;">
+    <img [src]="previewImage" class="main-image" />
+  </ion-grid>
+  <ion-grid [fixed]>
+    <ion-row>
+      <ion-col>
+        <p class="subTitle">{{meeting.subTitle}}</p>
+        <p class="title">{{meeting.title}}</p>
+        <span *ngIf="meeting.price !== 0" class="price">
+          <ng-container *ngIf="meeting.discountPrice !== 0">
+            <span class="origin">{{meeting.price | number}}원</span>
+            <span class="discount">{{meeting.discountPrice | number}}원</span>
+          </ng-container>
+          <ng-container *ngIf="meeting.discountPrice === 0">
+            <p class="discount">{{meeting.price | number}}원</p>
+          </ng-container>
+        </span>
+        <span *ngIf="meeting.price === 0" class="price">무료</span>
+        <hr>
+        <p class="summary-info">
+          <ion-icon name="pricetag-outline" class="summary-icon"></ion-icon>
+          <a [href]="'/tabs/meetings?key=' + meeting.categories">
+            <ion-chip style="color: #e5456e;background-color :#fae1e7; height: 1.5rem;">
               <ion-label>{{meeting.categories}}</ion-label>
             </ion-chip>
-          </p>
-          <p class="basic-info">
-            <ion-icon name="navigate-outline"></ion-icon>{{meeting.address}}, {{meeting.detailed_address}}
-          </p>
-          <p class="basic-info" *ngIf="runningHours!==0 && runningMinutes!==0">
-            <ion-icon name="time-outline"></ion-icon>
-            약 <span *ngIf="runningHours!=0">{{runningHours}}시간 </span>
-            <span *ngIf="runningMinutes!=0">{{runningMinutes}}분</span> 소요
-          </p>
-          <p class="basic-info">
-            <ng-container *ngIf="meeting.options.length!==0">
-              <ion-icon name="calendar-outline"></ion-icon>{{meeting.options[0].optionDate|date:'yyyy-MM-dd HH:mm'}}
-              <span *ngIf="meeting.options.length > 1">외 {{meeting.options.length}}개의 일정</span>
-            </ng-container>
-            <ng-container *ngIf="meeting.options.length===0">
-              <ion-icon name="calendar-outline"></ion-icon>
-              <ion-chip color="warning">
-                <ion-label>일정이 없습니다.</ion-label>
-              </ion-chip>
-            </ng-container>
-          </p>
-          <p class="basic-info" style="display: flex; justify-content: flex-start;">
-            <ion-button color="danger" expand="block" style="min-width: 190px;">
-              <ion-icon name="heart-outline"></ion-icon> {{meeting.likes}}
-            </ion-button>
-            <ion-button color="warning" expand="block" style="min-width: 190px;">
-              <ion-icon name="share-outline"></ion-icon> 공유하기
-            </ion-button>
-          </p>
-        </ion-col>
-      </ion-row>
-      <div class="menu">
-        <a href="javascript:document.getElementById('section-1').scrollIntoView(true);">
-          <p>모임 소개</p>
+          </a>
+        </p>
+        <p class="summary-info">
+          <ion-icon name="navigate-outline" class="summary-icon"></ion-icon>
+          {{meeting.address}}, {{meeting.detailed_address}}
+        </p>
+        <p class="summary-info" *ngIf="runningHours!==0 && runningMinutes!==0">
+          <ion-icon name="time-outline" class="summary-icon"></ion-icon>
+          약 <span *ngIf="runningHours!=0">{{runningHours}}시간 </span>
+          <span *ngIf="runningMinutes!=0">{{runningMinutes}}분</span> 소요
+        </p>
+        <p class="summary-info">
+          <ng-container *ngIf="meeting.options.length!==0">
+            <ion-icon name="calendar-outline" class="summary-icon"></ion-icon>
+            {{meeting.options[0].optionDate|date:'yyyy-MM-dd HH:mm'}}
+            <span *ngIf="meeting.options.length > 1">외 {{meeting.options.length}}개의 일정</span>
+          </ng-container>
+          <ng-container *ngIf="meeting.options.length===0">
+            <ion-icon name="calendar-outline" class="summary-icon"></ion-icon>
+            <ion-chip color="warning">
+              <ion-label>일정이 없습니다.</ion-label>
+            </ion-chip>
+          </ng-container>
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <br>
+  <ion-grid fixed>
+    <div class="menu" style="top: 0">
+      <a class="section-1" (click)="setPosition(1)">
+        <p class="section-menu">모임 소개</p>
+      </a>
+      <a class="section-2" (click)="setPosition(2)">
+        <p class="section-menu">모임 장소</p>
+      </a>
+      <a *ngIf="meeting.check_list" class="section-3" (click)="setPosition(3)">
+        <p class="section-menu">준비물</p>
+      </a>
+      <!-- <a *ngIf="meeting.include" class="section-4" (click)="setPosition(4)">
+          <p class="section-menu">포함 사항</p>
         </a>
-        <a href="javascript:document.getElementById('section-2').scrollIntoView(true);">
-          <p>모임 장소</p>
+        <a *ngIf="meeting.exclude" class="section-5" (click)="setPosition(5)">
+          <p class="section-menu">불포함 사항</p>
         </a>
-        <a *ngIf="meeting.check_list" href="javascript:document.getElementById('section-3').scrollIntoView(true);">
-          <p>준비물</p>
-        </a>
-        <a *ngIf="meeting.include" href="javascript:document.getElementById('section-4').scrollIntoView(true);">
-          <p>포함 사항</p>
-        </a>
-        <a *ngIf="meeting.exclude" href="javascript:document.getElementById('section-5').scrollIntoView(true);">
-          <p>불포함 사항</p>
-        </a>
-        <a *ngIf="meeting.notice" href="javascript:document.getElementById('section-6').scrollIntoView(true);">
-          <p>유의 사항</p>
-        </a>
-        <a href="javascript:document.getElementById('section-7').scrollIntoView(true);">
-          <p>환불 정책</p>
-        </a>
-      </div>
+        <a *ngIf="meeting.notice" class="section-6" (click)="setPosition(6)">
+          <p class="section-menu">유의 사항</p>
+        </a> -->
+      <a *ngIf="meeting.price !== 0" class="section-7" (click)="setPosition(7)">
+        <p class="section-menu">환불 정책</p>
+      </a>
+      <a class="section-9" (click)="setPosition(9)">
+        <p class="section-menu">댓글</p>
+      </a>
+    </div>
 
-      <main>
-        <section id="section-1">
+    <main>
+      <section id="section-1">
+        <ion-row>
+          <ion-col>
+            <p><span class="section-title underline">모임 소개</span></p>
+            <quill-view [content]="meeting.desc" format="text" theme="snow" [style]="quillStyle"></quill-view>
+          </ion-col>
+        </ion-row>
+      </section>
+      <hr>
+      <section id="section-2">
+        <ion-row>
+          <ion-col>
+            <p><span class="section-title underline">모임 장소</span></p>
+            <p>{{meeting.address}} {{meeting.detailed_address}}</p>
+            <agm-map [latitude]="meeting.lat" [longitude]="meeting.lon" [zoom]="15">
+              <agm-marker [latitude]="meeting.lat" [longitude]="meeting.lon"></agm-marker>
+            </agm-map>
+          </ion-col>
+        </ion-row>
+      </section>
+      <hr>
+      <ng-container *ngIf="meeting.check_list">
+        <section id="section-3">
           <ion-row>
             <ion-col>
-              <p class="title">모임 소개</p>
-              <quill-view [content]="meeting.desc" format="text" theme="snow" [style]="quillStyle"></quill-view>
+              <p><span class="section-title underline">준비물</span></p>
+              <p class="pre-wrap">{{meeting.check_list}}</p>
             </ion-col>
           </ion-row>
+          <hr>
+          <ng-container *ngIf="meeting.include">
+            <section>
+              <ion-row>
+                <ion-col>
+                  <p><span class="section-title underline">포함 사항</span></p>
+                  <p class="pre-wrap">{{meeting.include}}</p>
+                </ion-col>
+              </ion-row>
+              <hr>
+            </section>
+          </ng-container>
+          <ng-container *ngIf="meeting.exclude">
+            <section>
+              <ion-row>
+                <ion-col>
+                  <p><span class="section-title underline">불포함 사항</span></p>
+                  <p class="pre-wrap">{{meeting.exclude}}</p>
+                </ion-col>
+              </ion-row>
+              <hr>
+            </section>
+          </ng-container>
+          <ng-container *ngIf="meeting.notice">
+            <section>
+              <ion-row>
+                <ion-col>
+                  <p><span class="section-title underline">유의 사항</span></p>
+                  <p class="pre-wrap">{{meeting.notice}}</p>
+                </ion-col>
+              </ion-row>
+              <hr>
+            </section>
+          </ng-container>
         </section>
-        <section id="section-2">
-          <ion-row>
-            <ion-col>
-              <p class="title">모임 장소</p>
-              <p>{{meeting.address}} {{meeting.detailed_address}}</p>
-              <agm-map [latitude]="meeting.lat" [longitude]="meeting.lon" [zoom]="15">
-                <agm-marker [latitude]="meeting.lat" [longitude]="meeting.lon"></agm-marker>
-              </agm-map>
-            </ion-col>
-          </ion-row>
-        </section>
-        <ng-container *ngIf="meeting.check_list">
-          <section id="section-3">
-            <ion-row>
-              <ion-col>
-                <p class="title">준비물</p>
-                <p class="pre-wrap">{{meeting.check_list}}</p>
-              </ion-col>
-            </ion-row>
-          </section>
-        </ng-container>
-        <ng-container *ngIf="meeting.include">
-          <section id="section-4">
-            <ion-row>
-              <ion-col>
-                <p class="title">포함 사항</p>
-                <p class="pre-wrap">{{meeting.include}}</p>
-              </ion-col>
-            </ion-row>
-          </section>
-        </ng-container>
-        <ng-container *ngIf="meeting.exclude">
-          <section id="section-5">
-            <ion-row>
-              <ion-col>
-                <p class="title">불포함 사항</p>
-                <p class="pre-wrap">{{meeting.exclude}}</p>
-              </ion-col>
-            </ion-row>
-          </section>
-        </ng-container>
-        <ng-container *ngIf="meeting.notice">
-          <section id="section-6">
-            <ion-row>
-              <ion-col>
-                <p class="title">유의 사항</p>
-                <p class="pre-wrap">{{meeting.notice}}</p>
-              </ion-col>
-            </ion-row>
-          </section>
-        </ng-container>
-        <section id="section-7">
-          <ion-row>
-            <ion-col>
-              <p class="title">환불 정책</p>
-              <p>상품 시작일 기준 {{meeting.refundPolicy100}}일 전까지 100% 환불</p>
-              <p>상품 시작일 기준 {{meeting.refundPolicy0+1}}일 전까지 50% 환불</p>
-              <p>상품 시작일 기준 {{meeting.refundPolicy0}}일 전 이후 환불 불가</p>
-            </ion-col>
-          </ion-row>
-        </section>
-      </main>
-    </ion-grid>
-  </ng-container>
-</div>
+      </ng-container>
+      <section id="section-7" *ngIf="meeting.price !== 0">
+        <ion-row>
+          <ion-col>
+            <p><span class="section-title underline">환불 정책</span></p>
+            <p>상품 시작일 기준 {{meeting.refundPolicy100}}일 전까지 100% 환불</p>
+            <p>상품 시작일 기준 {{meeting.refundPolicy0+1}}일 전까지 50% 환불</p>
+            <p>상품 시작일 기준 {{meeting.refundPolicy0}}일 전 이후 환불 불가</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <button class="btn-question">실시간 문의하기</button>
+          </ion-col>
+        </ion-row>
+        <hr>
+      </section>
+    </main>
+  </ion-grid>
+</ng-container>
 
 <ng-container *ngIf="!meeting">
   <div style="padding-top: 30px">
     <p>미리보기를 생성 중입니다 &nbsp;<img src="/assets/loading.gif" width="25" height="25"></p>
   </div>
 </ng-container>
+
+<div #script style.display="none">
+  <ng-content></ng-content>
+</div>

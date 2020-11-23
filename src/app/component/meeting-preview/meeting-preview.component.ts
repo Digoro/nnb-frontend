@@ -27,9 +27,11 @@ export class MeetingPreviewComponent implements OnInit, OnChanges {
     }
   }
 
+  setPosition(id) {
+    document.getElementById(`section-${id}`).scrollIntoView(true);
+  }
 
   ngOnInit() {
     this.quillStyle = this.utilService.getQuillStyle();
   }
-
 }
