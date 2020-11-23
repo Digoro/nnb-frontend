@@ -237,28 +237,29 @@
         <div class="col-7">
           <ng-container *ngIf="!!user">
             <a [href]="'/tabs/payment/' + meeting.mid" style="text-decoration: none; color: black;">
-              <button class="primary-btn" *ngIf="meeting.status !== 5 && meeting.options.length !== 0">
+              <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn"
+                *ngIf="meeting.status !== 5 && meeting.options.length !== 0">
                 모임 결제하러 가기!
               </button>
             </a>
             <a [href]="'/tabs/meeting-request/' + meeting.mid" style="text-decoration: none; color: black;">
               <button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && !isRequestedMeeting"
-                class="primary-btn"> 신청하러 가기! </button>
+                class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn"> 신청하러 가기! </button>
             </a>
             <button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && isRequestedMeeting"
-              class="primary-btn" disabled>이미 신청한 모임입니다.</button>
+              class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn" disabled>이미 신청한 모임입니다.</button>
           </ng-container>
           <ng-container *ngIf="!user">
-            <button *ngIf="meeting.status !== 5 && meeting.options.length !== 0" class="primary-btn"
-              (click)="needLogin()">
+            <button *ngIf="meeting.status !== 5 && meeting.options.length !== 0"
+              class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn" (click)="needLogin()">
               모임 결제하러 가기!
             </button>
-            <button *ngIf="meeting.status !== 5 && meeting.options.length === 0" class="primary-btn"
-              (click)="needLogin()">
+            <button *ngIf="meeting.status !== 5 && meeting.options.length === 0"
+              class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn" (click)="needLogin()">
               신청하러 가기!
             </button>
           </ng-container>
-          <ion-button *ngIf="meeting.status === 5" expand="full" size="large" style="margin: 0px;  color:#007bff"
+          <ion-button *ngIf="meeting.status === 5" class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn"
             disabled>
             비활성된 상품입니다.
           </ion-button>

@@ -33,8 +33,9 @@ export class ProfilePage implements OnInit {
       this.userService.get(id).subscribe(user => {
         this.user = user;
         this.meetingService.getHostedMeetings(user.uid).subscribe(meetings => {
-          this.hostedMeetings = meetings
-          meetings.forEach(meeting => {
+          const temp = meetings.filter(m => m.status === 3)
+          this.hostedMeetings = temp
+          temp.forEach(meeting => {
             this.commentService.getCommentsByMeeting(meeting.mid).subscribe(comments => {
               comments.forEach(comment => this.comments.push(comment))
             });

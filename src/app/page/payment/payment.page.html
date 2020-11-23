@@ -184,8 +184,11 @@
           </ng-container>
           <ion-row>
             <ion-col>
-              <button class="primary-btn" *ngIf="!isFree" (click)="pay()" [disabled]="form.invalid">결제하기</button>
-              <button class="primary-btn" *ngIf="isFree" (click)="join()" [disabled]="form.invalid">무료 참여하기</button>
+              <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block" *ngIf="!isFree" (click)="pay()"
+                [disabled]="form.invalid">결제하기</button>
+              <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block" *ngIf="isFree" (click)="join()"
+                [disabled]="form.invalid">무료
+                참여하기</button>
             </ion-col>
           </ion-row>
         </ng-container>

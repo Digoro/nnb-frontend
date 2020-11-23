@@ -29,7 +29,7 @@
     <ng-container *ngFor="let meeting of mainMeetings">
       <ion-row style="margin-top: 40px;">
         <ion-col>
-          <span class="underline meeting-category">{{meeting.title}}</span>&nbsp;
+          <span class="meeting-category">{{meeting.title}}</span>&nbsp;
           <span class="meeting-category">{{meeting.emoji}}</span>
           <!-- <p class="subTitle" [ngStyle]="{'margin-left':'13px'}">{{meeting.subTitle}}</p> -->
           <a class="all" [href]="'/tabs/meetings?key=' + meeting.onShowKey + '&title=' + meeting.onShowTitle">전체보기</a>

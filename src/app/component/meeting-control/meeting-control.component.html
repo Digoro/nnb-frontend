@@ -108,7 +108,7 @@
     <div class="bs-stepper-content">
       <form [formGroup]="formGroup">
         <div id="test-l-1" class="content">
-          <ion-button class="next-prev" color="primary" (click)="next()">다음</ion-button>
+          <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           <notion-desc [description]="descriptions[0]"></notion-desc>
           <form-input [name]="'상품 제목'" [controlName]="'title'" [group]="formGroup" [maxLength]="30"
             [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"></form-input>
@@ -117,8 +117,8 @@
         </div>
         <div id="test-l-2" class="content">
           <div class="next-prev">
-            <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next()">다음</ion-button>
+            <button class="nnb-btn btn-light" (click)="prev()">이전</button>
+            <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           </div>
           <notion-desc [description]="descriptions[1]"></notion-desc>
           <ion-item lines="none">
@@ -133,13 +133,13 @@
         </div>
         <div id="test-l-3" class="content">
           <div class="next-prev">
-            <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next()">다음</ion-button>
+            <button class="nnb-btn btn-light" (click)="prev()">이전</button>
+            <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           </div>
           <notion-desc [description]="descriptions[2]"></notion-desc>
           <ion-item lines="none">
             <ion-label position="floating">카테고리<span class="invalid-input">*</span></ion-label>
-            <ion-select okText="확인" cancelText="취소" [formControlName]="'categories'">
+            <ion-select class="nnb-select-option" okText="확인" cancelText="취소" [formControlName]="'categories'">
               <ion-select-option *ngFor="let category of categories" [value]="category">{{category}}
               </ion-select-option>
             </ion-select>
@@ -148,8 +148,8 @@
         </div>
         <div id="test-l-4" class="content">
           <div class="next-prev">
-            <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next()">다음</ion-button>
+            <button class="nnb-btn btn-light" (click)="prev()">이전</button>
+            <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           </div>
           <notion-desc [description]="descriptions[3]"></notion-desc>
           <ion-row>
@@ -159,7 +159,7 @@
               </form-input>
             </ion-col>
             <div class="col">
-              <ion-button size="small" color="primary" (click)="loadPostCode()">주소 검색하기</ion-button>
+              <button class="nnb-btn nnb-btn-primary nnb-btn-sm" (click)="loadPostCode()">주소 검색하기</button>
               <p class="desc">(도로명 주소로 저장됩니다.)</p>
             </div>
           </ion-row>
@@ -194,8 +194,8 @@
         </div>
         <div id="test-l-5" class="content">
           <div class="next-prev">
-            <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next(true)">다음</ion-button>
+            <button class="nnb-btn btn-light" (click)="prev()">이전</button>
+            <button class="nnb-btn nnb-btn-primary" (click)="next(true)">다음</button>
           </div>
           <notion-desc [description]="descriptions[4]"></notion-desc>
           <form-input [name]="'가격'" [controlName]="'price'" [type]="'number'" [group]="formGroup"
@@ -226,20 +226,20 @@
         </div>
         <div id="test-l-6" class="content">
           <div class="next-prev">
-            <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next()">다음</ion-button>
+            <button class="nnb-btn btn-light" (click)="prev()">이전</button>
+            <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           </div>
           <notion-desc [description]="descriptions[5]"></notion-desc>
-          <ion-button color="primary" (click)="openModal(addTpl,'add')">일괄 추가하기</ion-button>
-          <ion-button color="medium" (click)="openModal(deleteTpl, 'delete')">일괄 삭제하기</ion-button>
+          <button class="nnb-btn nnb-btn-primary" (click)="openModal(addTpl,'add')">일괄 추가하기</button>
+          <button class="nnb-btn btn-light" (click)="openModal(deleteTpl, 'delete')">일괄 삭제하기</button>
 
           <hr style="margin-top:20px; margin-bottom:20px">
           <full-calendar #calendar [options]="calendarOptions"></full-calendar>
         </div>
         <div id="test-l-7" class="content">
           <div class="next-prev">
-            <ion-button color="light" (click)="prev(true)">이전</ion-button>
-            <ion-button color="primary" (click)="next()">다음</ion-button>
+            <button class="nnb-btn btn-light" (click)="prev(true)">이전</button>
+            <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           </div>
           <notion-desc [description]="descriptions[6]"></notion-desc>
           <ion-item lines="none">
@@ -256,8 +256,8 @@
         </div>
         <div id="test-l-8" class="content">
           <div class="next-prev">
-            <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next()">다음</ion-button>
+            <button class="nnb-btn btn-light" (click)="prev()">이전</button>
+            <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           </div>
           <notion-desc [description]="descriptions[7]"></notion-desc>
           <form-input [name]="'준비물'" [controlName]="'check_list'" [type]="'textarea'" [group]="formGroup"
@@ -272,8 +272,8 @@
         </div>
         <div id="test-l-9" class="content">
           <div class="next-prev">
-            <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next()">다음</ion-button>
+            <button class="nnb-btn btn-light" (click)="prev()">이전</button>
+            <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           </div>
           <notion-desc [description]="descriptions[8]"></notion-desc>
           <form-input [name]="'유의 사항'" [controlName]="'notice'" [type]="'textarea'" [group]="formGroup"
@@ -286,8 +286,8 @@
         </div>
         <div id="test-l-10" class="content">
           <div class="next-prev">
-            <ion-button color="light" (click)="prev()">이전</ion-button>
-            <ion-button color="primary" (click)="next()" [disabled]="formGroup.invalid">다음</ion-button>
+            <button class="nnb-btn btn-light" (click)="prev()">이전</button>
+            <button class="nnb-btn nnb-btn-primary" (click)="next()" [disabled]="formGroup.invalid">다음</button>
           </div>
           <notion-desc [description]="descriptions[9]"></notion-desc>
           <ion-item lines="none">
@@ -317,11 +317,9 @@
         </div>
         <div id="test-l-11" class="content">
           <div class="next-prev">
-            <ion-button color="light" (click)="prev()">이전</ion-button>
-            <button style="margin-top: 11px;" class="btn btn-primary" [disabled]="formGroup.invalid " debounce-click
-              (debounceClick)="add()">
-              {{submitMessage}}
-            </button>
+            <button class="nnb-btn btn-light" (click)="prev()">이전</button>
+            <button class="nnb-btn nnb-btn-primary" [disabled]="formGroup.invalid" debounce-click
+              (debounceClick)="add()">{{submitMessage}}</button>
           </div>
           <notion-desc [description]="descriptions[10]"></notion-desc>
           <meeting-preview [meeting]="previewMeeting" [previewImage]="previewImage"></meeting-preview>
@@ -376,9 +374,10 @@
             [errors]="[{key:'min',message:'1명 이상이어야 합니다.'},{key:'max',message:'1000명 제한입니다.'}]">
           </form-input>
           <ion-item lines="none">
-            <ion-button slot="end" (click)="addSchedule()" [disabled]="optionAddFormGroup.invalid" color="primary">
+            <button class="nnb-btn nnb-btn-primary nnb-btn-sm" slot="end" (click)="addSchedule()"
+              [disabled]="optionAddFormGroup.invalid">
               추가하기
-            </ion-button>
+            </button>
           </ion-item>
         </form>
       </ion-card-content>
@@ -416,10 +415,10 @@
             <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'schedule-delete')"></ion-icon>
           </ion-item>
           <ion-item lines="none">
-            <ion-button slot="end" (click)="searchSchedule()" [disabled]="optionDeleteFormGroup.invalid"
-              color="primary">
+            <button class="nnb-btn nnb-btn-primary nnb-btn-sm" slot="end" (click)="searchSchedule()"
+              [disabled]="optionDeleteFormGroup.invalid">
               조회하기
-            </ion-button>
+            </button>
           </ion-item>
         </form>
         <ng-container *ngIf="searchedOptions">
