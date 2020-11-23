@@ -238,9 +238,7 @@
           <ng-container *ngIf="!!user">
             <a [href]="'/tabs/payment/' + meeting.mid" style="text-decoration: none; color: black;">
               <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn"
-                *ngIf="meeting.status !== 5 && meeting.options.length !== 0">
-                모임 결제하러 가기!
-              </button>
+                *ngIf="meeting.status !== 5 && meeting.options.length !== 0">모임 결제하러 가기!</button>
             </a>
             <a [href]="'/tabs/meeting-request/' + meeting.mid" style="text-decoration: none; color: black;">
               <button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && !isRequestedMeeting"
@@ -252,17 +250,12 @@
           <ng-container *ngIf="!user">
             <button *ngIf="meeting.status !== 5 && meeting.options.length !== 0"
               class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn" (click)="needLogin()">
-              모임 결제하러 가기!
-            </button>
+              모임 결제하러 가기!</button>
             <button *ngIf="meeting.status !== 5 && meeting.options.length === 0"
-              class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn" (click)="needLogin()">
-              신청하러 가기!
-            </button>
+              class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn" (click)="needLogin()">신청하러 가기!</button>
           </ng-container>
-          <ion-button *ngIf="meeting.status === 5" class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn"
-            disabled>
-            비활성된 상품입니다.
-          </ion-button>
+          <button *ngIf="meeting.status === 5" class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn"
+            disabled>비활성된 상품입니다.</button>
         </div>
       </div>
     </ion-grid>
