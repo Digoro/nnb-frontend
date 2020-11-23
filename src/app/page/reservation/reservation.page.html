@@ -5,7 +5,7 @@
       <ng-container *ngIf="mobileData.length === 0">
         <div style="text-align: center; opacity: 0.4;">
           <ion-chip outline>
-            <ion-label color="primary">예약이 없습니다.</ion-label>
+            <ion-label>예약이 없습니다.</ion-label>
           </ion-chip>
         </div>
       </ng-container>
@@ -33,7 +33,7 @@
                 <p>결제유형: {{options[0].payment.PCD_PAY_TYPE}}</p>
                 <p>결제결과: {{options[0].payment.PCD_PAY_RST}}</p>
                 <br>
-                <ion-chip outline color="primary">
+                <ion-chip outline>
                   <ion-label>구매 옵션</ion-label>
                 </ion-chip>
                 <ng-container *ngFor="let option of options;let last = last">

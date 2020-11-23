@@ -51,14 +51,14 @@
             <ion-radio-group value="card" (ionChange)="selectMethod($event)">
               <ion-item>
                 <ion-label>신용/체크 카드</ion-label>
-                <ion-radio slot="start" color="primary" value="card"></ion-radio>
+                <ion-radio slot="start" value="card"></ion-radio>
               </ion-item>
               <ion-item>
                 <ion-label>계좌</ion-label>
-                <ion-radio slot="start" color="primary" value="transfer"></ion-radio>
+                <ion-radio slot="start" value="transfer"></ion-radio>
               </ion-item>
             </ion-radio-group>
-            <ion-button color="primary" expand="block" (click)="add()">간편결제 등록하기</ion-button>
+            <button class="nnb-btn nnb-btn-primary nnb-btn-block" (click)="add()">간편결제 등록하기</button>
           </ion-card-content>
         </ion-card>
       </ion-col>

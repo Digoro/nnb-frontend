@@ -18,7 +18,7 @@
       </ion-row>
       <div style="text-align: center;">
         <ion-chip outline>
-          <ion-label color="primary">서비스 추가 예정입니다. 카카오톡 로그인을 이용해주세요.</ion-label>
+          <ion-label>서비스 추가 예정입니다. 카카오톡 로그인을 이용해주세요.</ion-label>
         </ion-chip>
       </div>
       <form [formGroup]="loginForm">
@@ -44,8 +44,9 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-button color="primary" expand="full" [disabled]="!loginForm.valid" (click)="login('email')">노는법 로그인
-            </ion-button>
+            <button class="nnb-btn nnb-btn-primary nnb-btn-block" [disabled]="!loginForm.valid"
+              (click)="login('email')">노는법 로그인
+            </button>
           </ion-col>
         </ion-row>
       </form>

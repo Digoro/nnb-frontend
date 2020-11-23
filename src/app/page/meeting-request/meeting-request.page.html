@@ -34,12 +34,13 @@
               [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500"></form-input>
           </form>
           <br>
-          <ion-button color="primary" expand="full" (click)="request()" [disabled]="form.invalid">신청하기</ion-button>
+          <button class="nnb-btn nnb-btn-primary nnb-btn-block" (click)="request()"
+            [disabled]="form.invalid">신청하기</button>
         </ng-container>
         <ng-container *ngIf="isRequestedMeeting">
           <div style="padding: 20px">
             <ion-chip outline>
-              <ion-label color="primary">이미 신청한 모임입니다.</ion-label>
+              <ion-label>이미 신청한 모임입니다.</ion-label>
             </ion-chip>
           </div>
         </ng-container>
