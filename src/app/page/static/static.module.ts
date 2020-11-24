@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared.module';
-import { EventPage } from './event.page';
+import { StaticPage } from './static.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: EventPage
+    component: StaticPage
   }
 ];
 
@@ -15,6 +15,6 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [EventPage]
+  declarations: [StaticPage]
 })
-export class EventPageModule { }
+export class StaticPageModule { }

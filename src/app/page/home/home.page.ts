@@ -21,7 +21,6 @@ export class HomePage implements OnInit, OnDestroy {
   fromWeek: string;
   forestMeetings: Meeting[];
   jejuMeetings: Meeting[];
-  eventMeetings: Meeting[];
 
   bannerSliderConfig = {
     initialSlide: 0,
@@ -101,12 +100,11 @@ export class HomePage implements OnInit, OnDestroy {
       })
       this.forestMeetings = meetings.filter(meeting => meeting.subTitle.includes('숲찾사'))
       this.jejuMeetings = meetings.filter(meeting => meeting.subTitle.includes('제주'))
-      this.eventMeetings = meetings.filter(meeting => meeting.subTitle.includes('이벤트'))
 
       this.mainMeetings = [
         {
-          title: '노는법 가을 여행 프로모션', subTitle: `이벤트`,
-          onShowKey: 'event', onShowTitle: `노는법 가을 여행 프로모션`, meetings: this.eventMeetings
+          title: '노는법 X 길 위에 여행', emoji: '🚶🏻🚶🏻‍♂️🚶🏻‍♀️', subTitle: "길여행가와 떠나는 힐링 여행~",
+          onShowKey: 'forest', onShowTitle: '노는법 X 길 위에 여행 🚶🏻🚶🏻‍♂️🚶🏻‍♀️', meetings: this.forestMeetings
         },
         {
           title: '일주일 이내 열리는 모임', subTitle: `가장 빨리 만나 볼 수 있는 기회!(${this.toWeek} ~ ${this.fromWeek})`,
@@ -119,10 +117,6 @@ export class HomePage implements OnInit, OnDestroy {
         {
           title: '제주여가마을', emoji: '🏝️🏝️', subTitle: "제주여가마을",
           onShowKey: 'jeju', onShowTitle: '제주여가마을 🏝️🏝️', meetings: this.jejuMeetings
-        },
-        {
-          title: '숲을 찾는 사람들', emoji: '🌲🌲', subTitle: "길여행가와 떠나는 힐링 여행~",
-          onShowKey: 'forest', onShowTitle: '숲을 찾는 사람들 🌲🌲', meetings: this.forestMeetings
         },
       ]
     });

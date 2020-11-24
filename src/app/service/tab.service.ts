@@ -9,7 +9,6 @@ import { filter } from 'rxjs/operators';
 export class TabService {
   hideTabBarPages: string[] = [
     'admin',
-    'event',
     'meetings',
     'payment-management',
     'magazine',
@@ -28,7 +27,8 @@ export class TabService {
     'my-info-detail',
     'payment-success',
     'payment-fail',
-    'meeting-request'
+    'meeting-request',
+    'static'
   ];
 
   constructor(private router: Router, private platform: Platform) {

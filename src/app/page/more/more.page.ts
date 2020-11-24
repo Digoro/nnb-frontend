@@ -34,7 +34,7 @@ export class MorePage implements OnInit {
             ]),
             new MoreMenuGroup('지원', [
               new MoreMenuItem('호스트센터', '/host/meeting-management', undefined),
-              new MoreMenuItem('이벤트', '/tabs/event', undefined),
+              new MoreMenuItem('이벤트', '/tabs/static/event', undefined),
               new MoreMenuItem('문의하기', 'https://nonunbub.channel.io', undefined),
               new MoreMenuItem('공지사항', '', () => alert('서비스 준비중입니다 ^^')),
               new MoreMenuItem('로그아웃', '', () => this.logout(), 0, '', false, true),

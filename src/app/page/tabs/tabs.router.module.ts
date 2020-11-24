@@ -140,9 +140,9 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'event', children: [{
+        path: 'static/:type', children: [{
           path: '', loadChildren: () =>
-            import('../event/event.module').then(m => m.EventPageModule)
+            import('../static/static.module').then(m => m.StaticPageModule)
         }]
       },
       {

@@ -18,6 +18,28 @@
     font-size: 27px;
 }
 
+.introduction {
+    background: #f6f2ed;
+    margin-top: 1.8rem;
+    padding: 15px 16px;
+    border-radius: 11px;
+
+    .catch_phrase {
+        display: inline-block;
+        font-size: 1rem;
+        font-weight: 700;
+        color: rgb(27, 28, 29);
+        margin: 2px;
+    }
+
+    .desc {
+        margin: 6px 0px 2px 2px;
+        font-size: 0.9rem;
+        line-height: 1.3em;
+        color: rgb(133, 138, 141);
+    }
+}
+
 .footer {
     background-color: #454545;
     color: #B2B2B2;
