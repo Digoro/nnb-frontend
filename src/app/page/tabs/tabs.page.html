@@ -43,14 +43,14 @@
   </ion-header>
 </ng-container>
 
-<!-- descktop -->
+<!-- desktop -->
 <ng-container *ngIf="isDesktop">
   <ion-header class="ion-no-border">
     <ion-grid fixed>
       <ion-toolbar>
         <ion-title>
           <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/home'">
-            <img src="../../../assets/nonunbub_logo.png" height="42" width="68">&nbsp;&nbsp;</a>
+            <img src="../../../assets/nonunbub_logo.png" style="width: 3.1rem">&nbsp;&nbsp;</a>
         </ion-title>
         <ion-buttons slot="secondary">
           <ng-container *ngFor="let tab of descktopMenus">
