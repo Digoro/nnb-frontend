@@ -42,6 +42,10 @@ export class TabsPage implements OnInit {
     })
   }
 
+  needLogin() {
+    this.authService.toastNeedLogin();
+  }
+
   ionViewWillEnter() {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {

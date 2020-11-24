@@ -23,12 +23,20 @@
             <ion-icon slot="icon-only" name="chevron-back-outline" class="icon" style="color:#676062cf"></ion-icon>
           </ion-button>
         </ion-buttons>
-        <ion-buttons slot="end" *ngIf="!!user">
-          <a [href]="'/tabs/profile/' + user.uid" style="text-decoration: none; color: black;">
-            <ion-button>
-              <ion-icon slot="icon-only" name="person-outline" class="icon"></ion-icon>
+        <ion-buttons slot="end">
+          <ng-container *ngIf="!!user">
+            <a [href]="'/tabs/profile/' + user.uid" style="text-decoration: none; color: black;">
+              <ion-button>
+                <img class="user-image" [src]="user.image">
+              </ion-button>
+            </a>
+          </ng-container>
+          <ng-container *ngIf="!user">
+            <ion-button (click)="needLogin()">
+              <ion-icon style="width: 1.4rem;height: 1.4rem;" slot="icon-only" name="person-outline" class="icon">
+              </ion-icon>
             </ion-button>
-          </a>
+          </ng-container>
         </ion-buttons>
       </ion-toolbar>
     </ion-grid>
@@ -55,9 +63,15 @@
           <ng-container *ngIf="!!user">
             <a [href]="'/tabs/profile/' + user.uid" style="text-decoration: none; color: black;">
               <ion-button>
-                <ion-icon slot="icon-only" name="person-outline"></ion-icon>
+                <img class="user-image" [src]="user.image">
               </ion-button>
             </a>
+          </ng-container>
+          <ng-container *ngIf="!user">
+            <ion-button (click)="needLogin()">
+              <ion-icon style="width: 1.4rem;height: 1.4rem;" slot="icon-only" name="person-outline" class="icon">
+              </ion-icon>
+            </ion-button>
           </ng-container>
         </ion-buttons>
       </ion-toolbar>

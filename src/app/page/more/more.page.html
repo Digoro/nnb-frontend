@@ -1,48 +1,20 @@
 <ion-content>
   <ion-grid fixed>
-    <ng-container *ngIf="!!user">
-      <ion-list style="margin: 30px 0px 25px 0px">
-        <ion-item lines="none">
-          <a [href]="'/tabs/profile/' + user.uid">
-            <ion-avatar slot="start" style="width: 80px; height: 80px;margin-left:20px">
-              <img [src]="user.image">
-            </ion-avatar>
-          </a>
-          <ion-label>
-            <a style="text-decoration: none; color:black" [href]="'/tabs/profile/' + user.uid">{{user.nickName}}</a>
-          </ion-label>
-          <div style="display: flex; flex-direction: column;">
-            <a [href]="'/tabs/edit-profile'" style="text-decoration: none; color: black;">
-              <ion-chip>
-                <ion-icon name="settings-outline" style="color: #ff4683"></ion-icon>
-                <ion-label>계정 설정</ion-label>
-              </ion-chip>
-            </a>
-            <a [href]="'/host/meeting-management'" style="text-decoration: none; color: black;">
-              <ion-chip color="tertiary">
-                <ion-icon name="log-out-outline"></ion-icon>
-                <ion-label>호스트센터</ion-label>
-              </ion-chip>
-            </a>
-          </div>
-        </ion-item>
-      </ion-list>
-      <ion-list>
-        <ng-container *ngFor="let menu of menus">
-          <ng-container *ngFor="let item of menu.items">
-            <a *ngIf="!item.onClick" [href]="item.link" style="text-decoration: none; color:black;">
-              <ion-item style="cursor: pointer;">
-                <ion-label [ngStyle]="{'opacity':item.disable ? 0.3 : 1}">{{item.label}}</ion-label>
-                <span class="badge" [ngClass]="item.badgeIcon" *ngIf="item.isBadge">{{item.badge}}</span>
-              </ion-item>
-            </a>
-            <ion-item *ngIf="item.onClick" (click)="item.onClick()" style="cursor: pointer;">
+    <ion-list style="margin-top: 1.2rem">
+      <ng-container *ngFor="let menu of menus">
+        <ng-container *ngFor="let item of menu.items">
+          <a *ngIf="!item.onClick" [href]="item.link" style="text-decoration: none; color:black;">
+            <ion-item style="cursor: pointer;">
               <ion-label [ngStyle]="{'opacity':item.disable ? 0.3 : 1}">{{item.label}}</ion-label>
               <span class="badge" [ngClass]="item.badgeIcon" *ngIf="item.isBadge">{{item.badge}}</span>
             </ion-item>
-          </ng-container>
+          </a>
+          <ion-item *ngIf="item.onClick" (click)="item.onClick()" style="cursor: pointer;">
+            <ion-label [ngStyle]="{'opacity':item.disable ? 0.3 : 1}">{{item.label}}</ion-label>
+            <span class="badge" [ngClass]="item.badgeIcon" *ngIf="item.isBadge">{{item.badge}}</span>
+          </ion-item>
         </ng-container>
-      </ion-list>
-    </ng-container>
+      </ng-container>
+    </ion-list>
   </ion-grid>
 </ion-content>

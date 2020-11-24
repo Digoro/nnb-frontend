@@ -25,7 +25,6 @@ export class TabService {
     'meeting-edit',
     'magazine-detail',
     'magazine-edit',
-    'profile',
     'my-info-detail',
     'payment-success',
     'payment-fail',

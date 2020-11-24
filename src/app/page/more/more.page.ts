@@ -18,12 +18,9 @@ export class MorePage implements OnInit {
     private authService: AuthService,
     private paymentService: PaymentService,
     private couponService: CouponService
-  ) {
-  }
+  ) { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   ionViewDidEnter() {
     this.authService.getCurrentNonunbubUser().subscribe(resp => {
@@ -36,6 +33,7 @@ export class MorePage implements OnInit {
               new MoreMenuItem('간편결제 관리', '/tabs/payment-management', undefined, accounts.length, 'badge-secondary', true),
             ]),
             new MoreMenuGroup('지원', [
+              new MoreMenuItem('호스트센터', '/host/meeting-management', undefined),
               new MoreMenuItem('이벤트', '/tabs/event', undefined),
               new MoreMenuItem('문의하기', 'https://nonunbub.channel.io', undefined),
               new MoreMenuItem('공지사항', '', () => alert('서비스 준비중입니다 ^^')),

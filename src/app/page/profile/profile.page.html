@@ -1,27 +1,46 @@
 <ion-content>
-  <ion-grid fixed *ngIf="!!user" style="margin-top:2.7rem; padding: 0rem 1rem 0rem 1rem">
+  <ion-grid fixed *ngIf="!!profileUser" style="margin-top:2.7rem; padding: 0rem 1rem 0rem 1rem">
     <div style="padding: 0px 1rem 0px 1rem">
       <div style="display: flex;">
         <div>
-          <img class="image" [src]="user.image">
-          <p class="name" style="text-align: center;">{{user.nickName}}</p>
+          <img class="image" [src]="profileUser.image">
+          <p class="name" style="text-align: center;">{{profileUser.nickName}}</p>
         </div>
         <div>
-          <p class="catch_phrase">{{user.catch_phrase}}</p>
+          <p class="catch_phrase">{{profileUser.catch_phrase}}</p>
           <p class="desc" style="margin:0px">
-            <span *ngIf="user">좋아요 {{user.score}}&nbsp;|&nbsp;</span>
+            <span *ngIf="profileUser">좋아요 {{profileUser.score}}&nbsp;|&nbsp;</span>
             <span *ngIf="hostedMeetings">주최한 모임 {{hostedMeetings.length}}&nbsp;|&nbsp;</span>
             <span *ngIf="comments">후기 {{comments.length}}</span>
           </p>
         </div>
       </div>
-      <p style="margin:0px">{{user.introduction}}</p><br>
+      <p style="margin:0px">{{profileUser.introduction}}</p><br>
     </div>
-    <a href="mailto:nonunbub@gmail.com">
-      <ion-button color="light" size="small" style="min-width: 115px;">
-        <ion-icon name="hand-left-outline"></ion-icon>&nbsp;&nbsp;&nbsp;사용자 신고하기
-      </ion-button>
-    </a>
+    <ng-container *ngIf="!!currentUser">
+      <a *ngIf="currentUser.uid === pageUserId" [href]="'/tabs/edit-profile'"
+        style="text-decoration: none; color: black;">
+        <ion-chip outline color="dark">
+          <ion-icon name="create-outline"></ion-icon>
+          <ion-label>내정보 수정</ion-label>
+        </ion-chip>
+      </a>
+      <a *ngIf="currentUser.uid !== pageUserId" href="mailto:nonunbub@gmail.com"
+        style="text-decoration: none; color: black;">
+        <ion-chip outline color="dark">
+          <ion-icon name="hand-left-outline"></ion-icon>
+          <ion-label>사용자 신고하기</ion-label>
+        </ion-chip>
+      </a>
+    </ng-container>
+    <ng-container *ngIf="!currentUser">
+      <a href="mailto:nonunbub@gmail.com" style="text-decoration: none; color: black;">
+        <ion-chip outline color="dark">
+          <ion-icon name="hand-left-outline"></ion-icon>
+          <ion-label>사용자 신고하기</ion-label>
+        </ion-chip>
+      </a>
+    </ng-container>
     <hr>
     <ion-row>
       <ion-col>
@@ -46,6 +65,6 @@
     <hr>
 
     <p class="subject"><span class="subject underline">후기</span> 😎😎</p>
-    <comment [comments]="comments" [currentUser]="user" [editable]="false" [displayLabel]="true"></comment>
+    <comment [comments]="comments" [currentUser]="profileUser" [editable]="false" [displayLabel]="true"></comment>
   </ion-grid>
 </ion-content>
