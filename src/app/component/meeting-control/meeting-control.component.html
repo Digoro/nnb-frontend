@@ -277,7 +277,7 @@
           </div>
           <notion-desc [description]="descriptions[8]"></notion-desc>
           <form-input [name]="'유의 사항'" [controlName]="'notice'" [type]="'textarea'" [group]="formGroup"
-            [errors]="[{key:'max',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
+            [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
           </form-input>
 
           <ion-checkbox type="checkbox" [checked]="noticeChcked" (ionChange)="checkAllowPolicy($event)">

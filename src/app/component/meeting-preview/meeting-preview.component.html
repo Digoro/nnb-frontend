@@ -1,8 +1,6 @@
 <ng-container *ngIf="!!meeting">
-  <ion-grid style="padding: 0px;">
+  <ion-grid fixed>
     <img [src]="previewImage" class="main-image" />
-  </ion-grid>
-  <ion-grid [fixed]>
     <ion-row>
       <ion-col>
         <p class="subTitle">{{meeting.subTitle}}</p>
@@ -50,9 +48,8 @@
         </p>
       </ion-col>
     </ion-row>
-  </ion-grid>
-  <br>
-  <ion-grid fixed>
+
+    <br>
     <div class="menu" style="top: 0">
       <a class="section-1" (click)="setPosition(1)">
         <p class="section-menu">모임 소개</p>

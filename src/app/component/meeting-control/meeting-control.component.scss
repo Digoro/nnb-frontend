@@ -128,12 +128,6 @@ agm-map {
     }
 }
 
-.maximun-info {
-    font-size: 13px;
-    color: rgb(133, 138, 141);
-    margin: 0px 0px 0px 5px;
-}
-
 .next-prev {
     margin-bottom: 10px;
 }
@@ -146,6 +140,7 @@ agm-map {
 .tableFixHead thead th {
     position: sticky;
     top: -2px;
+    z-index: 9999;
 }
 
 table {

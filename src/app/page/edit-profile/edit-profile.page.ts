@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { environment } from 'src/environments/environment';
+import { FormService } from './../../service/form.service';
 import { S3Service } from './../../service/s3.service';
 import { UserService } from './../../service/user.service';
 
@@ -18,7 +19,8 @@ export class EditProfilePage implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private s3Service: S3Service
+    private s3Service: S3Service,
+    private formService: FormService
   ) { }
 
   ngOnInit() {
@@ -30,9 +32,9 @@ export class EditProfilePage implements OnInit {
       this.user = resp;
       this.form = new FormGroup({
         image: new FormControl(resp.image),
-        nickname: new FormControl(resp.nickName, Validators.maxLength(30)),
-        catchphrase: new FormControl(resp.catch_phrase, Validators.maxLength(30)),
-        introduction: new FormControl(resp.introduction, Validators.maxLength(300)),
+        nickname: new FormControl(resp.nickName, this.formService.getValidators(30)),
+        catchphrase: new FormControl(resp.catch_phrase, this.formService.getValidators(30)),
+        introduction: new FormControl(resp.introduction, this.formService.getValidators(300)),
       });
     });
   }

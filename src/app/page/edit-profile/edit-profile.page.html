@@ -12,37 +12,15 @@
       </ion-col>
     </ion-row>
     <form [formGroup]="form">
-      <ion-item>
-        <ion-label position="floating">닉네임</ion-label>
-        <ion-input type="text" [formControlName]="'nickname'" clearInput></ion-input>
-        <p *ngIf="form.controls.nickname.valid" class="maximun-info">
-          {{form.controls.nickname.value.length}} / 최대 30자
-        </p>
-        <form-errors [formGroup]="form" [controlName]="'nickname'" [isRequired]="false"
-          [errors]="[{key:'maxlength',message:'30자까지 입력할 수 있습니다.'}]">
-        </form-errors>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">한줄 소개</ion-label>
-        <ion-input type="text" [formControlName]="'catchphrase'" clearInput></ion-input>
-        <p *ngIf="form.controls.catchphrase.valid" class="maximun-info">
-          {{form.controls.catchphrase.value.length}} / 최대 30자
-        </p>
-        <form-errors [formGroup]="form" [controlName]="'catchphrase'" [isRequired]="false"
-          [errors]="[{key:'maxlength',message:'30자까지 입력할 수 있습니다.'}]">
-        </form-errors>
-      </ion-item>
-      <ion-item>
-        <ion-label position="fixed">설명</ion-label>
-        <ion-textarea rows="4" maxlength="300" [formControlName]="'introduction'">
-        </ion-textarea>
-        <p *ngIf="form.controls.introduction.valid" class="maximun-info">
-          {{form.controls.introduction.value.length}} / 최대 300자
-        </p>
-        <form-errors [formGroup]="form" [controlName]="'introduction'" [isRequired]="false"
-          [errors]="[{key:'maxlength',message:'300자까지 입력할 수 있습니다.'}]">
-        </form-errors>
-      </ion-item>
+      <form-input [name]="'닉네임'" [controlName]="'nickname'" [group]="form" [maxLength]="30"
+        [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"></form-input>
+
+      <form-input [name]="'한줄 소개'" [controlName]="'catchphrase'" [group]="form" [maxLength]="30"
+        [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"></form-input>
+
+      <form-input [name]="'설명'" [controlName]="'introduction'" [type]="'textarea'" [group]="form"
+        [errors]="[{key:'maxlength',message:'300자 제한입니다.'}]" [maxLength]="300">
+      </form-input>
     </form>
     <br>
     <button class="nnb-btn nnb-btn-primary nnb-btn-block" (click)="editUser()" [disabled]="form.invalid">저장하기</button>

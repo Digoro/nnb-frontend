@@ -153,6 +153,53 @@ fieldset:disabled .nnb-btn {
     border-color: #e5456e4d;
 }
 
+// nnb-btn-secondary
+.nnb-btn-secondary {
+    color: #db285d;
+    font-weight: 700;
+    background-color: #fae1e7;
+    border-color: #fae1e7;
+}
+
+.nnb-btn-secondary:hover {
+    color: #db285d;
+    background-color: #fac8d4;
+    border-color: #fac8d4;
+}
+
+.nnb-btn-check:focus+.nnb-btn-secondary,
+.nnb-btn-secondary:focus {
+    color: #db285d;
+    background-color: #fac8d4;
+    border-color: #fac8d4;
+    box-shadow: 0 0 0 0.25rem #f56f91
+}
+
+.nnb-btn-check:checked+.nnb-btn-secondary,
+.nnb-btn-check:active+.nnb-btn-secondary,
+.nnb-btn-secondary:active,
+.nnb-btn-secondary.active,
+.show>.nnb-btn-secondary.dropdown-toggle {
+    color: #db285d;
+    background-color: #fac8d4;
+    border-color: #fac8d4;
+}
+
+.nnb-btn-check:checked+.nnb-btn-secondary:focus,
+.nnb-btn-check:active+.nnb-btn-secondary:focus,
+.nnb-btn-secondary:active:focus,
+.nnb-btn-secondary.active:focus,
+.show>.nnb-btn-secondary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.25rem #f56f91;
+}
+
+.nnb-btn-secondary:disabled,
+.nnb-btn-secondary.disabled {
+    color: #db285d;
+    background-color: rgba(224, 98, 129, 0.302);
+    border-color: rgba(224, 98, 129, 0.302);
+}
+
 // nnb-btn etc
 .nnb-btn-block {
     width: 100%;
