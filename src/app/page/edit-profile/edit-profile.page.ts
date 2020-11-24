@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { environment } from 'src/environments/environment';
@@ -20,7 +21,8 @@ export class EditProfilePage implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private s3Service: S3Service,
-    private formService: FormService
+    private formService: FormService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -45,7 +47,11 @@ export class EditProfilePage implements OnInit {
     if (fileTypes.find(t => t === file.type)) {
       this.s3Service.uploadFile(file, environment.folder.user).then(res => {
         this.form.controls.image.setValue(res.Location)
-        this.editUser();
+        const { image, nickname, catchphrase, introduction } = this.form.value;
+        this.userService.edit(this.user.uid, image, nickname, catchphrase, introduction).subscribe(resp => {
+          alert('수정되었습니다.');
+          this.setUser()
+        })
       })
     } else {
       alert(`이미지 형식만 가능합니다. (${fileTypes})`);
@@ -55,8 +61,8 @@ export class EditProfilePage implements OnInit {
   editUser() {
     const { image, nickname, catchphrase, introduction } = this.form.value;
     this.userService.edit(this.user.uid, image, nickname, catchphrase, introduction).subscribe(resp => {
-      alert('수정되었습니다.')
-      this.setUser()
+      alert('수정되었습니다.');
+      this.router.navigate(['/tabs/profile', this.user.uid])
     })
   }
 }
