@@ -1,22 +1,16 @@
 <ion-content>
-  <ion-grid fixed *ngIf="!!profileUser" style="margin-top:2.7rem; padding: 0rem 1rem 0rem 1rem">
-    <div style="padding: 0px 1rem 0px 1rem">
-      <div style="display: flex;">
-        <div>
-          <img class="image" [src]="profileUser.image">
-          <p class="name" style="text-align: center;">{{profileUser.nickName}}</p>
-        </div>
-        <div>
-          <p class="catch_phrase">{{profileUser.catch_phrase}}</p>
-          <p class="desc" style="margin:0px">
-            <span *ngIf="profileUser">좋아요 {{profileUser.score}}&nbsp;|&nbsp;</span>
-            <span *ngIf="hostedMeetings">주최한 모임 {{hostedMeetings.length}}&nbsp;|&nbsp;</span>
-            <span *ngIf="comments">후기 {{comments.length}}</span>
-          </p>
-        </div>
-      </div>
-      <p style="margin:0px">{{profileUser.introduction}}</p><br>
+  <ion-grid fixed *ngIf="!!profileUser" style="margin-top:1.2rem; padding: 0rem 1rem 0rem 1rem">
+    <div style="text-align: center;">
+      <img class="image" [src]="profileUser.image">
+      <p class="name">{{profileUser.nickName}}</p>
+      <p class="desc" style="margin:0px">
+        <span *ngIf="profileUser">좋아요 {{profileUser.score}}&nbsp;|&nbsp;</span>
+        <span *ngIf="hostedMeetings">주최한 모임 {{hostedMeetings.length}}&nbsp;|&nbsp;</span>
+        <span *ngIf="comments">후기 {{comments.length}}</span>
+      </p>
     </div>
+    <p class="catch_phrase">{{profileUser.catch_phrase}}</p>
+    <p style="margin:0px">{{profileUser.introduction}}</p><br>
     <ng-container *ngIf="!!currentUser">
       <a *ngIf="currentUser.uid === pageUserId" [href]="'/tabs/edit-profile'"
         style="text-decoration: none; color: black;">

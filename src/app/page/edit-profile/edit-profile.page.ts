@@ -50,7 +50,7 @@ export class EditProfilePage implements OnInit {
         const { image, nickname, catchphrase, introduction } = this.form.value;
         this.userService.edit(this.user.uid, image, nickname, catchphrase, introduction).subscribe(resp => {
           alert('수정되었습니다.');
-          this.setUser()
+          window.location.href = `/tabs/edit-profile`;
         })
       })
     } else {
