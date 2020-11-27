@@ -48,7 +48,10 @@ export class MeetingAddPage extends MeetingControl implements OnInit, AfterViewI
       runningMinutes: new FormControl('', Validators.compose([Validators.max(45), Validators.min(0)])),
       price: new FormControl('', this.formService.getValidators(10, [Validators.max(10000000)])),
       discountPrice: new FormControl(0, [Validators.max(10000000), this.validateDiscountPrice('price')]),
-      desc: new FormControl('', Validators.required),
+      point: new FormControl('', this.formService.getValidators(500)),
+      recommend: new FormControl('', this.formService.getValidators(500)),
+      programs: new FormControl('', Validators.required),
+      desc: new FormControl('', Validators.maxLength(500)),
       notice: new FormControl('', Validators.maxLength(500)),
       check_list: new FormControl('', this.formService.getValidators(500)),
       include: new FormControl('', Validators.maxLength(500)),
@@ -69,7 +72,7 @@ export class MeetingAddPage extends MeetingControl implements OnInit, AfterViewI
 
   add() {
     const { title, subTitle, fileSource, categories, address, detailAddress, runningHours, runningMinutes,
-      price, discountPrice, desc, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
+      price, discountPrice, point, recommend, programs, desc, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
     this.mapsAPILoader.load().then(() => {
       this.geoCoder = new google.maps.Geocoder;
       this.geoCoder.geocode({ address }, (result, status) => {
@@ -94,6 +97,9 @@ export class MeetingAddPage extends MeetingControl implements OnInit, AfterViewI
             formData.append('lon', lon);
             formData.append('price', `${price}`);
             formData.append('discountPrice', `${discount}`);
+            formData.append('point', point);
+            formData.append('recommend', recommend);
+            formData.append('programs', programs);
             formData.append('desc', desc);
             formData.append('host', `${uid}`);
             formData.append('notice', notice);

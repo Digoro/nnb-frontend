@@ -125,7 +125,7 @@ export class MeetingControl implements AfterViewInit {
     makePreviewMeeting() {
         if (this.meetingForm.valid) {
             const { title, subTitle, fileSource, categories, address, detailAddress, runningHours, runningMinutes,
-                price, discountPrice, desc, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
+                price, discountPrice, point, recommend, programs, desc, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
             this.mapsAPILoader.load().then(() => {
                 this.geoCoder = new google.maps.Geocoder;
                 this.geoCoder.geocode({ address }, (result, status) => {
@@ -133,7 +133,7 @@ export class MeetingControl implements AfterViewInit {
                         if (result[0]) {
                             const location = result[0].geometry.location;
                             const minutes = runningHours * 60 + runningMinutes;
-                            this.previewMeeting = new Meeting(0, title, subTitle, desc, address, detailAddress, minutes, location.lat(), location.lng(), 0,
+                            this.previewMeeting = new Meeting(0, title, subTitle, point, recommend, programs, desc, address, detailAddress, minutes, location.lat(), location.lng(), 0,
                                 categories, '', price, discountPrice, 0, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, 0, MeetingStatus.CREATED, options)
                         }
                         else {

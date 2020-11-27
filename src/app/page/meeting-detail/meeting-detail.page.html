@@ -89,12 +89,39 @@
 
       <main>
         <section id="section-1">
-          <ion-row>
-            <ion-col>
-              <p><span class="section-title underline">모임 소개</span></p>
-              <quill-view [content]="meeting.desc" format="text" theme="snow" [style]="quillStyle"></quill-view>
-            </ion-col>
-          </ion-row>
+          <ng-container *ngIf="meeting.point">
+            <ion-row>
+              <ion-col>
+                <p><span class="section-title underline">포인트</span></p>
+                <p class="pre-wrap">{{meeting.point}}</p>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+          <hr>
+          <ng-container *ngIf="meeting.recommend">
+            <ion-row>
+              <ion-col>
+                <p><span class="section-title underline">이런 분이 함께하면 좋아요</span></p>
+                <p class="pre-wrap">{{meeting.recommend}}</p>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+          <hr>
+          <ng-container *ngIf="meeting.programs">
+            <ion-row>
+              <ion-col>
+                <p><span class="section-title underline">프로그램 소개</span></p>
+                <quill-view [content]="meeting.programs" format="text" theme="snow" [style]="quillStyle"></quill-view>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+          <ng-container *ngIf="meeting.desc">
+            <ion-row>
+              <ion-col>
+                <p class="pre-wrap">{{meeting.desc}}</p>
+              </ion-col>
+            </ion-row>
+          </ng-container>
         </section>
         <hr>
         <section id="section-2">

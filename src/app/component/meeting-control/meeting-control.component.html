@@ -62,8 +62,11 @@
     </div>
     <div class="step" data-target="#test-l-7">
       <button class="trigger">
-        <ion-icon [name]="formGroup.controls.desc.valid ? 'checkmark-circle':'checkmark-circle-outline'"
-          [ngStyle]="{'color': formGroup.controls.desc.valid ? '#e5456e':''}">
+        <ion-icon
+          [name]="formGroup.controls.point.valid && formGroup.controls.recommend.valid && 
+        formGroup.controls.programs.valid && formGroup.controls.desc.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.point.valid && formGroup.controls.recommend.valid && 
+          formGroup.controls.programs.valid && formGroup.controls.desc.valid ? '#e5456e':''}">
         </ion-icon>
         소개
       </button>
@@ -242,12 +245,21 @@
             <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           </div>
           <notion-desc [description]="descriptions[6]"></notion-desc>
+          <form-input [name]="'포인트'" [controlName]="'point'" [type]="'textarea'" [group]="formGroup"
+            [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500">
+          </form-input>
+          <form-input [name]="'이런 분이 함께하면 좋아요'" [controlName]="'recommend'" [type]="'textarea'" [group]="formGroup"
+            [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500">
+          </form-input>
           <ion-item lines="none">
-            <ion-label position="fixed">소개<span class="invalid-input">*</span></ion-label>
+            <ion-label position="fixed">프로그램 소개<span class="invalid-input">*</span></ion-label>
           </ion-item>
-          <quill-editor #quill style="-webkit-user-select: text" formControlName="desc" [placeholder]="'상품에 대해 설명해주세요.'"
-            [styles]="quillStyle" (onEditorCreated)="getEditorInstance($event)">
+          <quill-editor #quill style="-webkit-user-select: text" formControlName="programs"
+            [placeholder]="'프로그램 소개를 작성해주세요'" [styles]="quillStyle" (onEditorCreated)="getEditorInstance($event)">
           </quill-editor>
+          <form-input [name]="'설명'" [controlName]="'desc'" [type]="'textarea'" [group]="formGroup"
+            [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
+          </form-input>
           <div ngxErrors="desc">
             <div ngxError="required" [when]="['dirty']">
               <p class="invalid-input">필수 입력 항목입니다.</p>
