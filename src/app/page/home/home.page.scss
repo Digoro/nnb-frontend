@@ -19,7 +19,14 @@
 }
 
 .introduction {
-    background: #f6f2ed;
+    background: #f857a6;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ff5858, #f857a6);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ff5858, #f857a6);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
     margin-top: 1.8rem;
     padding: 15px 16px;
     border-radius: 11px;
@@ -28,7 +35,7 @@
         display: inline-block;
         font-size: 1rem;
         font-weight: 700;
-        color: rgb(27, 28, 29);
+        color: rgb(255, 255, 255);
         margin: 2px;
     }
 
@@ -36,7 +43,7 @@
         margin: 6px 0px 2px 2px;
         font-size: 0.9rem;
         line-height: 1.3em;
-        color: rgb(133, 138, 141);
+        color: rgb(255, 255, 255);
     }
 }
 
