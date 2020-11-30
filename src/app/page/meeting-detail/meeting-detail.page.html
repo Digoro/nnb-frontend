@@ -118,7 +118,8 @@
           <ng-container *ngIf="meeting.desc">
             <ion-row>
               <ion-col>
-                <p class="pre-wrap">{{meeting.desc}}</p>
+                <quill-view [content]="meeting.desc" format="text" theme="snow" [style]="quillStyle"></quill-view>
+                <!-- <p class="pre-wrap">{{meeting.desc}}</p> -->
               </ion-col>
             </ion-row>
           </ng-container>
