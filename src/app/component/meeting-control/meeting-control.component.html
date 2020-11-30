@@ -131,7 +131,7 @@
               <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" />
             </button>
           </ion-item>
-          <img *ngIf="!!previewImage" [src]="previewImage" style="width: 400px; height: 400px" />
+          <img *ngIf="!!previewImage" [src]="previewImage" style="width: 481px;" />
           <hr>
         </div>
         <div id="test-l-3" class="content">
@@ -257,14 +257,17 @@
           <quill-editor #quill style="-webkit-user-select: text" formControlName="programs"
             [placeholder]="'프로그램 소개를 작성해주세요'" [styles]="quillStyle" (onEditorCreated)="getEditorInstance($event)">
           </quill-editor>
-          <form-input [name]="'설명'" [controlName]="'desc'" [type]="'textarea'" [group]="formGroup"
+
+          <ion-item lines="none">
+            <ion-label position="fixed">설명<span class="invalid-input">*</span></ion-label>
+          </ion-item>
+          <quill-editor #quill style="-webkit-user-select: text" formControlName="desc" [placeholder]="''"
+            [styles]="quillStyle" (onEditorCreated)="getEditorInstance($event)">
+          </quill-editor>
+
+          <!-- <form-input [name]="'설명'" [controlName]="'desc'" [type]="'textarea'" [group]="formGroup"
             [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
-          </form-input>
-          <div ngxErrors="desc">
-            <div ngxError="required" [when]="['dirty']">
-              <p class="invalid-input">필수 입력 항목입니다.</p>
-            </div>
-          </div>
+          </form-input> -->
         </div>
         <div id="test-l-8" class="content">
           <div class="next-prev">
