@@ -8,29 +8,23 @@
       </ng-container>
       <ng-container *ngIf="meeting">
         <ng-container *ngIf="meeting.status !== 5">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>선택한 모임</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <div style=" display: flex;">
-                <ion-thumbnail slot="start">
-                  <img [src]="meeting.file" />
-                </ion-thumbnail>
-                <p style="margin-top:auto;margin-left: 10px;">{{meeting.title}}</p>
-              </div>
-            </ion-card-content>
-          </ion-card>
 
-          <ion-card *ngIf="meeting.options">
-            <ion-card-header>
-              <ion-card-title>
-                구매 옵션
-                <ion-button color="light" size="small" class="float-right" (click)="showAllOptions()">옵션 전체보기
-                </ion-button>
-              </ion-card-title>
-            </ion-card-header>
-            <ion-card-content *ngIf="meeting.options.length > 0">
+          <div class="card">
+            <p class="title">선택한 모임</p>
+            <div style=" display: flex;">
+              <ion-thumbnail slot="start">
+                <img [src]="meeting.file" />
+              </ion-thumbnail>
+              <p style="margin-top:auto;margin-left: 10px;">{{meeting.title}}</p>
+            </div>
+          </div>
+
+          <div class="card" *ngIf="meeting.options">
+            <p class="title">구매 옵션</p>
+            <button class="nnb-btn nnb-btn-sm nnb-btn-primary" style="margin-bottom: 0.2rem;"
+              (click)="showAllOptions()">옵션 전체보기
+            </button>
+            <div *ngIf="meeting.options.length > 0">
               <ion-calendar style="border: 1px solid #e7e7e7;border-radius: 5px;margin-bottom: 7px;"
                 (select)="selectCalendar($event)" [options]="calendarOptions" [type]="'string'" [format]="'YYYY-MM-DD'">
               </ion-calendar>
@@ -45,18 +39,17 @@
                   </ion-checkbox>
                 </ion-item>
               </div>
-            </ion-card-content>
-            <ion-card-content *ngIf="meeting.options.length === 0">
+            </div>
+            <div *ngIf="meeting.options.length === 0">
               <p class="invalid-input">현재 구매 가능한 옵션이 없습니다. 다음 일정을 기대해주세요~!</p>
-            </ion-card-content>
-          </ion-card>
+            </div>
+          </div>
 
           <ng-container *ngIf="meeting.options.length > 0">
-            <ion-card>
-              <ion-card-header>
-                <ion-card-title>수량</ion-card-title>
-              </ion-card-header>
-              <ion-card-content *ngIf="form.controls.options.valid">
+
+            <div class="card">
+              <p class="title">수량</p>
+              <div *ngIf="form.controls.options.valid">
                 <div formArrayName="options" *ngFor="let option of form.get('options')['controls']; let i = index;">
                   <div [formGroupName]="i">
                     <ion-item>
@@ -76,111 +69,95 @@
                     </ion-item>
                   </div>
                 </div>
-              </ion-card-content>
-              <ion-card-content *ngIf="form.controls.options.invalid">
+              </div>
+              <div *ngIf="form.controls.options.invalid">
                 <p class="invalid-input">구매 옵션을 선택해주세요</p>
-              </ion-card-content>
-            </ion-card>
+              </div>
+            </div>
 
-            <ion-card *ngIf="!isFree && !!coupons">
-              <ion-card-header>
-                <ion-card-title>쿠폰</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <ng-container *ngIf="coupons.length === 0">
-                  <p class="desc">사용 가능한 쿠폰이 없습니다.</p>
+            <div class="card" *ngIf="!isFree && !!coupons">
+              <p class="title">쿠폰</p>
+              <ng-container *ngIf="coupons.length === 0">
+                <p class="desc">사용 가능한 쿠폰이 없습니다.</p>
+              </ng-container>
+              <ng-container *ngIf="coupons.length > 0">
+                <ng-container *ngIf="form.controls.options.valid">
+                  <p class="desc">결제 금액이 {{isThanPrice|number}}원 이상일 때 쿠폰을 사용할 수 있습니다.</p>
+                  <ion-radio-group formControlName="coupon" (click)="selectCoupon($event)">
+                    <ion-item>
+                      <ion-label class="ion-text-wrap">사용 안함</ion-label>
+                      <ion-radio slot="start" [value]="false"></ion-radio>
+                    </ion-item>
+                    <ion-item *ngFor="let coupon of coupons">
+                      <ion-label class="ion-text-wrap">{{coupon.title}} ({{coupon.price|number}}원)</ion-label>
+                      <ion-radio [disabled]="isThan" slot="start" [value]="coupon"></ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
                 </ng-container>
-
-                <ng-container *ngIf="coupons.length > 0">
-                  <ng-container *ngIf="form.controls.options.valid">
-                    <p class="desc">결제 금액이 {{isThanPrice|number}}원 이상일 때 쿠폰을 사용할 수 있습니다.</p>
-                    <ion-radio-group formControlName="coupon" (click)="selectCoupon($event)">
-                      <ion-item>
-                        <ion-label class="ion-text-wrap">사용 안함</ion-label>
-                        <ion-radio slot="start" [value]="false"></ion-radio>
-                      </ion-item>
-                      <ion-item *ngFor="let coupon of coupons">
-                        <ion-label class="ion-text-wrap">{{coupon.title}} ({{coupon.price|number}}원)</ion-label>
-                        <ion-radio [disabled]="isThan" slot="start" [value]="coupon"></ion-radio>
-                      </ion-item>
-                    </ion-radio-group>
-                  </ng-container>
-
-                  <ng-container *ngIf="form.controls.options.invalid">
-                    <p class="invalid-input">구매 옵션을 선택해주세요</p>
-                  </ng-container>
+                <ng-container *ngIf="form.controls.options.invalid">
+                  <p class="invalid-input">구매 옵션을 선택해주세요</p>
                 </ng-container>
-              </ion-card-content>
-            </ion-card>
+              </ng-container>
+            </div>
 
-            <ion-card>
-              <ion-card-header>
-                <ion-card-title>결제 금액</ion-card-title>
-              </ion-card-header>
-              <ion-card-content *ngIf="form.controls.options.valid">
+            <div class="card">
+              <p class="title">결제 금액</p>
+              <div *ngIf="form.controls.options.valid">
                 <ul style="padding-left: 20px;">
                   <li *ngFor="let option of options.value">{{option.optionTitle}} x {{option.optionCount}}개</li>
                   <li *ngIf="!!form.controls.coupon.value">쿠폰: {{form.controls.coupon.value.title}}
                     ({{form.controls.coupon.value.price|number}}원)</li>
                 </ul>
                 <p style="margin-left:15px;font-size:21px;color:#ff4081"><strong>총 {{price|number}}원</strong></p>
-              </ion-card-content>
-              <ion-card-content *ngIf="form.controls.options.invalid">
+              </div>
+              <div *ngIf="form.controls.options.invalid">
                 <p class="invalid-input">구매옵션과 수량 입력이 올바르지 않습니다.</p>
-              </ion-card-content>
-            </ion-card>
+              </div>
+            </div>
 
-            <ion-card *ngIf="!isFree">
-              <ion-card-header>
-                <ion-card-title>결제 방법</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <ion-radio-group (ionChange)="selectPaymentMethod($event)">
-                  <ion-item>
-                    <ion-label class="ion-text-wrap">간편결제</ion-label>
-                    <ion-radio slot="start" [value]="'simple'"></ion-radio>
-                  </ion-item>
-                  <ng-container *ngIf="isSimple">
-                    <p *ngIf="accounts.length === 0" class="desc" style="margin-left:68px">등록된 카드/계좌가 없습니다.</p>
-                    <ng-container *ngFor="let account of accounts">
-                      <ion-item style="cursor: pointer; margin-left:53px"
-                        (click)="selectSimplePay(account.PCD_PAYER_ID)">
-                        <ion-label class="ion-text-wrap" *ngIf="account.PCD_PAY_TYPE === 'transfer'">
-                          <h3>{{account['PCD_PAY_BANKNAME']}} ({{account['PCD_PAY_BANKNUM']}})</h3>
-                        </ion-label>
-                        <ion-label class="ion-text-wrap" *ngIf="account.PCD_PAY_TYPE === 'card'">
-                          <h3>{{account['PCD_PAY_CARDNAME']}} ({{account['PCD_PAY_CARDNUM']}})</h3>
-                        </ion-label>
-                        <ion-icon [ngClass]="selectedPayerId === account.PCD_PAYER_ID? 'selected': ''"
-                          [name]="selectedPayerId === account.PCD_PAYER_ID? 'checkbox': 'checkbox-outline'"
-                          style="float: right; padding:20px 20px; font-size:25px;"></ion-icon>
-                      </ion-item>
-                    </ng-container>
-                    <ion-button color="light" size="small" style="margin-left:68px" (click)="addAccount()">간편결제 관리하기
-                    </ion-button>
+            <div class="card" *ngIf="!isFree">
+              <p class="title">결제 방법</p>
+              <ion-radio-group (ionChange)="selectPaymentMethod($event)">
+                <!-- <ion-item>
+                  <ion-label class="ion-text-wrap">간편결제</ion-label>
+                  <ion-radio slot="start" [value]="'simple'"></ion-radio>
+                </ion-item>
+                <ng-container *ngIf="isSimple">
+                  <p *ngIf="accounts.length === 0" class="desc" style="margin-left:68px">등록된 카드/계좌가 없습니다.</p>
+                  <ng-container *ngFor="let account of accounts">
+                    <ion-item style="cursor: pointer; margin-left:53px" (click)="selectSimplePay(account.PCD_PAYER_ID)">
+                      <ion-label class="ion-text-wrap" *ngIf="account.PCD_PAY_TYPE === 'transfer'">
+                        <h3>{{account['PCD_PAY_BANKNAME']}} ({{account['PCD_PAY_BANKNUM']}})</h3>
+                      </ion-label>
+                      <ion-label class="ion-text-wrap" *ngIf="account.PCD_PAY_TYPE === 'card'">
+                        <h3>{{account['PCD_PAY_CARDNAME']}} ({{account['PCD_PAY_CARDNUM']}})</h3>
+                      </ion-label>
+                      <ion-icon [ngClass]="selectedPayerId === account.PCD_PAYER_ID? 'selected': ''"
+                        [name]="selectedPayerId === account.PCD_PAYER_ID? 'checkbox': 'checkbox-outline'"
+                        style="float: right; padding:20px 20px; font-size:25px;"></ion-icon>
+                    </ion-item>
                   </ng-container>
-                  <ion-item>
-                    <ion-label class="ion-text-wrap">카드 일반결제</ion-label>
-                    <ion-radio slot="start" [value]="'card'"></ion-radio>
-                  </ion-item>
-                  <ion-item>
-                    <ion-label class="ion-text-wrap">실시간 계좌이체</ion-label>
-                    <ion-radio slot="start" [value]="'transfer'"> </ion-radio>
-                  </ion-item>
-                </ion-radio-group>
-              </ion-card-content>
-            </ion-card>
+                  <ion-button color="light" size="small" style="margin-left:68px" (click)="addAccount()">간편결제 관리하기
+                  </ion-button>
+                </ng-container> -->
+                <ion-item>
+                  <ion-label class="ion-text-wrap">카드 일반결제</ion-label>
+                  <ion-radio slot="start" [value]="'card'"></ion-radio>
+                </ion-item>
+                <ion-item>
+                  <ion-label class="ion-text-wrap">실시간 계좌이체</ion-label>
+                  <ion-radio slot="start" [value]="'transfer'"> </ion-radio>
+                </ion-item>
+              </ion-radio-group>
+            </div>
 
-            <ion-card>
-              <ion-card-header>
-                <ion-card-title>휴대폰 번호</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <p class="desc">- 없이 번호만 입력해주세요</p>
-                <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678">
-                <p class="invalid-input" *ngIf="form.controls.phone.invalid">입력이 올바르지 않습니다.</p>
-              </ion-card-content>
-            </ion-card>
+            <div class="card">
+              <p class="title">휴대폰 번호</p>
+              <p class="desc">- 없이 번호만 입력해주세요</p>
+              <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678">
+              <p class="invalid-input" *ngIf="form.controls.phone.invalid">입력이 올바르지 않습니다.</p>
+            </div>
+
           </ng-container>
           <ion-row>
             <ion-col>

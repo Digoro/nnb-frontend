@@ -29,3 +29,19 @@
 :host::ng-deep ion-calendar .on-selected {
     background-color: #ff40806b !important;
 }
+
+.card {
+    margin: 24px 16px 16px 16px;
+    padding: 16px;
+    background: #fff;
+    border-radius: 7px;
+    -o-box-shadow: 2px 3px 7px rgba(0, 0, 0, .2);
+    box-shadow: 2px 3px 7px rgba(0, 0, 0, .2);
+
+    .title {
+        padding-bottom: 15px;
+        font-size: 18px;
+        color: #1a1a1a;
+        font-weight: bold;
+    }
+}
