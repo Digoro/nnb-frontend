@@ -1,0 +1,95 @@
+<ion-content>
+  <ion-grid fixed>
+    <form [formGroup]="form">
+      <ng-container *ngIf="!meeting">
+        <div style="padding-top: 20px; margin-left: 25px">
+          <p>구매 옵션을 불러오는 중입니다. &nbsp;<img src="/assets/loading.gif" width="25" height="25"></p>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="meeting">
+        <ng-container *ngIf="meeting.status !== 5">
+
+          <div class="card">
+            <p class="title">선택한 모임</p>
+            <div style=" display: flex;">
+              <ion-thumbnail slot="start">
+                <img [src]="meeting.file" />
+              </ion-thumbnail>
+              <p style="margin-top:auto;margin-left: 10px;">{{meeting.title}}</p>
+            </div>
+          </div>
+
+          <div class="card" *ngIf="meeting.options">
+            <p class="title">구매 옵션</p>
+            <div *ngIf="meeting.options.length > 0">
+              <ion-calendar style="border: 1px solid #e7e7e7;border-radius: 5px;" (select)="selectCalendar($event)"
+                [options]="calendarOptions" [type]="'string'" [format]="'YYYY-MM-DD'">
+              </ion-calendar>
+              <p *ngIf="!!selectedOptionsFromCalendar" class="desc" style="margin: 1rem 0rem 0rem 0rem;">수량을 선택해주세요.</p>
+              <div *ngFor="let option of selectedOptionsFromCalendar;"
+                style="overflow-y: auto; max-height: 450px;border: 1px solid #e7e7e7;border-radius: 5px;margin-bottom: 0.4rem;">
+                <ion-item lines="none">
+                  <ion-label class="ion-text-wrap">
+                    <p class="desc">{{option.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+                    <p class="black-label">{{option.optionTitle}}</p>
+                    <p class="black-label"><strong>{{option.optionPrice|number}}원</strong></p>
+                  </ion-label>
+                  <div style="display: flex;">
+                    <ion-icon name="remove-circle-outline" style="font-size: 25px" (click)="changeCount(false,option)">
+                    </ion-icon>
+                    <input [id]="'optionCount'+ option.oid" type="number" class="form-control count-input" value="0"
+                      disabled>
+                    <ion-icon name="add-circle-outline" style="font-size: 25px;" (click)="changeCount(true, option)">
+                    </ion-icon>
+                  </div>
+                </ion-item>
+              </div>
+            </div>
+            <div *ngIf="meeting.options.length === 0">
+              <p class="invalid-input">현재 구매 가능한 옵션이 없습니다. 다음 일정을 기대해주세요~!</p>
+            </div>
+          </div>
+
+          <div class="card" *ngIf="isFree">
+            <p class="title">휴대폰 번호</p>
+            <p class="desc">- 없이 번호만 입력해주세요</p>
+            <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678">
+            <p class="invalid-input" *ngIf="form.controls.phone.dirty && form.controls.phone.invalid">입력이 올바르지 않습니다.
+            </p>
+          </div>
+
+          <ng-container *ngIf="meeting.options.length > 0">
+            <div class="card" *ngIf="!isFree && form.controls.options.valid">
+              <p class="title">결제 금액</p>
+              <div *ngFor="let option of options.value">
+                <span class="desc" style="font-weight: 500;">{{option.optionTitle}}</span><br>
+                <span class="desc">{{option.optionCount}} x
+                  ₩{{option.optionPrice|number}}&nbsp;&nbsp;</span>
+                <span class="float-right"
+                  style="margin-right: 1.2rem;"><strong>{{option.optionCount*option.optionPrice|number}}원</strong></span>
+                <hr>
+              </div>
+              <p style="font-size:1.4rem;color:#ff4081">
+                <strong>총 {{price|number}}원</strong>
+              </p>
+            </div>
+          </ng-container>
+          <ion-row>
+            <ion-col>
+              <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block" *ngIf="!isFree" (click)="pay()"
+                [disabled]="form.invalid">결제하러 가기!</button>
+              <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block" *ngIf="isFree" (click)="join()"
+                [disabled]="form.invalid">무료
+                참여하기</button>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+        <ng-container *ngIf="meeting.status === 5">
+          <ion-chip color="danger">
+            <ion-label>비활성된 상품입니다.</ion-label>
+          </ion-chip>
+        </ng-container>
+      </ng-container>
+    </form>
+  </ion-grid>
+</ion-content>

@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -61,7 +60,6 @@ export class MeetingDetailPage implements OnInit {
     private route: ActivatedRoute,
     private meetingService: MeetingService,
     private userService: UserService,
-    private location: Location,
     private clipboardService: ClipboardService,
     private utilService: UtilService,
     private toastController: ToastController,
@@ -251,9 +249,5 @@ export class MeetingDetailPage implements OnInit {
     this.commentService.comment(comment).subscribe(resp => {
       this.getComments();
     })
-  }
-
-  back() {
-    this.location.back();
   }
 }

@@ -92,9 +92,15 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'payment/:mid', canActivateChild: [AuthGuard], children: [{
+        path: 'payment/select/:mid', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>
-            import('../payment/payment.module').then(m => m.PaymentPageModule)
+            import('../payment-select/payment-select.module').then(m => m.PaymentSelectModule)
+        }]
+      },
+      {
+        path: 'payment/pay', canActivateChild: [AuthGuard], children: [{
+          path: '', loadChildren: () =>
+            import('../payment-pay/payment-pay.module').then(m => m.PaymentPayModule)
         }]
       },
       {

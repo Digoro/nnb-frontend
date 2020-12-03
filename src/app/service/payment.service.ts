@@ -96,7 +96,7 @@ export class PaymentService {
     })
   }
 
-  pay(method: PayMethod, user: User, meeting: Meeting, phone: string, price: number, options: any[], coupon: Coupon, account?: UserPaymentInfo) {
+  pay(method: PayMethod, user: User, meeting: Meeting, phone: string, price: number, options: any[], coupon: Coupon) {
     let obj = {};
     obj['PCD_CPAY_VER'] = "1.0.1";
     obj['payple_auth_file'] = "/pg/auth";
@@ -115,30 +115,6 @@ export class PaymentService {
       options: options,
     }))
     obj['PCD_USER_DEFINE1'] = userDefine;
-    // obj['callbackFunction'] = (result: PaymentResult) => {
-    //   if (coupon) {
-    //     result.couponId = coupon.couponId;
-    //   }
-    //   result.uid = user.uid;
-    //   result.mid = meeting.mid;
-    //   console.log("PAY 결과");
-    //   console.log(result);
-    //   for (const [key, value] of Object.entries(result)) {
-    //     if (!value) result[key] = ""
-    //   }
-    //   if (result.PCD_PAY_RST === 'success') {
-    //     this.addPaymentResult(result).subscribe((paymentResult: PaymentResult) => {
-    //       this.addPaymentOptionMaps(paymentResult.pid, options).subscribe(resp => {
-    //         alert('등록한 모임으로 이동합니다.');
-    //         this.router.navigate(['/tabs/my-info']);
-    //         this.sendAlimtalk(user, options, paymentResult, phone);
-    //       })
-    //     })
-    //   } else {
-    //     alert('결제가 실패하였습니다.');
-    //     this.router.navigate([`/tabs/meeting-detail/${meeting.mid}`]);
-    //   }
-    // };
     switch (method) {
       // [from docs.payple.kr] 앱카드 결제
       // 카드 일반 결제 (다날 결제)
@@ -151,17 +127,6 @@ export class PaymentService {
       // 계좌 일반 결제
       case PayMethod.TRANSFER: {
         obj['PCD_PAY_TYPE'] = "transfer";
-        obj['PCD_TAXSAVE_FLAG'] = "N" // 계좌 결제에만 쓰임, 현금영수증 N
-        break;
-      }
-      // [from docs.payple.kr] 계좌: 비밀번호 간편결제, 카드: 비밀번호 간편결제
-      // 간편 결제(계좌 or 카드)
-      case PayMethod.SIMPLE_TRANSFER: {
-        obj['PCD_PAYER_AUTHTYPE'] = "pwd"; // PCD_SIMPLE_FLAG=Y일 때는 필수 파라미터
-        obj['PCD_CARD_VER'] = "01"; // 카드 결제에만 쓰임
-        obj['PCD_PAY_TYPE'] = account.PCD_PAY_TYPE; // card or transfer
-        obj['PCD_SIMPLE_FLAG'] = "Y";
-        obj['PCD_PAYER_ID'] = account.PCD_PAYER_ID;
         obj['PCD_TAXSAVE_FLAG'] = "N" // 계좌 결제에만 쓰임, 현금영수증 N
         break;
       }
@@ -205,6 +170,10 @@ export class PaymentService {
       paymentResult.receiver_1 = '010-6687-1917';
       this.alimtalkService.sendPaymentResult(paymentResult).subscribe(resp => {
         console.log('관리자 알림톡 전송 완료');
+        paymentResult.receiver_1 = '010-3250-7463';
+        this.alimtalkService.sendPaymentResult(paymentResult).subscribe(resp => {
+          console.log('관리자 알림톡 전송 완료');
+        })
       })
     });
   }
