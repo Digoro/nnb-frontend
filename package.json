@@ -43,7 +43,7 @@
     "core-js": "^2.5.4",
     "cron-converter": "^1.0.0",
     "iamport-capacitor": "^0.10.0",
-    "ion2-calendar": "^3.5.0",
+    "ion2-calendar": "git+https://github.com/shaneparsons/ion2-calendar.git#76ae1e241183500a377647b363c931a03aa50bca",
     "jquery": "^3.4.1",
     "moment": "^2.26.0",
     "ngx-bootstrap": "^5.6.1",
