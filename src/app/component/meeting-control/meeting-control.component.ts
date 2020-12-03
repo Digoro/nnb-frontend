@@ -45,7 +45,8 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   isShowMenu = false;
   isLoad = false;
 
-  @ViewChild('quill') quill: QuillEditorComponent
+  @ViewChild('quill') quill: QuillEditorComponent;
+  @ViewChild('quill2') quill2: QuillEditorComponent;
 
   ngxCronUiConfig: NgxCronUiConfig = {
     option: { minute: false, hour: false, year: false },
@@ -413,7 +414,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getEditorInstance(editorInstance: any) {
+  getEditorInstance(editorInstance: any, index: number) {
     const fileTypes = ["image/gif", "image/jpeg", "image/png"];
     let toolbar = editorInstance.getModule('toolbar');
     toolbar.addHandler('image', () => {
@@ -421,7 +422,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       input.setAttribute('type', 'file');
       input.click();
       input.onchange = () => {
-        const editor = this.quill.quillEditor;
+        const editor = index === 1 ? this.quill.quillEditor : this.quill2.quillEditor;
         const range = editor.getSelection();
         editor.insertEmbed(range.index, 'image', '/assets/loading.gif');
         editor.formatText(range.index, 1, 'width', '25px');
@@ -433,6 +434,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
               console.log(resp);
               const link = res.Location.replace("/meetings", "/meetings-resized");
               editor.deleteText(range.index, 1);
+              editor.insertEmbed(range.index, 'text', `\n\n\n`, 'user');
               editor.insertEmbed(range.index, 'image', `${link}`, 'user');
             })
           })
@@ -549,22 +551,22 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       })
     }
     const api = this.calendarComponent.getApi();
-    const originEvents = api.getEvents();
-    if (originEvents.length !== 0) {
-      const filteredEvents = newEvents.filter(newEvent => {
-        return !originEvents.find(origin => {
-          return moment(origin.start).isSame(moment(newEvent.date))
-        });
-      })
-      api.addEventSource(filteredEvents);
-      this.addOptionForm(filteredEvents);
-      if (filteredEvents.length !== newEvents.length) alert('요청하신 옵션 중 동일한 일시의 옵션을 제외하고 추가하였습니다.')
-      else alert('스케줄이 등록되었습니다.')
-    } else {
-      api.addEventSource(newEvents);
-      this.addOptionForm(newEvents);
-      alert('스케줄이 등록되었습니다.')
-    }
+    // const originEvents = api.getEvents();
+    // if (originEvents.length !== 0) {
+    //   const filteredEvents = newEvents.filter(newEvent => {
+    //     return !originEvents.find(origin => {
+    //       return moment(origin.start).isSame(moment(newEvent.date))
+    //     });
+    //   })
+    //   api.addEventSource(filteredEvents);
+    //   this.addOptionForm(filteredEvents);
+    //   if (filteredEvents.length !== newEvents.length) alert('요청하신 옵션 중 동일한 일시의 옵션을 제외하고 추가하였습니다.')
+    //   else alert('스케줄이 등록되었습니다.')
+    // } else {
+    api.addEventSource(newEvents);
+    this.addOptionForm(newEvents);
+    alert('스케줄이 등록되었습니다.')
+    // }
     this.optionAddFormGroup.reset();
     this.addModalRef.hide();
   }

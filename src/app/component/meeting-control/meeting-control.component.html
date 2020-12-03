@@ -255,14 +255,14 @@
             <ion-label position="fixed">프로그램 소개<span class="invalid-input">*</span></ion-label>
           </ion-item>
           <quill-editor #quill style="-webkit-user-select: text" formControlName="programs"
-            [placeholder]="'프로그램 소개를 작성해주세요'" [styles]="quillStyle" (onEditorCreated)="getEditorInstance($event)">
+            [placeholder]="'프로그램 소개를 작성해주세요'" [styles]="quillStyle" (onEditorCreated)="getEditorInstance($event, 1)">
           </quill-editor>
 
           <ion-item lines="none">
             <ion-label position="fixed">설명</ion-label>
           </ion-item>
-          <quill-editor #quill style="-webkit-user-select: text" formControlName="desc" [placeholder]="''"
-            [styles]="quillStyle" (onEditorCreated)="getEditorInstance($event)">
+          <quill-editor #quill2 style="-webkit-user-select: text" formControlName="desc" [placeholder]="''"
+            [styles]="quillStyle" (onEditorCreated)="getEditorInstance($event,2)">
           </quill-editor>
 
           <!-- <form-input [name]="'설명'" [controlName]="'desc'" [type]="'textarea'" [group]="formGroup"

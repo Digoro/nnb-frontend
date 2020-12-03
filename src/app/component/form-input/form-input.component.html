@@ -16,6 +16,11 @@
     {{group.controls[controlName].value.length}} / 최대 {{maxLength}}자
   </p>
 
+  <p *ngIf="group.controls[controlName].errors?.maxlength && (type=='text' || type=='textarea') && maxLength!==0"
+    class="maximun-info">
+    <span style="color:red">{{group.controls[controlName].value.length}}</span> / 최대 {{maxLength}}자
+  </p>
+
   <form-errors [formGroup]="group" [controlName]="controlName" [errors]="errors" [isUnUseDirty]="isUnUseDirty"
     [isRequired]="isRequired">
   </form-errors>
