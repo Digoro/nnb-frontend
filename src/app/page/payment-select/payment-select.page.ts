@@ -105,6 +105,10 @@ export class PaymentSelectPage implements OnInit {
   changeCount(flag: boolean, option: MeetingOption) {
     const optionArray = this.options.controls.find(o => o.value.oid === option.oid);
     const count = flag ? +document.getElementById('optionCount' + option.oid)['value'] + 1 : +document.getElementById('optionCount' + option.oid)['value'] - 1;
+    if (count > option.optionMaxParticipation) {
+      alert(`최대 신청인원은 ${option.optionMaxParticipation}명 입니다.`);
+      return;
+    }
     document.getElementById('optionCount' + option.oid)['value'] = count;
 
     if (count > 0 && !optionArray) {
