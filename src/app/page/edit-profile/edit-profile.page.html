@@ -1,17 +1,17 @@
 <ion-content *ngIf="!!user">
   <ion-grid fixed>
-    <ion-row style="margin-top:20px;">
-      <ion-col class="center" style="display: flex;flex-direction: column;">
-        <ion-avatar style="width: 80px; height: 80px;">
-          <img [src]="user.image">
-        </ion-avatar>
-        <button class="btn btn-sm" type="button" (click)="fileInput.click()">
-          <span>업로드</span>
-          <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
-        </button>
-      </ion-col>
-    </ion-row>
     <form [formGroup]="form">
+      <ion-row style="margin-top:20px;">
+        <ion-col class="center" style="display: flex;flex-direction: column;">
+          <ion-avatar style="width: 80px; height: 80px;">
+            <img [src]="form.controls.image.value">
+          </ion-avatar>
+          <button class="btn btn-sm" type="button" (click)="fileInput.click()">
+            <span>업로드</span>
+            <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+          </button>
+        </ion-col>
+      </ion-row>
       <form-input [name]="'닉네임'" [controlName]="'nickname'" [group]="form" [maxLength]="30"
         [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"></form-input>
 

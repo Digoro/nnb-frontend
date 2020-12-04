@@ -46,12 +46,7 @@ export class EditProfilePage implements OnInit {
     const file = event.target.files[0];
     if (fileTypes.find(t => t === file.type)) {
       this.s3Service.uploadFile(file, environment.folder.user).then(res => {
-        this.form.controls.image.setValue(res.Location)
-        const { image, nickname, catchphrase, introduction } = this.form.value;
-        this.userService.edit(this.user.uid, image, nickname, catchphrase, introduction).subscribe(resp => {
-          alert('수정되었습니다.');
-          window.location.href = `/tabs/edit-profile`;
-        })
+        this.form.controls.image.setValue(res.Location);
       })
     } else {
       alert(`이미지 형식만 가능합니다. (${fileTypes})`);
