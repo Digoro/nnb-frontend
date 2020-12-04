@@ -3,7 +3,7 @@
     <br>
     <ion-row>
       <ion-col>
-        <p class="main_sentence" style="font-size: 1.3rem;font-weight: 350;">오늘 가장 젊은 순간을 특별하게,</p>
+        <p class="main_sentence" style="font-size: 1.3rem;font-weight: 350;">오늘 가장 젊은 순간을 특별하게</p>
         <p class="main_sentence" style="margin-bottom: 10px;">꽃중년들의 노는 방법, <span class="brand">노는법</span></p>
       </ion-col>
     </ion-row>
@@ -11,7 +11,10 @@
       <ion-col [ngStyle]="{'padding':isDesktop?'':'0px'}">
         <ion-slides [options]="bannerSliderConfig" pager="true">
           <ion-slide *ngFor="let banner of banners" style="cursor: pointer;">
-            <img [src]="banner.image" (click)="clickBanner(banner.link)">
+            <img *ngIf="isDesktop && banner.metadata.isdesktop === 'true'" [src]="banner.image"
+              (click)="clickBanner(banner.metadata)">
+            <img *ngIf="!isDesktop && banner.metadata.isdesktop !== 'true'" [src]="banner.image"
+              (click)="clickBanner(banner.metadata)">
           </ion-slide>
           <ng-container *ngIf="!banners">
             <ion-slide *ngFor="let banner of [1,2,3,4]">

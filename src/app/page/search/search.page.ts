@@ -14,7 +14,6 @@ import { Meeting, MeetingStatus } from './../../model/meeting';
 export class SearchPage implements OnInit {
   meetings: Meeting[];
   title: string;
-  isForest = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,19 +30,16 @@ export class SearchPage implements OnInit {
       }
       switch (key) {
         case 'forest': {
-          this.isForest = true;
           this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
             this.meetings = meetings.filter(m => m.subTitle.includes('숲찾사'))
           }); break;
         }
         case 'jeju': {
-          this.isForest = false;
           this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
             this.meetings = meetings.filter(m => m.subTitle.includes('제주'))
           }); break;
         }
         case 'week': {
-          this.isForest = false;
           this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
             this.meetings = meetings.filter(meeting => !meeting.subTitle.includes('숲찾사') && !meeting.subTitle.includes('제주'))
             const now = moment();
@@ -59,19 +55,16 @@ export class SearchPage implements OnInit {
           }); break;
         }
         case 'all': {
-          this.isForest = false;
           this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
             this.meetings = meetings.filter(m => !m.subTitle.includes('숲찾사') && !m.subTitle.includes('제주'))
           }); break;
         }
         case 'event': {
-          this.isForest = false;
           this.meetingService.getAllMeetings(MeetingStatus.ENTERED).subscribe(meetings => {
             this.meetings = meetings.filter(meeting => meeting.subTitle.includes('이벤트'))
           }); break;
         }
         default: {
-          this.isForest = false;
           this.title = Category[key];
           this.meetingService.searchMeetings([`category=${key}`]).subscribe(meetings => {
             this.meetings = meetings;

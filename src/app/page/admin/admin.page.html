@@ -108,16 +108,42 @@
         <ion-card-title>배너 관리</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <label>배너 파일</label>
+        <div class="card" [formGroup]="bannerFormGroup">
+          <div class="card-body">
+            <ion-item lines="none">
+              <ion-label position="fixed">배너 이미지<span class="invalid-input">*</span></ion-label>
+              <button class="btn btn-sm" type="button" (click)="fileInput.click()">
+                <span>업로드</span>
+                <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" />
+              </button>
+            </ion-item>
+            <form-input [name]="'배너 링크'" [controlName]="'link'" [group]="bannerFormGroup" [maxLength]="500"
+              [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]"></form-input>
+            <ion-item lines="none">
+              <ion-label position="fixed">배너 사이즈</ion-label>
+              <input type="checkbox" [formControlName]="'isDesktop'" />
+            </ion-item>
+            <button class="nnb-btn nnb-btn-primary nnb-btn-sm float-right"
+              [disabled]="!selectedFiles||bannerFormGroup.invalid||isUploading" (click)="addBanner()">배너 등록</button>
+            <p *ngIf="isUploading" style="margin-left: 12px;margin-top: 10px;">배너 등록 중입니다. &nbsp;<img
+                src="/assets/loading.gif" width="25" height="25"></p>
+          </div>
+        </div>
+        <br>
+        <!-- <label>배너 파일</label>
         <input #bannerImage style="margin-left: 13px;" type="file" (change)="selectFile($event)">
+        <br>
+        <label>배너 사이즈&nbsp;&nbsp;</label>
+        <input #bannerSize type="checkbox">&nbsp;&nbsp;<span class="desc">(Check: 모바일 | Uncheck: 데스크톱)</span>
         <br>
         <label>배너 링크</label>
         <input #bannerLink type="text" class="form-control" [(ngModel)]="link" placeholder="https://nonunbub.com">
+        <br>
         <button style="margin-top: 7px" class="btn btn-sm btn-info"
           [disabled]="!selectedFiles ||!this.link|| isUploading" (click)="addBanner()">업로드</button>
         <p *ngIf="isUploading" style="margin-left: 12px;margin-top: 10px;">업로드 중입니다. &nbsp;<img
             src="/assets/loading.gif" width="25" height="25"></p>
-        <hr>
+        <hr> -->
         <div *ngFor="let banner of banners; let last = last">
           <div class="container">
             <button class="button btn btn-sm btn-danger" (click)="deleteBanner(banner.image)">삭제</button>

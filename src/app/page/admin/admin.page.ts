@@ -1,6 +1,8 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonReorderGroup } from '@ionic/angular';
+import { S3 } from 'aws-sdk';
 import { Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { Meeting, MeetingStatus } from 'src/app/model/meeting';
 import { MeetingService } from 'src/app/service/meeting.service';
@@ -8,6 +10,7 @@ import { environment } from './../../../environments/environment';
 import { Configuration } from './../../model/configuration';
 import { RequestMeeting } from './../../model/meeting';
 import { ConfigurationService } from './../../service/configuration.service';
+import { FormService } from './../../service/form.service';
 import { PaymentService } from './../../service/payment.service';
 import { S3Service } from './../../service/s3.service';
 
@@ -30,19 +33,18 @@ export class AdminPage {
 
   sigupEvent: Configuration;
   isShow = false;
-  banners: { image: string, link: Promise<string> }[];
+  banners: { image: string, metadata: S3.Metadata }[];
   selectedFiles: FileList;
   isUploading = false;
-  @ViewChild('bannerImage') bannerImage: ElementRef;
-  @ViewChild('bannerLink') bannerLink: ElementRef;
-  link: string;
+  bannerFormGroup: FormGroup;
 
   constructor(
     private meetingService: MeetingService,
     private paymentService: PaymentService,
     private router: Router,
     private configService: ConfigurationService,
-    private s3Service: S3Service
+    private s3Service: S3Service,
+    private formService: FormService
   ) { }
 
   setMeetings() {
@@ -59,7 +61,7 @@ export class AdminPage {
   }
 
   setBanners() {
-    this.s3Service.getList(environment.folder.banner).then(resp => {
+    this.s3Service.getList(environment.folder.banner).subscribe(resp => {
       this.banners = resp;
     })
   }
@@ -109,6 +111,27 @@ export class AdminPage {
     })
   }
 
+  initForm() {
+    this.bannerFormGroup = new FormGroup({
+      link: new FormControl('', this.formService.getValidators(500)),
+      isDesktop: new FormControl(false),
+    })
+  }
+
+  onFileChange(event) {
+    const fileTypes = ["image/gif", "image/jpeg", "image/png"];
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      if (fileTypes.find(t => t === file.type)) {
+        this.selectedFiles = event.target.files;
+      } else {
+        alert(`이미지 형식만 가능합니다. (${fileTypes})`);
+      }
+    } else {
+      alert(`파일이 선택되지 않았습니다.`);
+    }
+  }
+
   check(row: RequestMeeting) {
     row.isOld = true;
     this.meetingService.checkRequestMeeting(row).subscribe(resp => {
@@ -131,6 +154,7 @@ export class AdminPage {
         this.setBanners();
         this.setPay();
         this.setRequests();
+        this.initForm();
       } else {
         alert('비밀번호가 틀렸습니다.');
         this.router.navigate(['/tabs/home']);
@@ -165,8 +189,9 @@ export class AdminPage {
 
   addBanner() {
     this.isUploading = true;
-    const file = this.selectedFiles.item(0);
-    this.s3Service.uploadFile(file, environment.folder.banner, this.link).then(resp => {
+    const image = this.selectedFiles.item(0);
+    const { link, isDesktop } = this.bannerFormGroup.value;
+    this.s3Service.uploadFile(image, environment.folder.banner, { link, isdesktop: `${isDesktop}` }).then(resp => {
       this.setBanners();
       alert('배너 파일을 업로드 하였습니다.');
       this.resetBannerInput()
@@ -174,8 +199,7 @@ export class AdminPage {
   }
 
   resetBannerInput() {
-    this.bannerImage.nativeElement.value = '';
-    this.bannerLink.nativeElement.value = '';
+    this.bannerFormGroup.reset();
     this.isUploading = false;
     this.selectedFiles = undefined;
   }

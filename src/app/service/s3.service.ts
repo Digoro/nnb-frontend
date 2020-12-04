@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import * as AWS from 'aws-sdk';
 import * as S3 from 'aws-sdk/clients/s3';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -18,7 +19,7 @@ export class S3Service {
     private http: HttpClient
   ) { }
 
-  uploadFile(file, folder: string, link?: string): Promise<any> {
+  uploadFile(file, folder: string, metadata?: S3.Metadata): Promise<any> {
     const contentType = file.type;
     const bucket = new S3(
       {
@@ -34,7 +35,7 @@ export class S3Service {
       ACL: 'public-read',
       ContentType: contentType
     };
-    if (link) params.Metadata = { 'link': link };
+    if (metadata) params.Metadata = metadata;
     return new Promise((resolve, reject) => {
       bucket.upload(params, function (err, data) {
         if (err) {
@@ -56,7 +57,7 @@ export class S3Service {
     return metadata.Metadata['link'];
   }
 
-  getList(prefix: string): Promise<{ image: string, link: Promise<string> }[]> {
+  getList(prefix: string): Observable<{ image: string, metadata: S3.Metadata }[]> {
     const s3 = new AWS.S3();
     s3.config.credentials = new AWS.Credentials({
       accessKeyId: this.ACCESS_KEY_ID,
@@ -66,25 +67,32 @@ export class S3Service {
       Bucket: this.BUCKET,
       Prefix: prefix
     };
-
-    return new Promise((resolve, reject) => {
+    return new Observable(observer => {
       s3.listObjects(params, (err, data) => {
-        if (err) reject(err);
         const list = data.Contents.filter(file => file.Size != 0).sort((a, b) => {
           if (moment(a.LastModified).isBefore(b.LastModified)) return -1;
           else return 1;
         }).map(file => {
+          const params = {
+            Bucket: this.BUCKET,
+            Key: file.Key,
+          };
+          const metadata = s3.headObject(params).promise();
           return {
-            key: file.Key,
-            link: this.getS3ObjectHead(s3, file.Key)
+            image: `http://${this.BUCKET}.s3.ap-northeast-2.amazonaws.com/${file.Key}`,
+            metadata: metadata
           }
         })
-        resolve(list.map(element => {
-          return {
-            image: `http://${this.BUCKET}.s3.ap-northeast-2.amazonaws.com/${element.key}`,
-            link: element.link
-          }
-        }));
+        Promise.all(list.map(el => el.metadata)).then(resp => {
+          const output = list.map((el, i) => {
+            return {
+              image: el.image,
+              metadata: resp[i].Metadata
+            }
+          })
+          observer.next(output)
+          observer.complete();
+        })
       })
     })
   }

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { S3 } from 'aws-sdk';
 import * as moment from 'moment';
 import { Category } from 'src/app/model/category';
 import { MeetingService } from 'src/app/service/meeting.service';
@@ -29,7 +30,7 @@ export class HomePage implements OnInit, OnDestroy {
       delay: 5000
     }
   }
-  banners: { image: string, link: Promise<any> }[];
+  banners: { image: string, metadata: S3.Metadata }[];
   mainMeetings: { title: string, subTitle: string, onShowKey: string, onShowTitle: string, meetings: Meeting[], emoji?: string, }[]
 
   constructor(
@@ -69,15 +70,13 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
-    this.s3Service.getList(environment.folder.banner).then(resp => {
+    this.s3Service.getList(environment.folder.banner).subscribe(resp => {
       this.banners = resp;
     })
   }
 
-  clickBanner(link: Promise<string>) {
-    link.then(resp => {
-      window.open(resp);
-    })
+  clickBanner(metadata: S3.Metadata) {
+    window.open(metadata.link);
   }
 
   private getMeetings() {
