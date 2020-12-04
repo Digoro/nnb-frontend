@@ -11,10 +11,7 @@
       <ion-col [ngStyle]="{'padding':isDesktop?'':'0px'}">
         <ion-slides [options]="bannerSliderConfig" pager="true">
           <ion-slide *ngFor="let banner of banners" style="cursor: pointer;">
-            <img *ngIf="isDesktop && banner.metadata.isdesktop === 'true'" [src]="banner.image"
-              (click)="clickBanner(banner.metadata)">
-            <img *ngIf="!isDesktop && banner.metadata.isdesktop !== 'true'" [src]="banner.image"
-              (click)="clickBanner(banner.metadata)">
+            <img [src]="banner.image" (click)="clickBanner(banner.metadata)">
           </ion-slide>
           <ng-container *ngIf="!banners">
             <ion-slide *ngFor="let banner of [1,2,3,4]">

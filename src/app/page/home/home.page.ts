@@ -71,7 +71,11 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnInit() {
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
     this.s3Service.getList(environment.folder.banner).subscribe(resp => {
-      this.banners = resp;
+      if (this.isDesktop) {
+        this.banners = resp.filter(banner => banner.metadata.isdesktop === 'true');
+      } else {
+        this.banners = resp.filter(banner => banner.metadata.isdesktop !== 'true');
+      }
     })
   }
 
