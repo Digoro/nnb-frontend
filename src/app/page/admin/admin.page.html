@@ -1,158 +1,152 @@
 <ion-content *ngIf="isShow">
-  <ion-grid fixed>
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>신청 관리</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ngx-table *ngIf="requestData" [id]="'requestTable'" [configuration]="requestConfiguration" [data]="requestData"
-          [groupRowsBy]="'phone'" [columns]="requestColumns">
-          <ng-template let-row let-index="index">
-            <td>{{ index +1 }}</td>
-            <td><a [href]="'/tabs/meeting-detail/' + row.meeting.mid">{{row.meeting.title}}</a></td>
-            <td>{{ row.user.nickName}}</td>
-            <td>{{ row.phone}}</td>
-            <td>{{ row.peopleNumber}}</td>
-            <td>
-              <pre>{{ row.desc}}</pre>
-            </td>
-            <td>{{row.isOld}}</td>
-            <td>
-              <button class="btn btn-sm btn-info" (click)="check(row)">확인하기</button>
-            </td>
-          </ng-template>
-        </ngx-table>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>이벤트 적용</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ng-container *ngIf="sigupEvent">
-          <ion-item>
-            <ion-label class="ion-text-wrap">회원가입 이벤트(3000원 차감할인)</ion-label>
-            <ion-toggle slot="end" name="show" color="success" [checked]="sigupEvent.value==='true'"
-              (ionChange)="toggleConfiguration($event, sigupEvent)"></ion-toggle>
-          </ion-item>
-        </ng-container>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>모임 관리</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-reorder-group (ionItemReorder)="reorderMeeting($event)" disabled="false">
-          <ion-item *ngFor="let meeting of meetings">
-            <ion-label class="ion-text-wrap">
-              <a [href]="'/tabs/meeting-detail/' + meeting.mid">{{meeting.title}}</a>
-            </ion-label>
-            <ion-toggle slot="end" name="show" color="success" [checked]="meeting.status===3"
-              (ionChange)="toggleMeeting($event, meeting)"></ion-toggle>
-            <ion-reorder slot="end"></ion-reorder>
-          </ion-item>
-        </ion-reorder-group>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>결제 목록</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ngx-table *ngIf="payData" [id]="'payTable'" [configuration]="payConfiguration" [data]="payData"
-          [columns]="payColumns">
-          <ng-template let-row let-index="index">
-            <td>{{ index +1 }}</td>
-            <td>{{ row.PCD_PAY_TIME }}</td>
-            <td>{{ row.uid.nickName }}</td>
-            <a [href]="'/tabs/meeting-detail/' + row.mid.mid">{{row.PCD_PAY_GOODS}}</a>
-            <td>
-              <ng-container *ngFor="let option of row.options; let last = last">
-                <ion-chip *ngIf="!option.option.isOld">
-                  <ion-label style="font-size: 12px;">이전옵션</ion-label>
-                </ion-chip>
-                <p>옵션: {{option.option.optionTitle}}</p>
-                <p>가격: {{option.option.optionPrice}}</p>
-                <p>일시: {{option.option.optionDate|date:'yyyy-MM-dd HH:mm'}}</p>
-                <p>수량: {{option.count}}</p>
-                <hr style="margin: 0px" *ngIf="!last">
-              </ng-container>
-            </td>
-            <td>
-              <ng-container *ngIf="row.couponId">
-                {{ row.couponId.title }} ({{row.couponId.price|number}}원)
-              </ng-container>
-              <ng-container *ngIf="!row.couponId">
-                <ion-chip>
-                  <ion-label style="font-size: 12px;">없음</ion-label>
-                </ion-chip>
-              </ng-container>
-            </td>
-            <td>{{ row.phone }}</td>
-            <td>{{ row.PCD_PAY_TOTAL }}</td>
-            <td>{{ row.PCD_PAY_OID }}</td>
-            <td>{{ row.PCD_PAY_MSG }}</td>
-            <td>{{ row.PCD_PAY_TYPE }}</td>
-            <td>{{ row.PCD_PAY_RST }}</td>
-            <td>{{ row.mid.mid }}</td>
-          </ng-template>
-        </ngx-table>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>배너 관리</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div class="card" [formGroup]="bannerFormGroup">
-          <div class="card-body">
-            <ion-item lines="none">
-              <ion-label position="fixed">배너 이미지<span class="invalid-input">*</span></ion-label>
-              <button class="btn btn-sm" type="button" (click)="fileInput.click()">
-                <span>업로드</span>
-                <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" />
-              </button>
-            </ion-item>
-            <form-input [name]="'배너 링크'" [controlName]="'link'" [group]="bannerFormGroup" [maxLength]="500"
-              [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]"></form-input>
-            <ion-item lines="none">
-              <ion-label position="fixed">배너 사이즈</ion-label>
-              <input type="checkbox" [formControlName]="'isDesktop'" />
-            </ion-item>
-            <button class="nnb-btn nnb-btn-primary nnb-btn-sm float-right"
-              [disabled]="!selectedFiles||bannerFormGroup.invalid||isUploading" (click)="addBanner()">배너 등록</button>
-            <p *ngIf="isUploading" style="margin-left: 12px;margin-top: 10px;">배너 등록 중입니다. &nbsp;<img
-                src="/assets/loading.gif" width="25" height="25"></p>
+  <ion-grid [ngStyle]="{'padding': isDesktop ? '0rem 8rem': '0rem 1rem'}" style="margin-top: 1.2rem;">
+    <div class="row">
+      <div [ngClass]="isDesktop? 'col-2':'col-12'" [ngStyle]="{'margin-bottom':isDesktop ? '0rem':'2rem'}">
+        <div class="list-group" id="list-tab" role="tablist">
+          <a class="list-group-item list-group-item-action active" id="list-request-list" data-toggle="list"
+            href="#list-request" role="tab" aria-controls="request">신청 관리</a>
+          <a class="list-group-item list-group-item-action" id="list-event-list" data-toggle="list" href="#list-event"
+            role="tab" aria-controls="event">이벤트 관리</a>
+          <a class="list-group-item list-group-item-action" id="list-meeting-list" data-toggle="list"
+            href="#list-meeting" role="tab" aria-controls="meeting">모임 관리</a>
+          <a class="list-group-item list-group-item-action" id="list-payment-list" data-toggle="list"
+            href="#list-payment" role="tab" aria-controls="payment">결제 목록</a>
+          <a class="list-group-item list-group-item-action" id="list-banner-list" data-toggle="list" href="#list-banner"
+            role="tab" aria-controls="banner">배너 관리</a>
+        </div>
+      </div>
+      <div [ngClass]="isDesktop? 'col-10':'col-12'">
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="list-request" role="tabpanel" aria-labelledby="list-request-list">
+            <ngx-table *ngIf="requestData" [id]="'requestTable'" [configuration]="requestConfiguration"
+              [data]="requestData" [groupRowsBy]="'phone'" [columns]="requestColumns">
+              <ng-template let-row let-index="index">
+                <td>{{ index +1 }}</td>
+                <td>
+                  <a target="_blank" [href]="'/tabs/meeting-detail/' + row.meeting.mid">{{row.meeting.title}}</a>
+                </td>
+                <td>{{ row.user.nickName}}</td>
+                <td>{{ row.phone}}</td>
+                <td>{{ row.peopleNumber}}</td>
+                <td>
+                  <pre>{{ row.desc}}</pre>
+                </td>
+                <td>{{row.isOld}}</td>
+                <td>
+                  <button class="btn btn-sm btn-info" (click)="check(row)">확인하기</button>
+                </td>
+              </ng-template>
+            </ngx-table>
+          </div>
+          <div class="tab-pane fade" id="list-event" role="tabpanel" aria-labelledby="list-event-list">
+            <ng-container *ngIf="sigupEvent">
+              <ion-item>
+                <ion-label class="ion-text-wrap">회원가입 이벤트(3000원 차감할인)</ion-label>
+                <ion-toggle slot="end" name="show" [checked]="sigupEvent.value==='true'"
+                  (ionChange)="toggleConfiguration($event, sigupEvent)"></ion-toggle>
+              </ion-item>
+            </ng-container>
+          </div>
+          <div class="tab-pane fade" id="list-meeting" role="tabpanel" aria-labelledby="list-meeting-list">
+            <ion-reorder-group (ionItemReorder)="reorderMeeting($event)" disabled="false">
+              <ion-item *ngFor="let meeting of meetings">
+                <ion-label class="ion-text-wrap">
+                  <img width="50" height="50" [src]="meeting.file">&nbsp;&nbsp;
+                  <a target="_blank" [href]="'/tabs/meeting-detail/' + meeting.mid">{{meeting.title}}</a>
+                </ion-label>
+                <ion-toggle slot="end" name="show" [checked]="meeting.status===3"
+                  (ionChange)="toggleMeeting($event, meeting)"></ion-toggle>
+                <ion-reorder slot="end"></ion-reorder>
+              </ion-item>
+            </ion-reorder-group>
+          </div>
+          <div class="tab-pane fade" id="list-payment" role="tabpanel" aria-labelledby="list-payment-list">
+            <ng-container *ngIf="!payData">
+              <ion-spinner name="lines"></ion-spinner>
+            </ng-container>
+            <ng-container *ngIf="payData">
+              <ion-badge>총: {{payData.length}}건</ion-badge><br>
+              <ngx-table [id]="'payTable'" [configuration]="payConfiguration" [data]="payData" [columns]="payColumns">
+                <ng-template let-row let-index="index">
+                  <td>{{ index +1 }}</td>
+                  <td>
+                    <img width="50" height="50" [src]="row.mid.file">
+                  </td>
+                  <td>{{ row.PCD_PAY_TIME }}</td>
+                  <td>{{ row.uid.nickName }}</td>
+                  <td>
+                    <a target="_blank" [href]="'/tabs/meeting-detail/' + row.mid.mid">{{row.PCD_PAY_GOODS}}</a>
+                  </td>
+                  <td>
+                    <ng-container *ngFor="let option of row.options; let last = last">
+                      <div class="card" [ngStyle]="{'margin-bottom':!last ? '0.2rem':'0rem'}">
+                        <div class="card-body" style="padding: 0.7rem">
+                          <ion-chip *ngIf="!option.option.isOld">
+                            <ion-label style="font-size: 12px;">이전옵션</ion-label>
+                          </ion-chip>
+                          <p>옵션: {{option.option.optionTitle}}</p>
+                          <p>가격: {{option.option.optionPrice}}</p>
+                          <p>일시: {{option.option.optionDate|date:'yyyy-MM-dd HH:mm'}}</p>
+                          <p>수량: {{option.count}}</p>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="row.couponId">
+                      {{ row.couponId.title }} ({{row.couponId.price|number}}원)
+                    </ng-container>
+                    <ng-container *ngIf="!row.couponId">
+                      <ion-chip>
+                        <ion-label style="font-size: 12px;">없음</ion-label>
+                      </ion-chip>
+                    </ng-container>
+                  </td>
+                  <td>{{ row.phone }}</td>
+                  <td>{{ row.PCD_PAY_TOTAL }}</td>
+                  <td>{{ row.PCD_PAY_OID }}</td>
+                  <td>{{ row.PCD_PAY_MSG }}</td>
+                  <td>{{ row.PCD_PAY_TYPE }}</td>
+                  <td>{{ row.PCD_PAY_RST }}</td>
+                  <td>{{ row.mid.mid }}</td>
+                </ng-template>
+              </ngx-table>
+            </ng-container>
+          </div>
+          <div class="tab-pane fade" id="list-banner" role="tabpanel" aria-labelledby="list-banner-list">
+            <div class="card" [formGroup]="bannerFormGroup">
+              <div class="card-body">
+                <ion-item lines="none">
+                  <ion-label position="fixed">배너 이미지<span class="invalid-input">*</span></ion-label>
+                  <button class="btn btn-sm" type="button" (click)="fileInput.click()">
+                    <span>업로드</span>
+                    <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" />
+                  </button>
+                </ion-item>
+                <form-input [name]="'배너 링크'" [controlName]="'link'" [group]="bannerFormGroup" [maxLength]="500"
+                  [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]"></form-input>
+                <ion-item lines="none">
+                  <ion-label position="fixed">배너 사이즈</ion-label>
+                  <input type="checkbox" [formControlName]="'isDesktop'" />
+                </ion-item>
+                <p class="desc">check:데스크탑용, uncheck:모바일용</p>
+                <button class="nnb-btn nnb-btn-primary nnb-btn-sm float-right"
+                  [disabled]="!selectedFiles||bannerFormGroup.invalid||isUploading" (click)="addBanner()">배너 등록</button>
+                <p *ngIf="isUploading" style="margin-left: 12px;margin-top: 10px;">배너 등록 중입니다. &nbsp;<img
+                    src="/assets/loading.gif" width="25" height="25"></p>
+              </div>
+            </div>
+            <br>
+            <div *ngFor="let banner of banners;">
+              <div class="banner-container">
+                <button class="button btn btn-sm btn-danger" style="background: #ff4683;"
+                  (click)="deleteBanner(banner.image)">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </button>
+                <img class="image" [src]="banner.image">
+              </div>
+            </div>
           </div>
         </div>
-        <br>
-        <!-- <label>배너 파일</label>
-        <input #bannerImage style="margin-left: 13px;" type="file" (change)="selectFile($event)">
-        <br>
-        <label>배너 사이즈&nbsp;&nbsp;</label>
-        <input #bannerSize type="checkbox">&nbsp;&nbsp;<span class="desc">(Check: 모바일 | Uncheck: 데스크톱)</span>
-        <br>
-        <label>배너 링크</label>
-        <input #bannerLink type="text" class="form-control" [(ngModel)]="link" placeholder="https://nonunbub.com">
-        <br>
-        <button style="margin-top: 7px" class="btn btn-sm btn-info"
-          [disabled]="!selectedFiles ||!this.link|| isUploading" (click)="addBanner()">업로드</button>
-        <p *ngIf="isUploading" style="margin-left: 12px;margin-top: 10px;">업로드 중입니다. &nbsp;<img
-            src="/assets/loading.gif" width="25" height="25"></p>
-        <hr> -->
-        <div *ngFor="let banner of banners; let last = last">
-          <div class="container">
-            <button class="button btn btn-sm btn-danger" (click)="deleteBanner(banner.image)">삭제</button>
-            <img class="image" [src]="banner.image">
-          </div>
-          <hr *ngIf="!last">
-        </div>
-      </ion-card-content>
-    </ion-card>
-  </ion-grid>
-</ion-content>
+      </div>
+    </div>

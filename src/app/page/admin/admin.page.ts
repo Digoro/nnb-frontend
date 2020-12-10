@@ -5,6 +5,7 @@ import { IonReorderGroup } from '@ionic/angular';
 import { S3 } from 'aws-sdk';
 import { Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { Meeting, MeetingStatus } from 'src/app/model/meeting';
+import { CheckDesktopService } from 'src/app/service/check-desktop.service';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { environment } from './../../../environments/environment';
 import { Configuration } from './../../model/configuration';
@@ -38,13 +39,16 @@ export class AdminPage {
   isUploading = false;
   bannerFormGroup: FormGroup;
 
+  isDesktop: boolean;
+
   constructor(
     private meetingService: MeetingService,
     private paymentService: PaymentService,
     private router: Router,
     private configService: ConfigurationService,
     private s3Service: S3Service,
-    private formService: FormService
+    private formService: FormService,
+    private cds: CheckDesktopService
   ) { }
 
   setMeetings() {
@@ -68,12 +72,13 @@ export class AdminPage {
 
   setPay() {
     this.paymentService.getPurchasedInfoAll(undefined).subscribe(resp => {
-      this.payData = resp;
+      this.payData = resp.reverse();
       this.payConfiguration = { ...DefaultConfig };
       this.payConfiguration.searchEnabled = true;
       this.payConfiguration.horizontalScroll = true;
       this.payColumns = [
         { key: 'index', title: '번호' },
+        { key: 'image', title: '이미지' },
         { key: 'PCD_PAY_TIME', title: '결제 일시' },
         { key: 'uid', title: '결제자 닉네임' },
         // { key: 'uid.name', title: '결제자 이름' },
@@ -144,6 +149,7 @@ export class AdminPage {
   }
 
   ionViewDidEnter() {
+    this.cds.isDesktop.subscribe(v => this.isDesktop = v);
     this.configService.getAll().subscribe(resp => {
       const config = resp.find(c => c.key === ConfigurationService.ADMIN_PW_KEY)
       const result = prompt("비밀번호를 입력해주세요");
