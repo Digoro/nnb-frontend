@@ -105,12 +105,13 @@ export class AdminPage {
       this.requestConfiguration.groupRows = true;
       this.requestColumns = [
         { key: 'index', title: '번호' },
+        { key: 'image', title: '이미지' },
         { key: 'meeting.title', title: '상품' },
         { key: 'user.nickName', title: '신청자' },
         { key: 'phone', title: '연락처' },
         { key: 'peopleNumber', title: '신청인원' },
         { key: 'desc', title: '문의 내용' },
-        { key: 'isOld', title: '확인여부' },
+        { key: 'isOld', title: '신청확인 여부' },
         { key: 'action', title: '버튼' },
       ];
     })
