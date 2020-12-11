@@ -101,9 +101,6 @@
             </ion-reorder-group>
           </div>
           <div class="tab-pane fade" id="list-payment" role="tabpanel" aria-labelledby="list-payment-list">
-            <ng-container *ngIf="!payData">
-              <ion-spinner name="lines"></ion-spinner>
-            </ng-container>
             <ng-container *ngIf="payData">
               <ngx-table [id]="'payTable'" [configuration]="payConfiguration" [data]="payData" [columns]="payColumns">
                 <ng-template let-row let-index="index">
