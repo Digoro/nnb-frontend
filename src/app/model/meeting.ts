@@ -9,7 +9,6 @@ export class Meeting {
         public point: string,
         public recommend: string,
         public programs: string,
-        public desc: string,
         public address: string,
         public detailed_address: string,
         public runningMinutes: number,
