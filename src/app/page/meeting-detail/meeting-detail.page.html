@@ -43,7 +43,10 @@
             <ng-container *ngIf="meeting.options.length!==0">
               <ion-icon name="calendar-outline" class="summary-icon"></ion-icon>
               {{meeting.options[0].optionDate|date:'yyyy-MM-dd HH:mm'}}
-              <span *ngIf="meeting.options.length > 1">외 {{meeting.options.length}}개의 일정</span>
+              <span *ngIf="meeting.options.length > 1">외
+                <ng-container *ngIf="meeting.options.length < 10">{{meeting.options.length}}개의 일정</ng-container>
+                <ng-container *ngIf="meeting.options.length >= 10">다수 일정</ng-container>
+              </span>
             </ng-container>
             <ng-container *ngIf="meeting.options.length===0">
               <ion-icon name="calendar-outline" class="summary-icon"></ion-icon>
