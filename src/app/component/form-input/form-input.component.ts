@@ -18,6 +18,7 @@ export class FormInputComponent implements OnInit {
   @Input() value: any = '';
   @Input() isUnUseDirty = false;
   @Input() disabled = false;
+  @Input() onlyDigit = false;
   @Output() valueChangeEvent = new EventEmitter();
 
   constructor(
@@ -36,5 +37,15 @@ export class FormInputComponent implements OnInit {
 
   changeEvent(event) {
     this.valueChangeEvent.emit(event);
+  }
+
+  numberOnlyValidation(event: any) {
+    if (this.onlyDigit) {
+      const pattern = /^\d+$/;
+      let inputChar = String.fromCharCode(event.charCode);
+      if (!pattern.test(inputChar)) {
+        event.preventDefault();
+      }
+    }
   }
 }

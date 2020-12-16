@@ -8,19 +8,10 @@
         <ion-col *ngIf="isDesktop">
           <img [src]="meeting.file" class="main-image" />
         </ion-col>
-        <ion-col>
+        <ion-col [ngStyle]="{'padding-left': isDesktop ? '1.5rem':''}">
           <p class="subTitle">{{meeting.subTitle}}</p>
           <p class="title">{{meeting.title}}</p>
-          <span *ngIf="meeting.price !== 0" class="price">
-            <ng-container *ngIf="meeting.discountPrice !== 0">
-              <span class="origin">{{meeting.price | number}}원</span>
-              <span class="discount">{{meeting.discountPrice | number}}원</span>
-            </ng-container>
-            <ng-container *ngIf="meeting.discountPrice === 0">
-              <p class="discount">{{meeting.price | number}}원</p>
-            </ng-container>
-          </span>
-          <span *ngIf="meeting.price === 0" class="price">무료</span>
+          <price [price]="meeting.price" [discountPrice]="meeting.discountPrice"></price>
           <hr>
           <p class="summary-info">
             <ion-icon name="pricetag-outline" class="summary-icon"></ion-icon>

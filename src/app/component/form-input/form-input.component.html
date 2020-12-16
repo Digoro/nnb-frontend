@@ -4,7 +4,7 @@
     <ion-label position="floating">{{name}}&nbsp;<span class="invalid-input" *ngIf="isRequired">*</span>
     </ion-label>
     <ion-input *ngIf="type!='textarea'" [disabled]="disabled" [type]="type" [formControlName]="controlName" clearInput
-      (ngModelChange)="changeEvent($event)">
+      (ngModelChange)="changeEvent($event)" (keypress)="numberOnlyValidation($event)">
     </ion-input>
     <ion-textarea *ngIf="type=='textarea'" [disabled]="disabled" [rows]="rows" [maxlength]="maxLength"
       [formControlName]="controlName" clearInput>

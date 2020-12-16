@@ -200,29 +200,19 @@
           </div>
           <notion-desc [description]="descriptions[4]"></notion-desc>
           <form-input [name]="'가격'" [controlName]="'price'" [type]="'number'" [group]="formGroup"
-            (valueChangeEvent)="checkDiscountPrice()" [errors]="[{key:'max',message:'10000000원 제한입니다.'}]">
+            (valueChangeEvent)="checkDiscountPrice()" [errors]="[{key:'max',message:'10000000원 제한입니다.'}]"
+            [onlyDigit]="true">
           </form-input>
           <form-input [name]="'할인된 가격'" [controlName]="'discountPrice'" [type]="'number'" [group]="formGroup"
             [errors]="[{key:'max',message:'10000000원 제한입니다.'},{key:'isUpper',message:'할인된 가격이 더 클 수 없습니다.'}]"
-            [isUnUseDirty]="true" [isRequired]="false">
+            [isUnUseDirty]="true" [isRequired]="false" [onlyDigit]="true">
           </form-input>
           <br>
-          <span class="desc">다음과 같이 표시됩니다.</span>
-          <div style="padding: 20px; border: 1px solid #c8c7c7;border-radius: 4px;max-width: 240px;">
-            <span *ngIf="formGroup.controls.price.value !== 0 && formGroup.controls.price.value !== ''" class="price">
-              <ng-container *ngIf="!!formGroup.controls.discountPrice.value && 
-              formGroup.controls.discountPrice.value !== 0 &&
-              formGroup.controls.price.valid">
-                <span class="origin">{{formGroup.controls.price.value | number}}원</span>
-                <span class="discount">{{formGroup.controls.discountPrice.value | number}}원</span>
-              </ng-container>
-              <ng-container
-                *ngIf="!formGroup.controls.discountPrice.value  || formGroup.controls.discountPrice.value === 0">
-                <p class="discount" style="margin-bottom: 0px;">
-                  {{formGroup.controls.price.value | number}}원</p>
-              </ng-container>
-            </span>
-            <span *ngIf="formGroup.controls.price.value === 0" class="price">무료</span>
+          <p class="desc" style="margin: 0px;">다음과 같이 표시됩니다.</p>
+          <div class="preview-price">
+            <price *ngIf="formGroup.controls.price.valid && formGroup.controls.discountPrice.valid"
+              [price]="+formGroup.controls.price.value" [discountPrice]="+formGroup.controls.discountPrice.value">
+            </price>
           </div>
         </div>
         <div id="test-l-6" class="content">
@@ -365,15 +355,17 @@
           <form-input [name]="'옵션 설명'" [controlName]="'optionTitle'" [group]="optionAddFormGroup" [maxLength]="100"
             [errors]="[{key:'maxlength',message:'100자 제한입니다.'}]"></form-input>
           <form-input [name]="'가격'" [controlName]="'optionPrice'" [type]="'number'" [group]="optionAddFormGroup"
-            [maxLength]="100" [errors]="[{key:'min',message:'0원 이상이어야 합니다.'},{key:'max',message:'10000000원 제한입니다.'}]">
+            [maxLength]="100" [errors]="[{key:'min',message:'0원 이상이어야 합니다.'},{key:'max',message:'10000000원 제한입니다.'}]"
+            [onlyDigit]="true">
           </form-input>
           <form-input [name]="'최소 인원(명)'" [controlName]="'optionMinParticipation'" [type]="'number'"
             [group]="optionAddFormGroup"
-            [errors]="[{key:'min',message:'1명 이상이어야 합니다.'},{key:'max',message:'1000명 제한입니다.'},{key:'isUpper',message:'최대 인원보다 더 높을 수 없습니다.'}]">
+            [errors]="[{key:'min',message:'1명 이상이어야 합니다.'},{key:'max',message:'1000명 제한입니다.'},{key:'isUpper',message:'최대 인원보다 더 높을 수 없습니다.'}]"
+            [onlyDigit]="true">
           </form-input>
           <form-input [name]="'최대 인원(명)'" [controlName]="'optionMaxParticipation'" [type]="'number'"
             [group]="optionAddFormGroup"
-            [errors]="[{key:'min',message:'1명 이상이어야 합니다.'},{key:'max',message:'1000명 제한입니다.'}]">
+            [errors]="[{key:'min',message:'1명 이상이어야 합니다.'},{key:'max',message:'1000명 제한입니다.'}]" [onlyDigit]="true">
           </form-input>
           <ion-item lines="none">
             <button class="nnb-btn nnb-btn-primary nnb-btn-sm" slot="end" (click)="addSchedule()"
