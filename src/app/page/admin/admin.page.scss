@@ -28,3 +28,31 @@
     background-color: #e4456e;
     border-color: #e4456e;
 }
+
+.count-input {
+    border: 0px;
+    max-width: 50px;
+    text-align: center;
+    background: #ffffff;
+    margin-top: -5px;
+    padding: 0px;
+}
+
+.form-card {
+    .card {
+        margin: 24px 16px 16px 16px;
+        padding: 1rem 1.3rem 1rem 1.3rem;
+        background: #fff;
+        border-radius: 7px;
+        -o-box-shadow: 2px 3px 7px rgba(0, 0, 0, .2);
+        box-shadow: 2px 3px 7px rgba(0, 0, 0, .2);
+
+        .title {
+            padding-bottom: 15px;
+            font-size: 18px;
+            color: #1a1a1a;
+            font-weight: bold;
+            margin-bottom: 0rem;
+        }
+    }
+}

@@ -1,15 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonReorderGroup } from '@ionic/angular';
 import { S3 } from 'aws-sdk';
+import { CalendarComponentOptions, CalendarDay } from 'ion2-calendar';
+import * as moment from 'moment';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { Meeting, MeetingStatus } from 'src/app/model/meeting';
 import { CheckDesktopService } from 'src/app/service/check-desktop.service';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { environment } from './../../../environments/environment';
 import { Configuration } from './../../model/configuration';
-import { RequestMeeting } from './../../model/meeting';
+import { MeetingOption, RequestMeeting } from './../../model/meeting';
+import { PaymentResult } from './../../model/payment';
 import { ConfigurationService } from './../../service/configuration.service';
 import { FormService } from './../../service/form.service';
 import { PaymentService } from './../../service/payment.service';
@@ -32,6 +36,14 @@ export class AdminPage {
   requestData: RequestMeeting[];
   requestConfiguration: Config;
 
+  paymentAddFormGroup: FormGroup;
+  calendarOptions: CalendarComponentOptions;
+  selectedOptionsFromCalendar: MeetingOption[];
+  selectedMeeting: Meeting;
+  options: FormArray = new FormArray([]);
+  price = 0;
+  modalRef: BsModalRef;
+
   sigupEvent: Configuration;
   isShow = false;
   banners: { image: string, metadata: S3.Metadata }[];
@@ -48,7 +60,9 @@ export class AdminPage {
     private configService: ConfigurationService,
     private s3Service: S3Service,
     private formService: FormService,
-    private cds: CheckDesktopService
+    private cds: CheckDesktopService,
+    private fb: FormBuilder,
+    private modalService: BsModalService
   ) { }
 
   setMeetings() {
@@ -118,9 +132,147 @@ export class AdminPage {
   }
 
   initForm() {
+    this.paymentAddFormGroup = new FormGroup({
+      meeting: new FormControl('', Validators.required),
+      optionsForCount: new FormControl(''),
+      options: this.fb.array([], Validators.required),
+      PCD_PAYER_NAME: new FormControl('', this.formService.getValidators(500)),
+      phone: new FormControl('', this.formService.getValidators(11, [Validators.pattern("[0-9 ]{11}")])),
+      PCD_PAY_TOTAL: new FormControl('', [Validators.required, Validators.max(10000000)]),
+      PCD_PAY_OID: new FormControl('', this.formService.getValidators(500)),
+      PCD_PAY_TIME: new FormControl('', this.formService.getValidators(500)),
+      PCD_PAY_TYPE: new FormControl('', Validators.required),
+      PCD_PAY_BANKNAME: new FormControl('', Validators.maxLength(500)),
+      PCD_PAY_BANKNUM: new FormControl('', Validators.maxLength(500)),
+      PCD_PAY_CARDNAME: new FormControl('', Validators.maxLength(500)),
+      PCD_PAY_CARDNUM: new FormControl('', Validators.maxLength(500)),
+      PCD_PAY_CARDRECEIPT: new FormControl('', Validators.maxLength(2000)),
+    })
     this.bannerFormGroup = new FormGroup({
       link: new FormControl('', this.formService.getValidators(500)),
       isDesktop: new FormControl(false),
+    })
+  }
+
+  openModal(template) {
+    this.modalRef = this.modalService.show(template, {
+      class: 'modal-lg',
+      ignoreBackdropClick: true
+    })
+  }
+
+  onSelectMeeting(meeting: Meeting) {
+    this.calendarOptions = {
+      color: 'primary',
+      to: null,
+      monthFormat: 'YYYY.MM',
+      weekdays: ['일', '월', '화', '수', '목', '금', '토'],
+      monthPickerFormat: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+      daysConfig: meeting.options.map(option => {
+        return {
+          date: moment(option.optionDate).toDate(),
+          marked: true,
+          disable: false,
+          cssClass: '',
+        }
+      })
+    }
+    this.selectedOptionsFromCalendar = undefined;
+    this.selectedMeeting = meeting;
+    this.options.controls = [];
+    this.options.reset();
+    this.price = 0;
+  }
+
+  selectCalendar(event: CalendarDay) {
+    this.options.controls = [];
+    this.options.reset();
+    const month = +moment(event.time).format('M')
+    const day = +moment(event.time).get('D')
+
+    const selectedOptions = this.selectedMeeting.options.filter(option => {
+      const optionMonth = +moment(option.optionDate).format('M');
+      const optionDay = +moment(option.optionDate).format('D');
+      return month === optionMonth && day === optionDay;
+    })
+    this.selectedOptionsFromCalendar = selectedOptions;
+  }
+
+  changeCount(flag: boolean, option: MeetingOption) {
+    const optionArray = this.options.controls.find(o => o.value.oid === option.oid);
+    const count = flag ? +document.getElementById('optionCount' + option.oid)['value'] + 1 : +document.getElementById('optionCount' + option.oid)['value'] - 1;
+    if (count > option.optionMaxParticipation) {
+      alert(`최대 신청인원은 ${option.optionMaxParticipation}명 입니다.`);
+      return;
+    }
+    document.getElementById('optionCount' + option.oid)['value'] = count;
+
+    if (count > 0 && !optionArray) {
+      this.addItem(option);
+    } else if (count <= 0 && optionArray) {
+      this.minusItem(option);
+      document.getElementById('optionCount' + option.oid)['value'] = 0;
+    } else if (count <= 0 && !optionArray) {
+      document.getElementById('optionCount' + option.oid)['value'] = 0;
+    } else if (count > 0 && optionArray) {
+      optionArray.value.optionCount = count;
+    }
+
+    this.setPrice()
+    this.options.controls = this.sortSelectedOptions(this.options.controls)
+  }
+
+  setPrice() {
+    if (this.options.value.length > 0) {
+      this.price = this.options.value.map(option => option.optionPrice * +option.optionCount).reduce((a, b) => a + b);
+    }
+  }
+
+  createItem(option: MeetingOption) {
+    return this.fb.group({
+      oid: [option.oid, Validators.required],
+      optionTitle: [option.optionTitle, Validators.required],
+      optionPrice: [option.optionPrice, Validators.required],
+      optionCount: [1, this.formService.getValidators(10, [Validators.min(1), Validators.max(999)])],
+      optionDate: [option.optionDate]
+    });
+  }
+
+  addItem(option: MeetingOption): void {
+    this.options = this.paymentAddFormGroup.get('options') as FormArray;
+    this.options.push(this.createItem(option));
+  }
+
+  minusItem(option: MeetingOption): void {
+    this.options = this.paymentAddFormGroup.get('options') as FormArray;
+    const value = this.options.value.find(o => o.oid === option.oid)
+    const index = this.options.value.indexOf(value)
+    this.options.removeAt(index);
+  }
+
+  sortSelectedOptions(controls: AbstractControl[]) {
+    return controls.sort((a, b) => {
+      if (moment(a.value.optionDate).isBefore(b.value.optionDate)) return -1;
+      else if (moment(a.value.optionDate).isSame(b.value.optionDate)) return 0;
+      else return 1;
+    })
+  }
+
+  addPayment() {
+    const { meeting, options, PCD_PAYER_NAME, phone, PCD_PAY_TOTAL, PCD_PAY_OID, PCD_PAY_TIME, PCD_PAY_TYPE,
+      PCD_PAY_BANKNAME, PCD_PAY_BANKNUM, PCD_PAY_CARDNAME, PCD_PAY_CARDNUM, PCD_PAY_CARDRECEIPT } = this.paymentAddFormGroup.value;
+
+    const result = new PaymentResult(0, meeting.mid, undefined, phone, undefined, '수기 결제 입력', undefined,
+      undefined, undefined, PCD_PAY_OID, PCD_PAY_TYPE, undefined, undefined, undefined, undefined, undefined,
+      undefined, meeting.title, PCD_PAY_TOTAL, undefined, undefined, undefined, PCD_PAY_BANKNAME, PCD_PAY_BANKNUM,
+      PCD_PAY_TIME, undefined, undefined, undefined, PCD_PAYER_NAME, undefined, undefined, PCD_PAY_CARDNAME,
+      PCD_PAY_CARDNUM, undefined, undefined, PCD_PAY_CARDRECEIPT, undefined, undefined, undefined);
+    this.paymentService.writeDirectPayment(result, options, phone, undefined).then(resp => {
+      this.paymentAddFormGroup.reset();
+      this.options = new FormArray([]);
+      this.selectedOptionsFromCalendar = undefined;
+      this.selectedMeeting = undefined;
+      this.price = 0;
     })
   }
 

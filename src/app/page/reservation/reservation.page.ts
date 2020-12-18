@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Columns, Config, DefaultConfig } from 'ngx-easy-table';
 import { Meeting } from 'src/app/model/meeting';
 import { AuthService } from 'src/app/service/auth.service';
@@ -23,7 +22,6 @@ export class ReservationPage implements OnInit {
 
   constructor(
     private paymentService: PaymentService,
-    private router: Router,
     private authService: AuthService,
     private cds: CheckDesktopService
   ) { }
@@ -33,14 +31,14 @@ export class ReservationPage implements OnInit {
     this.authService.getCurrentNonunbubUser().subscribe(user => {
       this.user = user;
       this.paymentService.getPurchasedInfoAll(user.uid).subscribe(resp => {
-        this.data = resp;
+        this.data = resp.reverse();
         this.mobileData = resp.map(e => e.options);
         this.configuration = { ...DefaultConfig };
         this.configuration.searchEnabled = true;
         this.configuration.horizontalScroll = true;
         this.columns = [
           { key: 'index', title: '번호' },
-          { key: 'file', title: '이미지' },
+          { key: 'image', title: '이미지' },
           { key: 'PCD_PAY_TIME', title: '결제 일시' },
           { key: 'uid', title: '결제자 닉네임' },
           // { key: 'uid.name', title: '결제자 이름' },

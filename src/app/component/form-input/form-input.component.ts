@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -19,7 +19,19 @@ export class FormInputComponent implements OnInit {
   @Input() isUnUseDirty = false;
   @Input() disabled = false;
   @Input() onlyDigit = false;
+  @Input() placeholder;
   @Output() valueChangeEvent = new EventEmitter();
+  // select options
+  @Input() selectList: any[];
+  @Input() template: TemplateRef<any>;
+  @Input() searchable = true;
+  @Input() clearable = true;
+  @Input() notFoundText: string;
+  @Input() addTag = false;
+  @Input() multiple = false;
+  @Input() selectStyle: string;
+  @Output() addElement = new EventEmitter();
+  @Output() removeElement = new EventEmitter();
 
   constructor(
   ) { }
@@ -47,5 +59,13 @@ export class FormInputComponent implements OnInit {
         event.preventDefault();
       }
     }
+  }
+
+  addEvent(event) {
+    this.addElement.emit(event);
+  }
+
+  removeEvent(event) {
+    this.removeElement.emit(event.value);
   }
 }

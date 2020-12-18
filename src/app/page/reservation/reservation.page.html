@@ -57,25 +57,30 @@
       </ng-container>
     </ng-container>
     <!-- desktop -->
-    <ngx-table *ngIf="data && isDesktop" [configuration]="configuration" [data]="data" [columns]="columns">
+    <ngx-table [id]="'payTable'" [configuration]="configuration" [data]="data" [columns]="columns">
       <ng-template let-row let-index="index">
         <td>{{ index +1 }}</td>
-        <td><img [src]="row.mid.file" height="50" width="60"></td>
-        <td>{{ row.PCD_PAY_TIME }}</td>
-        <td>{{ row.uid.nickName }}</td>
         <td>
-          <a [href]="'/tabs/meeting-detail/' + row.mid.mid">{{ row.PCD_PAY_GOODS }}</a>
+          <img width="50" height="50" [src]="row.mid.file">
+        </td>
+        <td>{{ row.PCD_PAY_TIME }}</td>
+        <td><span *ngIf="row.uid">{{ row.uid.nickName }}</span></td>
+        <td>
+          <a target="_blank" [href]="'/tabs/meeting-detail/' + row.mid.mid">{{row.PCD_PAY_GOODS}}</a>
         </td>
         <td>
           <ng-container *ngFor="let option of row.options; let last = last">
-            <ion-chip *ngIf="!option.option.isOld">
-              <ion-label style="font-size: 12px;">이전옵션</ion-label>
-            </ion-chip>
-            <p>옵션: {{option.option.optionTitle}}</p>
-            <p>시작일: {{option.option.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
-            <p>가격: {{option.option.optionPrice}}</p>
-            <p>수량: {{option.count}}</p>
-            <hr style="margin: 0px" *ngIf="!last">
+            <div class="card" [ngStyle]="{'margin-bottom':!last ? '0.2rem':'0rem'}">
+              <div class="card-body" style="padding: 0.7rem">
+                <ion-chip *ngIf="!option.option.isOld">
+                  <ion-label style="font-size: 12px;">이전옵션</ion-label>
+                </ion-chip>
+                <p>옵션: {{option.option.optionTitle}}</p>
+                <p>가격: {{option.option.optionPrice}}</p>
+                <p>일시: {{option.option.optionDate|date:'yyyy-MM-dd HH:mm'}}</p>
+                <p>수량: {{option.count}}</p>
+              </div>
+            </div>
           </ng-container>
         </td>
         <td>

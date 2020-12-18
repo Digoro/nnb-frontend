@@ -87,6 +87,13 @@ export class PaymentService {
     return this.http.delete(`/payment/payer_id?pid=${pid}`)
   }
 
+  async writeDirectPayment(paymentResult: PaymentResult, options: MeetingOption[], phone: string, user: User) {
+    const result = await this.http.post<PaymentResult>(`${this.urlPrefix}/payments/`, paymentResult).toPromise()
+    this.addPaymentOptionMaps(result.pid, options).subscribe(resp => {
+      alert('결제 정보 입력 완료!');
+    })
+  }
+
   async joinFreeMeeting(paymentResult: PaymentResult, options: MeetingOption[], phone: string, user: User) {
     const result = await this.http.post<PaymentResult>(`${this.urlPrefix}/payments/`, paymentResult).toPromise()
     this.addPaymentOptionMaps(result.pid, options).subscribe(resp => {

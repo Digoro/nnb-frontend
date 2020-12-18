@@ -101,6 +101,128 @@
             </ion-reorder-group>
           </div>
           <div class="tab-pane fade" id="list-payment" role="tabpanel" aria-labelledby="list-payment-list">
+            <ng-template #template>
+              <div class="modal-header">
+                <p class="modal-title pull-left">결제 등록하기</p>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-card" [formGroup]="paymentAddFormGroup" *ngIf="meetings">
+                  <div class="row">
+                    <div class="col">
+                      <div class="card">
+                        <p class="title">상품</p>
+                        <form-input [name]="'상품'" [controlName]="'meeting'" [group]="paymentAddFormGroup"
+                          [type]="'select'" [selectList]="meetings" [template]="meetingTpl" [clearable]="false"
+                          [selectStyle]="{'max-width':'18rem'}" (valueChangeEvent)="onSelectMeeting($event)">
+                        </form-input>
+                        <ng-template #meetingTpl let-element>
+                          <span class="desc">모임 식별자: {{element.mid}}</span>&nbsp;&nbsp;<span>{{element.title}}</span>
+                        </ng-template>
+                      </div>
+                      <div class="card">
+                        <p class="title">구매 옵션</p>
+                        <ion-calendar *ngIf="!!selectedMeeting" style="border: 1px solid #e7e7e7;border-radius: 5px;"
+                          (select)="selectCalendar($event)" [options]="calendarOptions" [type]="'string'"
+                          [format]="'YYYY-MM-DD'">
+                        </ion-calendar>
+                        <p *ngIf="!!selectedOptionsFromCalendar" class="desc" style="margin: 1rem 0rem 0rem 0rem;">수량을
+                          선택해주세요.
+                        </p>
+                        <div style="overflow-y: auto; max-height: 450px;">
+                          <div *ngFor="let option of selectedOptionsFromCalendar;"
+                            style="border: 1px solid #e7e7e7;border-radius: 5px;margin-bottom: 0.4rem;">
+                            <ion-item lines="none">
+                              <ion-label class="ion-text-wrap">
+                                <ion-chip *ngIf="option.isOld">
+                                  <ion-label style="font-size: 12px;">이전옵션</ion-label>
+                                </ion-chip>
+                                <p class="desc">{{option.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+                                <p class="black-label">{{option.optionTitle}}</p>
+                                <p class="black-label"><strong>{{option.optionPrice|number}}원</strong></p>
+                              </ion-label>
+                              <div style="display: flex;">
+                                <ion-icon name="remove-circle-outline" style="font-size: 25px"
+                                  (click)="changeCount(false,option)">
+                                </ion-icon>
+                                <input [id]="'optionCount'+ option.oid" type="number" class="form-control count-input"
+                                  value="0" disabled>
+                                <ion-icon name="add-circle-outline" style="font-size: 25px;"
+                                  (click)="changeCount(true, option)">
+                                </ion-icon>
+                              </div>
+                            </ion-item>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <p class="title">결제 금액</p>
+                        <div *ngFor="let option of options.value">
+                          <span class="desc" style="font-weight: 500;">{{option.optionTitle}}</span><br>
+                          <span class="desc">{{option.optionCount}} x
+                            ₩{{option.optionPrice|number}}&nbsp;&nbsp;</span>
+                          <span class="float-right"
+                            style="margin-right: 1.2rem;"><strong>{{option.optionCount*option.optionPrice|number}}원</strong></span>
+                          <hr>
+                        </div>
+                        <p style="font-size:1.4rem;color:#ff4081">
+                          <strong>총 {{price|number}}원</strong>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        <p class="title">결제 정보</p>
+                        <form-input [name]="'주문자 이름'" [controlName]="'PCD_PAYER_NAME'" [group]="paymentAddFormGroup"
+                          [maxLength]="500" [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]"></form-input>
+                        <form-input [name]="'휴대폰 번호'" [controlName]="'phone'" [group]="paymentAddFormGroup"
+                          [maxLength]="11" [errors]="[{key:'pattern',message:'올바른 휴대폰 번호 형식이 아닙니다.(예)01012341234'}]">
+                        </form-input>
+                        <form-input [name]="'총 결제 금액'" [controlName]="'PCD_PAY_TOTAL'" [group]="paymentAddFormGroup"
+                          [type]="'number'" [onlyDigit]="true" [errors]="[{key:'max',message:'10000000원 제한입니다.'}]">
+                        </form-input>
+                        <form-input [name]="'주문 번호'" [controlName]="'PCD_PAY_OID'" [group]="paymentAddFormGroup"
+                          [maxLength]="500" [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]"></form-input>
+                        <span class="desc">직접 계좌이체: nonunbub+결제일(YYYYMMDDHHmmss)<br>링크 결제: 해당 주문번호를 작성해주세요</span>
+                        <form-input [name]="'결제일'" [controlName]="'PCD_PAY_TIME'" [group]="paymentAddFormGroup"
+                          [maxLength]="500" [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]"></form-input>
+                        <span class="desc">YYYYMMDDHHmmss 형식으로 작성해주세요</span>
+                        <form-input [name]="'결제 구분'" [controlName]="'PCD_PAY_TYPE'" [group]="paymentAddFormGroup"
+                          [type]="'select'" [selectList]="['direct-card','direct-transfer']" [clearable]="false"
+                          [searchable]="false">
+                        </form-input>
+                        <form-input [name]="'은행사 명'" [controlName]="'PCD_PAY_BANKNAME'" [group]="paymentAddFormGroup"
+                          [maxLength]="500" [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [isRequired]="false">
+                        </form-input>
+                        <span class="desc">계좌이체 시 입력</span>
+                        <form-input [name]="'계좌번호'" [controlName]="'PCD_PAY_BANKNUM'" [group]="paymentAddFormGroup"
+                          [maxLength]="500" [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [isRequired]="false">
+                        </form-input>
+                        <span class="desc">계좌이체 시 입력</span>
+                        <form-input [name]="'카드사 명'" [controlName]="'PCD_PAY_CARDNAME'" [group]="paymentAddFormGroup"
+                          [maxLength]="500" [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [isRequired]="false">
+                        </form-input>
+                        <span class="desc">카드결제 시 입력</span>
+                        <form-input [name]="'카드 번호'" [controlName]="'PCD_PAY_CARDNUM'" [group]="paymentAddFormGroup"
+                          [maxLength]="500" [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [isRequired]="false">
+                        </form-input>
+                        <span class="desc">카드결제 시 입력</span>
+                        <form-input [name]="'카드 매출전표 링크'" [controlName]="'PCD_PAY_CARDRECEIPT'"
+                          [group]="paymentAddFormGroup" [maxLength]="2000"
+                          [errors]="[{key:'maxlength',message:'2000자 제한입니다.'}]" [isRequired]="false">
+                        </form-input>
+                        <span class="desc">카드결제 시 입력</span>
+                        <button class="nnb-btn nnb-btn-primary nnb-btn-sm float-right"
+                          [disabled]="paymentAddFormGroup.invalid" (click)="addPayment()">결제 결과 등록</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <button class="nnb-btn nnb-btn-primary" (click)="openModal(template)">결제 등록하기</button>
             <ng-container *ngIf="payData">
               <ngx-table [id]="'payTable'" [configuration]="payConfiguration" [data]="payData" [columns]="payColumns">
                 <ng-template let-row let-index="index">
@@ -109,7 +231,7 @@
                     <img width="50" height="50" [src]="row.mid.file">
                   </td>
                   <td>{{ row.PCD_PAY_TIME }}</td>
-                  <td>{{ row.uid.nickName }}</td>
+                  <td><span *ngIf="row.uid">{{ row.uid.nickName }}</span></td>
                   <td>
                     <a target="_blank" [href]="'/tabs/meeting-detail/' + row.mid.mid">{{row.PCD_PAY_GOODS}}</a>
                   </td>
@@ -165,7 +287,7 @@
                   <ion-label position="fixed">배너 사이즈</ion-label>
                   <input type="checkbox" [formControlName]="'isDesktop'" />
                 </ion-item>
-                <p class="desc">check:데스크탑용, uncheck:모바일용</p>
+                <p class="desc">check:데스크탑용(1500x600)<br>uncheck:모바일용(1000x750)</p>
                 <button class="nnb-btn nnb-btn-primary nnb-btn-sm float-right"
                   [disabled]="!selectedFiles||bannerFormGroup.invalid||isUploading" (click)="addBanner()">배너 등록</button>
                 <p *ngIf="isUploading" style="margin-left: 12px;margin-top: 10px;">배너 등록 중입니다. &nbsp;<img
@@ -186,3 +308,5 @@
         </div>
       </div>
     </div>
+  </ion-grid>
+</ion-content>

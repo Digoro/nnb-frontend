@@ -138,14 +138,9 @@
             <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           </div>
           <notion-desc [description]="descriptions[2]"></notion-desc>
-          <ion-item lines="none">
-            <ion-label position="floating">카테고리<span class="invalid-input">*</span></ion-label>
-            <ion-select class="nnb-select-option" okText="확인" cancelText="취소" [formControlName]="'categories'">
-              <ion-select-option *ngFor="let category of categories" [value]="category">{{category}}
-              </ion-select-option>
-            </ion-select>
-          </ion-item>
-          <hr>
+          <form-input [name]="'카테고리'" [controlName]="'categories'" [group]="formGroup" [type]="'select'"
+            [selectList]="categories">
+          </form-input>
         </div>
         <div id="test-l-4" class="content">
           <div class="next-prev">
@@ -173,25 +168,16 @@
             <ion-item lines="none">
               <ion-label position="fixed">소요 시간</ion-label>
             </ion-item>
-            <ion-item lines="none">
-              <ion-select okText="확인" cancelText="취소" [formControlName]="'runningHours'" style="min-width: 70px;">
-                <ion-select-option *ngFor="let hour of hours" [value]="hour">{{hour}}
-                </ion-select-option>
-              </ion-select>
-              <span>시간</span>
-            </ion-item>
-            <ion-item lines="none">
-              <ion-select okText="확인" cancelText="취소" [formControlName]="'runningMinutes'" style="min-width: 70px;">
-                <ion-select-option *ngFor="let minute of minutes" [value]="minute">{{minute}}
-                </ion-select-option>
-              </ion-select>
-              <span>분</span>
-            </ion-item>
+            <form-input [name]="''" [controlName]="'runningHours'" [group]="formGroup" [type]="'select'"
+              [selectList]="hours" [clearable]="false">
+            </form-input>
+            <span style="margin-top: 0.5rem;">시</span>
+            <form-input [name]="''" [controlName]="'runningMinutes'" [group]="formGroup" [type]="'select'"
+              [selectList]="minutes" [clearable]="false">
+            </form-input>
+            <span style="margin-top: 0.5rem;">분</span>
           </ion-row>
           <hr>
-          <div *ngIf="formGroup.controls.runningMinutes.hasError('min')">
-            <p class="invalid-input">0분이 이상을 입력해주세요.</p>
-          </div>
         </div>
         <div id="test-l-5" class="content">
           <div class="next-prev">

@@ -1,25 +1,52 @@
 <div [formGroup]="group" [class.invalid]="group.controls[controlName].dirty && group.controls[controlName].invalid"
   [class.valid]="group.controls[controlName].dirty && group.controls[controlName].valid" style="margin-bottom: 5px;">
-  <ion-item [lines]="group.controls[controlName].pristine ? '':'none'">
-    <ion-label position="floating">{{name}}&nbsp;<span class="invalid-input" *ngIf="isRequired">*</span>
-    </ion-label>
-    <ion-input *ngIf="type!='textarea'" [disabled]="disabled" [type]="type" [formControlName]="controlName" clearInput
-      (ngModelChange)="changeEvent($event)" (keypress)="numberOnlyValidation($event)">
-    </ion-input>
-    <ion-textarea *ngIf="type=='textarea'" [disabled]="disabled" [rows]="rows" [maxlength]="maxLength"
-      [formControlName]="controlName" clearInput>
-    </ion-textarea>
-  </ion-item>
 
-  <p *ngIf="group.controls[controlName].valid && (type=='text' || type=='textarea') && maxLength!==0"
-    class="maximun-info">
-    {{group.controls[controlName].value.length}} / 최대 {{maxLength}}자
-  </p>
+  <ng-container *ngIf="type==='text' || type==='textarea' || type==='number'">
+    <ion-item *ngIf="name" [lines]="group.controls[controlName].pristine ? '':'none'">
+      <ion-label position="floating" class="ion-text-wrap">{{name}}&nbsp;<span class="invalid-input"
+          *ngIf="isRequired">*</span>
+      </ion-label>
 
-  <p *ngIf="group.controls[controlName].errors?.maxlength && (type=='text' || type=='textarea') && maxLength!==0"
-    class="maximun-info">
-    <span style="color:red">{{group.controls[controlName].value.length}}</span> / 최대 {{maxLength}}자
-  </p>
+      <ng-container *ngIf="type==='text' || type==='number'">
+        <ion-input [disabled]="disabled" [type]="type" [formControlName]="controlName" clearInput
+          (ngModelChange)="changeEvent($event)" (keypress)="numberOnlyValidation($event)" [placeholder]="placeholder">
+        </ion-input>
+      </ng-container>
+
+      <ng-container *ngIf="type==='textarea'">
+        <ion-textarea [disabled]="disabled" [rows]="rows" [maxlength]="maxLength" [formControlName]="controlName"
+          clearInput (ionChange)="changeEvent($event.target.value)" [placeholder]="placeholder">
+        </ion-textarea>
+      </ng-container>
+    </ion-item>
+
+    <ng-container *ngIf="(type==='text' || type==='textarea') && !!group.controls[controlName].value">
+      <p *ngIf="group.controls[controlName].valid  && maxLength!==0" class="maximun-info">
+        {{group.controls[controlName].value.length}} / 최대 {{maxLength}}자
+      </p>
+      <p *ngIf="group.controls[controlName].errors?.maxlength  && maxLength!==0" class="maximun-info">
+        <span style="color:red">{{group.controls[controlName].value.length}}</span> / 최대 {{maxLength}}자
+      </p>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="type==='select'">
+    <ion-item lines="none" *ngIf="name">
+      <ion-label position="fixed" class="ion-text-wrap">{{name}}&nbsp;<span class="invalid-input"
+          *ngIf="isRequired">*</span>
+      </ion-label>
+    </ion-item>
+    <ng-select [formControlName]="controlName" [searchable]="searchable" [clearable]="clearable"
+      [notFoundText]="notFoundText" [addTag]="addTag" [multiple]="multiple" [class.select]="name"
+      [class.select-none-label]="!name" (change)="changeEvent($event)" (add)="addEvent($event)"
+      (remove)="removeEvent($event)" [ngStyle]="selectStyle">
+      <ng-option *ngFor="let element of selectList" [value]="element">
+        <ng-container *ngIf="template" [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: element }">
+        </ng-container>
+        <ng-container *ngIf="!template">{{element}}</ng-container>
+      </ng-option>
+    </ng-select>
+  </ng-container>
 
   <form-errors [formGroup]="group" [controlName]="controlName" [errors]="errors" [isUnUseDirty]="isUnUseDirty"
     [isRequired]="isRequired">

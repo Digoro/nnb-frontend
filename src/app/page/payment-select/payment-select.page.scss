@@ -11,21 +11,6 @@
     padding: 0px;
 }
 
-:host::ng-deep ion-calendar .today>p {
-    color: rgba(0, 0, 0, 0.25) !important;
-    font-weight: none !important;
-}
-
-:host::ng-deep ion-calendar .marked>p {
-    font-size: 20px !important;
-    color: #ff4081 !important;
-    font-weight: bold !important;
-}
-
-:host::ng-deep ion-calendar .on-selected {
-    background-color: #ff40806b !important;
-}
-
 .card {
     margin: 24px 16px 16px 16px;
     padding: 1rem 1.3rem 1rem 1.3rem;

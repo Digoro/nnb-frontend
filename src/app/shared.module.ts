@@ -7,6 +7,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import interactionPlugin from '@fullcalendar/interaction'; // a plugin
 import { NgxErrorsModule } from '@hackages/ngxerrors';
 import { IonicModule } from '@ionic/angular';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { CalendarModule } from 'ion2-calendar';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -101,6 +102,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NgxCronUiModule,
     FullCalendarModule,
     BsDatepickerModule.forRoot(),
+    NgSelectModule
   ],
   exports: [
     HorizontalSliderComponent,
@@ -134,7 +136,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FormErrorsComponent,
     NgxCronUiModule,
     FullCalendarModule,
-    BsDatepickerModule
+    BsDatepickerModule,
+    NgSelectModule
   ],
 })
 export class SharedModule { }
