@@ -18,11 +18,13 @@ export class TabsPage implements OnInit {
   tabs: Tab[] = [
     new Tab('home', 'home-outline', '홈'),
     new Tab('category', 'albums-outline', '카테고리'),
+    new Tab('feed', 'book-outline', '소식'),
     new Tab('my-info', 'bookmarks-outline', '내모임'),
     new Tab('more', 'reorder-four-outline', '더보기')
   ];
   descktopMenus: Tab[] = [
     new Tab('category', 'albums-outline', '카테고리'),
+    new Tab('feed', 'book-outline', '소식'),
     new Tab('my-info', 'bookmarks-outline', '내모임'),
     new Tab('more', 'reorder-four-sharp', '더보기'),
   ];

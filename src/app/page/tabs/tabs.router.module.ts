@@ -116,6 +116,18 @@ const routes: Routes = [
         }]
       },
       {
+        path: 'feed', children: [{
+          path: '', loadChildren: () =>
+            import('../feed/feed.module').then(m => m.FeedPageModule)
+        }]
+      },
+      {
+        path: 'feed-detail', children: [{
+          path: '', loadChildren: () =>
+            import('../feed-detail/feed-detail.module').then(m => m.FeedDetailPageModule)
+        }]
+      },
+      {
         path: 'magazine', children: [{
           path: '', loadChildren: () =>
             import('../magazine/magazine.module').then(m => m.MagazinePageModule)

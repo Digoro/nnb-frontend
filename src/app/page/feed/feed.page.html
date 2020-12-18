@@ -1,0 +1,45 @@
+<ion-content>
+  <ion-grid fixed style="align-content: center;">
+    <ng-container *ngFor="let post of bandPosts">
+      <div class="card">
+        <div class="card-body">
+          <div style="display: flex;">
+            <img [src]="post.author.profile_image_url" class="profile-img" [alt]="post.author.name">
+            <div>
+              <span>{{post.author.name}}</span><br>
+              <span class="desc">{{post.created_at|date:'yyyy년 MM월 dd일 HH:mm'}}</span>
+            </div>
+          </div>
+          <br>
+          <p class="pre-wrap">{{post.content|truncate:[200]}}</p>
+          <p class="desc" style="cursor: pointer;" (click)="goDetailPage(post.post_key)">더보기</p>
+          <img *ngIf="post.photos.length > 0" [src]="post.photos[0].url" class="photo">
+        </div>
+        <div class="card-footer bg-transparent">
+          <span class="desc">좋아요 {{post.emotion_count}}</span>&nbsp;
+          <span class="desc">댓글 {{post.comment_count}}</span>
+          <ion-icon *ngIf="+post.comment_count > 0" class="float-right" style="font-size: 1.5rem; cursor: pointer;"
+            (click)="showComments(post.post_key)" name="chevron-down-circle-outline">
+          </ion-icon>
+          <div style="padding: 1rem;">
+            <ng-container *ngFor="let comment of post.comments; let last=last">
+              <div style="display: flex;">
+                <img [src]="comment.author.profile_image_url" class="profile-img">
+                <div>
+                  <p style="margin-bottom: 0px;">{{comment.author.name}}</p>
+                  <p *ngIf="comment.content" style="margin-bottom: 0px;" class="pre-wrap">{{comment.content}}</p>
+                  <img *ngIf="comment.sticker" [src]="comment.sticker.url" class="sticker">
+                  <img *ngIf="comment.photo" [src]="comment.photo.url" class="photo">
+                  <p style="margin-bottom: 0px;" class="desc">{{comment.created_at|date:'MM월 dd일 HH:mm'}} 좋아요
+                    {{comment.emotion_count}}</p>
+                </div>
+              </div>
+              <hr *ngIf="!last">
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <br>
+    </ng-container>
+  </ion-grid>
+</ion-content>
