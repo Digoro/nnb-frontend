@@ -122,7 +122,7 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'feed-detail', children: [{
+        path: 'feed-detail/:id', children: [{
           path: '', loadChildren: () =>
             import('../feed-detail/feed-detail.module').then(m => m.FeedDetailPageModule)
         }]

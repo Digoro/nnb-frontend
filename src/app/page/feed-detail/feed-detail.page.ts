@@ -24,4 +24,10 @@ export class FeedDetailPage implements OnInit {
       })
     })
   }
+
+  showComments(post_key: string) {
+    this.bandService.getComments(post_key).subscribe(resp => {
+      this.post.comments = resp.items;
+    })
+  }
 }

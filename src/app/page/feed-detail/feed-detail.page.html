@@ -1,47 +1,29 @@
-<!-- <ion-content>
-  <ion-grid fixed *ngIf="post">
-    <ion-row>
-      <ion-col>
-        <img [src]="post.image" class="main-image" />
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <p class="desc date">{{post.createDT|date:'yyyy년 MM월 dd일'}}</p>
-        <h3>{{post.title}}</h3>
-        <p class="desc">{{post.catch_phrase}}</p>
-      </ion-col>
-    </ion-row>
-    <hr style="margin: 0px">
-    <ion-row>
-      <ion-col>
-        <quill-view [content]="post.content" format="text" theme="snow" [style]="quillStyle"></quill-view>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content> -->
-
 <ion-content *ngIf="post">
-  <ion-grid fixed style="align-content: center;">
+  <ion-grid fixed style="margin-top:1.2rem;">
     <div class="card">
       <div class="card-body">
-        <div style="display: flex;">
-          <img [src]="post.author.profile_image_url" class="profile-img" [alt]="post.author.name">
-          <div>
-            <span>{{post.author.name}}</span><br>
-            <span class="desc">{{post.created_at|date:'yyyy년 MM월 dd일 HH:mm'}}</span>
+        <div style="display: flex;justify-content: space-between;">
+          <div style="display: flex;">
+            <img [src]="post.author.profile_image_url" class="profile-img" [alt]="post.author.name">
+            <div>
+              <span>{{post.author.name}}</span><br>
+              <span class="desc">{{post.created_at|date:'yyyy년 MM월 dd일 HH:mm'}}</span><br>
+            </div>
           </div>
+          <span class="desc">
+            <ion-icon name="eye-outline"></ion-icon> {{post.post_read_count}}
+          </span>
         </div>
         <br>
-        <p class="pre-wrap">{{post.content}}</p>
-        <ng-container *ngFor="let photo of post.photo">
-          <img [src]="photo.url" class="photo">
-        </ng-container>
+        <p class="pre-wrap" [innerHtml]="post.content"></p>
       </div>
       <div class="card-footer bg-transparent">
         <span class="desc">좋아요 {{post.emotion_count}}</span>&nbsp;
         <span class="desc">댓글 {{post.comment_count}}</span>
-        <div style="padding: 1rem;">
+        <ion-icon *ngIf="+post.comment_count > 0" class="float-right" style="font-size: 1.5rem; cursor: pointer;"
+          (click)="showComments(post.post_key)" name="chevron-down-circle-outline">
+        </ion-icon>
+        <div *ngIf="post.comments" style="padding: 1rem;">
           <ng-container *ngFor="let comment of post.comments; let last=last">
             <div style="display: flex;">
               <img [src]="comment.author.profile_image_url" class="profile-img">

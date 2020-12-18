@@ -17,9 +17,12 @@ export class BandService {
   get(post_key: string): Observable<BandDetailResult<BandPostDetail>> {
     return this.http.get<BandDetailResult<BandPostDetail>>(`/band/post?post_key=${post_key}`).pipe(
       map(bandResult => {
-        bandResult.result_data.post.photo = Object.keys(bandResult.result_data.post.photo).map(key => {
-          return bandResult.result_data.post.photo[key]
-        })
+        const imgRegex = /<band:attachment type="photo" id="(\d+)" \/>/g;
+        const linkRegex = /https:\/\/nonunbub\.com\/tabs\/meeting-detail\/(\d+)/g;
+        bandResult.result_data.post.content = bandResult.result_data.post.content
+          .replace(imgRegex, (a, b) => `<br><img src="${bandResult.result_data.post.photo[b].url}"><br>`)
+          .replace(linkRegex, (a, b) => `<a href="${a}">${a}</a><br>`)
+
         return bandResult;
       })
     )
