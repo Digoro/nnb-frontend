@@ -22,9 +22,6 @@ export class FeedPage implements OnInit {
   ) { }
 
   ngOnInit() {
-  }
-
-  ionViewDidEnter() {
     this.setList();
   }
 

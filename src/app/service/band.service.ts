@@ -21,8 +21,7 @@ export class BandService {
         const linkRegex = /https:\/\/nonunbub\.com\/tabs\/meeting-detail\/(\d+)/g;
         bandResult.result_data.post.content = bandResult.result_data.post.content
           .replace(imgRegex, (a, b) => `<br><img src="${bandResult.result_data.post.photo[b].url}"><br>`)
-          .replace(linkRegex, (a, b) => `<a href="${a}">${a}</a><br>`)
-
+          .replace(linkRegex, (a, b) => `<a class="nnb-btn nnb-btn-primary" href="${a}">모임 보러 가기!</a><br>`)
         return bandResult;
       })
     )
@@ -32,6 +31,17 @@ export class BandService {
     const url = after ? `/band/posts-list?after=${after}` : '/band/posts-list';
     return this.http.get<BandResult<BandPost[]>>(url).pipe(
       map(bandResult => {
+        bandResult.result_data.items = bandResult.result_data.items.map(item => {
+          const linkRegex = /https:\/\/nonunbub\.com\/tabs\/meeting-detail\/(\d+)/g;
+          item.content = item.content
+            .replace(linkRegex, (a, b) => `<a class="nnb-btn nnb-btn-primary" href="${a}">모임 보러 가기!</a><br>`)
+          return item;
+        }).map(item => {
+          if (item.content === 'Uploaded photo.') {
+            item.content = ''
+          }
+          return item
+        }).filter(item => item.content !== 'Uploaded event.')
         return bandResult.result_data
       })
     )

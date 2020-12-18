@@ -11,7 +11,7 @@
             </div>
           </div>
           <br>
-          <p class="pre-wrap">{{post.content|truncate:[200]}}</p>
+          <p class="pre-wrap" [innerHTML]="post.content|truncate:[200]"></p>
           <p class="desc" style="cursor: pointer;" (click)="goDetailPage(post.post_key)">더보기</p>
           <img *ngIf="post.photos.length > 0" [src]="post.photos[0].url" class="photo">
         </div>
