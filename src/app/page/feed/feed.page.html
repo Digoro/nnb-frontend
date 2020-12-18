@@ -18,8 +18,9 @@
         <div class="card-footer bg-transparent">
           <span class="desc">좋아요 {{post.emotion_count}}</span>&nbsp;
           <span class="desc">댓글 {{post.comment_count}}</span>
-          <ion-icon *ngIf="+post.comment_count > 0" class="float-right" style="font-size: 1.5rem; cursor: pointer;"
-            (click)="showComments(post.post_key)" name="chevron-down-circle-outline">
+          <ion-icon *ngIf="+post.comment_count > 0" class="float-right"
+            style="font-size: 1.6rem;cursor: pointer;color: #7c7b7b;" (click)="showComments(post.post_key)"
+            name="chevron-down-circle-outline">
           </ion-icon>
           <div *ngIf="post.comments" style="padding: 1rem;">
             <ng-container *ngFor="let comment of post.comments; let last=last">

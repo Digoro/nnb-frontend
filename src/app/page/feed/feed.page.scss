@@ -14,3 +14,12 @@
     max-width: 100%;
     max-height: 150px;
 }
+
+.card {
+    margin: 0.5rem 0.5rem 0rem 0.5rem;
+    padding: 0.2rem;
+    background: #fff;
+    border-radius: 7px;
+    -o-box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.2);
+}
