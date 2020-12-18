@@ -13,6 +13,7 @@ import { Magazine } from './../../model/magazine';
 export class FeedPage implements OnInit {
   magazines: Magazine[];
   bandPosts: BandPost[];
+  after: string;
 
   constructor(
     private router: Router,
@@ -30,6 +31,7 @@ export class FeedPage implements OnInit {
   setList() {
     this.bandService.getList().subscribe(resp => {
       this.bandPosts = resp.items;
+      this.after = resp.paging.next_params.after;
     })
   }
 
@@ -42,5 +44,16 @@ export class FeedPage implements OnInit {
 
   goDetailPage(post_key: string) {
     this.router.navigate(['/tabs/feed-detail', post_key])
+  }
+
+  loadData(event) {
+    this.bandService.getList(this.after).subscribe(resp => {
+      this.bandPosts = [...this.bandPosts, ...resp.items];
+      if (!!resp.paging.next_params) {
+        this.after = resp.paging.next_params.after;
+        event.target.complete();
+      }
+      else event.target.disabled = true;
+    })
   }
 }

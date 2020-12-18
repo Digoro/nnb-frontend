@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-grid fixed style="margin-top:1.2rem;">
+  <ion-grid fixed style="margin-top:0.5rem;">
     <ng-container *ngFor="let post of bandPosts">
       <div class="card">
         <div class="card-body">
@@ -41,5 +41,10 @@
       </div>
       <br>
     </ng-container>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loading-spinner="lines" loading-text="소식 가져오는 중...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </ion-grid>
 </ion-content>

@@ -28,8 +28,9 @@ export class BandService {
     )
   }
 
-  getList(): Observable<BandResultData<BandPost[]>> {
-    return this.http.get<BandResult<BandPost[]>>('/band/posts-list').pipe(
+  getList(after?: string): Observable<BandResultData<BandPost[]>> {
+    const url = after ? `/band/posts-list?after=${after}` : '/band/posts-list';
+    return this.http.get<BandResult<BandPost[]>>(url).pipe(
       map(bandResult => {
         return bandResult.result_data
       })
