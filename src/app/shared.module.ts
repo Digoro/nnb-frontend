@@ -9,6 +9,7 @@ import { NgxErrorsModule } from '@hackages/ngxerrors';
 import { IonicModule } from '@ionic/angular';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CalendarModule } from 'ion2-calendar';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { koLocale } from 'ngx-bootstrap/locale';
@@ -102,7 +103,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NgxCronUiModule,
     FullCalendarModule,
     BsDatepickerModule.forRoot(),
-    NgSelectModule
+    NgSelectModule,
+    CarouselModule.forRoot()
   ],
   exports: [
     HorizontalSliderComponent,
@@ -137,7 +139,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NgxCronUiModule,
     FullCalendarModule,
     BsDatepickerModule,
-    NgSelectModule
+    NgSelectModule,
+    CarouselModule
   ],
 })
 export class SharedModule { }
