@@ -1,0 +1,31 @@
+.main_sentence {
+    font-family: Noto Sans KR, sans-serif;
+    font-weight: 540;
+    font-size: 28px;
+    line-height: 32px;
+    letter-spacing: -1px;
+    margin: 0px 0px 2px 0px;
+    font-size: 26px;
+}
+
+.brand {
+    font-family: Noto Sans KR, sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 32px;
+    letter-spacing: -1px;
+    color: #f557a4;
+    font-size: 27px;
+}
+
+.kakao-btn {
+    border-radius: 3px;
+    background-color: rgb(255, 232, 18);
+    padding: 0.8rem;
+
+    .text {
+        color: rgb(62, 64, 66);
+        font-size: 1rem;
+        font-weight: bold;
+    }
+}

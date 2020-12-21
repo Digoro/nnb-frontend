@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { environment } from './../../../environments/environment';
+import { CheckDesktopService } from './../../service/check-desktop.service';
 import { FormService } from './../../service/form.service';
 import { UtilService } from './../../service/util.service';
 declare var Kakao;
@@ -14,16 +15,19 @@ declare var gapi;
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
   gauth: any;
+  isDesktop: boolean;
 
   constructor(
     private formService: FormService,
     private utilService: UtilService,
+    private cds: CheckDesktopService
   ) {
     this.utilService.loadScript('https://developers.kakao.com/sdk/js/kakao.js');
     this.utilService.loadScript('https://apis.google.com/js/platform.js');
   }
 
   ngOnInit() {
+    this.cds.isDesktop.subscribe(resp => this.isDesktop = resp);
     this.loginForm = new FormGroup({
       id: new FormControl('', this.formService.getValidators(30)),
       password: new FormControl('', this.formService.getValidators(30)),
