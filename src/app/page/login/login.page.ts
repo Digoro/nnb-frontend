@@ -40,7 +40,7 @@ export class LoginPage implements OnInit {
       Kakao.Auth.authorize({
         // redirectUri: 'http://localhost:8000/accounts/kakao/login/callback',
         redirectUri: 'http://nonunbub.com/accounts/kakao/login/callback/',
-        state: this.router.url
+        state: 'https://nonunbub.com/tabs/meeting-detail/84'
       });
     } else if (method === 'email') {
       alert('서비스 준비중입니다 ^^');
