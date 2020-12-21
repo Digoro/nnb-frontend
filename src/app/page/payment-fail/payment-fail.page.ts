@@ -15,7 +15,7 @@ export class PaymentFailPage implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(resp => {
-      this.errorCode = resp.errorCode;
+      if (resp.errorCode) this.errorCode = resp.errorCode;
     });
   }
 

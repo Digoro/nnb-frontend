@@ -116,6 +116,12 @@ const routes: Routes = [
         }]
       },
       {
+        path: 'payment-fail', canActivateChild: [AuthGuard], children: [{
+          path: '', loadChildren: () =>
+            import('../payment-fail/payment-fail.module').then(m => m.PaymentFailPageModule)
+        }]
+      },
+      {
         path: 'feed', children: [{
           path: '', loadChildren: () =>
             import('../feed/feed.module').then(m => m.FeedPageModule)
