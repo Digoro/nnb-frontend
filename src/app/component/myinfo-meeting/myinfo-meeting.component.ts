@@ -8,6 +8,7 @@ import { PurchasedMeeting } from './../../model/meeting';
 })
 export class MyinfoMeetingComponent implements OnInit {
   @Input() meeting: PurchasedMeeting;
+  @Input() lines = '';
 
   constructor(
   ) { }

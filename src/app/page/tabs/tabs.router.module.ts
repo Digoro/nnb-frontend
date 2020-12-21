@@ -110,7 +110,7 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'payment-fail', canActivateChild: [AuthGuard], children: [{
+        path: 'payment-fail/:errorCode', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>
             import('../payment-fail/payment-fail.module').then(m => m.PaymentFailPageModule)
         }]

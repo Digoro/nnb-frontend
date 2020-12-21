@@ -11,8 +11,9 @@
     <br>
 
     <ng-container *ngIf="selectedMenu === 'join'">
-      <ng-container *ngFor="let purchasedMeeeting of purchasedMeetings">
-        <myinfo-meeting [meeting]="purchasedMeeeting"></myinfo-meeting>
+      <ng-container *ngFor="let purchasedMeeeting of purchasedMeetings; let last=last">
+        <myinfo-meeting [lines]="'none'" [meeting]="purchasedMeeeting"></myinfo-meeting>
+        <hr *ngIf="!last" style="margin: 0rem">
       </ng-container>
       <ng-container *ngIf="!purchasedMeetings">
         <div style="text-align: center; opacity: 0.4;">

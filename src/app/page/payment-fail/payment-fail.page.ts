@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'payment-fail',
@@ -6,12 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./payment-fail.page.scss'],
 })
 export class PaymentFailPage implements OnInit {
+  errorCode: string;
 
   constructor(
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-
+    this.route.params.subscribe(resp => {
+      this.errorCode = resp.errorCode;
+    });
   }
 
   question() {

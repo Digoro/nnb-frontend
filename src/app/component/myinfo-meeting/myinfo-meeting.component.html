@@ -1,15 +1,13 @@
-<ion-item *ngIf="!!meeting">
-  <ion-thumbnail slot="start">
-    <a [href]="'/tabs/meeting-detail/' + $any(meeting.payment.mid).mid" style="text-decoration: none; color: black;">
-      <img style=" cursor: pointer;" [src]="$any(meeting.payment.mid).file" />
-    </a>
-  </ion-thumbnail>
-  <ion-label>
-    <h2>{{$any(meeting.payment.mid).title | truncate:[27]}}</h2>
-    <h3>총 결제금액: {{meeting.payment.PCD_PAY_TOTAL|number}}원</h3>
-    <p>{{meeting.options.length}}개의 구매옵션</p>
+<div style="display: flex; padding:1rem">
+  <a [href]="'/tabs/meeting-detail/' + $any(meeting.payment.mid).mid" style="text-decoration: none; color: black;">
+    <img style=" cursor: pointer; width: 5rem;height:4rem" [src]="$any(meeting.payment.mid).file" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <div>
+    <p style="margin-bottom: 0rem;">{{$any(meeting.payment.mid).title | truncate:[27]}}</p>
+    <p style="margin-bottom: 0rem;">총 결제금액: {{meeting.payment.PCD_PAY_TOTAL|number}}원</p>
+    <p style="margin-bottom: 0.3rem;" class="desc">{{meeting.options.length}}개의 구매옵션</p>
     <a [href]="'/tabs/my-info-detail/' + meeting.payment.pid" style="text-decoration: none; color: black;">
       <button class="nnb-btn nnb-btn-secondary nnb-btn-sm">결제 상세보기</button>
     </a>
-  </ion-label>
-</ion-item>
+  </div>
+</div>

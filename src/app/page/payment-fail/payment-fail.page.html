@@ -1,16 +1,32 @@
 <ion-content>
-  <ion-grid fixed>
-    <br><br>
-    <p style="font-size: 20px; text-align: center;">시스템 오류로 인해 결제에 실패하였습니다🙀🙀</p>
+  <ion-grid fixed style="margin-top: 4rem">
+    <ion-row>
+      <ion-col style="text-align: center;">
+        <p class="main_sentence" style="font-size: 1.3rem;font-weight: 350;">죄송합니다. 시스템 오류가<br>발생하였습니다. 😢 😢</p>
+      </ion-col>
+    </ion-row>
+
     <div style="text-align: center;">
-      <ion-button color="light" (click)="question()"><img style="width: 20px;"
-          src="/assets/sns-icon/kakaotalk-logo.png">&nbsp;실시간 문의하기
-      </ion-button>
-      <br>
-      <br>
-      <a [href]="'/tabs/home'" style="text-decoration: none; color: black;">
-        <ion-button size="small" color="medium">메인으로 가기</ion-button>
+      <a style="text-decoration: none; color: black;">
+        <button (click)="question()" class="nnb-btn nnb-btn-secondary nnb-btn-sm">실시간 문의하기</button>
       </a>
+      &nbsp;
+      <a [href]="'/tabs/home'" style="text-decoration: none; color: black;">
+        <button class="nnb-btn nnb-btn-secondary nnb-btn-sm">노는법 홈으로 가기</button>
+      </a>
+    </div>
+    <br>
+    <hr>
+    <div style="padding:2rem">
+      <p
+        *ngIf="errorCode==='EPAYMENT2004'||errorCode==='EPAYMENT2005'||errorCode==='EPAYMENT2007'||errorCode==='EPAYMENT2008'">
+        {{errorCode}} 오류입니다. 결제는 정상적으로 이루어졌으나 결제 정보가 저장되지 않을 수 있습니다.</p>
+      <p *ngIf="errorCode==='EPAYMENT2006'">
+        {{errorCode}} 오류입니다. 결제는 정상적으로 이루어졌으나 쿠폰 사용 정보가 저장되지 않을 수 있습니다.
+      </p>
+      <p *ngIf="errorCode==='ENOTIFICATION2001'||errorCode==='EPAYMENT2009'">
+        {{errorCode}} 오류입니다. 결제는 정상적으로 이루어졌으나 결제 결과 알림 전송이 되지 않을 수 있습니다.</p>
+      <span>실시간 문의를 해주시면 친절하게 답변해드리겠습니다.</span>
     </div>
   </ion-grid>
 </ion-content>

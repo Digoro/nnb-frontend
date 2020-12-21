@@ -1,17 +1,23 @@
 <ion-content *ngIf="!!meeting">
-  <ion-grid fixed>
-    <br><br>
-    <p style="font-size: 20px;"><span style="font-weight: bold;">{{$any(meeting.payment.mid).title}}</span> 예약에
-      성공하였습니다👍👍</p>
+  <ion-grid fixed style="margin-top: 4rem">
+    <ion-row>
+      <ion-col style="text-align: center;">
+        <p class="main_sentence" style="font-size: 1.3rem;font-weight: 350;">{{$any(meeting.payment.mid).title}} 모임
+          예약을<br>성공하였습니다. 😆 😆</p>
+      </ion-col>
+    </ion-row>
+
     <div style="text-align: center;">
-      <a [href]="'/tabs/home'" style="text-decoration: none; color: black;">
-        <ion-button size="small" color="medium">메인으로 가기</ion-button>
-      </a>
       <a [href]="'/tabs/my-info'" style="text-decoration: none; color: black;">
-        <ion-button size="small" color="medium">내 모임으로 가기</ion-button>
+        <button class="nnb-btn nnb-btn-secondary nnb-btn-sm">내 모임으로 가기</button>
+      </a>
+      &nbsp;
+      <a [href]="'/tabs/home'" style="text-decoration: none; color: black;">
+        <button class="nnb-btn nnb-btn-secondary nnb-btn-sm">노는법 홈으로 가기</button>
       </a>
     </div>
     <br>
-    <myinfo-meeting [meeting]="meeting"></myinfo-meeting>
+    <hr>
+    <myinfo-meeting [lines]="'none'" [meeting]="meeting"></myinfo-meeting>
   </ion-grid>
 </ion-content>
