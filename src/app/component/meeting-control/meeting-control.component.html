@@ -228,6 +228,18 @@
           <ion-item lines="none">
             <ion-label position="fixed">프로그램 소개<span class="invalid-input">*</span></ion-label>
           </ion-item>
+          <div id="ql-toolbar">
+            <button style="margin-right: 0rem;width: 1.7rem;height: 1.7rem;" class="ql-strike"></button>
+            <select style="margin-right: 0rem;width: 2rem;height: 2rem;" class="ql-color"></select>
+            <button style="margin-left:-0.2rem;margin-right: 0.2rem;width: 1.7rem;height: 1.7rem;"
+              class="ql-link"></button>
+            <button style="margin-right: 0.2rem;width: 1.7rem;height: 1.7rem;" class="ql-image"></button>
+            <button style="margin-right: 0.2rem;width: 1.7rem;height: 1.7rem;" class="ql-video"></button>
+            <button style="margin-right: 0.2rem;width: 1.7rem;height: 1.7rem;" class="ql-list" value="ordered"></button>
+            <button style="margin-right: 0.2rem;width: 1.7rem;height: 1.7rem;" class="ql-list" value="bullet"></button>
+            <select style="margin-right: 0.2rem;width: 2rem;height: 2rem;margin-top: -0.1rem;"
+              class="ql-align"></select>
+          </div>
           <quill-editor #quill style="-webkit-user-select: text" formControlName="programs"
             [placeholder]="'프로그램 소개를 작성해주세요'" [styles]="quillStyle" (onEditorCreated)="getEditorInstance($event, 1)">
           </quill-editor>
@@ -331,8 +343,11 @@
           <form-errors [formGroup]=" optionAddFormGroup" [controlName]="'optionPeriod'"
             [errors]="[{key:'maxDurationDays',message:'총 기간은 최대 1년까지 입력가능합니다.'}]"> </form-errors>
           <ion-item lines="none">
+            <ion-checkbox type="checkbox" (ionChange)="changeUseTime($event)"> </ion-checkbox>
+            <ion-label>&nbsp;티켓 형식</ion-label>
+          </ion-item>
+          <ion-item lines="none">
             <ion-label position="fixed">스케줄<span class="invalid-input">*</span></ion-label>
-            <br>
             <ngx-cron-ui (onChangeEvent)="changeSchedule($event, true)" [config]="ngxCronUiConfig">
             </ngx-cron-ui>
             <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'schedule')"></ion-icon>

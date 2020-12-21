@@ -72,24 +72,25 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NgxUploaderModule,
     QuillModule.forRoot({
       modules: {
-        toolbar: [
-          ['strike', { 'color': [] }, 'link', 'image', 'video'],
-          // ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-          // // ['blockquote', 'code-block'],
-          [
-            { 'list': 'ordered' },
-            { 'list': 'bullet' },
-            { 'align': [] }
-          ],
-          // // [{ 'indent': '-1' }, { 'indent': '+1' }],
-          // [
-          //   { 'header': [3, 4, false] },
-          //   { 'color': [] },
-          //   // { 'size': ['small', 'large', 'huge'] },
-          // ],
-          // // { 'background': [] }
-          // ['link', 'image', 'video']
-        ]
+        toolbar: '#ql-toolbar'
+        // toolbar: [
+        //   ['strike', { 'color': [] }, 'link', 'image', 'video'],
+        //   // ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        //   // // ['blockquote', 'code-block'],
+        //   [
+        //     { 'list': 'ordered' },
+        //     { 'list': 'bullet' },
+        //     { 'align': [] }
+        //   ],
+        //   // // [{ 'indent': '-1' }, { 'indent': '+1' }],
+        //   // [
+        //   //   { 'header': [3, 4, false] },
+        //   //   { 'color': [] },
+        //   //   // { 'size': ['small', 'large', 'huge'] },
+        //   // ],
+        //   // // { 'background': [] }
+        //   // ['link', 'image', 'video']
+        // ]
       }
     }),
     AgmCoreModule.forRoot({
