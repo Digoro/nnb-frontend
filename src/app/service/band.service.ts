@@ -19,9 +19,11 @@ export class BandService {
       map(bandResult => {
         const imgRegex = /<band:attachment type="photo" id="(\d+)" \/>/g;
         const linkRegex = /https:\/\/nonunbub\.com\/tabs\/meeting-detail\/(\d+)/g;
-        bandResult.result_data.post.content = bandResult.result_data.post.content
+        const youtubeRegex = /https:\/\/www\.youtube\.com\/watch\?v=(\w+)/g;
+        bandResult.result_data.post.content = (bandResult.result_data.post.content as string)
           .replace(imgRegex, (a, b) => `<br><img src="${bandResult.result_data.post.photo[b].url}"><br>`)
           .replace(linkRegex, (a, b) => `<a class="nnb-btn nnb-btn-primary" href="${a}">모임 보러 가기!</a><br>`)
+          .replace(youtubeRegex, (a, b) => `<br><iframe width="560" height="315" src="${a}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>`)
         return bandResult;
       })
     )
@@ -33,8 +35,10 @@ export class BandService {
       map(bandResult => {
         bandResult.result_data.items = bandResult.result_data.items.map(item => {
           const linkRegex = /https:\/\/nonunbub\.com\/tabs\/meeting-detail\/(\d+)/g;
+          const youtubeRegex = /https:\/\/www\.youtube\.com\/watch\?v=(\w+)/g;
           item.content = item.content
             .replace(linkRegex, (a, b) => `<a class="nnb-btn nnb-btn-primary" href="${a}">모임 보러 가기!</a><br>`)
+            .replace(youtubeRegex, (a, b) => `<br><iframe width="560" height="315" src="${a}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>`)
           return item;
         }).map(item => {
           if (item.content === 'Uploaded photo.') {

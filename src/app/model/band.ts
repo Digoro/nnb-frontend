@@ -1,3 +1,5 @@
+import { SafeHtml } from "@angular/platform-browser";
+
 export class BandResult<T> {
     constructor(
         public result_code: number,
@@ -89,7 +91,7 @@ export class BandPostDetail {
         public author: BandAuthor,
         public band_key: string,
         public comment_count: number,
-        public content: string,
+        public content: string | SafeHtml,
         public created_at: string,
         public emotion_count: string,
         public is_multilingual: boolean,
