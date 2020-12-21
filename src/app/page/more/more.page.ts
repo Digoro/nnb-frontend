@@ -23,24 +23,21 @@ export class MorePage implements OnInit {
   ngOnInit() { }
 
   ionViewDidEnter() {
+    this.menus = [
+      new MoreMenuGroup('계정 관리', [
+        new MoreMenuItem('내 쿠폰', '/tabs/coupon-list', undefined, 0, 'badge-danger', true),
+      ]),
+      new MoreMenuGroup('지원', [
+        new MoreMenuItem('호스트센터', '/host/meeting-management', undefined),
+        new MoreMenuItem('이벤트', '/tabs/static/event', undefined),
+        new MoreMenuItem('문의하기', 'https://nonunbub.channel.io', undefined),
+        new MoreMenuItem('로그아웃', '', () => this.logout(), 0, '', false, true),
+      ]),
+    ]
     this.authService.getCurrentNonunbubUser().subscribe(resp => {
       this.user = resp;
       this.couponService.getCoupons(resp.uid, false).subscribe(coupons => {
-        this.paymentService.getUserPaymentAccounts(this.user.uid).subscribe(accounts => {
-          this.menus = [
-            new MoreMenuGroup('계정 관리', [
-              new MoreMenuItem('내 쿠폰', '/tabs/coupon-list', undefined, coupons.length, 'badge-danger', true),
-              new MoreMenuItem('간편결제 관리', '/tabs/payment-management', undefined, accounts.length, 'badge-secondary', true),
-            ]),
-            new MoreMenuGroup('지원', [
-              new MoreMenuItem('호스트센터', '/host/meeting-management', undefined),
-              new MoreMenuItem('이벤트', '/tabs/static/event', undefined),
-              new MoreMenuItem('문의하기', 'https://nonunbub.channel.io', undefined),
-              new MoreMenuItem('공지사항', '', () => alert('서비스 준비중입니다 ^^')),
-              new MoreMenuItem('로그아웃', '', () => this.logout(), 0, '', false, true),
-            ]),
-          ]
-        })
+        this.menus[0].items[0].badge = coupons.length
       })
     })
   }
