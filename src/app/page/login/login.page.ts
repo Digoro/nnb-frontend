@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { environment } from './../../../environments/environment';
 import { FormService } from './../../service/form.service';
 import { UtilService } from './../../service/util.service';
@@ -19,7 +18,6 @@ export class LoginPage implements OnInit {
   constructor(
     private formService: FormService,
     private utilService: UtilService,
-    private router: Router
   ) {
     this.utilService.loadScript('https://developers.kakao.com/sdk/js/kakao.js');
     this.utilService.loadScript('https://apis.google.com/js/platform.js');
@@ -40,7 +38,6 @@ export class LoginPage implements OnInit {
       Kakao.Auth.authorize({
         // redirectUri: 'http://localhost:8000/accounts/kakao/login/callback',
         redirectUri: 'http://nonunbub.com/accounts/kakao/login/callback/',
-        state: 'https://nonunbub.com/tabs/meeting-detail/84'
       });
     } else if (method === 'email') {
       alert('서비스 준비중입니다 ^^');
