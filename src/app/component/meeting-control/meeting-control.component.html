@@ -343,10 +343,6 @@
           <form-errors [formGroup]=" optionAddFormGroup" [controlName]="'optionPeriod'"
             [errors]="[{key:'maxDurationDays',message:'총 기간은 최대 1년까지 입력가능합니다.'}]"> </form-errors>
           <ion-item lines="none">
-            <ion-checkbox type="checkbox" (ionChange)="changeUseTime($event)"> </ion-checkbox>
-            <ion-label>&nbsp;티켓 형식</ion-label>
-          </ion-item>
-          <ion-item lines="none">
             <ion-label position="fixed">스케줄<span class="invalid-input">*</span></ion-label>
             <ngx-cron-ui (onChangeEvent)="changeSchedule($event, true)" [config]="ngxCronUiConfig">
             </ngx-cron-ui>
