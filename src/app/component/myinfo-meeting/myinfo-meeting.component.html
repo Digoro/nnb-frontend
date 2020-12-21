@@ -9,7 +9,7 @@
     <h3>총 결제금액: {{meeting.payment.PCD_PAY_TOTAL|number}}원</h3>
     <p>{{meeting.options.length}}개의 구매옵션</p>
     <a [href]="'/tabs/my-info-detail/' + meeting.payment.pid" style="text-decoration: none; color: black;">
-      <ion-button size="small" color="medium">결제 상세보기</ion-button>
+      <button class="nnb-btn nnb-btn-secondary nnb-btn-sm">결제 상세보기</button>
     </a>
   </ion-label>
 </ion-item>
