@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-grid fixed *ngIf="coupons && usedCoupons">
+  <ion-grid fixed *ngIf="coupons && usedCoupons" style="margin-top: 0.5rem">
     <ion-segment (ionChange)="segmentChanged($event)" value="canUse">
       <ion-segment-button value="canUse">
         <ion-label>사용가능한 쿠폰&nbsp;<span class="badge badge-danger">{{coupons.length}}</span></ion-label>
