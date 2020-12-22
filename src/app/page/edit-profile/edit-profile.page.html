@@ -16,10 +16,10 @@
         [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"></form-input>
 
       <form-input [name]="'한줄 소개'" [controlName]="'catchphrase'" [group]="form" [maxLength]="30"
-        [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"></form-input>
+        [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]" [isRequired]="false"></form-input>
 
       <form-input [name]="'설명'" [controlName]="'introduction'" [type]="'textarea'" [group]="form"
-        [errors]="[{key:'maxlength',message:'300자 제한입니다.'}]" [maxLength]="300">
+        [errors]="[{key:'maxlength',message:'300자 제한입니다.'}]" [maxLength]="300" [isRequired]="false">
       </form-input>
     </form>
     <br>

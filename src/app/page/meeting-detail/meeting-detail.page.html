@@ -25,7 +25,7 @@
             <ion-icon name="navigate-outline" class="summary-icon"></ion-icon>
             {{meeting.address}}, {{meeting.detailed_address}}
           </p>
-          <p class="summary-info" *ngIf="runningHours!==0 && runningMinutes!==0">
+          <p class="summary-info" *ngIf="meeting.runningMinutes!==0">
             <ion-icon name="time-outline" class="summary-icon"></ion-icon>
             약 <span *ngIf="runningHours!=0">{{runningHours}}시간 </span>
             <span *ngIf="runningMinutes!=0">{{runningMinutes}}분</span> 소요

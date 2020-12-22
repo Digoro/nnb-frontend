@@ -178,7 +178,7 @@
                         <form-input [name]="'주문자 이름'" [controlName]="'PCD_PAYER_NAME'" [group]="paymentAddFormGroup"
                           [maxLength]="500" [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]"></form-input>
                         <form-input [name]="'휴대폰 번호'" [controlName]="'phone'" [group]="paymentAddFormGroup"
-                          [maxLength]="11" [errors]="[{key:'pattern',message:'올바른 휴대폰 번호 형식이 아닙니다.(예)01012341234'}]">
+                          [maxLength]="0" [errors]="[{key:'pattern',message:'올바른 휴대폰 번호 형식이 아닙니다.(예)01012341234'}]">
                         </form-input>
                         <form-input [name]="'총 결제 금액'" [controlName]="'PCD_PAY_TOTAL'" [group]="paymentAddFormGroup"
                           [type]="'number'" [onlyDigit]="true" [errors]="[{key:'max',message:'10000000원 제한입니다.'}]">

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
@@ -35,8 +35,8 @@ export class EditProfilePage implements OnInit {
       this.form = new FormGroup({
         image: new FormControl(resp.image),
         nickname: new FormControl(resp.nickName, this.formService.getValidators(30)),
-        catchphrase: new FormControl(resp.catch_phrase, this.formService.getValidators(30)),
-        introduction: new FormControl(resp.introduction, this.formService.getValidators(300)),
+        catchphrase: new FormControl(resp.catch_phrase, [Validators.maxLength(30)]),
+        introduction: new FormControl(resp.introduction, [Validators.maxLength(300)]),
       });
     });
   }

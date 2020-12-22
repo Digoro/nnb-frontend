@@ -31,7 +31,7 @@ export class MeetingRequestPage implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       peopleNumber: new FormControl('', this.formService.getValidators(2, [Validators.min(1), Validators.max(99)])),
-      phone: new FormControl('', this.formService.getValidators(30, [Validators.pattern("[0-9 ]{11}")])),
+      phone: new FormControl('', this.formService.getValidators(11, [Validators.pattern("[0-9 ]{11}")])),
       desc: new FormControl('', this.formService.getValidators(500)),
     });
     this.authService.getCurrentNonunbubUser().subscribe(user => {
