@@ -29,6 +29,14 @@ export class AuthService {
     // return of(this.user).pipe(delay(200))
   }
 
+  requestAuthSMS(phone: string): Observable<{ result: boolean }> {
+    return this.http.post<{ result: boolean }>(`/auth-sms`, { 'phone_number': phone })
+  }
+
+  authSMS(phone: string, authNumber: string): Observable<{ result: boolean }> {
+    return this.http.get<{ result: boolean }>(`/auth-sms?phone_number=${phone}&auth_number=${authNumber}`)
+  }
+
   logout() {
     return this.http.get(`/users/logout`, { responseType: 'text' });
   }

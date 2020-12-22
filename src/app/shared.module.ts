@@ -20,6 +20,7 @@ import { TableModule } from 'ngx-easy-table';
 import { QuillModule } from 'ngx-quill';
 import { NgxUploaderModule } from 'ngx-uploader';
 import { environment } from './../environments/environment';
+import { AuthSmsComponent } from './component/auth-sms/auth-sms.component';
 import { CommentComponent } from './component/comment/comment.component';
 import { EmptyMeetingCardComponent } from './component/empty-meeting-card/empty-meeting-card.component';
 import { FooterComponent } from './component/footer/footer.component';
@@ -61,7 +62,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FormErrorsComponent,
     MyinfoMeetingComponent,
     NotionDescComponent,
-    PriceComponent
+    PriceComponent,
+    AuthSmsComponent
   ],
   imports: [
     CommonModule,
@@ -117,6 +119,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NotionDescComponent,
     FormInputComponent,
     PriceComponent,
+    AuthSmsComponent,
     CommonModule,
     IonicModule,
     FormsModule,

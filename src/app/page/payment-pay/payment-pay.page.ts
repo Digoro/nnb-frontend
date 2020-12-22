@@ -5,7 +5,6 @@ import * as moment from 'moment';
 import { PayMethod } from 'src/app/model/payment-user-info';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
-import { FormService } from 'src/app/service/form.service';
 import { Coupon } from '../../model/coupon';
 import { Meeting } from '../../model/meeting';
 import { CouponService } from '../../service/coupon.service';
@@ -27,14 +26,14 @@ export class PaymentPayPage implements OnInit {
   options: any[];
   coupons: Coupon[]
   selectedCoupon: Coupon;
-  selectedPayMethod = '';
+  phone: string;
+  alreadyExistPhone = false;
 
   constructor(
     private route: ActivatedRoute,
     private meetingService: MeetingService,
     private paymentService: PaymentService,
     private authService: AuthService,
-    private formService: FormService,
     private fb: FormBuilder,
     private couponService: CouponService
   ) { }
@@ -46,7 +45,6 @@ export class PaymentPayPage implements OnInit {
   initForm() {
     this.form = this.fb.group({
       coupon: new FormControl(false),
-      phone: new FormControl('', this.formService.getValidators(30, [Validators.pattern("[0-9 ]{11}")])),
       payMethod: new FormControl('', Validators.required)
     })
   }
@@ -55,6 +53,10 @@ export class PaymentPayPage implements OnInit {
     this.initForm()
     this.authService.getCurrentNonunbubUser().subscribe(user => {
       this.user = user;
+      if (this.user.phone) {
+        this.phone = this.user.phone;
+        this.alreadyExistPhone = true;
+      }
       const params: {
         mid: number, options: {
           oid: number,
@@ -74,11 +76,6 @@ export class PaymentPayPage implements OnInit {
         })
       });
     })
-  }
-
-  selectPaymentMethod(event) {
-    this.selectedPayMethod = event.target.value;
-    this.form.controls.payMethod.patchValue(event.target.value);
   }
 
   setPrice() {
@@ -108,7 +105,7 @@ export class PaymentPayPage implements OnInit {
   }
 
   pay() {
-    const { coupon, phone, payMethod } = this.form.value;
+    const { coupon, payMethod } = this.form.value;
     let optionsTemp = this.options.map(o => {
       o.optionDate = moment(o.optionDate).format('YYYYMMDDHHmmss')
       return o
@@ -119,7 +116,11 @@ export class PaymentPayPage implements OnInit {
       case 'card': method = PayMethod.CARD; break;
       case 'transfer': method = PayMethod.TRANSFER; break;
     }
-    if (isOk) this.paymentService.pay(method, this.user, this.meeting, phone, this.price, optionsTemp, coupon);
+    if (isOk) this.paymentService.pay(method, this.user, this.meeting, this.phone, this.price, optionsTemp, coupon);
+  }
+
+  onAddPhone(phone) {
+    this.phone = phone;
   }
 
   ionViewDidLeave() {

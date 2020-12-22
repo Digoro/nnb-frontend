@@ -60,16 +60,16 @@
 
             <div class="card">
               <p class="title">결제 방법</p>
-              <ion-radio-group (ionChange)="selectPaymentMethod($event)">
+              <ion-radio-group [formControlName]="'payMethod'">
                 <ion-item>
                   <ion-label class="ion-text-wrap"
-                    [ngStyle]="{'color': selectedPayMethod ==='card' ? '#e5456e':'', 'font-weight':selectedPayMethod ==='card'? 'bold':''}">
+                    [ngStyle]="{'color': this.form.controls.payMethod.value ==='card' ? '#e5456e':'', 'font-weight':this.form.controls.payMethod.value ==='card'? 'bold':''}">
                     <div style="display: flex;">
-                      <ion-icon *ngIf="selectedPayMethod !== 'card'" name="card-outline"></ion-icon>
-                      <ion-icon *ngIf="selectedPayMethod == 'card'" name="card"></ion-icon>
+                      <ion-icon *ngIf="this.form.controls.payMethod.value !== 'card'" name="card-outline"></ion-icon>
+                      <ion-icon *ngIf="this.form.controls.payMethod.value == 'card'" name="card"></ion-icon>
                       &nbsp;
                       <p
-                        [ngStyle]="{'color': selectedPayMethod ==='card' ? '#e5456e':'', 'font-weight':selectedPayMethod ==='card'? 'bold':''}">
+                        [ngStyle]="{'color': this.form.controls.payMethod.value ==='card' ? '#e5456e':'', 'font-weight':this.form.controls.payMethod.value ==='card'? 'bold':''}">
                         카드 일반결제</p>
                     </div>
                   </ion-label>
@@ -77,13 +77,14 @@
                 </ion-item>
                 <ion-item>
                   <ion-label class="ion-text-wrap"
-                    [ngStyle]="{'color': selectedPayMethod ==='transfer' ? '#e5456e':'', 'font-weight':selectedPayMethod ==='transfer'? 'bold':''}">
+                    [ngStyle]="{'color': this.form.controls.payMethod.value ==='transfer' ? '#e5456e':'', 'font-weight':this.form.controls.payMethod.value ==='transfer'? 'bold':''}">
                     <div style="display: flex;">
-                      <ion-icon *ngIf="selectedPayMethod !== 'transfer'" name="flash-outline"></ion-icon>
-                      <ion-icon *ngIf="selectedPayMethod == 'transfer'" name="flash"></ion-icon>
+                      <ion-icon *ngIf="this.form.controls.payMethod.value !== 'transfer'" name="flash-outline">
+                      </ion-icon>
+                      <ion-icon *ngIf="this.form.controls.payMethod.value == 'transfer'" name="flash"></ion-icon>
                       &nbsp;
                       <p
-                        [ngStyle]="{'color': selectedPayMethod ==='transfer' ? '#e5456e':'', 'font-weight':selectedPayMethod ==='transfer'? 'bold':''}">
+                        [ngStyle]="{'color': this.form.controls.payMethod.value ==='transfer' ? '#e5456e':'', 'font-weight':this.form.controls.payMethod.value ==='transfer'? 'bold':''}">
                         실시간 계좌이체</p>
                     </div>
                   </ion-label>
@@ -92,19 +93,16 @@
               </ion-radio-group>
             </div>
 
-            <div class="card">
+            <div class="card" *ngIf="!phone || !alreadyExistPhone">
               <p class="title">휴대폰 번호</p>
-              <p class="desc">- 없이 번호만 입력해주세요</p>
-              <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678">
-              <p class="invalid-input" *ngIf="form.controls.phone.dirty && form.controls.phone.invalid">입력이 올바르지 않습니다.
-              </p>
+              <auth-sms [user]="user" [phone]="phone" (phoneAddEvent)="onAddPhone($event)"></auth-sms>
             </div>
 
           </ng-container>
           <ion-row>
             <ion-col>
               <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block" (click)="pay()"
-                [disabled]="form.invalid">결제하기</button>
+                [disabled]="form.invalid || !phone">결제하기</button>
             </ion-col>
           </ion-row>
         </ng-container>

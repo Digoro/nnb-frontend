@@ -23,7 +23,7 @@ export class UserService {
     return this.http.get<User>(`${this.urlPrefix}/users/${nid}`);
   }
 
-  edit(uid, image: string, nickname: string, catchphrase: string, introduction: string,) {
-    return this.http.put(`users/management?uid=${uid}`, { image, nickname, catchphrase, introduction })
+  edit(uid, image?: string, nickname?: string, catchphrase?: string, introduction?: string, phone?: string) {
+    return this.http.put(`users/management?uid=${uid}`, { image, nickname, catchphrase, introduction, phone })
   }
 }

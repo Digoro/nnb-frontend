@@ -1,0 +1,23 @@
+<form [formGroup]="form">
+  <p class="desc">- 없이 번호만 입력해주세요</p>
+  <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678"
+    [attr.disabled]="user.phone || isSMSAuth ? '' : null">
+  <p class="invalid-input" style="margin-bottom: 1rem;"
+    *ngIf="form.controls.phone.dirty && form.controls.phone.invalid">
+    입력이 올바르지 않습니다.
+  </p>
+  <ng-container *ngIf="!isSMSAuth">
+    <button *ngIf="!user.phone" class="nnb-btn nnb-btn-secondary nnb-btn-sm"
+      [attr.disabled]="form.controls.phone.invalid ? '' : null" (click)="requestAuthSMS()">
+      인증번호 발송</button>&nbsp;
+    <span class="invalid-input">{{remainTime}}</span>
+    <ng-container *ngIf="isRequestAuth">
+      <input type="tel" class="form-control" #authNumber>
+      <button class="nnb-btn nnb-btn-secondary nnb-btn-sm" (click)="authSMS()">
+        인증번호 확인</button>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="isSMSAuth">
+    <p class="desc">인증 완료!</p>
+  </ng-container>
+</form>
