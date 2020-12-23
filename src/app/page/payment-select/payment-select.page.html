@@ -51,7 +51,7 @@
           </div>
 
           <div class="card"
-            *ngIf="isFree || ((!phone || !alreadyExistPhone) || (!this.form.controls.name.value || !alreadyExistName))">
+            *ngIf="isFree && ((!phone || !alreadyExistPhone) || (!this.form.controls.name.value || !alreadyExistName))">
             <p class="title">예약자 정보</p>
             <form-input *ngIf="!this.form.controls.name.value || !alreadyExistName" [name]="'이름'" [controlName]="'name'"
               [group]="form" [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]" [maxLength]="30" [isRequired]="false">
