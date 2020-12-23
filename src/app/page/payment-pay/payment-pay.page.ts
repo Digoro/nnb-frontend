@@ -10,6 +10,8 @@ import { Meeting } from '../../model/meeting';
 import { CouponService } from '../../service/coupon.service';
 import { MeetingService } from '../../service/meeting.service';
 import { PaymentService } from '../../service/payment.service';
+import { FormService } from './../../service/form.service';
+import { UserService } from './../../service/user.service';
 
 @Component({
   selector: 'payment-pay',
@@ -28,6 +30,7 @@ export class PaymentPayPage implements OnInit {
   selectedCoupon: Coupon;
   phone: string;
   alreadyExistPhone = false;
+  alreadyExistName = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,27 +38,34 @@ export class PaymentPayPage implements OnInit {
     private paymentService: PaymentService,
     private authService: AuthService,
     private fb: FormBuilder,
-    private couponService: CouponService
+    private couponService: CouponService,
+    private formSerivce: FormService,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
-    this.initForm()
+    this.initForm();
   }
 
   initForm() {
     this.form = this.fb.group({
       coupon: new FormControl(false),
+      name: new FormControl('', this.formSerivce.getValidators(30)),
       payMethod: new FormControl('', Validators.required)
     })
   }
 
   ionViewDidEnter() {
-    this.initForm()
+    this.initForm();
     this.authService.getCurrentNonunbubUser().subscribe(user => {
       this.user = user;
       if (this.user.phone) {
         this.phone = this.user.phone;
         this.alreadyExistPhone = true;
+      }
+      if (this.user.name) {
+        this.form.controls.name.setValue(this.user.name);
+        this.alreadyExistName = true;
       }
       const params: {
         mid: number, options: {
@@ -117,6 +127,9 @@ export class PaymentPayPage implements OnInit {
       case 'transfer': method = PayMethod.TRANSFER; break;
     }
     if (isOk) this.paymentService.pay(method, this.user, this.meeting, this.phone, this.price, optionsTemp, coupon);
+    this.userService.edit(this.user.uid, undefined, undefined, this.form.controls.name.value).subscribe(resp => {
+      console.log(resp);
+    })
   }
 
   onAddPhone(phone) {

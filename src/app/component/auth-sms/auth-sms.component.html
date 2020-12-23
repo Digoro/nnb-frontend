@@ -1,5 +1,5 @@
 <form [formGroup]="form">
-  <p class="desc">- 없이 번호만 입력해주세요</p>
+  <p class="desc" *ngIf="isDesc" style="margin: 0px">- 없이 번호만 입력해주세요</p>
   <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678"
     [attr.disabled]="user.phone || isSMSAuth ? '' : null">
   <p class="invalid-input" style="margin-bottom: 1rem;"
@@ -9,8 +9,8 @@
   <ng-container *ngIf="!isSMSAuth">
     <button *ngIf="!user.phone" class="nnb-btn nnb-btn-secondary nnb-btn-sm"
       [attr.disabled]="form.controls.phone.invalid ? '' : null" (click)="requestAuthSMS()">
-      인증번호 발송</button>&nbsp;
-    <span class="invalid-input">{{remainTime}}</span>
+      인증번호 발송</button>
+    <span class="invalid-input" *ngIf="!!remainTime">&nbsp;{{remainTime}}</span>
     <ng-container *ngIf="isRequestAuth">
       <input type="tel" class="form-control" #authNumber>
       <button class="nnb-btn nnb-btn-secondary nnb-btn-sm" (click)="authSMS()">
@@ -18,6 +18,6 @@
     </ng-container>
   </ng-container>
   <ng-container *ngIf="isSMSAuth">
-    <p class="desc">인증 완료!</p>
+    <p class="desc" style="margin: 0px">인증 완료!</p>
   </ng-container>
 </form>

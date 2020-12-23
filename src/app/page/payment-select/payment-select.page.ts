@@ -11,6 +11,7 @@ import { Meeting, MeetingOption } from '../../model/meeting';
 import { MeetingService } from '../../service/meeting.service';
 import { PaymentService } from '../../service/payment.service';
 import { AuthService } from './../../service/auth.service';
+import { UserService } from './../../service/user.service';
 
 @Component({
   selector: 'payment',
@@ -27,6 +28,9 @@ export class PaymentSelectPage implements OnInit {
   coupons: Coupon[]
   selectedOptionsFromCalendar: MeetingOption[];
   calendarOptions: CalendarComponentOptions;
+  phone: string;
+  alreadyExistPhone = false;
+  alreadyExistName = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +40,7 @@ export class PaymentSelectPage implements OnInit {
     private authService: AuthService,
     private formService: FormService,
     private fb: FormBuilder,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
@@ -45,7 +50,7 @@ export class PaymentSelectPage implements OnInit {
   initForm() {
     this.form = this.fb.group({
       options: this.fb.array([], Validators.required),
-      phone: new FormControl('', this.formService.getValidators(30, [Validators.pattern("[0-9 ]{11}")])),
+      name: new FormControl('', this.formService.getValidators(30)),
     })
   }
 
@@ -56,6 +61,14 @@ export class PaymentSelectPage implements OnInit {
       this.meetingService.getMeeting(mid).subscribe(meeting => {
         this.authService.getCurrentNonunbubUser().subscribe(user => {
           this.user = user;
+          if (this.user.phone) {
+            this.phone = this.user.phone;
+            this.alreadyExistPhone = true;
+          }
+          if (this.user.name) {
+            this.form.controls.name.setValue(this.user.name);
+            this.alreadyExistName = true;
+          }
           this.meeting = meeting;
           this.calendarOptions = {
             color: 'primary',
@@ -74,8 +87,8 @@ export class PaymentSelectPage implements OnInit {
           }
           this.isFree = this.meeting.price === 0;
           if (!this.isFree) {
-            this.form.controls.phone.clearValidators();
-            this.form.controls.phone.updateValueAndValidity();
+            this.form.controls.name.clearValidators();
+            this.form.controls.name.updateValueAndValidity();
           }
         });
       })
@@ -156,6 +169,10 @@ export class PaymentSelectPage implements OnInit {
     })
   }
 
+  onAddPhone(phone) {
+    this.phone = phone;
+  }
+
   pay() {
     const obj: any = {};
     obj.mid = this.meeting.mid;
@@ -182,5 +199,8 @@ export class PaymentSelectPage implements OnInit {
       , undefined, undefined, undefined, time, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined
       , undefined, undefined, undefined, undefined, phone, undefined)
     this.paymentService.joinFreeMeeting(payment, options, phone, this.user);
+    this.userService.edit(this.user.uid, undefined, undefined, this.form.controls.name.value).subscribe(resp => {
+      console.log(resp);
+    })
   }
 }

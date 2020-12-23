@@ -93,9 +93,17 @@
               </ion-radio-group>
             </div>
 
-            <div class="card" *ngIf="!phone || !alreadyExistPhone">
-              <p class="title">휴대폰 번호</p>
-              <auth-sms [user]="user" [phone]="phone" (phoneAddEvent)="onAddPhone($event)"></auth-sms>
+            <div class="card"
+              *ngIf="(!phone || !alreadyExistPhone) || (!this.form.controls.name.value || !alreadyExistName)">
+              <p class="title">예약자 정보</p>
+              <form-input *ngIf="!this.form.controls.name.value || !alreadyExistName" [name]="'이름'"
+                [controlName]="'name'" [group]="form" [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"
+                [maxLength]="30" [isRequired]="false">
+              </form-input>
+              <ion-item lines="none" *ngIf="!phone || !alreadyExistPhone">
+                <ion-label position="fixed">휴대폰 번호</ion-label>
+                <auth-sms [user]="user" [phone]="phone" (phoneAddEvent)="onAddPhone($event)"></auth-sms>
+              </ion-item>
             </div>
 
           </ng-container>

@@ -19,6 +19,7 @@ export class AuthSmsComponent implements OnInit {
   @ViewChild('authNumber') authNumber: ElementRef;
   @Input() phone: string;
   @Input() user: User;
+  @Input() isDesc = true;
   @Output() phoneAddEvent = new EventEmitter();
 
   constructor(
@@ -67,7 +68,7 @@ export class AuthSmsComponent implements OnInit {
         this.isSMSAuth = true;
         alert('휴대폰 인증에 성공하였습니다.');
         this.phoneAddEvent.emit(phone);
-        this.userService.edit(this.user.uid, undefined, undefined, undefined, undefined, phone).subscribe(resp => {
+        this.userService.edit(this.user.uid, undefined, undefined, undefined, undefined, undefined, phone).subscribe(resp => {
           console.log(resp);
         })
       } else {

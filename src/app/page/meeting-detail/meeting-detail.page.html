@@ -255,11 +255,10 @@
           <ng-container *ngIf="!!user">
             <a [href]="'/tabs/payment/select/' + meeting.mid" style="text-decoration: none; color: black;">
               <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn"
-                *ngIf="meeting.status !== 5 && meeting.options.length !== 0 && meeting.price !== 0">모임 결제하러 가기!</button>
-            </a>
-            <a [href]="'/tabs/payment/select/' + meeting.mid" style="text-decoration: none; color: black;">
-              <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn"
-                *ngIf="meeting.status !== 5 && meeting.options.length !== 0 && meeting.price === 0">무료 모임 참석하기!</button>
+                *ngIf="meeting.status !== 5 && meeting.options.length !== 0">
+                <span *ngIf="meeting.price !== 0">모임 결제하러 가기!</span>
+                <span *ngIf="meeting.price === 0">무료 모임 참석하기!</span>
+              </button>
             </a>
             <a [href]="'/tabs/meeting-request/' + meeting.mid" style="text-decoration: none; color: black;">
               <button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && !isRequestedMeeting"

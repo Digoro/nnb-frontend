@@ -6,7 +6,7 @@
           <ion-avatar style="width: 80px; height: 80px;">
             <img [src]="form.controls.image.value">
           </ion-avatar>
-          <button class="btn btn-sm" type="button" (click)="fileInput.click()">
+          <button class="btn btn-sm" style="border:1px solid #a6a6a654;" type="button" (click)="fileInput.click()">
             <span>업로드</span>
             <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
           </button>
@@ -14,11 +14,17 @@
       </ion-row>
       <form-input [name]="'닉네임'" [controlName]="'nickname'" [group]="form" [maxLength]="30"
         [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"></form-input>
-
+      <form-input [name]="'이름'" [controlName]="'name'" [group]="form"
+        [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]" [maxLength]="30" [isRequired]="false">
+      </form-input>
+      <ion-item lines="none">
+        <ion-label position="fixed">휴대폰 번호</ion-label>
+        <auth-sms [isDesc]="!phone" [user]="user" [phone]="phone" (phoneAddEvent)="onAddPhone($event)"></auth-sms>
+      </ion-item>
+      <hr>
       <form-input [name]="'한줄 소개'" [controlName]="'catchphrase'" [group]="form" [maxLength]="30"
         [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]" [isRequired]="false"></form-input>
-
-      <form-input [name]="'설명'" [controlName]="'introduction'" [type]="'textarea'" [group]="form"
+      <form-input [name]="'자기 소개'" [rows]="2" [controlName]="'introduction'" [type]="'textarea'" [group]="form"
         [errors]="[{key:'maxlength',message:'300자 제한입니다.'}]" [maxLength]="300" [isRequired]="false">
       </form-input>
     </form>

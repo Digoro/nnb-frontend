@@ -16,6 +16,7 @@ import { UserService } from './../../service/user.service';
 export class EditProfilePage implements OnInit {
   user: User;
   form: FormGroup;
+  phone: string;
 
   constructor(
     private authService: AuthService,
@@ -32,11 +33,13 @@ export class EditProfilePage implements OnInit {
   setUser() {
     this.authService.getCurrentNonunbubUser().subscribe(resp => {
       this.user = resp;
+      if (this.user.phone) this.phone = this.user.phone;
       this.form = new FormGroup({
         image: new FormControl(resp.image),
         nickname: new FormControl(resp.nickName, this.formService.getValidators(30)),
+        name: new FormControl(resp.name, this.formService.getValidators(30)),
         catchphrase: new FormControl(resp.catch_phrase, [Validators.maxLength(30)]),
-        introduction: new FormControl(resp.introduction, [Validators.maxLength(300)]),
+        introduction: new FormControl(resp.introduction, [Validators.maxLength(300)])
       });
     });
   }
@@ -53,9 +56,13 @@ export class EditProfilePage implements OnInit {
     }
   }
 
+  onAddPhone(phone: string) {
+    this.phone = phone;
+  }
+
   editUser() {
-    const { image, nickname, catchphrase, introduction } = this.form.value;
-    this.userService.edit(this.user.uid, image, nickname, catchphrase, introduction).subscribe(resp => {
+    const { image, nickname, name, catchphrase, introduction } = this.form.value;
+    this.userService.edit(this.user.uid, image, nickname, name, catchphrase, introduction).subscribe(resp => {
       alert('수정되었습니다.');
       window.location.href = `/tabs/profile/${this.user.uid}`;
     })

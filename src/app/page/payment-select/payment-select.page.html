@@ -50,12 +50,16 @@
             </div>
           </div>
 
-          <div class="card" *ngIf="isFree">
-            <p class="title">휴대폰 번호</p>
-            <p class="desc">- 없이 번호만 입력해주세요</p>
-            <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678">
-            <p class="invalid-input" *ngIf="form.controls.phone.dirty && form.controls.phone.invalid">입력이 올바르지 않습니다.
-            </p>
+          <div class="card"
+            *ngIf="isFree || ((!phone || !alreadyExistPhone) || (!this.form.controls.name.value || !alreadyExistName))">
+            <p class="title">예약자 정보</p>
+            <form-input *ngIf="!this.form.controls.name.value || !alreadyExistName" [name]="'이름'" [controlName]="'name'"
+              [group]="form" [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]" [maxLength]="30" [isRequired]="false">
+            </form-input>
+            <ion-item lines="none" *ngIf="!phone || !alreadyExistPhone">
+              <ion-label position="fixed">휴대폰 번호</ion-label>
+              <auth-sms [user]="user" [phone]="phone" (phoneAddEvent)="onAddPhone($event)"></auth-sms>
+            </ion-item>
           </div>
 
           <ng-container *ngIf="meeting.options.length > 0">
@@ -79,8 +83,7 @@
               <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block" *ngIf="!isFree" (click)="pay()"
                 [disabled]="form.invalid">결제하러 가기!</button>
               <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block" *ngIf="isFree" (click)="join()"
-                [disabled]="form.invalid">무료
-                참여하기</button>
+                [disabled]="form.invalid || !phone">무료 참여하기</button>
             </ion-col>
           </ion-row>
         </ng-container>
