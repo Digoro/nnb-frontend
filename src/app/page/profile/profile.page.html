@@ -10,7 +10,7 @@
       </p>
     </div>
     <p class="catch_phrase">{{profileUser.catch_phrase}}</p>
-    <p style="margin-bottom: 0.7rem;">{{profileUser.introduction}}</p>
+    <p class="pre-wrap" style="margin-bottom: 0.7rem;">{{profileUser.introduction}}</p>
     <ng-container *ngIf="!!currentUser">
       <div style="text-align: center;">
         <a *ngIf="currentUser.uid === pageUserId" [href]="'/tabs/edit-profile'"

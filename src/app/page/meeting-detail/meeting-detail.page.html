@@ -206,7 +206,10 @@
                   </div>
                 </div>
                 <p class="catch_phrase">{{host.catch_phrase}}</p>
-                <p class="introduction">{{host.introduction}}</p>
+                <p class="introduction">{{host.introduction | truncate:[65]}}</p>
+                <a [href]="'/tabs/profile/' + host.uid" style="text-decoration: none; color: black;">
+                  <button class="nnb-btn nnb-btn-secondary nnb-btn-sm">프로필 보기</button>
+                </a>
               </div>
             </ion-col>
           </ion-row>
