@@ -91,3 +91,18 @@
     cursor: pointer;
     text-decoration: none;
 }
+
+.host-card {
+    padding: 0.8rem 0rem;
+    border: 1px solid #efefef;
+    cursor: pointer;
+    min-height: 238px;
+
+    .image {
+        width: 96px;
+        height: 96px;
+        margin: 0 auto 10px;
+        border: 1px solid #efefef;
+        border-radius: 50%;
+    }
+}

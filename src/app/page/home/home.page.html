@@ -60,6 +60,37 @@
         </ion-col>
       </ion-row>
     </ng-container>
+
+    <ion-row style="margin-top: 40px;">
+      <ion-col>
+        <span class="meeting-category">슈퍼 호스트 🎖🎖</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-slides [options]="sliderConfig" pager="false" #slider id="slider">
+          <ng-container>
+            <ion-slide *ngFor="let host of superHostList" class="host-card">
+              <div>
+                <img class="image" [src]="host.image">
+                <p style="font-size: 1rem;margin-bottom: 0px;">{{host.name}}</p>
+                <ng-container *ngFor="let tag of host.tags">
+                  <span class="desc">#{{tag}} </span>
+                </ng-container>
+                <div class="desc">
+                  <ion-icon name="navigate-circle-outline"></ion-icon>
+                  <span>{{host.locale}}</span>
+                </div>
+                <a *ngIf="host.uid !== '0'" [href]="'/tabs/profile/' + host.uid"
+                  style="text-decoration: none; color: black;">
+                  <button class="nnb-btn nnb-btn-secondary nnb-btn-sm">프로필 보기</button>
+                </a>
+              </div>
+            </ion-slide>
+          </ng-container>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
   </ion-grid>
   <footer></footer>
 </ion-content>
