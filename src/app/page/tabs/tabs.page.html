@@ -80,7 +80,8 @@
   <ion-router-outlet style="margin-top:66px"></ion-router-outlet>
 </ng-container>
 
-<ion-fab vertical="bottom" horizontal="end" slot="fixed" style="margin-bottom: 7.7rem;margin-right: 0.9rem;">
+<ion-fab vertical="bottom" horizontal="end" slot="fixed"
+  [ngStyle]="{'margin-bottom':isDesktop? '5rem': '7.7rem', 'margin-right':isDesktop? '23rem': '0.9rem'}">
   <a [href]="'https://pf.kakao.com/_lyeixb/chat'" style="text-decoration: none; color:black;">
     <ion-fab-button>
       <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
