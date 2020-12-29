@@ -280,3 +280,9 @@ ion-calendar .marked>p {
 ion-calendar .on-selected {
     background-color: #ff40806b !important;
 }
+
+ion-fab-button {
+    --color: white;
+    --border-color: #ff4081;
+    --background: #ff4683;
+}
