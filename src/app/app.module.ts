@@ -40,6 +40,7 @@ import { SharedModule } from './shared.module';
     SharedModule
   ],
   providers: [
+    { provide: COMPOSITION_BUFFER_MODE, useValue: false },
     StatusBar,
     SplashScreen,
     NativePageTransitions,

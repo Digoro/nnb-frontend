@@ -308,7 +308,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         this.inputDesc = {
           title: '스케줄 기간', descList: [
             '옵션을 언제부터 언제까지 판매할 건지 전체 기간을 설정해 주세요.',
-            '(ex. 10월 1일 ~ 12월 31일)'
+            '(ex. 2021.05.01 - 2021.06.16)'
           ]
         }
         this.modalRef = this.modalService.show(template, config);
@@ -317,7 +317,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       case 'schedule': {
         this.inputDesc = {
           title: '스케줄', descList: [
-            '상품을 매월 / 매주 / 매일 중 어떤 루틴으로 진행할 지 먼저 선택해 주세요. ',
+            '상품을 매월 / 매주 / 매일 중 어떤 일정으로 진행할 지 먼저 선택해 주세요. ',
             '요일 / 일 / 시간은 복수 선택이 가능합니다. (CTRL을 누른 채로 클릭하세요)',
             '(ex. 매월 5일 15일 25일 12:00시 / 매주 화, 수, 목 10:00시, 14:00시 / 매일 18:00시)'
           ]

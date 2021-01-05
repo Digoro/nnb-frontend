@@ -330,8 +330,9 @@
     <ion-card>
       <ion-card-content>
         <form [formGroup]="optionAddFormGroup">
+          <span class="desc" style="padding-left: 0.9rem;">상품 판매를 진행할 전체 기간을 선택해주세요.</span>
           <ion-item lines="none">
-            <ion-label position="fixed">스케줄 기간<span class="invalid-input">*</span></ion-label>
+            <ion-label position="fixed">판매 기간<span class="invalid-input">*</span></ion-label>
             <input *ngIf="isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
               bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:2}">
             <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'period')"></ion-icon>
@@ -342,14 +343,16 @@
           <hr>
           <form-errors [formGroup]=" optionAddFormGroup" [controlName]="'optionPeriod'"
             [errors]="[{key:'maxDurationDays',message:'총 기간은 최대 1년까지 입력가능합니다.'}]"> </form-errors>
+          <span class="desc" style="padding-left: 0.9rem;">매월/매주/매일 중 어떤 일정으로 진행할 지 선택해 주세요.</span>
           <ion-item lines="none">
-            <ion-label position="fixed">스케줄<span class="invalid-input">*</span></ion-label>
+            <ion-label position="fixed">일정<span class="invalid-input">*</span></ion-label>
             <ngx-cron-ui (onChangeEvent)="changeSchedule($event, true)" [config]="ngxCronUiConfig">
             </ngx-cron-ui>
             <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'schedule')"></ion-icon>
           </ion-item>
           <hr>
-          <form-input [name]="'옵션 설명'" [controlName]="'optionTitle'" [group]="optionAddFormGroup" [maxLength]="100"
+          <span class="desc" style="padding-left: 0.9rem;">예시) 경복궁 투어 성인 1인</span>
+          <form-input [name]="'옵션 제목'" [controlName]="'optionTitle'" [group]="optionAddFormGroup" [maxLength]="100"
             [errors]="[{key:'maxlength',message:'100자 제한입니다.'}]"></form-input>
           <form-input [name]="'가격'" [controlName]="'optionPrice'" [type]="'number'" [group]="optionAddFormGroup"
             [maxLength]="100" [errors]="[{key:'min',message:'0원 이상이어야 합니다.'},{key:'max',message:'10000000원 제한입니다.'}]"
