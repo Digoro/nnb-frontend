@@ -231,6 +231,7 @@
                     <img width="50" height="50" [src]="row.mid.file">
                   </td>
                   <td>{{ row.PCD_PAY_TIME }}</td>
+                  <td><span *ngIf="row.uid">{{ row.uid.name }}</span></td>
                   <td><span *ngIf="row.uid">{{ row.uid.nickName }}</span></td>
                   <td>
                     <a target="_blank" [href]="'/tabs/meeting-detail/' + row.mid.mid">{{row.PCD_PAY_GOODS}}</a>
