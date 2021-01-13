@@ -27,7 +27,7 @@
       <ion-col>
         <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/static/introduction'">
           <div class="introduction">
-            <p class="catch_phrase">💁🏻‍♀️💁🏻‍♀️&nbsp;&nbsp;노는법을 소개합니다!</p>
+            <p class="catch_phrase">💁🏻‍♀️💁🏻‍♀️&nbsp;&nbsp;&nbsp;&nbsp;노는법을 소개합니다!</p>
             <ion-icon class="float-right" style="color:rgb(255, 255, 255)" name="chevron-forward-outline"></ion-icon>
             <p class="desc">놀 줄 아는 꽃중년의 놀이터
             </p>
@@ -37,46 +37,27 @@
     </ion-row>
   </ion-grid>
   <ion-grid fixed>
-    <ng-container *ngFor="let meeting of mainMeetings;let index=index">
-
-      <ng-container *ngIf="index===1">
-        <ion-row style="margin-top: 40px;">
-          <ion-col>
-            <span class="meeting-category">인기 호스트 🎖🎖</span>
-          </ion-col>
-        </ion-row>
+    <ng-container *ngFor="let meeting of mainMeetings; let index=index">
+      <ng-container *ngIf="index === 2">
         <ion-row>
           <ion-col>
-            <ion-slides [options]="sliderConfig" pager="false" #slider id="slider">
-              <ng-container>
-                <ion-slide *ngFor="let host of superHostList" class="host-card">
-                  <div>
-                    <img class="image" [src]="host.image">
-                    <p style="font-size: 1rem;margin-bottom: 0px;">{{host.name}}</p>
-                    <ng-container *ngFor="let tag of host.tags">
-                      <span class="desc">#{{tag}} </span>
-                    </ng-container>
-                    <div class="desc">
-                      <ion-icon name="navigate-circle-outline"></ion-icon>
-                      <span>{{host.locale}}</span>
-                    </div>
-                    <a *ngIf="host.uid !== '0'" [href]="'/tabs/profile/' + host.uid"
-                      style="text-decoration: none; color: black;">
-                      <button class="nnb-btn nnb-btn-secondary nnb-btn-sm">프로필 보기</button>
-                    </a>
-                  </div>
-                </ion-slide>
-              </ng-container>
-            </ion-slides>
+            <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/feed'">
+              <div class="introduction">
+                <p class="catch_phrase">🚀🚀&nbsp;&nbsp;&nbsp;&nbsp;지금 우리는?</p>
+                <ion-icon class="float-right" style="color:rgb(255, 255, 255)" name="chevron-forward-outline">
+                </ion-icon>
+                <p class="desc">최근 노는법 소식을 확인해보세요!
+                </p>
+              </div>
+            </a>
           </ion-col>
         </ion-row>
       </ng-container>
-
       <ion-row style="margin-top: 40px;">
         <ion-col>
           <span class="meeting-category">{{meeting.title}}</span>&nbsp;
           <span class="meeting-category">{{meeting.emoji}}</span>
-          <!-- <p class="subTitle" [ngStyle]="{'margin-left':'13px'}">{{meeting.subTitle}}</p> -->
+          <!-- <p class="subTitle">{{meeting.subTitle}}</p> -->
           <a class="all" [href]="'/tabs/meetings?key=' + meeting.onShowKey + '&title=' + meeting.onShowTitle">전체보기</a>
         </ion-col>
       </ion-row>
@@ -96,6 +77,40 @@
         </ion-col>
       </ion-row>
     </ng-container>
+
+    <horizontal-slider [title]="'인기 호스트 🎖🎖'" [data]="superHostList" [spaceBetween]="10" [isShowAll]="false"
+      [slideStyle]="'padding: 0.8rem 0rem;border: 1px solid #efefef;cursor: pointer;min-height: 238px;'">
+    </horizontal-slider>
+    <ng-template #superHostTpl let-row>
+      <div>
+        <img class="host-image" [src]="row.image">
+        <p style="font-size: 1rem;margin-bottom: 0px;">{{row.name}}</p>
+        <ng-container *ngFor="let tag of row.tags">
+          <span class="desc">#{{tag}} </span>
+        </ng-container>
+        <div class="desc">
+          <ion-icon name="navigate-circle-outline"></ion-icon>
+          <span>{{row.locale}}</span>
+        </div>
+        <a *ngIf="row.uid !== '0'" [href]="'/tabs/profile/' + row.uid" style="text-decoration: none; color: black;">
+          <button class="nnb-btn nnb-btn-secondary nnb-btn-sm">프로필 보기</button>
+        </a>
+      </div>
+    </ng-template>
+
+    <horizontal-slider [title]="'노는법 매거진'" [data]="magazineList" [spaceBetween]="10" (showAllEvent)="showAllMagazine()">
+    </horizontal-slider>
+    <ng-template #magazineTpl let-row>
+      <a [href]="'/tabs/magazine-detail/' + row.mid" style="text-decoration: none; color: black;">
+        <div class="nnb-card">
+          <img [src]="row.image">
+          <div class="body">
+            <p class="catchphrase desc">{{row.catch_phrase | truncate: [40]}}</p>
+            <p class="title">{{row.title | truncate: [30]}}</p>
+          </div>
+        </div>
+      </a>
+    </ng-template>
   </ion-grid>
   <footer></footer>
 </ion-content>

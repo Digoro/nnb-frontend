@@ -1,18 +1,19 @@
-<ion-row *ngIf="!!title && !!subTitle" style="margin-bottom: -12px;margin-top: 40px;">
+<ion-row style="margin-top: 40px;">
   <ion-col>
-    <strong class="meeting-category" [ngStyle]="{'margin-left':isTitleMargin?'13px':''}">{{title}}</strong>
-    <p class="subTitle" [ngStyle]="{'margin-left':isTitleMargin?'13px':''}">{{subTitle}}</p>
+    <span *ngIf="!!title" class="meeting-category">{{title}}</span><br>
+    <span *ngIf="!!subTitle" class="subTitle">{{subTitle}}</span>
   </ion-col>
-  <p class="all" (click)="showAll()">전체보기</p>
+  <p class="all" *ngIf="isShowAll" (click)="showAll()">전체보기</p>
 </ion-row>
 
 <ion-row>
   <ion-col class="meeting-list">
     <ion-slides [options]="sliderConfig" pager="false" #slider id="slider">
       <ng-container *ngIf="isLoaded">
-        <ng-container *ngIf="meetings.length !==0; else no_meeting">
-          <ion-slide *ngFor="let meeting of meetings">
-            <meeting-card [meeting]="meeting" (clickEvent)="goDetailPage(meeting)"></meeting-card>
+        <ng-container *ngIf="data.length !==0; else no_meeting">
+          <ion-slide *ngFor="let element of data" [style]="slideStyle">
+            <ng-container *ngIf="element.template" [ngTemplateOutlet]="element.template"
+              [ngTemplateOutletContext]="{ $implicit: element }"></ng-container>
           </ion-slide>
         </ng-container>
       </ng-container>

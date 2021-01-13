@@ -1,6 +1,6 @@
 .meeting-category {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 1.5rem;
+    font-weight: 610;
     color: rgb(27, 28, 29);
 }
 
@@ -12,13 +12,13 @@
 }
 
 .all {
-    margin-top: 32px;
-    margin-right: 6px;
+    color: #000;
     margin-bottom: 0px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #202020;
+    float: right;
+    font-size: 16px;
+    font-weight: 400;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .meeting-list {
