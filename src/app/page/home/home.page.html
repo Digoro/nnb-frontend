@@ -37,39 +37,22 @@
     </ion-row>
   </ion-grid>
   <ion-grid fixed>
-    <ng-container *ngFor="let meeting of mainMeetings; let index=index">
-      <ng-container *ngIf="index === 2">
-        <ion-row>
-          <ion-col>
-            <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/feed'">
-              <div class="introduction">
-                <p class="catch_phrase">🚀🚀&nbsp;&nbsp;&nbsp;&nbsp;지금 우리는?</p>
-                <ion-icon class="float-right" style="color:rgb(255, 255, 255)" name="chevron-forward-outline">
-                </ion-icon>
-                <p class="desc">최근 노는법 소식을 확인해보세요!
-                </p>
-              </div>
-            </a>
-          </ion-col>
-        </ion-row>
-      </ng-container>
+    <ng-container *ngIf="fastMeetings">
       <ion-row style="margin-top: 40px;">
         <ion-col>
-          <span class="meeting-category">{{meeting.title}}</span>&nbsp;
-          <span class="meeting-category">{{meeting.emoji}}</span>
-          <!-- <p class="subTitle">{{meeting.subTitle}}</p> -->
-          <a class="all" [href]="'/tabs/meetings?key=' + meeting.onShowKey + '&title=' + meeting.onShowTitle">전체보기</a>
+          <span class="meeting-category">일주일 이내 열리는 모임</span>&nbsp;
+          <a class="all" [href]="'/tabs/meetings?key=' + 'week' + '&title=' + '일주일 이내 열리는 모임'">전체보기</a>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col *ngIf="meeting.meetings.length === 0">
+        <ion-col *ngIf="fastMeetings.length === 0">
           <div style="opacity: 0.4; padding: 20px">
             <ion-chip outline>
               <ion-label>다음 일정을 기대해주세요~!</ion-label>
             </ion-chip>
           </div>
         </ion-col>
-        <ion-col *ngFor="let m of meeting.meetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
+        <ion-col *ngFor="let m of fastMeetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
           style="padding:0px">
           <a [href]="'/tabs/meeting-detail/' + m.mid" style="text-decoration: none; color:black;">
             <meeting-card [meeting]="m"></meeting-card>
@@ -97,6 +80,72 @@
         </a>
       </div>
     </ng-template>
+
+    <ng-container *ngIf="forestMeetings">
+      <ion-row style="margin-top: 40px;">
+        <ion-col>
+          <span class="meeting-category">노는법 X 길 위에 여행</span>&nbsp;
+          <span class="meeting-category">🚶🏻🚶🏻‍♂️🚶🏻‍♀️</span>
+          <a class="all"
+            [href]="'/tabs/meetings?key=' + 'forest' + '&title=' + '노는법 X 길 위에 여행 🚶🏻🚶🏻‍♂️🚶🏻‍♀️'">전체보기</a>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngIf="forestMeetings.length === 0">
+          <div style="opacity: 0.4; padding: 20px">
+            <ion-chip outline>
+              <ion-label>다음 일정을 기대해주세요~!</ion-label>
+            </ion-chip>
+          </div>
+        </ion-col>
+        <ion-col *ngFor="let m of forestMeetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
+          style="padding:0px">
+          <a [href]="'/tabs/meeting-detail/' + m.mid" style="text-decoration: none; color:black;">
+            <meeting-card [meeting]="m"></meeting-card>
+          </a>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ng-container *ngIf="meetings">
+      <ion-row style="margin-top: 40px;">
+        <ion-col>
+          <span class="meeting-category">인기 있는 모임</span>&nbsp;
+          <span class="meeting-category">👍👍</span>
+          <!-- <p class="subTitle">{{meeting.subTitle}}</p> -->
+          <a class="all" [href]="'/tabs/meetings?key=' + 'all' + '&title=' + '인기 있는 모임 👍👍'">전체보기</a>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngIf="meetings.length === 0">
+          <div style="opacity: 0.4; padding: 20px">
+            <ion-chip outline>
+              <ion-label>다음 일정을 기대해주세요~!</ion-label>
+            </ion-chip>
+          </div>
+        </ion-col>
+        <ion-col *ngFor="let m of meetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
+          style="padding:0px">
+          <a [href]="'/tabs/meeting-detail/' + m.mid" style="text-decoration: none; color:black;">
+            <meeting-card [meeting]="m"></meeting-card>
+          </a>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ion-row>
+      <ion-col>
+        <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/feed'">
+          <div class="introduction">
+            <p class="catch_phrase">🚀🚀&nbsp;&nbsp;&nbsp;&nbsp;지금 우리는?</p>
+            <ion-icon class="float-right" style="color:rgb(255, 255, 255)" name="chevron-forward-outline">
+            </ion-icon>
+            <p class="desc">최근 노는법 소식을 확인해보세요!
+            </p>
+          </div>
+        </a>
+      </ion-col>
+    </ion-row>
 
     <horizontal-slider [title]="'노는법 매거진'" [data]="magazineList" [spaceBetween]="10" (showAllEvent)="showAllMagazine()">
     </horizontal-slider>

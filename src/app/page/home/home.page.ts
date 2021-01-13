@@ -35,7 +35,6 @@ export class HomePage implements OnInit, OnDestroy {
     }
   }
   banners: { image: string, metadata: S3.Metadata }[];
-  mainMeetings: { title: string, subTitle: string, onShowKey: string, onShowTitle: string, meetings: Meeting[], emoji?: string, }[]
   sliderConfig = {
     observer: true,
     initialSlide: 0,
@@ -186,21 +185,6 @@ export class HomePage implements OnInit, OnDestroy {
       })
       this.forestMeetings = meetings.filter(meeting => meeting.subTitle.includes('숲찾사'))
       this.jejuMeetings = meetings.filter(meeting => meeting.subTitle.includes('제주'))
-
-      this.mainMeetings = [
-        {
-          title: '일주일 이내 열리는 모임', subTitle: `가장 빨리 만나 볼 수 있는 기회!(${this.toWeek} ~ ${this.fromWeek})`,
-          onShowKey: 'week', onShowTitle: `일주일 이내 열리는 모임`, meetings: this.fastMeetings
-        },
-        {
-          title: '노는법 X 길 위에 여행', emoji: '🚶🏻🚶🏻‍♂️🚶🏻‍♀️', subTitle: "길여행가와 떠나는 힐링 여행~",
-          onShowKey: 'forest', onShowTitle: '노는법 X 길 위에 여행 🚶🏻🚶🏻‍♂️🚶🏻‍♀️', meetings: this.forestMeetings
-        },
-        {
-          title: '인기 있는 모임', emoji: '👍👍', subTitle: "지금 노는법에서 가장 인기있는 모임!",
-          onShowKey: 'all', onShowTitle: '인기 있는 모임 👍👍', meetings: this.meetings
-        }
-      ]
     });
   }
 
