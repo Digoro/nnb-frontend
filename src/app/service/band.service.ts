@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BandComment, BandDetailResult, BandPost, BandPostDetail, BandResult } from '../model/band';
@@ -9,21 +10,23 @@ import { BandResultData } from './../model/band';
   providedIn: 'root'
 })
 export class BandService {
+  imgRegex = /<band:attachment type="photo" id="(\d+)" \/>/g;
+  linkRegex = /https:\/\/nonunbub\.com\/tabs\/meeting-detail\/(\d+)/g;
+  youtubeRegex = /https:\/\/youtu\.be\/(\w+)/g;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private sanitizer: DomSanitizer
   ) { }
 
   get(post_key: string): Observable<BandDetailResult<BandPostDetail>> {
     return this.http.get<BandDetailResult<BandPostDetail>>(`/band/post?post_key=${post_key}`).pipe(
       map(bandResult => {
-        const imgRegex = /<band:attachment type="photo" id="(\d+)" \/>/g;
-        const linkRegex = /https:\/\/nonunbub\.com\/tabs\/meeting-detail\/(\d+)/g;
-        const youtubeRegex = /https:\/\/www\.youtube\.com\/watch\?v=(\w+)/g;
         bandResult.result_data.post.content = (bandResult.result_data.post.content as string)
-          .replace(imgRegex, (a, b) => `<br><img src="${bandResult.result_data.post.photo[b].url}"><br>`)
-          .replace(linkRegex, (a, b) => `<a class="nnb-btn nnb-btn-primary" href="${a}">모임 보러 가기!</a><br>`)
-          .replace(youtubeRegex, (a, b) => `<a href="${a}">${a}</a><br>`)
+          .replace(this.imgRegex, (a, b) => `<br><img src="${bandResult.result_data.post.photo[b].url}"><br>`)
+          .replace(this.linkRegex, (a, b) => `<a class="nnb-btn nnb-btn-primary" href="${a}">모임 보러 가기!</a><br>`)
+          .replace(this.youtubeRegex, (a, b) => `<iframe style="width: 100%;min-height:350px;" src="https://www.youtube.com/embed/${b}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`)
+        bandResult.result_data.post.content = this.sanitizer.bypassSecurityTrustHtml(bandResult.result_data.post.content.toString())
         return bandResult;
       })
     )
@@ -34,11 +37,9 @@ export class BandService {
     return this.http.get<BandResult<BandPost[]>>(url).pipe(
       map(bandResult => {
         bandResult.result_data.items = bandResult.result_data.items.map(item => {
-          const linkRegex = /https:\/\/nonunbub\.com\/tabs\/meeting-detail\/(\d+)/g;
-          const youtubeRegex = /https:\/\/www\.youtube\.com\/watch\?v=(\w+)/g;
           item.content = item.content
-            .replace(linkRegex, (a, b) => `<a class="nnb-btn nnb-btn-primary" href="${a}">모임 보러 가기!</a><br>`)
-            .replace(youtubeRegex, (a, b) => `<a href="${a}">${a}</a><br>`)
+            .replace(this.linkRegex, (a, b) => `<a class="nnb-btn nnb-btn-primary" href="${a}">모임 보러 가기!</a><br>`)
+            .replace(this.youtubeRegex, (a, b) => `<a href="${a}">${a}</a><br>`)
           return item;
         }).map(item => {
           if (item.content === 'Uploaded photo.') {

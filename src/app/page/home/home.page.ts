@@ -5,10 +5,8 @@ import * as moment from 'moment';
 import { Category } from 'src/app/model/category';
 import { MeetingService } from 'src/app/service/meeting.service';
 import { environment } from 'src/environments/environment';
-import { BandPost } from './../../model/band';
 import { Magazine } from './../../model/magazine';
 import { Meeting, MeetingStatus } from './../../model/meeting';
-import { BandService } from './../../service/band.service';
 import { CheckDesktopService } from './../../service/check-desktop.service';
 import { MagazineService } from './../../service/magazine.service';
 import { S3Service } from './../../service/s3.service';
@@ -50,8 +48,6 @@ export class HomePage implements OnInit, OnDestroy {
   @ViewChild('superHostTpl') superHostTpl: TemplateRef<any>;
   magazineList: Magazine[];
   @ViewChild('magazineTpl') magazineTpl: TemplateRef<any>;
-  feedList: BandPost[];
-  @ViewChild('feedTpl') feedTpl: TemplateRef<any>;
 
   constructor(
     private meetingService: MeetingService,
@@ -59,7 +55,6 @@ export class HomePage implements OnInit, OnDestroy {
     private cds: CheckDesktopService,
     private s3Service: S3Service,
     private magazineServie: MagazineService,
-    private bandService: BandService
   ) {
     console.log('Home constructor');
   }
@@ -75,12 +70,6 @@ export class HomePage implements OnInit, OnDestroy {
       this.magazineList = resp.map(magazine => {
         magazine['template'] = this.magazineTpl;
         return magazine;
-      });
-    })
-    this.bandService.getList().subscribe(resp => {
-      this.feedList = resp.items.map(item => {
-        item['template'] = this.feedTpl;
-        return item;
       });
     })
     this.superHostList = [
