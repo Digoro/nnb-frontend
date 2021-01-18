@@ -170,7 +170,7 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'coupon-list', children: [{
+        path: 'coupon-list', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>
             import('../coupon-list/coupon-list.module').then(m => m.CouponListPageModule)
         }]
