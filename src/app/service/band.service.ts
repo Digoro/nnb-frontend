@@ -11,7 +11,7 @@ import { BandResultData } from './../model/band';
 })
 export class BandService {
   imgRegex = /<band:attachment type="photo" id="(\d+)" \/>/g;
-  linkRegex = /https:\/\/[www.]*nonunbub\.com\/tabs\/meeting-detail\/(\d+)/g;
+  linkRegex = /https:\/\/[www.]*nonunbub\.com\/tabs\/meeting-detail\/(\d+)[?.].*/g;
   youtubeRegex = /https:\/\/youtu\.be\/(\w+)/g;
 
   constructor(
