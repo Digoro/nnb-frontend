@@ -161,14 +161,18 @@ export class MeetingControl implements AfterViewInit {
         if (event.target.files.length > 0) {
             const file = event.target.files[0];
             if (fileTypes.find(t => t === file.type)) {
-                if (file.size < 500000) {
-                    this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
-                        this.meetingForm.controls.fileSource.setValue(res.Location);
-                        this.readURL(file);
-                    })
-                } else {
-                    alert(`이미지 사이즈가 500KB를 넘습니다. (사이즈: 약 ${Math.ceil(file.size / 1000)}KB)`);
-                }
+                // if (file.size < 500000) {
+                //     this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
+                //         this.meetingForm.controls.fileSource.setValue(res.Location);
+                //         this.readURL(file);
+                //     })
+                // } else {
+                //     alert(`이미지 사이즈가 500KB를 넘습니다. (사이즈: 약 ${Math.ceil(file.size / 1000)}KB)`);
+                // }
+                this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
+                    this.meetingForm.controls.fileSource.setValue(res.Location);
+                    this.readURL(file);
+                })
             } else {
                 alert(`이미지 형식만 가능합니다. (${fileTypes})`);
             }
