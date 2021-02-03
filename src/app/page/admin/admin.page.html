@@ -245,7 +245,7 @@
                     <ng-container *ngFor="let option of row.options; let last = last">
                       <div class="card" [ngStyle]="{'margin-bottom':!last ? '0.2rem':'0rem'}">
                         <div class="card-body" style="padding: 0.7rem">
-                          <ion-chip *ngIf="!option.option.isOld">
+                          <ion-chip *ngIf="option.option.isOld">
                             <ion-label style="font-size: 12px;">이전옵션</ion-label>
                           </ion-chip>
                           <p>옵션: {{option.option.optionTitle}}</p>
