@@ -232,7 +232,9 @@
                   </td>
                   <td>{{ row.PCD_PAY_TIME }}</td>
                   <td>
-                    <span *ngIf="row.uid">{{ row.uid.name }}</span>
+                    <span *ngIf="row.uid">
+                      <a [href]="'tabs/profile/' + row.uid.uid">{{ row.uid.name }}</a>
+                    </span>
                     <span *ngIf="!row.uid">{{ row.PCD_PAYER_NAME }}</span>
                   </td>
                   <td><span *ngIf="row.uid">{{ row.uid.nickName }}</span></td>
