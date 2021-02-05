@@ -228,7 +228,7 @@
                 <ng-template let-row let-index="index">
                   <td>{{ index +1 }}</td>
                   <td>
-                    <img width="50" height="50" [src]="row.mid.file">
+                    <img *ngIf="row.mid.file" width="50" height="50" [src]="row.mid.file">
                   </td>
                   <td>
                     <span *ngIf="row.isCanceled" style="color: red">
