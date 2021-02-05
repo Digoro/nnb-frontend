@@ -285,7 +285,8 @@
                       <button class="nnb-btn nnb-btn-primary nnb-btn-sm" (click)="cancle(row)">결제취소</button>
                     </ng-container>
                     <ng-container *ngIf="row.isCanceled">
-                      <span>취소됨</span>
+                      <button class="nnb-btn nnb-btn-secondary nnb-btn-sm" (click)="cancleRollback(row)">결제취소
+                        되돌리기</button>
                     </ng-container>
                   </td>
                 </ng-template>

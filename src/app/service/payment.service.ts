@@ -268,6 +268,7 @@ export class PaymentService {
   cancle(payment: PaymentResult) {
     payment.mid = payment.mid['mid'];
     payment.uid = payment.uid['uid'];
+    payment.couponId = payment.couponId['couponId'];
     return this.http.put(`${this.urlPrefix}/payments/${payment.pid}/`, payment);
   }
 }

@@ -120,6 +120,15 @@ export class AdminPage {
     })
   }
 
+  cancleRollback(payment: PaymentResult) {
+    alert('실제로 결제 취소가 되돌려지지는 않습니다.');
+    payment.isCanceled = false;
+    this.paymentService.cancle(payment).subscribe(resp => {
+      alert('결제 취소를 되돌렸습니다.');
+      this.setPay();
+    })
+  }
+
   setRequests() {
     this.meetingService.getRequestMeetingAll().subscribe(resp => {
       this.requestData = resp;
