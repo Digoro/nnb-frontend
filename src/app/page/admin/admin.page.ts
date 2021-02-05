@@ -106,7 +106,17 @@ export class AdminPage {
         { key: 'PCD_PAY_TYPE', title: '결제 유형' },
         { key: 'PCD_PAY_RST', title: '결제 결과' },
         { key: 'mid', title: '모임 식별자' },
+        { key: 'cancel', title: '결제취소' },
       ];
+    })
+  }
+
+  cancle(payment: PaymentResult) {
+    alert('실제로 결제가 취소되지는 않습니다.');
+    payment.isCanceled = true;
+    this.paymentService.cancle(payment).subscribe(resp => {
+      alert('취소 표시가 완료되었습니다.');
+      this.setPay();
     })
   }
 

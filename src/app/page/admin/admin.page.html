@@ -230,7 +230,14 @@
                   <td>
                     <img width="50" height="50" [src]="row.mid.file">
                   </td>
-                  <td>{{ row.PCD_PAY_TIME }}</td>
+                  <td>
+                    <span *ngIf="row.isCanceled" style="color: red">
+                      <span style="text-decoration:line-through">{{row.PCD_PAY_TIME}}</span>
+                      <br>
+                      <span>결제취소</span>
+                    </span>
+                    <span *ngIf="!row.isCanceled">{{row.PCD_PAY_TIME}}</span>
+                  </td>
                   <td>
                     <span *ngIf="row.uid">
                       <a [href]="'tabs/profile/' + row.uid.uid">{{ row.uid.name }}</a>
@@ -273,6 +280,14 @@
                   <td>{{ row.PCD_PAY_TYPE }}</td>
                   <td>{{ row.PCD_PAY_RST }}</td>
                   <td>{{ row.mid.mid }}</td>
+                  <td>
+                    <ng-container *ngIf="!row.isCanceled">
+                      <button class="nnb-btn nnb-btn-primary nnb-btn-sm" (click)="cancle(row)">결제취소</button>
+                    </ng-container>
+                    <ng-container *ngIf="row.isCanceled">
+                      <span>취소됨</span>
+                    </ng-container>
+                  </td>
                 </ng-template>
               </ngx-table>
             </ng-container>

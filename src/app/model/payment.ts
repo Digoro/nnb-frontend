@@ -41,6 +41,7 @@ export class PaymentResult {
         public PCD_CARD_VER: string,
         public PCD_PAYER_HP: string,
         public PCD_PAY_BANKACCTYPE: string,
+        public isCanceled = false,
         public couponId?: number,
         public options?: any[]
     ) { }

@@ -264,4 +264,10 @@ export class PaymentService {
       }
     }
   }
+
+  cancle(payment: PaymentResult) {
+    payment.mid = payment.mid['mid'];
+    payment.uid = payment.uid['uid'];
+    return this.http.put(`${this.urlPrefix}/payments/${payment.pid}/`, payment);
+  }
 }
