@@ -98,6 +98,24 @@ export class MeetingControl implements AfterViewInit {
         refundPolicy0.updateValueAndValidity();
     }
 
+    markerDragEnd($event: any) {
+        this.latitude = $event.coords.lat;
+        this.longitude = $event.coords.lng;
+        this.zoom = 15;
+        this.geoCoder.geocode({ 'location': { lat: this.latitude, lng: this.longitude } }, (results, status) => {
+            if (status === 'OK') {
+                if (results[0]) {
+                    const address = results[0].formatted_address;
+                    this.meetingForm.controls['address'].setValue(address);
+                } else {
+                    alert('주소 검색 결과가 없습니다.');
+                }
+            } else {
+                alert('올바른 주소를 입력해주세요: ' + status);
+            }
+        });
+    }
+
     changeAddress(event) {
         this.meetingForm.controls.address.setValue(event.roadAddress);
         this.geoCoder = new google.maps.Geocoder;

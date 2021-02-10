@@ -35,6 +35,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   @Output() onPrevEvent = new EventEmitter();
   @Output() onLastCheckEvent = new EventEmitter();
   @Output() onFileChangeEvent = new EventEmitter();
+  @Output() onMarkerDragEndEvent = new EventEmitter();
   @Output() onCheckDiscountPriceEvent = new EventEmitter();
   @Output() onCheckRefundPolicy0Event = new EventEmitter();
   @Output() onChangeAddressEvent = new EventEmitter();
@@ -496,6 +497,10 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   onFileChange(event) {
     this.onFileChangeEvent.emit(event);
     this.fileInput.nativeElement.value = '';
+  }
+
+  markerDragEnd(event) {
+    this.onMarkerDragEndEvent.emit(event);
   }
 
   checkDiscountPrice() {
