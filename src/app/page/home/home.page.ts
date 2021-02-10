@@ -168,7 +168,7 @@ export class HomePage implements OnInit, OnDestroy {
         if (meeting.options) {
           return meeting.options.find(option => {
             const start = moment(option.optionDate);
-            return start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
+            return !option.isOld && start.isSameOrAfter(now) && start.isSameOrBefore(weekEnd)
           });
         } else return false;
       })
