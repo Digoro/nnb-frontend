@@ -35,7 +35,6 @@ UserInterfaceState.xcuserstate
 dist
 
 android/**
-android/
 ios/**
 ios/
 .gradle/**
