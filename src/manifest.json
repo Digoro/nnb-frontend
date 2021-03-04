@@ -1,10 +1,10 @@
 {
-    "name": "NNB",
-    "short_name": "NNB",
+    "name": "당신의 가장 젊은 순간을 특별하게 만드는 방법",
+    "short_name": "노는법",
     "start_url": "/tabs/home",
     "display": "standalone",
     "background_color": "#fff",
-    "description": "NNB",
+    "description": "당신의 가장 젊은 순간을 특별하게 만드는 방법, 노는법",
     "icons": [
         {
             "src": "/assets/android/android-launchericon-48-48.png",
