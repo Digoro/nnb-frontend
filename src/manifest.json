@@ -1,7 +1,7 @@
 {
     "name": "NNB",
     "short_name": "NNB",
-    "start_url": ".",
+    "start_url": "/tabs/home",
     "display": "standalone",
     "background_color": "#fff",
     "description": "NNB",
