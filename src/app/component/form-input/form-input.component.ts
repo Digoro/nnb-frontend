@@ -23,6 +23,7 @@ export class FormInputComponent implements OnInit {
   @Output() valueChangeEvent = new EventEmitter();
   // select options
   @Input() selectList: any[];
+  @Input() valueProp: string;
   @Input() template: TemplateRef<any>;
   @Input() searchable = true;
   @Input() clearable = true;

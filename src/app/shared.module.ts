@@ -17,6 +17,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxCronUiModule } from 'ngx-cron-ui';
 import { TableModule } from 'ngx-easy-table';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { QuillModule } from 'ngx-quill';
 import { NgxUploaderModule } from 'ngx-uploader';
 import { environment } from './../environments/environment';
@@ -32,6 +33,7 @@ import { MeetingControlComponent } from './component/meeting-control/meeting-con
 import { MeetingPreviewComponent } from './component/meeting-preview/meeting-preview.component';
 import { MyinfoMeetingComponent } from './component/myinfo-meeting/myinfo-meeting.component';
 import { NotionDescComponent } from './component/notion-desc/notion-desc.component';
+import { PaginationComponent } from './component/pagination/pagination.component';
 import { PriceComponent } from './component/price/price.component';
 import { SkeletonComponent } from './component/skeleton/skeleton.component';
 import { DebounceClickDirective } from './directive/debounce-click.directive';
@@ -63,7 +65,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MyinfoMeetingComponent,
     NotionDescComponent,
     PriceComponent,
-    AuthSmsComponent
+    AuthSmsComponent,
+    PaginationComponent
   ],
   imports: [
     CommonModule,
@@ -107,7 +110,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FullCalendarModule,
     BsDatepickerModule.forRoot(),
     NgSelectModule,
-    CarouselModule.forRoot()
+    CarouselModule.forRoot(),
+    NgxPaginationModule
   ],
   exports: [
     HorizontalSliderComponent,
@@ -144,7 +148,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FullCalendarModule,
     BsDatepickerModule,
     NgSelectModule,
-    CarouselModule
+    CarouselModule,
+    NgxPaginationModule,
+    PaginationComponent
   ],
 })
 export class SharedModule { }

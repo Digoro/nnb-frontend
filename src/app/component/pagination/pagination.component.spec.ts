@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { EditIndividualPage } from './edit-individual.page';
+import { PaginationComponent } from './pagination.component';
 
-describe('EditIndividualPage', () => {
-  let component: EditIndividualPage;
-  let fixture: ComponentFixture<EditIndividualPage>;
+describe('PaginationComponent', () => {
+  let component: PaginationComponent;
+  let fixture: ComponentFixture<PaginationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditIndividualPage ],
+      declarations: [ PaginationComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EditIndividualPage);
+    fixture = TestBed.createComponent(PaginationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

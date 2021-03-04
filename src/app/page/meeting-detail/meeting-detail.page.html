@@ -1,45 +1,49 @@
-<ng-container *ngIf="!!meeting">
+<ng-container *ngIf="!!product">
   <ion-content scroll-events="true" id="test1" (ionScroll)="onScroll($event)">
     <ion-grid *ngIf="!isDesktop" style="padding: 0px;">
-      <img [src]="meeting.file" class="main-image" />
+      <img [src]="product.representationPhotos[0].photo" class="main-image" />
     </ion-grid>
     <ion-grid [fixed]="isDesktop">
       <ion-row>
         <ion-col *ngIf="isDesktop">
-          <img [src]="meeting.file" class="main-image" />
+          <img [src]="product.representationPhotos[0].photo" class="main-image" />
         </ion-col>
         <ion-col [ngStyle]="{'padding-left': isDesktop ? '1.5rem':''}">
-          <p class="subTitle">{{meeting.subTitle}}</p>
-          <p class="title">{{meeting.title}}</p>
-          <price [price]="meeting.price" [discountPrice]="meeting.discountPrice"></price>
+          <p class="hashtag">
+            <span *ngFor="let hashtag of product.hashtags">#{{hashtag.name}}</span>
+          </p>
+          <p class="title">{{product.title}}</p>
+          <price [price]="product.price" [discountPrice]="product.discountPrice"></price>
           <hr>
           <p class="summary-info">
             <ion-icon name="pricetag-outline" class="summary-icon"></ion-icon>
-            <a [href]="'/tabs/meetings?key=' + meeting.categories">
-              <ion-chip style="color: #e5456e;background-color :#fae1e7; height: 1.5rem;">
-                <ion-label>{{categories}}</ion-label>
-              </ion-chip>
-            </a>
+            <ng-container *ngFor="let category of product.categories">
+              <a [href]="'/tabs/category-detail/' + (+category.id - 1)">
+                <ion-chip style="color: #e5456e;background-color :#fae1e7; height: 1.5rem;">
+                  <ion-label>{{category.name}}</ion-label>
+                </ion-chip>
+              </a>
+            </ng-container>
           </p>
           <p class="summary-info">
             <ion-icon name="navigate-outline" class="summary-icon"></ion-icon>
-            {{meeting.address}}, {{meeting.detailed_address}}
+            {{product.address}}, {{product.detailAddress}}
           </p>
-          <p class="summary-info" *ngIf="meeting.runningMinutes!==0">
+          <p class="summary-info" *ngIf="product.runningMinutes!==0">
             <ion-icon name="time-outline" class="summary-icon"></ion-icon>
             약 <span *ngIf="runningHours!=0">{{runningHours}}시간 </span>
             <span *ngIf="runningMinutes!=0">{{runningMinutes}}분</span> 소요
           </p>
           <p class="summary-info">
-            <ng-container *ngIf="meeting.options.length!==0">
+            <ng-container *ngIf="product.options.length!==0">
               <ion-icon name="calendar-outline" class="summary-icon"></ion-icon>
-              {{meeting.options[0].optionDate|date:'yyyy-MM-dd HH:mm'}}
-              <span *ngIf="meeting.options.length > 1">외
-                <ng-container *ngIf="meeting.options.length < 10">{{meeting.options.length-1}}개의 일정</ng-container>
-                <ng-container *ngIf="meeting.options.length >= 10">다수 일정</ng-container>
+              {{product.options[0].date|date:'yyyy-MM-dd HH:mm'}}
+              <span *ngIf="product.options.length > 1">외
+                <ng-container *ngIf="product.options.length < 10">{{product.options.length-1}}개의 일정</ng-container>
+                <ng-container *ngIf="product.options.length >= 10">다수 일정</ng-container>
               </span>
             </ng-container>
-            <ng-container *ngIf="meeting.options.length===0">
+            <ng-container *ngIf="product.options.length===0">
               <ion-icon name="calendar-outline" class="summary-icon"></ion-icon>
               <ion-chip color="warning">
                 <ion-label>일정이 없습니다.</ion-label>
@@ -58,56 +62,48 @@
         <a class="section-2" (click)="setPosition(2)">
           <p class="section-menu">모임 장소</p>
         </a>
-        <a *ngIf="meeting.check_list" class="section-3" (click)="setPosition(3)">
+        <a *ngIf="product.checkList" class="section-3" (click)="setPosition(3)">
           <p class="section-menu">준비물</p>
         </a>
-        <!-- <a *ngIf="meeting.include" class="section-4" (click)="setPosition(4)">
-          <p class="section-menu">포함 사항</p>
-        </a>
-        <a *ngIf="meeting.exclude" class="section-5" (click)="setPosition(5)">
-          <p class="section-menu">불포함 사항</p>
-        </a>
-        <a *ngIf="meeting.notice" class="section-6" (click)="setPosition(6)">
-          <p class="section-menu">유의 사항</p>
-        </a> -->
-        <a *ngIf="meeting.price !== 0" class="section-7" (click)="setPosition(7)">
+        <a *ngIf="product.price === 0 || product.discountPrice === 0" class="section-4" (click)="setPosition(4)">
           <p class="section-menu">환불 정책</p>
         </a>
-        <a *ngIf="!!host" class="section-8" (click)="setPosition(8)">
+        <a *ngIf="!!host" class="section-5" (click)="setPosition(5)">
           <p class="section-menu">호스트 소개</p>
         </a>
-        <a class="section-9" (click)="setPosition(9)">
+        <a class="section-6" (click)="setPosition(6)">
           <p class="section-menu">댓글</p>
         </a>
       </div>
 
       <main>
         <section id="section-1">
-          <ng-container *ngIf="meeting.point">
+          <ng-container *ngIf="product.point">
             <ion-row>
               <ion-col>
                 <p><span class="section-title underline">포인트</span></p>
-                <p class="pre-wrap">{{meeting.point}}</p>
+                <p class="pre-wrap">{{product.point}}</p>
               </ion-col>
             </ion-row>
             <hr>
           </ng-container>
 
-          <ng-container *ngIf="meeting.recommend">
+          <ng-container *ngIf="product.recommend">
             <ion-row>
               <ion-col>
                 <p><span class="section-title underline">이런 분이 함께하면 좋아요</span></p>
-                <p class="pre-wrap">{{meeting.recommend}}</p>
+                <p class="pre-wrap">{{product.recommend}}</p>
               </ion-col>
             </ion-row>
             <hr>
           </ng-container>
 
-          <ng-container *ngIf="meeting.programs">
+          <ng-container *ngIf="product.description">
             <ion-row>
               <ion-col>
                 <p><span class="section-title underline">프로그램 소개</span></p>
-                <quill-view [content]="meeting.programs" format="text" theme="snow" [style]="quillStyle"></quill-view>
+                <quill-view [content]="product.description" format="text" theme="snow" [style]="quillStyle">
+                </quill-view>
               </ion-col>
             </ion-row>
           </ng-container>
@@ -117,51 +113,51 @@
           <ion-row>
             <ion-col>
               <p><span class="section-title underline">모임 장소</span></p>
-              <p>{{meeting.address}} {{meeting.detailed_address}}</p>
-              <agm-map [latitude]="meeting.lat" [longitude]="meeting.lon" [zoom]="15">
-                <agm-marker [latitude]="meeting.lat" [longitude]="meeting.lon"></agm-marker>
+              <p>{{product.address}} {{product.detailAddress}}</p>
+              <agm-map [latitude]="product.lat" [longitude]="product.lon" [zoom]="15">
+                <agm-marker [latitude]="product.lat" [longitude]="product.lon"></agm-marker>
               </agm-map>
             </ion-col>
           </ion-row>
         </section>
         <hr>
-        <ng-container *ngIf="meeting.check_list">
+        <ng-container *ngIf="product.checkList">
           <section id="section-3">
             <ion-row>
               <ion-col>
                 <p><span class="section-title underline">준비물</span></p>
-                <p class="pre-wrap">{{meeting.check_list}}</p>
+                <p class="pre-wrap">{{product.checkList}}</p>
               </ion-col>
             </ion-row>
             <hr>
-            <ng-container *ngIf="meeting.include">
+            <ng-container *ngIf="product.includeList">
               <section>
                 <ion-row>
                   <ion-col>
                     <p><span class="section-title underline">포함 사항</span></p>
-                    <p class="pre-wrap">{{meeting.include}}</p>
+                    <p class="pre-wrap">{{product.includeList}}</p>
                   </ion-col>
                 </ion-row>
                 <hr>
               </section>
             </ng-container>
-            <ng-container *ngIf="meeting.exclude">
+            <ng-container *ngIf="product.excludeList">
               <section>
                 <ion-row>
                   <ion-col>
                     <p><span class="section-title underline">불포함 사항</span></p>
-                    <p class="pre-wrap">{{meeting.exclude}}</p>
+                    <p class="pre-wrap">{{product.excludeList}}</p>
                   </ion-col>
                 </ion-row>
                 <hr>
               </section>
             </ng-container>
-            <ng-container *ngIf="meeting.notice">
+            <ng-container *ngIf="product.notice">
               <section>
                 <ion-row>
                   <ion-col>
                     <p><span class="section-title underline">유의 사항</span></p>
-                    <p class="pre-wrap">{{meeting.notice}}</p>
+                    <p class="pre-wrap">{{product.notice}}</p>
                   </ion-col>
                 </ion-row>
                 <hr>
@@ -169,13 +165,13 @@
             </ng-container>
           </section>
         </ng-container>
-        <section id="section-7" *ngIf="meeting.price !== 0">
+        <section id="section-4" *ngIf="product.price === 0 || product.discountPrice === 0">
           <ion-row>
             <ion-col>
               <p><span class="section-title underline">환불 정책</span></p>
-              <p>상품 시작일 기준 {{meeting.refundPolicy100}}일 전까지 100% 환불</p>
-              <p>상품 시작일 기준 {{meeting.refundPolicy0+1}}일 전까지 50% 환불</p>
-              <p>상품 시작일 기준 {{meeting.refundPolicy0}}일 전 이후 환불 불가</p>
+              <p>상품 시작일 기준 {{product.refundPolicy100}}일 전까지 100% 환불</p>
+              <p>상품 시작일 기준 {{product.refundPolicy0+1}}일 전까지 50% 환불</p>
+              <p>상품 시작일 기준 {{product.refundPolicy0}}일 전 이후 환불 불가</p>
             </ion-col>
           </ion-row>
           <ion-row>
@@ -186,28 +182,27 @@
           </ion-row>
           <hr>
         </section>
-        <section id="section-8">
+        <section id="section-5">
           <ion-row>
             <ion-col>
               <p><span class="section-title">호스트 소개</span></p>
               <div *ngIf="!!host">
                 <div class="host">
-                  <a [href]="'/tabs/profile/' + host.uid">
-                    <img *ngIf="host.image" [src]="host.image" class="icon-img">
-                    <ion-icon *ngIf="!host.image" name="person-circle-outline" class="icon">
+                  <a [href]="'/tabs/profile/' + host.id">
+                    <img *ngIf="host.profilePhoto" [src]="host.profilePhoto" class="icon-img">
+                    <ion-icon *ngIf="!host.profilePhoto" name="person-circle-outline" class="icon">
                     </ion-icon>
                   </a>
                   <div class="info">
-                    <a [href]="'/tabs/profile/' + host.uid" style="text-decoration: none; color:black">
-                      <span class="name">{{host.nickName}}</span>&nbsp;
+                    <a [href]="'/tabs/profile/' + host.id" style="text-decoration: none; color:black">
+                      <span class="name">{{host.nickname}}</span>&nbsp;
                       <ion-badge color="medium" class="badge">인기</ion-badge>
                     </a>
-                    <!-- <div class="desc score">score: {{host.score}}</div> -->
                   </div>
                 </div>
-                <p class="catch_phrase">{{host.catch_phrase}}</p>
-                <p class="introduction">{{host.introduction | truncate:[65]}}</p>
-                <a [href]="'/tabs/profile/' + host.uid" style="text-decoration: none; color: black;">
+                <p *ngIf="host.catchphrase" class="catchphrase">{{host.catchphrase}}</p>
+                <p *ngIf="host.introduction" class="introduction">{{host.introduction | truncate:[65]}}</p>
+                <a [href]="'/tabs/profile/' + host.id" style="text-decoration: none; color: black;">
                   <button class="nnb-btn nnb-btn-secondary nnb-btn-sm">프로필 보기</button>
                 </a>
               </div>
@@ -215,14 +210,11 @@
           </ion-row>
           <hr>
         </section>
-        <section id="section-9">
-          <ion-row>
-            <ion-col>
-              <p><span class="section-title">댓글</span></p>
-              <comment [comments]="comments" [currentUser]="user" (onComment)="onComment($event)"
-                (onDelete)="onDeleteComment($event)" (onChildComment)="onChildComment($event)"></comment>
-            </ion-col>
-          </ion-row>
+        <section tion id="section-6">
+          <p class="section-title">댓글&nbsp;&nbsp;<span class="desc">{{meta?.totalItemsWithChildren}}개</span></p>
+          <comment [reviews]="reviews" [currentUser]="user" (onComment)="onComment($event)" [meta]="meta"
+            (onDelete)="onDeleteComment($event)" (onChildComment)="onChildComment($event)" [displayLabel]="false"
+            (onPage)="onPage($event)"></comment>
         </section>
       </main>
     </ion-grid>
@@ -236,18 +228,23 @@
           <div class="row">
             <div class="col">
               <ion-chip style="background: #fae1e7;color: #e5456e;height: 1.2rem;"
-                *ngIf="meeting.status !== 5 && meeting.options.length === 0">
+                *ngIf="product.status !== ProductStatus.DISABLED && product.options.length === 0">
                 <ion-label>현재 {{requestNumber}}명 신청</ion-label>
               </ion-chip>
             </div>
           </div>
           <div class="row">
             <div class="col" style="display: flex; justify-content: space-around;"
-              [ngStyle]="{'margin-top': meeting.status !== 5 && meeting.options.length === 0 ? '':'8px'}">
-              <div (click)="like(meeting)">
-                <ion-icon name="heart-outline" class="summary-icon"></ion-icon>&nbsp;<span class="join-text">찜</span>
+              [ngStyle]="{'margin-top': product.status !== ProductStatus.DISABLED && product.options.length === 0 ? '':'8px'}">
+              <div (click)="like(product.id,!product.isSetLike)">
+                <ion-icon [name]="product.isSetLike ? 'heart': 'heart-outline'" class="summary-icon"></ion-icon>&nbsp;
+                <span class="join-text"> 찜
+                  <ion-chip style="background: #fae1e7;color: #e5456e;height: 1.2rem;">
+                    <ion-label>{{product.likes}}</ion-label>
+                  </ion-chip>
+                </span>
               </div>
-              <div (click)="openModal(meeting, template)">
+              <div (click)="openModal(product, template)">
                 <ion-icon name="share-social-outline" class="summary-icon"></ion-icon>&nbsp;<span
                   class="join-text">공유</span>
               </div>
@@ -256,36 +253,38 @@
         </div>
         <div class="col-7">
           <ng-container *ngIf="!!user">
-            <a [href]="'/tabs/payment/select/' + meeting.mid" style="text-decoration: none; color: black;">
+            <a [href]="'/tabs/payment/select/' + product.id" style="text-decoration: none; color: black;">
               <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn"
-                *ngIf="meeting.status !== 5 && meeting.options.length !== 0">
-                <span *ngIf="meeting.price !== 0">모임 결제하러 가기!</span>
-                <span *ngIf="meeting.price === 0">무료 모임 참석하기!</span>
+                *ngIf="product.status !== ProductStatus.DISABLED && product.options.length !== 0">
+                <span *ngIf="product.price !== 0 && product.discountPrice !== 0">모임 결제하러 가기!</span>
+                <span *ngIf="product.price === 0 || product.discountPrice === 0">무료 모임 참석하기!</span>
               </button>
             </a>
-            <a [href]="'/tabs/meeting-request/' + meeting.mid" style="text-decoration: none; color: black;">
-              <button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && !isRequestedMeeting"
+            <a [href]="'/tabs/meeting-request/' + product.id" style="text-decoration: none; color: black;">
+              <button
+                *ngIf="product.status !== ProductStatus.DISABLED && product.options.length === 0 && !alreadyRequestProduct"
                 class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn"> 신청하러 가기! </button>
             </a>
-            <button *ngIf="meeting.status !== 5 && meeting.options.length === 0 && isRequestedMeeting"
+            <button
+              *ngIf="product.status !== ProductStatus.DISABLED && product.options.length === 0 && alreadyRequestProduct"
               class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn" disabled>이미 신청한 모임입니다.</button>
           </ng-container>
           <ng-container *ngIf="!user">
-            <button *ngIf="meeting.status !== 5 && meeting.options.length !== 0"
+            <button *ngIf="product.status !== ProductStatus.DISABLED && product.options.length !== 0"
               class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn" (click)="needLogin()">
               모임 결제하러 가기!</button>
-            <button *ngIf="meeting.status !== 5 && meeting.options.length === 0"
+            <button *ngIf="product.status !== ProductStatus.DISABLED && product.options.length === 0"
               class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn" (click)="needLogin()">신청하러 가기!</button>
           </ng-container>
-          <button *ngIf="meeting.status === 5" class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn"
-            disabled>비활성된 상품입니다.</button>
+          <button *ngIf="product.status === ProductStatus.DISABLED"
+            class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block join-btn" disabled>비활성된 상품입니다.</button>
         </div>
       </div>
     </ion-grid>
   </ion-footer>
 </ng-container>
 
-<ng-container *ngIf="!meeting">
+<ng-container *ngIf="!product">
   <ion-content>
     <ion-grid [fixed]="isDesktop" [ngStyle]="{'padding':isDesktop?'':'0px'}">
       <ion-row>

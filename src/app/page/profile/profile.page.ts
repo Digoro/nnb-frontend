@@ -1,12 +1,13 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Comment } from 'src/app/model/comment';
-import { Meeting } from 'src/app/model/meeting';
+import { ProductReview } from 'src/app/model/comment';
+import { PaginationMeta } from 'src/app/model/pagination';
+import { Product, ProductStatus } from 'src/app/model/product';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { CommentService } from '../../service/comment.service';
-import { MeetingService } from '../../service/meeting.service';
+import { ProductService } from '../../service/meeting.service';
 import { UserService } from '../../service/user.service';
 
 @Component({
@@ -15,41 +16,67 @@ import { UserService } from '../../service/user.service';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  selectedMenu = 'hosted';
   currentUser: User;
   profileUser: User;
-  comments: Comment[] = [];
-  hostedMeetings: Meeting[];
+  hostedProducts: Product[];
+  reviews: ProductReview[];
   pageUserId: number;
+  productPaginationMeta: PaginationMeta;
+  reviewPaginationMeta: PaginationMeta;
+  currentPage: number;
 
   constructor(
     private location: Location,
     private route: ActivatedRoute,
     private userService: UserService,
-    private meetingService: MeetingService,
-    private commentService: CommentService,
+    private productService: ProductService,
+    private reviewService: CommentService,
     private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.authService.getCurrentNonunbubUser().subscribe(currentUser => {
-        this.comments = [];
+        this.reviews = [];
         this.currentUser = currentUser;
         this.pageUserId = +params.id;
         this.userService.get(this.pageUserId).subscribe(user => {
           this.profileUser = user;
-          this.meetingService.getHostedMeetings(user.uid).subscribe(meetings => {
-            const temp = meetings.filter(m => m.status === 3)
-            this.hostedMeetings = temp
-            temp.forEach(meeting => {
-              this.commentService.getCommentsByMeeting(meeting.mid).subscribe(comments => {
-                comments.forEach(comment => this.comments.push(comment))
-              });
-            })
-          })
+          this.getHostedProducts(1, this.profileUser.id);
+          this.getReviews(1)
         })
       })
     })
+  }
+
+  segmentChanged(event) {
+    this.selectedMenu = event.detail.value;
+  }
+
+  getReviews(page: number) {
+    this.reviewService.getCommentsByUser(this.profileUser.id, page).subscribe(resp => {
+      this.reviews = resp.items;
+      this.reviewPaginationMeta = resp.meta;
+      this.reviewPaginationMeta.paginationId = 'profile-reviews';
+    })
+  }
+
+  private getHostedProducts(page: number, hostId: number) {
+    this.productService.getHostedProducts(page, 10, ProductStatus.ENTERED, hostId).subscribe(products => {
+      this.hostedProducts = products.items;
+      this.productPaginationMeta = products.meta;
+      this.productPaginationMeta.paginationId = 'profile-hosted-products'
+    });
+  }
+
+  pageChanged(page: number) {
+    this.currentPage = page;
+    this.getHostedProducts(page, this.profileUser.id);
+  }
+
+  onPage(event) {
+    this.getReviews(event);
   }
 
   back() {

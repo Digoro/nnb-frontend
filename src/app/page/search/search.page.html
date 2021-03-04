@@ -4,8 +4,8 @@
     <ion-row>
       <ng-container *ngIf="meetings">
         <ion-col *ngFor="let meeting of meetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6">
-          <a [href]="'/tabs/meeting-detail/' + meeting.mid" style="text-decoration: none; color: black;">
-            <meeting-card [meeting]="meeting"></meeting-card>
+          <a [href]="'/tabs/meeting-detail/' + meeting.id" style="text-decoration: none; color: black;">
+            <meeting-card [product]="meeting"></meeting-card>
           </a>
         </ion-col>
         <ion-col *ngIf="meetings.length === 0">

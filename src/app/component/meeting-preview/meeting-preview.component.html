@@ -1,23 +1,14 @@
-<ng-container *ngIf="!!meeting">
+<ng-container *ngIf="!!product">
   <ion-grid fixed>
     <img [src]="previewImage" class="main-image" />
     <ion-row>
       <ion-col>
-        <p class="subTitle">{{meeting.subTitle}}</p>
-        <p class="title">{{meeting.title}}</p>
-        <price [price]="meeting.price" [discountPrice]="meeting.discountPrice"></price>
+        <p class="title">{{product.title}}</p>
+        <price [price]="product.price" [discountPrice]="product.discountPrice"></price>
         <hr>
         <p class="summary-info">
-          <ion-icon name="pricetag-outline" class="summary-icon"></ion-icon>
-          <a [href]="'/tabs/meetings?key=' + meeting.categories">
-            <ion-chip style="color: #e5456e;background-color :#fae1e7; height: 1.5rem;">
-              <ion-label>{{meeting.categories}}</ion-label>
-            </ion-chip>
-          </a>
-        </p>
-        <p class="summary-info">
           <ion-icon name="navigate-outline" class="summary-icon"></ion-icon>
-          {{meeting.address}}, {{meeting.detailed_address}}
+          {{product.address}}, {{product.detailAddress}}
         </p>
         <p class="summary-info" *ngIf="runningHours!==0 && runningMinutes!==0">
           <ion-icon name="time-outline" class="summary-icon"></ion-icon>
@@ -25,12 +16,12 @@
           <span *ngIf="runningMinutes!=0">{{runningMinutes}}분</span> 소요
         </p>
         <p class="summary-info">
-          <ng-container *ngIf="meeting.options.length!==0">
+          <ng-container *ngIf="product.options.length!==0">
             <ion-icon name="calendar-outline" class="summary-icon"></ion-icon>
-            {{meeting.options[0].optionDate|date:'yyyy-MM-dd HH:mm'}}
-            <span *ngIf="meeting.options.length > 1">외 {{meeting.options.length}}개의 일정</span>
+            {{product.options[0].date|date:'yyyy-MM-dd HH:mm'}}
+            <span *ngIf="product.options.length > 1">외 {{product.options.length}}개의 일정</span>
           </ng-container>
-          <ng-container *ngIf="meeting.options.length===0">
+          <ng-container *ngIf="product.options.length===0">
             <ion-icon name="calendar-outline" class="summary-icon"></ion-icon>
             <ion-chip color="warning">
               <ion-label>일정이 없습니다.</ion-label>
@@ -48,48 +39,39 @@
       <a class="section-2" (click)="setPosition(2)">
         <p class="section-menu">모임 장소</p>
       </a>
-      <a *ngIf="meeting.check_list" class="section-3" (click)="setPosition(3)">
+      <a *ngIf="product.checkList" class="section-3" (click)="setPosition(3)">
         <p class="section-menu">준비물</p>
       </a>
-      <!-- <a *ngIf="meeting.include" class="section-4" (click)="setPosition(4)">
-        <p class="section-menu">포함 사항</p>
-      </a>
-      <a *ngIf="meeting.exclude" class="section-5" (click)="setPosition(5)">
-        <p class="section-menu">불포함 사항</p>
-      </a>
-      <a *ngIf="meeting.notice" class="section-6" (click)="setPosition(6)">
-        <p class="section-menu">유의 사항</p>
-      </a> -->
-      <a *ngIf="meeting.price !== 0" class="section-7" (click)="setPosition(7)">
+      <a *ngIf="product.discountPrice !== 0" class="section-7" (click)="setPosition(7)">
         <p class="section-menu">환불 정책</p>
       </a>
     </div>
 
     <main>
       <section id="section-1">
-        <ng-container *ngIf="meeting.point">
+        <ng-container *ngIf="product.point">
           <ion-row>
             <ion-col>
               <p><span class="section-title underline">포인트</span></p>
-              <p class="pre-wrap">{{meeting.point}}</p>
+              <p class="pre-wrap">{{product.point}}</p>
             </ion-col>
           </ion-row>
           <hr>
         </ng-container>
-        <ng-container *ngIf="meeting.recommend">
+        <ng-container *ngIf="product.recommend">
           <ion-row>
             <ion-col>
               <p><span class="section-title underline">이런 분이 함께하면 좋아요</span></p>
-              <p class="pre-wrap">{{meeting.recommend}}</p>
+              <p class="pre-wrap">{{product.recommend}}</p>
             </ion-col>
           </ion-row>
           <hr>
         </ng-container>
-        <ng-container *ngIf="meeting.programs">
+        <ng-container *ngIf="product.description">
           <ion-row>
             <ion-col>
               <p><span class="section-title underline">프로그램 소개</span></p>
-              <quill-view [content]="meeting.programs" format="text" theme="snow" [style]="quillStyle"></quill-view>
+              <quill-view [content]="product.description" format="text" theme="snow" [style]="quillStyle"></quill-view>
             </ion-col>
           </ion-row>
         </ng-container>
@@ -99,51 +81,51 @@
         <ion-row>
           <ion-col>
             <p><span class="section-title underline">모임 장소</span></p>
-            <p>{{meeting.address}} {{meeting.detailed_address}}</p>
-            <agm-map [latitude]="meeting.lat" [longitude]="meeting.lon" [zoom]="15">
-              <agm-marker [latitude]="meeting.lat" [longitude]="meeting.lon"></agm-marker>
+            <p>{{product.address}} {{product.detailAddress}}</p>
+            <agm-map [latitude]="product.lat" [longitude]="product.lon" [zoom]="15">
+              <agm-marker [latitude]="product.lat" [longitude]="product.lon"></agm-marker>
             </agm-map>
           </ion-col>
         </ion-row>
       </section>
       <hr>
-      <ng-container *ngIf="meeting.check_list">
+      <ng-container *ngIf="product.checkList">
         <section id="section-3">
           <ion-row>
             <ion-col>
               <p><span class="section-title underline">준비물</span></p>
-              <p class="pre-wrap">{{meeting.check_list}}</p>
+              <p class="pre-wrap">{{product.checkList}}</p>
             </ion-col>
           </ion-row>
           <hr>
-          <ng-container *ngIf="meeting.include">
+          <ng-container *ngIf="product.includeList">
             <section>
               <ion-row>
                 <ion-col>
                   <p><span class="section-title underline">포함 사항</span></p>
-                  <p class="pre-wrap">{{meeting.include}}</p>
+                  <p class="pre-wrap">{{product.includeList}}</p>
                 </ion-col>
               </ion-row>
               <hr>
             </section>
           </ng-container>
-          <ng-container *ngIf="meeting.exclude">
+          <ng-container *ngIf="product.excludeList">
             <section>
               <ion-row>
                 <ion-col>
                   <p><span class="section-title underline">불포함 사항</span></p>
-                  <p class="pre-wrap">{{meeting.exclude}}</p>
+                  <p class="pre-wrap">{{product.excludeList}}</p>
                 </ion-col>
               </ion-row>
               <hr>
             </section>
           </ng-container>
-          <ng-container *ngIf="meeting.notice">
+          <ng-container *ngIf="product.notice">
             <section>
               <ion-row>
                 <ion-col>
                   <p><span class="section-title underline">유의 사항</span></p>
-                  <p class="pre-wrap">{{meeting.notice}}</p>
+                  <p class="pre-wrap">{{product.notice}}</p>
                 </ion-col>
               </ion-row>
               <hr>
@@ -151,13 +133,13 @@
           </ng-container>
         </section>
       </ng-container>
-      <section id="section-7" *ngIf="meeting.price !== 0">
+      <section id="section-7" *ngIf="product.discountPrice !== 0">
         <ion-row>
           <ion-col>
             <p><span class="section-title underline">환불 정책</span></p>
-            <p>상품 시작일 기준 {{meeting.refundPolicy100}}일 전까지 100% 환불</p>
-            <p>상품 시작일 기준 {{meeting.refundPolicy0+1}}일 전까지 50% 환불</p>
-            <p>상품 시작일 기준 {{meeting.refundPolicy0}}일 전 이후 환불 불가</p>
+            <p>상품 시작일 기준 {{product.refundPolicy100}}일 전까지 100% 환불</p>
+            <p>상품 시작일 기준 {{product.refundPolicy0+1}}일 전까지 50% 환불</p>
+            <p>상품 시작일 기준 {{product.refundPolicy0}}일 전 이후 환불 불가</p>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -172,7 +154,7 @@
   </ion-grid>
 </ng-container>
 
-<ng-container *ngIf="!meeting">
+<ng-container *ngIf="!product">
   <div style="padding-top: 30px">
     <p>미리보기를 생성 중입니다 &nbsp;<img src="/assets/loading.gif" width="25" height="25"></p>
   </div>

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { CouponService } from 'src/app/service/coupon.service';
-import { PaymentService } from 'src/app/service/payment.service';
 import { MoreMenuGroup, MoreMenuItem } from './../../model/more-menu';
 
 @Component({
@@ -11,12 +9,10 @@ import { MoreMenuGroup, MoreMenuItem } from './../../model/more-menu';
   styleUrls: ['./more.page.scss'],
 })
 export class MorePage implements OnInit {
-  user: User;
   menus: MoreMenuGroup[];
 
   constructor(
     private authService: AuthService,
-    private paymentService: PaymentService,
     private couponService: CouponService
   ) { }
 
@@ -36,16 +32,14 @@ export class MorePage implements OnInit {
       ]),
     ]
     this.authService.getCurrentNonunbubUser().subscribe(resp => {
-      this.user = resp;
-      this.couponService.getCoupons(resp.uid, false).subscribe(coupons => {
-        this.menus[0].items[0].badge = coupons.length
+      this.couponService.search({ page: 1, limit: 1, userId: resp.id, expireDuration: new Date(), isUsed: false }).subscribe(coupons => {
+        this.menus[0].items[0].badge = coupons.meta.totalItems;
       })
     })
   }
 
   logout() {
     this.authService.logout().subscribe(resp => {
-      this.user = undefined;
       window.location.href = '/tabs/home'
     }, error => {
       console.log(error);

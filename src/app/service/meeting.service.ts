@@ -1,190 +1,109 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
 import { forkJoin, Observable, of } from 'rxjs';
-import { concatMap, map } from 'rxjs/operators';
-import { Meeting, MeetingStatus, RequestMeeting } from '../model/meeting';
-import { MeetingOption, PurchasedMeeting } from './../model/meeting';
-import { PaymentService } from './payment.service';
+import { ProductOptionCreateDto, ProductRequestCreateDto } from 'src/app/model/product';
+import { Category } from '../model/category';
+import { Product, ProductCreateDto, ProductRequest, ProductSearchDto, ProductUpdateDto } from '../model/product';
+import { Pagination, PaginationSearchDto } from './../model/pagination';
+import { Hashtag, ProductManageDto, ProductStatus } from './../model/product';
 import { UrlService } from './url.service';
-import { UtilService } from './util.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MeetingService {
+export class ProductService {
   urlPrefix = UrlService.prefix;
 
   constructor(
-    private http: HttpClient,
-    private utilService: UtilService,
-    private paymentService: PaymentService
+    private http: HttpClient
   ) { }
 
-  addMeeting(formData: FormData): Observable<Meeting> {
-    return this.http.post<Meeting>(`${this.urlPrefix}/meetings/`, formData)
+  addProduct(dto: ProductCreateDto): Observable<Product> {
+    return this.http.post<Product>(`/api/products`, dto);
   }
 
-  addMeetingOptions(mid: number, options: MeetingOption[]) {
-    const requests: Observable<any>[] = [];
-    options.forEach(option => {
-      return requests.push(this.http.post(`${this.urlPrefix}/meetingOptions/`, option))
-    })
-    if (requests.length === 0) return of([]);
-    return forkJoin(requests);
-  }
-
-  removeMeetingOptions(options: MeetingOption[]) {
-    const requests: Observable<any>[] = [];
-    options.forEach(option => {
-      return requests.push(this.http.delete(`${this.urlPrefix}/meetingOptions/${option.oid}`))
-    })
-    if (requests.length === 0) return of([]);
-    return forkJoin(requests);
-  }
-
-  editMeetingOptions(options: MeetingOption[]) {
-    const requests: Observable<any>[] = [];
-    options.forEach(option => {
-      return requests.push(this.http.put(`${this.urlPrefix}/meetingOptions/${option.oid}/`, option))
-    })
-    if (requests.length === 0) return of([]);
-    return forkJoin(requests);
-  }
-
-  editMeeting(mid: number, formData: FormData): Observable<Meeting> {
-    return this.http.put<Meeting>(`${this.urlPrefix}/meetings/${mid}/`, formData)
-  }
-
-  editMeetingOrders(orders: { mid: number, order: number }[]) {
+  updateProductSortOrder(orders: { id: number, dto: ProductUpdateDto }[]) {
     const requests: Observable<any>[] = [];
     orders.forEach(order => {
-      return requests.push(this.http.post('/admin/meetings/order', order))
+      return requests.push(this.http.put(`/api/products/management/${order.id}`, order.dto))
     })
     if (requests.length === 0) return of([]);
     return forkJoin(requests);
   }
 
-  updateMeetingStatus(mid: number, status: MeetingStatus) {
-    return this.http.post(`/admin/meetings/status`, { mid, status })
+  updateProduct(id: number, dto: ProductUpdateDto, addedOptions?: ProductOptionCreateDto[], removedOptions?: ProductOptionCreateDto[]): Observable<Product> {
+    if (addedOptions && removedOptions) {
+      const data = { ...dto, addedOptions, removedOptions };
+      return this.http.put<Product>(`/api/products/${id}`, data);
+    } else {
+      return this.http.put<Product>(`/api/products/${id}`, dto);
+    }
   }
 
-  searchMeetings(queries: string[]): Observable<Meeting[]> {
-    queries.push("status=3")
-    const queryString = queries.join('&')
-    return this.http.get<Meeting[]>(`/bmeetings?${queryString}`)
+  manageProduct(id: number, dto: ProductManageDto) {
+    return this.http.put(`/api/products/management/${id}`, dto)
   }
 
-  getMeeting(id: number): Observable<Meeting> {
-    return forkJoin(
-      this.http.get<Meeting>(`${this.urlPrefix}/meetings/${id}`),
-      this.http.get<MeetingOption[]>(`/meetingOptions?mid=${id}`)
-    ).pipe(
-      map(data => {
-        let options: MeetingOption[] = data[1];
-        options = options
-          .filter(option => !option.isOld)
-          .sort((a, b) => {
-            if (moment(a.optionDate).isBefore(b.optionDate)) return -1
-            else if (moment(a.optionDate).isAfter(b.optionDate)) return 1;
-            else return 0;
-          })
-        data[0].options = options;
-        return data[0];
-      })
-    )
+  getProduct(productId: number, userId?: number): Observable<Product> {
+    if (userId) return this.http.get<Product>(`${this.urlPrefix}/products/product/${productId}/user/${userId}`)
+    else return this.http.get<Product>(`${this.urlPrefix}/products/product/${productId}`)
   }
 
-  getAllMeetings(status: MeetingStatus): Observable<Meeting[]> {
-    return this.http.get<Meeting[]>(`/bmeetings?status=${status}`).pipe(
-      map(meetings => meetings.reverse())
-    )
+  search(search: ProductSearchDto): Observable<Pagination<Product>> {
+    const queries = Object.keys(search).filter(key => !!search[key]).map(key => {
+      const value = search[key];
+      if (Array.isArray(value)) return `${key}=['${value}']`;
+      else return `${key}=${value}`;
+    }).join('&');
+    return this.http.get<Pagination<Product>>(`/api/products?${queries}`);
   }
 
-  requestMeeting(requestMeeting: RequestMeeting) {
-    return this.http.post(`${this.urlPrefix}/requestMeetings/`, requestMeeting)
+  requestProduct(requestProduct: ProductRequestCreateDto) {
+    return this.http.post(`${this.urlPrefix}/product-requests/`, requestProduct)
   }
 
-  getRequestMeeting(mid: number): Observable<RequestMeeting[]> {
-    return this.http.get<RequestMeeting[]>(`${this.urlPrefix}/requestMeetings?meeting=${mid}&isOld=${false}`);
+  isChecked(productId: number): Observable<boolean> {
+    return this.http.get<boolean>(`/api/product-requests/isChecked/${productId}`);
   }
 
-  checkRequestMeeting(meeting: RequestMeeting) {
-    meeting.meeting = meeting.meeting['mid'];
-    meeting.user = meeting.user['uid'];
-    return this.http.put(`${this.urlPrefix}/requestMeetings/${meeting.rid}/`, meeting);
+  checkRequestProduct(id: number, isChecked: boolean) {
+    return this.http.put(`/api/product-requests/${id}`, { isChecked });
   }
 
-  getRequestMeetingAll(): Observable<RequestMeeting[]> {
-    return this.http.get<RequestMeeting[]>(`${this.urlPrefix}/requestMeetings`);
+  getProductRequests(search: PaginationSearchDto): Observable<Pagination<ProductRequest>> {
+    return this.http.get<Pagination<ProductRequest>>(`/api/product-requests?page=${search.page}&limit=${search.limit}`)
   }
 
-  getHostedMeetings(uid?: number): Observable<Meeting[]> {
-    // return this.getAllMeetings(MeetingStatus.ALL);
-    return this.http.get<Meeting[]>(`/hosted_meetings?uid=${uid}`);
+  getHostedProducts(page: number, limit: number, status: ProductStatus, hostId: number): Observable<Pagination<Product>> {
+    return this.http.get<Pagination<Product>>(`/api/products?page=${page}&limit=${limit}&status=${status}&hostId=${hostId}`)
   }
 
-  deleteMeeting(mid: number) {
-    return this.http.delete(`${this.urlPrefix}/meetings/${mid}`);
+  deleteProduct(id: number) {
+    return this.http.delete(`/api/products/${id}`);
   }
 
-  getPurchasedMeeting(pid: number): Observable<PurchasedMeeting> {
-    return this.paymentService.getPaymentOptionMaps(pid).pipe(
-      map(maps => {
-        return {
-          payment: maps[0].payment,
-          options: maps.map(payment => {
-            return {
-              ...payment.option,
-              pomid: payment.pomid,
-              count: payment.count,
-              PCD_PAY_REFUND_CARDRECEIPT: payment.PCD_PAY_REFUND_CARDRECEIPT,
-              PCD_REFUND_TOTAL: payment.PCD_REFUND_TOTAL,
-              isRefund: payment.isRefund
-            }
-          })
-        }
-      })
-    )
-  }
-
-  getPurchasedMeetings(uid: number): Observable<PurchasedMeeting[]> {
-    return this.paymentService.getPurchasedInfo(uid).pipe(
-      concatMap(info => {
-        const requests = info.map(p => this.paymentService.getPaymentOptionMaps(p.pid).toPromise())
-        if (requests.length === 0) return of([]);
-        return forkJoin(requests);
-      }),
-      map(payments => {
-        return payments.map(paymentList => {
-          return {
-            payment: paymentList[0].payment,
-            options: paymentList.map(payment => {
-              return {
-                ...payment.option,
-                pomid: payment.pomid,
-                count: payment.count,
-                PCD_PAY_REFUND_CARDRECEIPT: payment.PCD_PAY_REFUND_CARDRECEIPT,
-                PCD_REFUND_TOTAL: payment.PCD_REFUND_TOTAL,
-                isRefund: payment.isRefund
-              }
-            })
-          }
-        })
-      })
-    )
+  getLikeProducts(search: PaginationSearchDto): Observable<Pagination<Product>> {
+    return this.http.get<Pagination<Product>>(`/api/products/likes?page=${search.page}&limit=${search.limit}&status=${ProductStatus.ENTERED}`)
   }
 
   getStatusLabel(status) {
     switch (status) {
-      case MeetingStatus.ALL: return "전체";
-      case MeetingStatus.CREATED: return "생성";
-      case MeetingStatus.INSPACTED: return "검토";
-      case MeetingStatus.ENTERED: return "전시";
-      case MeetingStatus.UPDATED: return "수정";
-      case MeetingStatus.DISABLED: return "비활성";
-      case MeetingStatus.COMPLETED: return "완료";
-      case MeetingStatus.DELETED: return "삭제";
+      case ProductStatus.ALL: return "전체";
+      case ProductStatus.CREATED: return "생성";
+      case ProductStatus.INSPACTED: return "검토";
+      case ProductStatus.ENTERED: return "전시";
+      case ProductStatus.UPDATED: return "수정";
+      case ProductStatus.DISABLED: return "비활성";
+      case ProductStatus.COMPLETED: return "완료";
+      case ProductStatus.DELETED: return "삭제";
     }
+  }
+
+  searchHashtag(search: PaginationSearchDto): Observable<Pagination<Hashtag>> {
+    return this.http.get<Pagination<Hashtag>>(`/api/hashtags?page=${search.page}&limit=${search.limit}`);
+  }
+
+  searchCategory(search: PaginationSearchDto): Observable<Pagination<Category>> {
+    return this.http.get<Pagination<Category>>(`/api/categories?page=${search.page}&limit=${search.limit}`);
   }
 }

@@ -9,36 +9,40 @@
         </a>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="hostedMeetings">
-      <ion-col *ngFor="let meeting of hostedMeetings" size="12">
-        <ion-list>
-          <ion-item>
-            <ion-thumbnail slot="start" style="cursor: pointer;">
-              <img [src]="meeting.file" />
-            </ion-thumbnail>
-            <ion-label class="ion-text-wrap">
-              <h3><a [href]="'/tabs/meeting-detail/' + meeting.mid">{{meeting.title}}</a></h3>
-              <p>{{meeting.subTitle}}</p>
-              <p *ngIf="meeting.price !== 0">{{meeting.price|number}}원</p>
-              <p *ngIf="meeting.price === 0">무료</p>
-              <ion-badge color="light">{{getStatusLabel(meeting.status)}}</ion-badge>
-            </ion-label>
-            <div *ngIf="isDesktop">
-              <ion-button color="medium" (click)="edit(meeting.mid)">수정하기</ion-button>
-              <ion-button color="danger" (click)="disableMeeting(meeting.mid)">삭제</ion-button>
-            </div>
-            <ion-icon *ngIf="!isDesktop" name="ellipsis-vertical-outline" style="float: right; padding:20px 20px"
-              class="more" (click)="presentActionSheet(meeting.mid)"></ion-icon>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-      <ion-col *ngIf="hostedMeetings.length === 0">
-        <div style="opacity: 0.4; padding: 20px">
-          <ion-chip outline>
-            <ion-label>주최한 모임이 없습니다.</ion-label>
-          </ion-chip>
-        </div>
-      </ion-col>
-    </ion-row>
+    <ng-container *ngIf="meta">
+      <ion-list *ngFor="let product of hostedProducts | paginate: {
+      id:meta.paginationId,
+      itemsPerPage: meta.itemsPerPage, 
+      currentPage: meta.currentPage,
+      totalItems:meta.totalItems
+    }; let i = index">
+        <ion-item>
+          <ion-thumbnail slot="start" style="cursor: pointer;">
+            <img [src]="product.representationPhotos[0].photo" />
+          </ion-thumbnail>
+          <ion-label class="ion-text-wrap">
+            <h3><a [href]="'/tabs/meeting-detail/' + product.id">{{product.title}}</a></h3>
+            <p class="hashtag">
+              <ng-container *ngFor="let hashtag of product.hashtags">
+                #{{hashtag.name}}
+              </ng-container>
+            </p>
+            <p *ngIf="product.price === 0 || product.discountPrice === 0">{{product.discountPrice |number}}원</p>
+            <p *ngIf="product.price === 0 || product.discountPrice === 0">무료</p>
+            <ion-badge color="light">{{getStatusLabel(product.status)}}</ion-badge>
+          </ion-label>
+          <div *ngIf="isDesktop">
+            <ion-button color="medium" (click)="edit(product.id)">수정하기</ion-button>
+            <ion-button color="danger" (click)="removeProduct(product.id)">삭제</ion-button>
+          </div>
+          <ion-icon *ngIf="!isDesktop" name="ellipsis-vertical-outline" style="float: right; padding:20px 20px"
+            class="more" (click)="presentActionSheet(product.id)"></ion-icon>
+        </ion-item>
+      </ion-list>
+
+      <pagination *ngIf="!!meta && hostedProducts.length>0" (onChange)="pageChanged($event)"
+        [paginationId]="meta.paginationId">
+      </pagination>
+    </ng-container>
   </ion-grid>
 </ion-content>

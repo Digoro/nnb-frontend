@@ -4,7 +4,7 @@
       <ion-row style="margin-top:20px;">
         <ion-col class="center" style="display: flex;flex-direction: column;">
           <ion-avatar style="width: 80px; height: 80px;">
-            <img [src]="form.controls.image.value">
+            <img [src]="form.controls.profilePhoto.value">
           </ion-avatar>
           <button class="btn btn-sm" style="border:1px solid #a6a6a654;" type="button" (click)="fileInput.click()">
             <span>업로드</span>
@@ -19,7 +19,8 @@
       </form-input>
       <ion-item lines="none">
         <ion-label position="fixed">휴대폰 번호</ion-label>
-        <auth-sms [isDesc]="!phone" [user]="user" [phone]="phone" (phoneAddEvent)="onAddPhone($event)"></auth-sms>
+        <auth-sms [isDesc]="!phoneNumber" [user]="user" [phoneNumber]="phoneNumber"
+          (phoneAddEvent)="onAddPhone($event)"></auth-sms>
       </ion-item>
       <hr>
       <form-input [name]="'한줄 소개'" [controlName]="'catchphrase'" [group]="form" [maxLength]="30"

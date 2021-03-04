@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Meeting } from 'src/app/model/meeting';
+import { Product } from 'src/app/model/product';
 
 @Component({
   selector: 'meeting-card',
@@ -7,14 +7,14 @@ import { Meeting } from 'src/app/model/meeting';
   styleUrls: ['./meeting-card.component.scss'],
 })
 export class MeetingCardComponent implements OnInit {
-  @Input() meeting: Meeting;
+  @Input() product: Product;
   @Output() clickEvent = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() { }
 
-  goDetailPage(meeting: Meeting) {
+  goDetailPage(meeting: Product) {
     this.clickEvent.emit(meeting);
   }
 }

@@ -7,26 +7,26 @@
         </div>
       </ng-container>
       <ng-container *ngIf="meeting">
-        <ng-container *ngIf="meeting.status !== 5">
+        <ng-container *ngIf="meeting.status === ProductStatus.ENTERED">
           <ng-container *ngIf="options.length > 0">
             <div class="card">
               <p class="title">결제 금액</p>
               <div style=" display: flex;">
                 <ion-thumbnail slot="start">
-                  <img [src]="meeting.file" />
+                  <img [src]="meeting.representationPhotos[0].photo" />
                 </ion-thumbnail>
                 <p style="margin-top:auto;margin-left: 10px;">{{meeting.title}}</p>
               </div>
               <hr>
               <div *ngFor="let option of options">
-                <span class="desc" style="font-weight: 500;">{{option.optionTitle}}</span><br>
-                <span class="desc">{{option.optionCount}} x ₩{{option.optionPrice|number}}&nbsp;&nbsp;</span>
+                <span class="desc" style="font-weight: 500;">{{option.name}}</span><br>
+                <span class="desc">{{option.count}} x ₩{{option.price|number}}&nbsp;&nbsp;</span>
                 <span class="float-right"
-                  style="margin-right: 1.2rem;"><strong>{{option.optionCount*option.optionPrice|number}}원</strong></span>
+                  style="margin-right: 1.2rem;"><strong>{{option.count*option.price|number}}원</strong></span>
                 <hr>
               </div>
               <div *ngIf="!!form.controls.coupon.value">
-                <span class="desc" style="font-weight: 500;">쿠폰: {{form.controls.coupon.value.title}}</span>
+                <span class="desc" style="font-weight: 500;">쿠폰: {{form.controls.coupon.value.name}}</span>
                 <span class="float-right" style="margin-right: 1.2rem;"><strong>-
                     {{form.controls.coupon.value.price|number}}원</strong></span>
                 <hr>
@@ -50,7 +50,7 @@
                       <ion-radio slot="start" [value]="false"></ion-radio>
                     </ion-item>
                     <ion-item *ngFor="let coupon of coupons">
-                      <ion-label class="ion-text-wrap">{{coupon.title}} ({{coupon.price|number}}원)</ion-label>
+                      <ion-label class="ion-text-wrap">{{coupon.name}} ({{coupon.price|number}}원)</ion-label>
                       <ion-radio [disabled]="isThan" slot="start" [value]="coupon"></ion-radio>
                     </ion-item>
                   </ion-radio-group>
@@ -94,15 +94,15 @@
             </div>
 
             <div class="card"
-              *ngIf="(!phone || !alreadyExistPhone) || (!this.form.controls.name.value || !alreadyExistName)">
+              *ngIf="(!phoneNumber || !alreadyExistPhone) || (!this.form.controls.name.value || !alreadyExistName)">
               <p class="title">예약자 정보</p>
               <form-input *ngIf="!this.form.controls.name.value || !alreadyExistName" [name]="'이름'"
                 [controlName]="'name'" [group]="form" [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"
                 [maxLength]="30" [isRequired]="false">
               </form-input>
-              <ion-item lines="none" *ngIf="!phone || !alreadyExistPhone">
+              <ion-item lines="none" *ngIf="!phoneNumber || !alreadyExistPhone">
                 <ion-label position="fixed">휴대폰 번호</ion-label>
-                <auth-sms [user]="user" [phone]="phone" (phoneAddEvent)="onAddPhone($event)"></auth-sms>
+                <auth-sms [user]="user" [phoneNumber]="phoneNumber" (phoneAddEvent)="onAddPhone($event)"></auth-sms>
               </ion-item>
             </div>
 
@@ -110,11 +110,11 @@
           <ion-row>
             <ion-col>
               <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block" (click)="pay()"
-                [disabled]="form.invalid || !phone">결제하기</button>
+                [disabled]="form.invalid || !phoneNumber">결제하기</button>
             </ion-col>
           </ion-row>
         </ng-container>
-        <ng-container *ngIf="meeting.status === 5">
+        <ng-container *ngIf="meeting.status !== ProductStatus.ENTERED">
           <ion-chip color="danger">
             <ion-label>비활성된 상품입니다.</ion-label>
           </ion-chip>

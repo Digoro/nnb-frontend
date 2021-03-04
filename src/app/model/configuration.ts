@@ -1,7 +1,7 @@
 
 export class Configuration {
     constructor(
-        public configurationId: number,
+        public id: number,
         public key: string,
         public value: string,
     ) { }

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Meeting } from 'src/app/model/meeting';
+import { Product, ProductRequestCreateDto } from 'src/app/model/product';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { FormService } from 'src/app/service/form.service';
-import { MeetingService } from 'src/app/service/meeting.service';
-import { RequestMeeting } from './../../model/meeting';
+import { ProductService } from 'src/app/service/meeting.service';
 
 @Component({
   selector: 'meeting-request',
@@ -15,48 +14,50 @@ import { RequestMeeting } from './../../model/meeting';
 })
 export class MeetingRequestPage implements OnInit {
   user: User;
-  mid: number;
-  meeting: Meeting;
+  id: number;
+  product: Product;
   form: FormGroup;
-  isRequestedMeeting: boolean = false;
+  isRequestedProduct: boolean = false;
+  phoneNumber: string;
 
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private formService: FormService,
-    private meetingService: MeetingService
+    private productService: ProductService
   ) { }
 
   ngOnInit() {
     this.form = new FormGroup({
-      peopleNumber: new FormControl('', this.formService.getValidators(2, [Validators.min(1), Validators.max(99)])),
-      phone: new FormControl('', this.formService.getValidators(11, [Validators.pattern("[0-9 ]{11}")])),
-      desc: new FormControl('', this.formService.getValidators(500)),
+      numberOfPeople: new FormControl('', this.formService.getValidators(2, [Validators.min(1), Validators.max(99)])),
+      message: new FormControl('', this.formService.getValidators(500)),
     });
     this.authService.getCurrentNonunbubUser().subscribe(user => {
       this.route.params.subscribe(params => {
-        this.mid = params.id;
-        this.meetingService.getMeeting(this.mid).subscribe(meeting => {
-          this.meeting = meeting;
+        this.id = +params.id;
+        this.productService.getProduct(this.id).subscribe(product => {
+          this.product = product;
           this.user = user;
-          if (this.user.phone) {
-            this.form.controls.phone.setValue(this.user.phone);
-          }
-          this.meetingService.getRequestMeeting(this.mid).subscribe(requestMeetings => {
-            this.isRequestedMeeting = !!requestMeetings.find(m => m.user['uid'] === this.user.uid);
+          if (this.user.phoneNumber) this.phoneNumber = this.user.phoneNumber;
+          this.productService.isChecked(this.id).subscribe(resp => {
+            this.isRequestedProduct = resp;
           })
         })
       })
     });
   }
 
+  onAddPhone(phoneNumber: string) {
+    this.phoneNumber = phoneNumber;
+  }
+
   request() {
-    const { peopleNumber, phone, desc } = this.form.value;
-    const requestMeeting = new RequestMeeting(0, this.mid, this.user.uid, peopleNumber, phone, desc, false)
-    this.meetingService.requestMeeting(requestMeeting).subscribe(resp => {
+    const { numberOfPeople, message } = this.form.value;
+    const requestProduct = new ProductRequestCreateDto(this.id, +numberOfPeople, message, false);
+    this.productService.requestProduct(requestProduct).subscribe(resp => {
       alert('신청되었습니다. 신청인원이 확보되면 작성하신 휴대폰 번호로 안내드릴게요!');
-      this.router.navigate(['/tabs/meeting-detail', this.mid]);
+      this.router.navigate(['/tabs/meeting-detail', this.id]);
     })
   }
 }

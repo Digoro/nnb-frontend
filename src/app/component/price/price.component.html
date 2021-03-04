@@ -1,19 +1,15 @@
-<ng-container *ngIf="price !== 0">
+<ng-container *ngIf="price !== 0 && discountPrice !== 0">
   <ng-container *ngIf="(price !== discountPrice) && (discountPrice !== 0)">
     <span class="origin">{{price | number}}원</span>
     <span class="discountRatio">{{discountRation}}%</span><br>
     <span class="discount">{{discountPrice | number}}원</span>
   </ng-container>
 
-  <ng-container *ngIf="(price !== discountPrice) && (discountPrice === 0)">
+  <ng-container *ngIf="(price !== discountPrice) && (discountPrice === undefined)">
     <span class="discount">{{price | number}}원</span>
-  </ng-container>
-
-  <ng-container *ngIf="price === discountPrice">
-    <span class="discount">무료</span>
   </ng-container>
 </ng-container>
 
-<ng-container *ngIf="price === 0">
+<ng-container *ngIf="price === 0 || discountPrice === 0">
   <span class="discount">무료</span>
 </ng-container>

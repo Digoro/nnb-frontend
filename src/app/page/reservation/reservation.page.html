@@ -1,105 +1,52 @@
 <ion-content>
   <ion-grid>
-    <!-- mobile -->
-    <ng-container *ngIf="mobileData && !isDesktop">
-      <ng-container *ngIf="mobileData.length === 0">
-        <div style="text-align: center; opacity: 0.4;">
-          <ion-chip outline>
-            <ion-label>예약이 없습니다.</ion-label>
-          </ion-chip>
-        </div>
-      </ng-container>
-      <ng-container *ngFor="let options of mobileData">
-        <ion-card>
-          <ion-row>
-            <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12" size="12">
-              <a [href]="'/tabs/meeting-detail/' + options[0].payment.mid.mid">
-                <ion-card-header>
-                  <ion-card-title>{{options[0].payment.mid.title}}</ion-card-title>
-                  <ion-card-subtitle>{{options[0].payment.mid.subTitle}}</ion-card-subtitle>
-                </ion-card-header>
-              </a>
-            </ion-col>
-            <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12" size="12">
-              <ion-card-content>
-                <ion-chip outline color="tertiary">
-                  <ion-label>결제 정보</ion-label>
-                </ion-chip>
-                <p>주문번호: {{options[0].payment.PCD_PAY_OID}}</p>
-                <p>결제일시: {{options[0].payment.PCD_PAY_TIME}}</p>
-                <p>결제금액: {{options[0].payment.PCD_PAY_TOTAL|number}}원</p>
-                <p>전화번호: {{options[0].payment.phone}}</p>
-                <p>결제 메시지: {{options[0].payment.PCD_PAY_MSG}}</p>
-                <p>결제유형: {{options[0].payment.PCD_PAY_TYPE}}</p>
-                <p>결제결과: {{options[0].payment.PCD_PAY_RST}}</p>
-                <br>
-                <ion-chip outline>
-                  <ion-label>구매 옵션</ion-label>
-                </ion-chip>
-                <ng-container *ngFor="let option of options;let last = last">
-                  <p>옵션: {{option.option.optionTitle}}</p>
-                  <p>시작일: {{option.option.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
-                  <p>가격: {{option.option.optionPrice}}원</p>
-                  <p>수량: {{option.count}}개</p>
-                  <hr *ngIf="!last">
-                </ng-container>
-                <ng-container *ngIf="options[0].payment.couponId">
-                  <br>
-                  <ion-chip outline color="success">
-                    <ion-label>쿠폰</ion-label>
-                  </ion-chip>
-                  <p>{{options[0].payment.couponId.title}} ({{options[0].payment.couponId.price|number}}원)</p>
-                </ng-container>
-              </ion-card-content>
-            </ion-col>
-          </ion-row>
-        </ion-card>
-      </ng-container>
-    </ng-container>
-    <!-- desktop -->
-    <ngx-table [id]="'payTable'" [configuration]="configuration" [data]="data" [columns]="columns">
+    <ngx-table [id]="'reservation-table'" [configuration]="configuration" [data]="payments" [columns]="columns"
+      [pagination]="pagination" (event)="onTableEvent($event)">
       <ng-template let-row let-index="index">
-        <td>{{ index +1 }}</td>
+        <td>{{ (pagination.offset-1) * pagination.limit + (index+1)}}</td>
         <td>
-          <img width="50" height="50" [src]="row.mid.file">
+          <img width="50" height="50" [src]="row.order.product.representationPhotos[0].photo">
         </td>
-        <td>{{ row.PCD_PAY_TIME }}</td>
-        <td><span *ngIf="row.uid">{{ row.uid.nickName }}</span></td>
+        <td>{{ row.payAt|date:'yyyy-MM-dd HH:mm:ss' }}</td>
         <td>
-          <a target="_blank" [href]="'/tabs/meeting-detail/' + row.mid.mid">{{row.PCD_PAY_GOODS}}</a>
+          <a target="_blank" [href]="'/tabs/meeting-detail/' + row.order.product.id">{{row.order.product.title}}</a>
         </td>
         <td>
-          <ng-container *ngFor="let option of row.options; let last = last">
+          <a target="_blank" [href]="'/tabs/profile/' + row.order.user.id">{{ row.order.user.name }}</a>
+        </td>
+        <td>{{ row.order.user.nickname }}</td>
+        <td>{{ row.order.user.phoneNumber }}</td>
+        <td>
+          <ng-container *ngFor="let item of row.order.orderItems; let last = last">
             <div class="card" [ngStyle]="{'margin-bottom':!last ? '0.2rem':'0rem'}">
               <div class="card-body" style="padding: 0.7rem">
-                <ion-chip *ngIf="!option.option.isOld">
+                <ion-chip *ngIf="item.productOption.isOld">
                   <ion-label style="font-size: 12px;">이전옵션</ion-label>
                 </ion-chip>
-                <p>옵션: {{option.option.optionTitle}}</p>
-                <p>가격: {{option.option.optionPrice}}</p>
-                <p>일시: {{option.option.optionDate|date:'yyyy-MM-dd HH:mm'}}</p>
-                <p>수량: {{option.count}}</p>
+                <p>옵션: {{item.productOption.name}}</p>
+                <p>가격: {{item.productOption.price}}</p>
+                <p>일시: {{item.productOption.date|date:'yyyy-MM-dd HH:mm'}}</p>
+                <p>수량: {{item.count}}</p>
               </div>
             </div>
           </ng-container>
         </td>
         <td>
-          <ng-container *ngIf="row.couponId">
-            {{ row.couponId.title }} ({{row.couponId.price|number}}원)
+          <ng-container *ngIf="row.order.coupon">
+            {{ row.order.coupon.name }} ({{row.order.coupon.price|number}}원)
           </ng-container>
-          <ng-container *ngIf="!row.couponId">
+          <ng-container *ngIf="!row.order.coupon">
             <ion-chip>
               <ion-label style="font-size: 12px;">없음</ion-label>
             </ion-chip>
           </ng-container>
         </td>
-        <td>{{ row.phone }}</td>
-        <td>{{ row.PCD_PAY_TOTAL }}</td>
-        <td>{{ row.PCD_PAY_OID }}</td>
-        <td>{{ row.PCD_PAY_MSG }}</td>
-        <td>{{ row.PCD_PAY_TYPE }}</td>
-        <td>{{ row.PCD_PAY_RST }}</td>
-        <td>{{ row.mid.mid }}</td>
+        <td>{{ row.pgName }}</td>
+        <td>{{ row.payPrice }}</td>
+        <td>{{ row.id }}</td>
+        <td>{{ row.resultMessage }}</td>
+        <td>{{ row.payMethod }}</td>
+        <td>{{ row.result }}</td>
       </ng-template>
     </ngx-table>
   </ion-grid>

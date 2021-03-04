@@ -27,7 +27,7 @@
       <ion-col>
         <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/static/introduction'">
           <div class="introduction">
-            <p class="catch_phrase">💁🏻‍♀️💁🏻‍♀️&nbsp;&nbsp;&nbsp;&nbsp;노는법을 소개합니다!</p>
+            <p class="catchphrase">💁🏻‍♀️💁🏻‍♀️&nbsp;&nbsp;&nbsp;&nbsp;노는법을 소개합니다!</p>
             <ion-icon class="float-right" style="color:rgb(255, 255, 255)" name="chevron-forward-outline"></ion-icon>
             <p class="desc">놀 줄 아는 꽃중년의 놀이터
             </p>
@@ -54,8 +54,8 @@
         </ion-col>
         <ion-col *ngFor="let m of fastMeetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
           style="padding:0px">
-          <a [href]="'/tabs/meeting-detail/' + m.mid" style="text-decoration: none; color:black;">
-            <meeting-card [meeting]="m"></meeting-card>
+          <a [href]="'/tabs/meeting-detail/' + m['id']" style="text-decoration: none; color:black;">
+            <meeting-card [product]="m"></meeting-card>
           </a>
         </ion-col>
       </ion-row>
@@ -75,7 +75,7 @@
           <ion-icon name="navigate-circle-outline"></ion-icon>
           <span>{{row.locale}}</span>
         </div>
-        <a *ngIf="row.uid !== '0'" [href]="'/tabs/profile/' + row.uid" style="text-decoration: none; color: black;">
+        <a *ngIf="row.id !== '0'" [href]="'/tabs/profile/' + row.id" style="text-decoration: none; color: black;">
           <button class="nnb-btn nnb-btn-secondary nnb-btn-sm">프로필 보기</button>
         </a>
       </div>
@@ -100,8 +100,8 @@
         </ion-col>
         <ion-col *ngFor="let m of forestMeetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
           style="padding:0px">
-          <a [href]="'/tabs/meeting-detail/' + m.mid" style="text-decoration: none; color:black;">
-            <meeting-card [meeting]="m"></meeting-card>
+          <a [href]="'/tabs/meeting-detail/' + m['id']" style="text-decoration: none; color:black;">
+            <meeting-card [product]="m"></meeting-card>
           </a>
         </ion-col>
       </ion-row>
@@ -111,7 +111,7 @@
       <ion-col>
         <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/feed'">
           <div class="introduction">
-            <p class="catch_phrase">🚀🚀&nbsp;&nbsp;&nbsp;&nbsp;지금 우리는?</p>
+            <p class="catchphrase">🚀🚀&nbsp;&nbsp;&nbsp;&nbsp;지금 우리는?</p>
             <ion-icon class="float-right" style="color:rgb(255, 255, 255)" name="chevron-forward-outline">
             </ion-icon>
             <p class="desc">최근 노는법 소식을 확인해보세요!
@@ -121,27 +121,26 @@
       </ion-col>
     </ion-row>
 
-    <ng-container *ngIf="meetings">
+    <ng-container *ngIf="products">
       <ion-row style="margin-top: 40px;">
         <ion-col>
           <span class="meeting-category">인기 있는 모임</span>&nbsp;
           <span class="meeting-category">👍👍</span>
-          <!-- <p class="subTitle">{{meeting.subTitle}}</p> -->
           <a class="all" [href]="'/tabs/meetings?key=' + 'all' + '&title=' + '인기 있는 모임 👍👍'">전체보기</a>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col *ngIf="meetings.length === 0">
+        <ion-col *ngIf="products.length === 0">
           <div style="opacity: 0.4; padding: 20px">
             <ion-chip outline>
               <ion-label>다음 일정을 기대해주세요~!</ion-label>
             </ion-chip>
           </div>
         </ion-col>
-        <ion-col *ngFor="let m of meetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
+        <ion-col *ngFor="let m of products" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
           style="padding:0px">
-          <a [href]="'/tabs/meeting-detail/' + m.mid" style="text-decoration: none; color:black;">
-            <meeting-card [meeting]="m"></meeting-card>
+          <a [href]="'/tabs/meeting-detail/' + m['id']" style="text-decoration: none; color:black;">
+            <meeting-card [product]="m"></meeting-card>
           </a>
         </ion-col>
       </ion-row>
@@ -150,11 +149,11 @@
     <horizontal-slider [title]="'노는법 매거진'" [data]="magazineList" [spaceBetween]="10" (showAllEvent)="showAllMagazine()">
     </horizontal-slider>
     <ng-template #magazineTpl let-row>
-      <a [href]="'/tabs/magazine-detail/' + row.mid" style="text-decoration: none; color: black;">
+      <a [href]="'/tabs/magazine-detail/' + row.id" style="text-decoration: none; color: black;">
         <div class="nnb-card">
-          <img [src]="row.image">
+          <img [src]="row.representationPhoto">
           <div class="body">
-            <p class="catchphrase desc">{{row.catch_phrase | truncate: [40]}}</p>
+            <p class="catchphrase desc">{{row.catchphrase | truncate: [40]}}</p>
             <p class="title">{{row.title | truncate: [30]}}</p>
           </div>
         </div>

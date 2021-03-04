@@ -1,4 +1,4 @@
-<ion-content *ngIf="isShow">
+<ion-content>
   <ion-grid [ngStyle]="{'padding': isDesktop ? '0rem 8rem': '0rem 1rem'}" style="margin-top: 1.2rem;">
     <div class="row">
       <div [ngClass]="isDesktop? 'col-2':'col-12'" [ngStyle]="{'margin-bottom':isDesktop ? '0rem':'2rem'}">
@@ -6,21 +6,21 @@
           <a class="list-group-item list-group-item-action active" id="list-request-list" data-toggle="list"
             href="#list-request" role="tab" aria-controls="request">신청 관리&nbsp;
             <span class="badge rounded-pill float-right">
-              <span *ngIf="requestData">{{requestData.length}}</span>
-              <span *ngIf="!requestData">
+              <span *ngIf="requests">{{requests.length}}</span>
+              <span *ngIf="!requests">
                 <ion-spinner name="lines" style="width: 0.8rem;"></ion-spinner>
               </span>
             </span>
           </a>
           <a class="list-group-item list-group-item-action" id="list-event-list" data-toggle="list" href="#list-event"
             role="tab" aria-controls="event">이벤트 관리
-            &nbsp;<span class="badge rounded-pill float-right">1</span>
+            &nbsp;<span *ngIf="configs" class="badge rounded-pill float-right">{{configs.length}}</span>
           </a>
           <a class="list-group-item list-group-item-action" id="list-meeting-list" data-toggle="list"
             href="#list-meeting" role="tab" aria-controls="meeting">모임 관리&nbsp;
             <span class="badge rounded-pill float-right">
-              <span *ngIf="meetings">{{meetings.length}}</span>
-              <span *ngIf="!meetings">
+              <span *ngIf="products">{{products.length}}</span>
+              <span *ngIf="!products">
                 <ion-spinner name="lines" style="width: 0.8rem;"></ion-spinner>
               </span>
             </span>
@@ -28,8 +28,8 @@
           <a class="list-group-item list-group-item-action" id="list-payment-list" data-toggle="list"
             href="#list-payment" role="tab" aria-controls="payment">결제 목록&nbsp;
             <span class="badge rounded-pill float-right">
-              <span *ngIf="payData">{{payData.length}}</span>
-              <span *ngIf="!payData">
+              <span *ngIf="payments">{{payments.length}}</span>
+              <span *ngIf="!payments">
                 <ion-spinner name="lines" style="width: 0.8rem;"></ion-spinner>
               </span>
             </span>
@@ -48,32 +48,33 @@
       <div [ngClass]="isDesktop? 'col-10':'col-12'">
         <div class="tab-content" id="nav-tabContent">
           <div class="tab-pane fade show active" id="list-request" role="tabpanel" aria-labelledby="list-request-list">
-            <ngx-table *ngIf="requestData" [id]="'requestTable'" [configuration]="requestConfiguration"
-              [data]="requestData" [groupRowsBy]="'phone'" [columns]="requestColumns">
+            <ngx-table [id]="'request-table'" [configuration]="requestConfig" [data]="requests"
+              [columns]="requestColumns" [pagination]="requestPagination" (event)="onRequestTableEvent($event)">
               <ng-template let-row let-index="index">
-                <td>{{ index +1 }}</td>
+                <td>{{ (requestPagination.offset-1) * paymentPagination.limit + (index+1)}}</td>
                 <td>
-                  <img width="50" height="50" [src]="row.meeting.file">
+                  <img width="50" height="50" [src]="row.product.representationPhotos[0].photo">
                 </td>
                 <td>
-                  <a target="_blank" [href]="'/tabs/meeting-detail/' + row.meeting.mid">{{row.meeting.title}}</a>
+                  <a target="_blank" [href]="'/tabs/meeting-detail/' + row.product.id">{{row.product.title}}</a>
                 </td>
-                <td>{{ row.user.nickName}}</td>
-                <td>{{ row.phone}}</td>
-                <td>{{ row.peopleNumber}}</td>
+                <td>{{ row.user.nickname}}</td>
+                <td>{{ row.user.phoneNumber}}</td>
+                <td>{{ row.numberOfPeople}}</td>
                 <td>
-                  {{row.desc}}
+                  {{row.message}}
                 </td>
                 <td>
-                  <ion-badge mode="ios" color="danger" *ngIf="row.isOld">
+                  <ion-badge mode="ios" color="danger" *ngIf="row.isChecked">
                     확인 완료
                   </ion-badge>
-                  <ion-badge mode="ios" color="medium" *ngIf="!row.isOld">
+                  <ion-badge mode="ios" color="medium" *ngIf="!row.isChecked">
                     신청 중
                   </ion-badge>
                 </td>
                 <td>
-                  <button class="nnb-btn nnb-btn-primary nnb-btn-sm" (click)="check(row)">신청 확인하기</button>
+                  <button class="nnb-btn nnb-btn-primary nnb-btn-sm" [disabled]="row.isChecked"
+                    (click)="check(row.id)">신청 확인하기</button>
                 </td>
               </ng-template>
             </ngx-table>
@@ -88,14 +89,22 @@
             </ng-container>
           </div>
           <div class="tab-pane fade" id="list-meeting" role="tabpanel" aria-labelledby="list-meeting-list">
-            <ion-reorder-group (ionItemReorder)="reorderMeeting($event)" disabled="false">
-              <ion-item *ngFor="let meeting of meetings">
+            <ion-reorder-group (ionItemReorder)="reorderProduct($event)" disabled="false">
+              <ion-item *ngFor="let product of products">
                 <ion-label class="ion-text-wrap">
-                  <img width="50" height="50" [src]="meeting.file">&nbsp;&nbsp;
-                  <a target="_blank" [href]="'/tabs/meeting-detail/' + meeting.mid">{{meeting.title}}</a>
+                  <img width="50" height="50" [src]="product.representationPhotos[0].photo">&nbsp;&nbsp;
+                  <span class="desc" *ngFor="let hashtag of product.hashtags">#{{hashtag.name}} </span>&nbsp;
+                  <a target="_blank" [href]="'/tabs/meeting-detail/' + product.id">{{product.title}}</a><br>
+                  <ng-container *ngFor="let category of product.categories">
+                    <a [href]="'/tabs/category-detail/' + (+category.id - 1)">
+                      <ion-chip style="color: #e5456e;background-color :#fae1e7; height: 1.5rem;">
+                        <ion-label>{{category.name}}</ion-label>
+                      </ion-chip>
+                    </a>
+                  </ng-container>
                 </ion-label>
-                <ion-toggle slot="end" name="show" [checked]="meeting.status===3"
-                  (ionChange)="toggleMeeting($event, meeting)"></ion-toggle>
+                <ion-toggle slot="end" name="show" [checked]="product.status===ProductStatus.ENTERED"
+                  (ionChange)="toggleProduct($event, product)"></ion-toggle>
                 <ion-reorder slot="end"></ion-reorder>
               </ion-item>
             </ion-reorder-group>
@@ -109,17 +118,17 @@
                 </button>
               </div>
               <div class="modal-body">
-                <div class="form-card" [formGroup]="paymentAddFormGroup" *ngIf="meetings">
+                <div class="form-card" [formGroup]="paymentAddFormGroup" *ngIf="products">
                   <div class="row">
                     <div class="col">
                       <div class="card">
                         <p class="title">상품</p>
                         <form-input [name]="'상품'" [controlName]="'meeting'" [group]="paymentAddFormGroup"
-                          [type]="'select'" [selectList]="meetings" [template]="meetingTpl" [clearable]="false"
-                          [selectStyle]="{'max-width':'18rem'}" (valueChangeEvent)="onSelectMeeting($event)">
+                          [type]="'select'" [selectList]="products" [template]="meetingTpl" [clearable]="false"
+                          [selectStyle]="{'max-width':'18rem'}" (valueChangeEvent)="onSelectProduct($event)">
                         </form-input>
                         <ng-template #meetingTpl let-element>
-                          <span class="desc">모임 식별자: {{element.mid}}</span>&nbsp;&nbsp;<span>{{element.title}}</span>
+                          <span class="desc">모임 식별자: {{element.id}}</span>&nbsp;&nbsp;<span>{{element.title}}</span>
                         </ng-template>
                       </div>
                       <div class="card">
@@ -139,15 +148,15 @@
                                 <ion-chip *ngIf="option.isOld">
                                   <ion-label style="font-size: 12px;">이전옵션</ion-label>
                                 </ion-chip>
-                                <p class="desc">{{option.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
-                                <p class="black-label">{{option.optionTitle}}</p>
-                                <p class="black-label"><strong>{{option.optionPrice|number}}원</strong></p>
+                                <p class="desc">{{option.date|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+                                <p class="black-label">{{option.name}}</p>
+                                <p class="black-label"><strong>{{option.price|number}}원</strong></p>
                               </ion-label>
                               <div style="display: flex;">
                                 <ion-icon name="remove-circle-outline" style="font-size: 25px"
                                   (click)="changeCount(false,option)">
                                 </ion-icon>
-                                <input [id]="'optionCount'+ option.oid" type="number" class="form-control count-input"
+                                <input [id]="'count'+ option.id" type="number" class="form-control count-input"
                                   value="0" disabled>
                                 <ion-icon name="add-circle-outline" style="font-size: 25px;"
                                   (click)="changeCount(true, option)">
@@ -160,11 +169,11 @@
                       <div class="card">
                         <p class="title">결제 금액</p>
                         <div *ngFor="let option of options.value">
-                          <span class="desc" style="font-weight: 500;">{{option.optionTitle}}</span><br>
-                          <span class="desc">{{option.optionCount}} x
-                            ₩{{option.optionPrice|number}}&nbsp;&nbsp;</span>
+                          <span class="desc" style="font-weight: 500;">{{option.name}}</span><br>
+                          <span class="desc">{{option.count}} x
+                            ₩{{option.price|number}}&nbsp;&nbsp;</span>
                           <span class="float-right"
-                            style="margin-right: 1.2rem;"><strong>{{option.optionCount*option.optionPrice|number}}원</strong></span>
+                            style="margin-right: 1.2rem;"><strong>{{option.count*option.price|number}}원</strong></span>
                           <hr>
                         </div>
                         <p style="font-size:1.4rem;color:#ff4081">
@@ -177,7 +186,7 @@
                         <p class="title">결제 정보</p>
                         <form-input [name]="'주문자 이름'" [controlName]="'PCD_PAYER_NAME'" [group]="paymentAddFormGroup"
                           [maxLength]="500" [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]"></form-input>
-                        <form-input [name]="'휴대폰 번호'" [controlName]="'phone'" [group]="paymentAddFormGroup"
+                        <form-input [name]="'휴대폰 번호'" [controlName]="'phoneNumber'" [group]="paymentAddFormGroup"
                           [maxLength]="0" [errors]="[{key:'pattern',message:'올바른 휴대폰 번호 형식이 아닙니다.(예)01012341234'}]">
                         </form-input>
                         <form-input [name]="'총 결제 금액'" [controlName]="'PCD_PAY_TOTAL'" [group]="paymentAddFormGroup"
@@ -223,77 +232,61 @@
               </div>
             </ng-template>
             <button class="nnb-btn nnb-btn-primary" (click)="openModal(template)">결제 등록하기</button>
-            <ng-container *ngIf="payData">
-              <ngx-table [id]="'payTable'" [configuration]="payConfiguration" [data]="payData" [columns]="payColumns">
+            <ng-container *ngIf="payments">
+              <ngx-table [id]="'payment-table'" [configuration]="paymentConfig" [data]="payments" [columns]="payColumns"
+                [pagination]="paymentPagination" (event)="onPaymentTableEvent($event)">
                 <ng-template let-row let-index="index">
-                  <td>{{ index +1 }}</td>
+                  <td>{{ (paymentPagination.offset-1) * paymentPagination.limit + (index+1)}}</td>
                   <td>
-                    <img *ngIf="row.mid.file" width="50" height="50" [src]="row.mid.file">
+                    <img width="50" height="50" [src]="row.order.product.representationPhotos[0].photo">
+                  </td>
+                  <td>{{ row.payAt|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                  <td>
+                    <a target="_blank"
+                      [href]="'/tabs/meeting-detail/' + row.order.product.id">{{row.order.product.title}}</a>
                   </td>
                   <td>
-                    <span *ngIf="row.isCanceled" style="color: red">
-                      <span style="text-decoration:line-through">{{row.PCD_PAY_TIME}}</span>
-                      <br>
-                      <span>결제취소</span>
-                    </span>
-                    <span *ngIf="!row.isCanceled">{{row.PCD_PAY_TIME}}</span>
+                    <a target="_blank" [href]="'/tabs/profile/' + row.order.user.id">{{ row.order.user.name }}</a>
                   </td>
+                  <td>{{ row.order.user.nickname }}</td>
+                  <td>{{ row.order.user.phoneNumber }}</td>
                   <td>
-                    <span *ngIf="row.uid">
-                      <a [href]="'tabs/profile/' + row.uid.uid">{{ row.uid.name }}</a>
-                    </span>
-                    <span *ngIf="!row.uid">{{ row.PCD_PAYER_NAME }}</span>
-                  </td>
-                  <td><span *ngIf="row.uid">{{ row.uid.nickName }}</span></td>
-                  <td>
-                    <a target="_blank" [href]="'/tabs/meeting-detail/' + row.mid.mid">{{row.PCD_PAY_GOODS}}</a>
-                  </td>
-                  <td>
-                    <ng-container *ngFor="let option of row.options; let last = last">
+                    <ng-container *ngFor="let item of row.order.orderItems; let last = last">
                       <div class="card" [ngStyle]="{'margin-bottom':!last ? '0.2rem':'0rem'}">
                         <div class="card-body" style="padding: 0.7rem">
-                          <ion-chip *ngIf="option.option.isOld">
+                          <ion-chip *ngIf="item.productOption.isOld">
                             <ion-label style="font-size: 12px;">이전옵션</ion-label>
                           </ion-chip>
-                          <p>옵션: {{option.option.optionTitle}}</p>
-                          <p>가격: {{option.option.optionPrice}}</p>
-                          <p>일시: {{option.option.optionDate|date:'yyyy-MM-dd HH:mm'}}</p>
-                          <p>수량: {{option.count}}</p>
+                          <p>옵션: {{item.productOption.name}}</p>
+                          <p>가격: {{item.productOption.price}}</p>
+                          <p>일시: {{item.productOption.date|date:'yyyy-MM-dd HH:mm'}}</p>
+                          <p>수량: {{item.count}}</p>
                         </div>
                       </div>
                     </ng-container>
                   </td>
                   <td>
-                    <ng-container *ngIf="row.couponId">
-                      {{ row.couponId.title }} ({{row.couponId.price|number}}원)
+                    <ng-container *ngIf="row.order.coupon">
+                      {{ row.order.coupon.name }} ({{row.order.coupon.price|number}}원)
                     </ng-container>
-                    <ng-container *ngIf="!row.couponId">
+                    <ng-container *ngIf="!row.order.coupon">
                       <ion-chip>
                         <ion-label style="font-size: 12px;">없음</ion-label>
                       </ion-chip>
                     </ng-container>
                   </td>
-                  <td>{{ row.phone }}</td>
-                  <td>{{ row.PCD_PAY_TOTAL }}</td>
-                  <td>{{ row.PCD_PAY_OID }}</td>
-                  <td>{{ row.PCD_PAY_MSG }}</td>
-                  <td>{{ row.PCD_PAY_TYPE }}</td>
-                  <td>{{ row.PCD_PAY_RST }}</td>
-                  <td>{{ row.mid.mid }}</td>
-                  <td>
-                    <ng-container *ngIf="!row.isCanceled">
-                      <button class="nnb-btn nnb-btn-primary nnb-btn-sm" (click)="cancle(row)">결제취소</button>
-                    </ng-container>
-                    <ng-container *ngIf="row.isCanceled">
-                      <button class="nnb-btn nnb-btn-secondary nnb-btn-sm" (click)="cancleRollback(row)">결제취소
-                        되돌리기</button>
-                    </ng-container>
-                  </td>
+                  <td>{{ row.pgName }}</td>
+                  <td>{{ row.payPrice }}</td>
+                  <td>{{ row.id }}</td>
+                  <td>{{ row.resultMessage }}</td>
+                  <td>{{ row.payMethod }}</td>
+                  <td>{{ row.result }}</td>
                 </ng-template>
               </ngx-table>
             </ng-container>
           </div>
-          <div class="tab-pane fade" id="list-banner" role="tabpanel" aria-labelledby="list-banner-list">
+          <div class="tab-pane fade" id="list-banner" role="tabpanel" aria-labelledby="list-banner-list"
+            *ngIf="bannerFormGroup">
             <div class="card" [formGroup]="bannerFormGroup">
               <div class="card-body">
                 <ion-item lines="none">

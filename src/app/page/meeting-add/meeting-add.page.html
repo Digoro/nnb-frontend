@@ -1,13 +1,13 @@
 <ion-content>
   <ion-grid>
     <div class="bs-stepper" #stepperRef>
-      <meeting-control [formGroup]="meetingForm" [quillStyle]="quillStyle" [categories]="categories"
-        [previewImage]="previewImage" [latitude]="latitude" [longitude]="longitude" [zoom]="zoom"
-        [previewMeeting]="previewMeeting" [submitMessage]="'모임 만들기 완료!'" (onQuillLoadEvent)="quillLoad($event)"
-        (onNextEvent)="next()" (onPrevEvent)="prev()" (onLastCheckEvent)="makePreviewMeeting()"
-        (onFileChangeEvent)="onFileChange($event)" (onMarkerDragEndEvent)="markerDragEnd($event)"
-        (onCheckDiscountPriceEvent)="checkDiscountPrice()" (onCheckRefundPolicy0Event)="checkRefundPolicy0()"
-        (onChangeAddressEvent)="changeAddress($event)" (onAddEvent)="add()"></meeting-control>
+      <meeting-control [formGroup]="meetingForm" [quillStyle]="quillStyle" [hashtags]="hashtags"
+        [categories]="categories1" [previewImage]="previewImage" [latitude]="latitude" [longitude]="longitude"
+        [zoom]="zoom" [previewProduct]="previewProduct" [submitMessage]="'모임 만들기 완료!'"
+        (onQuillLoadEvent)="quillLoad($event)" (onNextEvent)="next()" (onPrevEvent)="prev()"
+        (onLastCheckEvent)="makePreviewProduct()" (onFileChangeEvent)="onFileChange($event)"
+        (onCheckRefundPolicy0Event)="checkRefundPolicy0()" (onChangeAddressEvent)="changeAddress($event)"
+        (onAddEvent)="add()" (onCheckDiscountPriceEvent)="checkDiscountPrice()"></meeting-control>
     </div>
   </ion-grid>
 </ion-content>

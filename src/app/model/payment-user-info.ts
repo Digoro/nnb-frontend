@@ -40,9 +40,3 @@ export class UserCardPaymentInfo implements UserPaymentInfo {
         public PCD_PAY_CARDNUM: string,
     ) { }
 }
-
-export enum PayMethod {
-    TRANSFER,
-    CARD,
-    SIMPLE_TRANSFER
-}

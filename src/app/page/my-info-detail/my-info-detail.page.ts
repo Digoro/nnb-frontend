@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MeetingService } from 'src/app/service/meeting.service';
+import { ActivatedRoute } from '@angular/router';
+import { Product, PurchasedProduct, PurchasedProductOption } from 'src/app/model/product';
 import { PaymentService } from 'src/app/service/payment.service';
-import { PurchasedMeeting, PurchasedMeetingOption } from './../../model/meeting';
+import { Order, Payment, PayMethod } from './../../model/payment';
 
 @Component({
   selector: 'my-info-detail',
@@ -11,14 +11,15 @@ import { PurchasedMeeting, PurchasedMeetingOption } from './../../model/meeting'
 })
 export class MyInfoDetailPage implements OnInit {
   pid: number;
-  meeting: PurchasedMeeting;
+  payment: Payment;
+  order: Order;
+  product: Product;
   isAllCanceled: boolean;
+  PayMethod = PayMethod;
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private paymentService: PaymentService,
-    private meetingService: MeetingService
   ) { }
 
   ngOnInit() {
@@ -28,7 +29,7 @@ export class MyInfoDetailPage implements OnInit {
     })
   }
 
-  cancel(meeting: PurchasedMeeting, option: PurchasedMeetingOption) {
+  cancel(meeting: PurchasedProduct, option: PurchasedProductOption) {
     this.paymentService.refund(meeting, option).subscribe(resp => {
       alert("환불 되었습니다.");
       this.setMyMeetings();
@@ -36,9 +37,12 @@ export class MyInfoDetailPage implements OnInit {
   }
 
   private setMyMeetings() {
-    this.meetingService.getPurchasedMeeting(this.pid).subscribe(resp => {
-      this.meeting = resp;
-      this.isAllCanceled = !!this.meeting.options.find(option => !option.isRefund)
+    this.paymentService.getPurchasedProduct(this.pid).subscribe(resp => {
+      this.payment = resp;
+      this.order = resp.order;
+      this.product = resp.order.product;
+      //TODO add refund
+      // this.isAllCanceled = !!this.payment.options.find(option => !option.isRefund)
     })
   }
 

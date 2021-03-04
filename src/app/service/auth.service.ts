@@ -1,43 +1,81 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { ToastController } from '@ionic/angular';
-import { Observable } from 'rxjs';
-import { Gender } from '../model/gender';
-import { Location } from '../model/location';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { User } from './../model/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user = new User(1, 'lsh00124@naver.com', '이상훈', '이상훈', '1900.01.01', Gender.male, '', '/assets/user.png',
-    new Location(0, 0, 'address'), 0, '안녕하세요 노는법 운영진 이상훈입니다!',
-    '우리는 대한민국 신중년 간의 연결을 도와 활기차고 세련된 교류가 있는 신중년 사회를 만들어가고 있습니다. 신중년 종합 포털 서비스, 노는법!',
-    '', 'kakotalk', 1257467175, true);
   ADMIN_ID = 1;
+  ACCESS_TOKEN = 'access_token';
 
   constructor(
     private http: HttpClient,
     private toastController: ToastController,
     private router: Router,
-  ) { }
+    private jwtHelper: JwtHelperService
+  ) {
+  }
+
+  getCurrentFromServer(): Observable<User> {
+    return this.http.get<User>(`/api/users/user/current`)
+  }
 
   getCurrentNonunbubUser(): Observable<User> {
-    return this.http.get<User>(`/users/current`);
-    // return of(this.user).pipe(delay(200))
+    const user: User = this.jwtHelper.decodeToken(this.getToken());
+    if (!user) return of(undefined);
+    return of(user);
   }
 
-  requestAuthSMS(phone: string): Observable<{ result: boolean }> {
-    return this.http.post<{ result: boolean }>(`/auth-sms`, { 'phone_number': phone })
+  requestAuthSms(phoneNumber: string): Observable<boolean> {
+    return this.http.post<boolean>(`/auth/sms`, { 'phoneNumber': phoneNumber })
   }
 
-  authSMS(phone: string, authNumber: string): Observable<{ result: boolean }> {
-    return this.http.get<{ result: boolean }>(`/auth-sms?phone_number=${phone}&auth_number=${authNumber}`)
+  checkAuthSms(phoneNumber: string, authNumber: string): Observable<boolean> {
+    return this.http.get<boolean>(`/auth/sms?phoneNumber=${phoneNumber}&authNumber=${authNumber}`)
+  }
+
+  login(email: string, password: string) {
+    return this.http.post('/auth/login', { email, password }).pipe(
+      map(accessToken => {
+        this.setToken(accessToken['access_token']);
+      })
+    )
   }
 
   logout() {
+    this.removeToken();
     return this.http.get(`/users/logout`, { responseType: 'text' });
+  }
+
+  isAuthenticated(): boolean {
+    const token = this.getToken();
+    return token ? !this.isTokenExpired(token) : false;
+  }
+
+  getToken(): string {
+    return localStorage.getItem(this.ACCESS_TOKEN);
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem(this.ACCESS_TOKEN, token);
+  }
+
+  removeToken(): void {
+    localStorage.removeItem(this.ACCESS_TOKEN);
+  }
+
+  isTokenExpired(token: string) {
+    return this.jwtHelper.isTokenExpired(token);
+  }
+
+  getUserid(): string {
+    return this.jwtHelper.decodeToken(this.getToken()).userid;
   }
 
   async toastNeedLogin() {

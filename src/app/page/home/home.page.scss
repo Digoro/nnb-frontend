@@ -10,12 +10,13 @@
 
 .brand {
     font-family: Noto Sans KR, sans-serif;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 28px;
     line-height: 32px;
     letter-spacing: -1px;
     color: #f557a4;
     font-size: 27px;
+    font-style: italic;
 }
 
 .introduction {
@@ -31,7 +32,7 @@
     padding: 15px 16px;
     border-radius: 11px;
 
-    .catch_phrase {
+    .catchphrase {
         display: inline-block;
         font-size: 1rem;
         font-weight: 700;
@@ -73,13 +74,6 @@
     font-size: 1.5rem;
     font-weight: 610;
     color: rgb(27, 28, 29);
-}
-
-.subTitle {
-    margin-bottom: 0px;
-    font-size: 14px;
-    font-weight: 500;
-    color: rgb(133, 138, 141);
 }
 
 .all {

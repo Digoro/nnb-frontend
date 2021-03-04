@@ -1,50 +1,26 @@
 <ion-content>
   <ion-grid fixed>
-    <ion-row>
-      <ion-col>
-        <ion-button color="warning" expand="full" (click)="login()"><img width="28" height="28"
-            src="../../../assets/kakaotalk_logo.png">
-          <span style="color: black">카카오톡 계정으로 시작하기</span>
-        </ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <hr>
-        <p style="text-align: center;">또는</p>
-      </ion-col>
-    </ion-row>
+
     <form [formGroup]="signupForm">
+      <form-input [name]="'이메일'" [controlName]="'email'" [group]="signupForm" [maxLength]="254"
+        [errors]="[{key:'maxlength',message:'254자 제한입니다.'},{key:'email',message:'이메일 형식이 아닙니다.'}]"></form-input>
+      <form-input [name]="'이름'" [controlName]="'name'" [group]="signupForm" [maxLength]="50"
+        [errors]="[{key:'maxlength',message:'50자 제한입니다.'}]"></form-input>
+      <form-input [name]="'닉네임'" [controlName]="'nickname'" [group]="signupForm" [maxLength]="50"
+        [errors]="[{key:'maxlength',message:'50자 제한입니다.'}]"></form-input>
+      <form-input [name]="'비밀번호'" [controlName]="'password'" [type]="'password'" [group]="signupForm" [maxLength]="20"
+        [errors]="[{key:'maxlength',message:'20자 제한입니다.'}]" (valueChangeEvent)="isMathPassword()"></form-input>
+      <form-input [name]="'비밀번호 확인'" [controlName]="'checkPassword'" [type]="'password'" [group]="signupForm"
+        [maxLength]="20"
+        [errors]="[{key:'maxlength',message:'20자 제한입니다.'},{key:'isNotSame',message:'비밀번호가 일치하지 않습니다.'}]">
+      </form-input>
       <ion-item>
-        <ion-label>아이디</ion-label>
-        <ion-input type="text" [formControlName]="'id'" placeholder="자주 사용하는 이메일을 입력해주세요"></ion-input>
+        <ion-label>휴대폰</ion-label>
       </ion-item>
-      <ion-item>
-        <ion-label>비밀번호</ion-label>
-        <ion-input type="text" [formControlName]="'password'" placeholder="비밀번호를 입력해주세요"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>비밀번호 확인</ion-label>
-        <ion-input type="text" [formControlName]="'passwordConfirm'" placeholder="비밀번호를 다시 입력해주세요"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>이름</ion-label>
-        <ion-input type="text" [formControlName]="'name'" placeholder="이름을 입력해주세요"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>닉네임</ion-label>
-        <ion-input type="text" [formControlName]="'nickName'" placeholder="닉네임을 입력해주세요"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>성별</ion-label>
-        <ion-select okText="확인" cancelText="취소" [formControlName]="'sex'">
-          <ion-select-option *ngFor="let sex of sexs" [value]="sex">{{sex}}</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label>나이</ion-label>
-        <ion-datetime displayFormat="YYYY" [formControlName]="'age'" placeholder="년생"></ion-datetime>
-      </ion-item><br>
+      <auth-sms [formGroup]="signupForm" [controlName]="'phoneNumber'" [isDesc]="!phoneNumber"
+        [phoneNumber]="phoneNumber" (phoneAddEvent)="onAddPhone($event)">
+      </auth-sms>
+      <br>
       <ion-row>
         <ion-col>
           <p>
@@ -67,5 +43,19 @@
       <button class="nnb-btn nnb-btn-primary nnb-btn-block" [disabled]="!signupForm.valid" (click)="signup()">회원 가입
       </button>
     </form>
+    <ion-row>
+      <ion-col>
+        <hr>
+        <p style="text-align: center;">또는</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button color="warning" expand="full" (click)="login()"><img width="28" height="28"
+            src="../../../assets/kakaotalk_logo.png">
+          <span style="color: black">카카오톡 계정으로 시작하기</span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

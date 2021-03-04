@@ -13,31 +13,34 @@
       <ion-card-content>
         <div style=" display: flex;">
           <ion-thumbnail slot="start">
-            <img [src]="meeting.file" />
+            <img [src]="product.representationPhotos[0].photo" />
           </ion-thumbnail>
-          <p style="margin-top:auto;margin-left: 10px;">{{meeting.title}}</p>
+          <p style="margin-top:auto;margin-left: 10px;">{{product.title}}</p>
         </div>
       </ion-card-content>
     </ion-card>
     <ion-card>
       <ion-card-content>
-        <ng-container *ngIf="!isRequestedMeeting">
+        <ng-container *ngIf="!isRequestedProduct">
           <form [formGroup]="form">
-            <form-input [name]="'신청 인원(명)'" [controlName]="'peopleNumber'" [type]="'number'" [group]="form"
+            <form-input [name]="'신청 인원(명)'" [controlName]="'numberOfPeople'" [type]="'number'" [group]="form"
               [errors]="[{key:'min',message:'1명 이상이어야 합니다.'},{key:'max',message:'99명 제한입니다.'}]">
             </form-input>
 
-            <form-input [name]="'휴대폰 번호'" [controlName]="'phone'" [group]="form" [maxLength]="0"
-              [errors]="[{key:'pattern',message:'형식이 올바르지 않습니다. ex) 01012341234'}]"></form-input>
+            <ion-item lines="none">
+              <ion-label position="fixed">휴대폰 번호</ion-label>
+              <auth-sms [isDesc]="!phoneNumber" [user]="user" [phoneNumber]="phoneNumber"
+                (phoneAddEvent)="onAddPhone($event)"></auth-sms>
+            </ion-item>
 
-            <form-input [name]="'문의 사항'" [controlName]="'desc'" [type]="'textarea'" [group]="form"
+            <form-input [name]="'문의 사항'" [controlName]="'message'" [type]="'textarea'" [group]="form"
               [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500"></form-input>
           </form>
           <br>
           <button class="nnb-btn nnb-btn-primary nnb-btn-block" (click)="request()"
-            [disabled]="form.invalid">신청하기</button>
+            [disabled]="form.invalid || !phoneNumber">신청하기</button>
         </ng-container>
-        <ng-container *ngIf="isRequestedMeeting">
+        <ng-container *ngIf="isRequestedProduct">
           <div style="padding: 20px">
             <ion-chip outline>
               <ion-label>이미 신청한 모임입니다.</ion-label>

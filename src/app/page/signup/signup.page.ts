@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from 'src/app/model/location';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FormService } from 'src/app/service/form.service';
-import { User } from './../../model/user';
 import { UserService } from './../../service/user.service';
 
 @Component({
@@ -13,6 +11,7 @@ import { UserService } from './../../service/user.service';
 })
 export class SignupPage implements OnInit {
   signupForm: FormGroup;
+  phoneNumber: string;
   method: string;
   sexs = ['남', '여', 'Other'];
   checkAllFlag = false;
@@ -22,48 +21,53 @@ export class SignupPage implements OnInit {
   constructor(
     private formService: FormService,
     private router: Router,
-    private route: ActivatedRoute,
     private userService: UserService
   ) { }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.method = params.method;
-      if (params.method === 'kakao') {
-        this.signupForm = new FormGroup({
-          service: new FormControl(false, Validators.requiredTrue),
-          personal: new FormControl(false, Validators.requiredTrue),
-          marketing: new FormControl(false)
-        });
-      } else {
-        this.signupForm = new FormGroup({
-          id: new FormControl('', this.formService.getValidators(30)),
-          password: new FormControl('', this.formService.getValidators(30)),
-          passwordConfirm: new FormControl('', this.formService.getValidators(30)),
-          name: new FormControl('', this.formService.getValidators(30)),
-          nickName: new FormControl('', this.formService.getValidators(30)),
-          sex: new FormControl('', this.formService.getValidators(30)),
-          age: new FormControl('', this.formService.getValidators(30)),
-          service: new FormControl(false, Validators.requiredTrue),
-          personal: new FormControl(false, Validators.requiredTrue),
-          marketing: new FormControl(false)
-        });
-      }
+    this.signupForm = new FormGroup({
+      email: new FormControl('', this.formService.getValidators(254, [Validators.email])),
+      name: new FormControl('', this.formService.getValidators(50)),
+      nickname: new FormControl('', this.formService.getValidators(50)),
+      password: new FormControl('', this.formService.getValidators(20)),
+      checkPassword: new FormControl('', this.formService.getValidators(20, [this.checkPassword('password')])),
+      phoneNumber: new FormControl('', this.formService.getValidators(15)),
+      service: new FormControl(false, Validators.requiredTrue),
+      personal: new FormControl(false, Validators.requiredTrue),
+      marketing: new FormControl(false),
     });
   }
 
-  signup() {
-    if (this.method === 'kakao') {
-      window.open('https://nonunbub.com/accounts/kakao/login/?process=login');
+  checkPassword(controlName: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } => {
+      const checkPassword = control.value;
+      const password = control.root.value[controlName];
+      const isNotSame = password !== checkPassword;
+      return isNotSame ? { 'isNotSame': { isNotSame } } : null;
+    };
+  }
+
+  isMathPassword() {
+    const password = this.signupForm.controls.password;
+    const checkPassword = this.signupForm.controls.checkPassword;
+    if (password.value !== checkPassword.value) {
+      checkPassword.setErrors({ 'isNotSame': true })
     } else {
-      const { id, password, name, nickName, sex, age } = this.signupForm.value;
-      const user = new User(0, 'email', name, nickName, 'birth', sex, 'phone', 'image',
-        new Location(0, 0, 'address'), 0, 'catch_phrase', 'introduction', 'password', 'provider', 0, true);
-      this.userService.signup(user).subscribe(resp => {
-        alert(resp);
-        this.router.navigate(['/tabs/home']);
-      });
+      checkPassword.setErrors({ 'isNotSame': null });
     }
+    checkPassword.updateValueAndValidity();
+  }
+
+  onAddPhone(phoneNumber: string) {
+    this.phoneNumber = phoneNumber;
+  }
+
+  signup() {
+    const { password, nickname, name, email, phoneNumber } = this.signupForm.value;
+    this.userService.signup({ nickname, email, name, password, phoneNumber }).subscribe(resp => {
+      alert('가입에 성공하였습니다. 로그인해주세요.');
+      this.router.navigate(['/tabs/login']);
+    });
   }
 
   checkAll() {

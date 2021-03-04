@@ -7,13 +7,13 @@
         </div>
       </ng-container>
       <ng-container *ngIf="meeting">
-        <ng-container *ngIf="meeting.status !== 5">
+        <ng-container *ngIf="meeting.status !== ProductStatus.DISABLED">
 
           <div class="card">
             <p class="title">선택한 모임</p>
             <div style=" display: flex;">
               <ion-thumbnail slot="start">
-                <img [src]="meeting.file" />
+                <img [src]="meeting.representationPhotos[0].photo" />
               </ion-thumbnail>
               <p style="margin-top:auto;margin-left: 10px;">{{meeting.title}}</p>
             </div>
@@ -30,15 +30,14 @@
                 style="overflow-y: auto; max-height: 450px;border: 1px solid #e7e7e7;border-radius: 5px;margin-bottom: 0.4rem;">
                 <ion-item lines="none">
                   <ion-label class="ion-text-wrap">
-                    <p class="desc">{{option.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
-                    <p class="black-label">{{option.optionTitle}}</p>
-                    <p class="black-label"><strong>{{option.optionPrice|number}}원</strong></p>
+                    <p class="desc">{{option.date|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+                    <p class="black-label">{{option.name}}</p>
+                    <p class="black-label"><strong>{{option.price|number}}원</strong></p>
                   </ion-label>
                   <div style="display: flex;">
                     <ion-icon name="remove-circle-outline" style="font-size: 25px" (click)="changeCount(false,option)">
                     </ion-icon>
-                    <input [id]="'optionCount'+ option.oid" type="number" class="form-control count-input" value="0"
-                      disabled>
+                    <input [id]="'count'+ option.id" type="number" class="form-control count-input" value="0" disabled>
                     <ion-icon name="add-circle-outline" style="font-size: 25px;" (click)="changeCount(true, option)">
                     </ion-icon>
                   </div>
@@ -51,14 +50,14 @@
           </div>
 
           <div class="card"
-            *ngIf="isFree && ((!phone || !alreadyExistPhone) || (!this.form.controls.name.value || !alreadyExistName))">
+            *ngIf="isFree && ((!phoneNumber || !alreadyExistPhone) || (!this.form.controls.name.value || !alreadyExistName))">
             <p class="title">예약자 정보</p>
             <form-input *ngIf="!this.form.controls.name.value || !alreadyExistName" [name]="'이름'" [controlName]="'name'"
               [group]="form" [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]" [maxLength]="30" [isRequired]="false">
             </form-input>
-            <ion-item lines="none" *ngIf="!phone || !alreadyExistPhone">
+            <ion-item lines="none" *ngIf="!phoneNumber || !alreadyExistPhone">
               <ion-label position="fixed">휴대폰 번호</ion-label>
-              <auth-sms [user]="user" [phone]="phone" (phoneAddEvent)="onAddPhone($event)"></auth-sms>
+              <auth-sms [user]="user" [phoneNumber]="phoneNumber" (phoneAddEvent)="onAddPhone($event)"></auth-sms>
             </ion-item>
           </div>
 
@@ -66,11 +65,11 @@
             <div class="card" *ngIf="!isFree && form.controls.options.valid">
               <p class="title">결제 금액</p>
               <div *ngFor="let option of options.value">
-                <span class="desc" style="font-weight: 500;">{{option.optionTitle}}</span><br>
-                <span class="desc">{{option.optionCount}} x
-                  ₩{{option.optionPrice|number}}&nbsp;&nbsp;</span>
+                <span class="desc" style="font-weight: 500;">{{option.name}}</span><br>
+                <span class="desc">{{option.count}} x
+                  ₩{{option.price|number}}&nbsp;&nbsp;</span>
                 <span class="float-right"
-                  style="margin-right: 1.2rem;"><strong>{{option.optionCount*option.optionPrice|number}}원</strong></span>
+                  style="margin-right: 1.2rem;"><strong>{{option.count*option.price|number}}원</strong></span>
                 <hr>
               </div>
               <p style="font-size:1.4rem;color:#ff4081">
@@ -83,11 +82,11 @@
               <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block" *ngIf="!isFree" (click)="pay()"
                 [disabled]="form.invalid">결제하러 가기!</button>
               <button class="nnb-btn nnb-btn-primary nnb-btn-lg nnb-btn-block" *ngIf="isFree" (click)="join()"
-                [disabled]="form.invalid || !phone">무료 참여하기</button>
+                [disabled]="form.invalid || !phoneNumber">무료 참여하기</button>
             </ion-col>
           </ion-row>
         </ng-container>
-        <ng-container *ngIf="meeting.status === 5">
+        <ng-container *ngIf="meeting.status === ProductStatus.DISABLED">
           <ion-chip color="danger">
             <ion-label>비활성된 상품입니다.</ion-label>
           </ion-chip>

@@ -3,11 +3,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, NgZone, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Category } from 'src/app/model/category';
-import { Meeting, MeetingOption } from 'src/app/model/meeting';
+import { HashtagCreateDto, HashtagType, Product, ProductOption, ProductOptionCreateDto, ProductRepresentationPhotoCreateDto } from 'src/app/model/product';
 import { AuthService } from 'src/app/service/auth.service';
-import { MeetingService } from 'src/app/service/meeting.service';
+import { ProductService } from 'src/app/service/meeting.service';
 import { FormService } from '../../service/form.service';
+import { ProductUpdateDto } from './../../model/product';
 import { S3Service } from './../../service/s3.service';
 import { UtilService } from './../../service/util.service';
 import { MeetingControl } from './../meeting-add/meeting-control';
@@ -18,8 +18,8 @@ import { MeetingControl } from './../meeting-add/meeting-control';
   styleUrls: ['./meeting-edit.page.scss'],
 })
 export class MeetingEditPage extends MeetingControl implements OnInit, AfterViewInit {
-  meeting: Meeting;
-  oldOptions: MeetingOption[];
+  meeting: Product;
+  oldOptions: ProductOption[];
 
   constructor(
     private formService: FormService,
@@ -30,41 +30,47 @@ export class MeetingEditPage extends MeetingControl implements OnInit, AfterView
     private utilService: UtilService,
     private authService: AuthService,
     private fb: FormBuilder,
-    private meetingService: MeetingService,
+    private productService: ProductService,
     private route: ActivatedRoute,
   ) {
     super(mapsAPILoader, ngZone, s3Service)
   }
 
   ngOnInit() {
+    this.productService.searchHashtag({ page: 1, limit: 10 }).subscribe(resp => {
+      this.hashtags = resp.items;
+    })
+    this.productService.searchCategory({ page: 1, limit: 10 }).subscribe(resp => {
+      this.categories1 = resp.items;
+    })
     this.authService.getCurrentNonunbubUser().subscribe(user => {
       this.user = user;
     });
     this.quillStyle = this.utilService.getQuillStyle();
     this.meetingForm = this.fb.group({
       title: new FormControl('', this.formService.getValidators(30)),
-      subTitle: new FormControl('', this.formService.getValidators(40)),
+      hashtags: new FormControl('', Validators.required),
       fileSource: new FormControl(null, Validators.required),
-      categories: new FormControl('', this.formService.getValidators(10)),
+      categories: new FormControl('', Validators.required),
       address: new FormControl('', this.formService.getValidators(1000)),
       detailAddress: new FormControl('', this.formService.getValidators(500)),
       runningHours: new FormControl('', Validators.compose([Validators.max(23), Validators.min(0)])),
       runningMinutes: new FormControl('', Validators.compose([Validators.max(45), Validators.min(0)])),
       price: new FormControl('', this.formService.getValidators(10, [Validators.max(10000000)])),
-      discountPrice: new FormControl(0, [Validators.max(10000000), this.validateDiscountPrice('price')]),
+      discountPrice: new FormControl('', [Validators.max(10000000), this.validateDiscountPrice('price')]),
       point: new FormControl('', Validators.maxLength(500)),
       recommend: new FormControl('', Validators.maxLength(500)),
-      programs: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
       notice: new FormControl('', Validators.maxLength(500)),
-      check_list: new FormControl('', this.formService.getValidators(500)),
-      include: new FormControl('', Validators.maxLength(500)),
-      exclude: new FormControl('', Validators.maxLength(500)),
+      checkList: new FormControl('', this.formService.getValidators(500)),
+      includeList: new FormControl('', Validators.maxLength(500)),
+      excludeList: new FormControl('', Validators.maxLength(500)),
       refundPolicy100: new FormControl(5, this.formService.getValidators(4, [Validators.max(9999), Validators.min(0)])),
       refundPolicy0: new FormControl(0, this.formService.getValidators(4, [Validators.max(9999), Validators.min(0), this.validateRefundPolicy0('refundPolicy100')])),
       options: this.fb.array([], Validators.required)
     })
     this.route.params.subscribe(params => {
-      this.meetingService.getMeeting(+params.id).subscribe(resp => {
+      this.productService.getProduct(+params.id).subscribe(resp => {
         this.meeting = resp;
         this.oldOptions = this.meeting.options;
         this.setFormControlsValue(this.meeting);
@@ -78,46 +84,48 @@ export class MeetingEditPage extends MeetingControl implements OnInit, AfterView
     })
   }
 
-  private setFormControlsValue(meeting: Meeting) {
-    const noti = meeting.notice.replace(/<br>/g, "\n");
-    const check = meeting.check_list.replace(/<br>/g, "\n");
-    const inc = meeting.include.replace(/<br>/g, "\n");
-    const ex = meeting.exclude.replace(/<br>/g, "\n");
-    this.meetingForm.controls.title.setValue(meeting.title);
-    this.meetingForm.controls.subTitle.setValue(meeting.subTitle);
-    this.meetingForm.controls.fileSource.setValue(meeting.file);
-    this.previewImage = meeting.file;
-    this.meetingForm.controls.categories.setValue(Category[+meeting.categories]);
-    this.meetingForm.controls.address.setValue(meeting.address);
-    this.meetingForm.controls.detailAddress.setValue(meeting.detailed_address);
-    this.meetingForm.controls.runningHours.setValue(Math.floor(meeting.runningMinutes / 60));
-    this.meetingForm.controls.runningMinutes.setValue(meeting.runningMinutes % 60);
-    this.meetingForm.controls.price.setValue(meeting.price);
-    this.meetingForm.controls.discountPrice.setValue(meeting.discountPrice);
-    this.meetingForm.controls.point.setValue(meeting.point);
-    this.meetingForm.controls.recommend.setValue(meeting.recommend);
-    this.meetingForm.controls.programs.setValue(meeting.programs);
+  private setFormControlsValue(product: Product) {
+    const noti = product.notice.replace(/<br>/g, "\n");
+    const check = product.checkList.replace(/<br>/g, "\n");
+    const inc = product.includeList.replace(/<br>/g, "\n");
+    const ex = product.excludeList.replace(/<br>/g, "\n");
+    this.meetingForm.controls.title.setValue(product.title);
+    this.meetingForm.controls.hashtags.setValue(product.hashtags.map(h => h.id));
+    //todo representationPhotos
+    this.meetingForm.controls.fileSource.setValue(product.representationPhotos[0].photo);
+    this.previewImage = product.representationPhotos[0].photo;
+    this.meetingForm.controls.categories.setValue(product.categories.map(c => c.id));
+    this.meetingForm.controls.address.setValue(product.address);
+    this.meetingForm.controls.detailAddress.setValue(product.detailAddress);
+    this.meetingForm.controls.runningHours.setValue(Math.floor(product.runningMinutes / 60));
+    this.meetingForm.controls.runningMinutes.setValue(product.runningMinutes % 60);
+    this.meetingForm.controls.price.setValue(product.price);
+    this.meetingForm.controls.discountPrice.setValue(product.discountPrice);
+    this.meetingForm.controls.point.setValue(product.point);
+    this.meetingForm.controls.recommend.setValue(product.recommend);
+    this.meetingForm.controls.description.setValue(product.description);
     this.meetingForm.controls.notice.setValue(noti);
-    this.meetingForm.controls.check_list.setValue(check);
-    this.meetingForm.controls.include.setValue(inc);
-    this.meetingForm.controls.exclude.setValue(ex);
-    this.meetingForm.controls.refundPolicy100.setValue(meeting.refundPolicy100);
-    this.meetingForm.controls.refundPolicy0.setValue(meeting.refundPolicy0);
-    meeting.options.forEach(option => {
+    this.meetingForm.controls.checkList.setValue(check);
+    this.meetingForm.controls.includeList.setValue(inc);
+    this.meetingForm.controls.excludeList.setValue(ex);
+    this.meetingForm.controls.refundPolicy100.setValue(product.refundPolicy100);
+    this.meetingForm.controls.refundPolicy0.setValue(product.refundPolicy0);
+    product.options.forEach(option => {
       this.options = this.meetingForm.get('options') as FormArray;
       const form = this.fb.group({
-        oid: [option.oid],
-        optionTitle: [option.optionTitle, this.formService.getValidators(100)],
-        optionPrice: [option.optionPrice, this.formService.getValidators(10, [Validators.max(10000000)])],
-        optionMinParticipation: [option.optionMinParticipation, this.formService.getValidators(10, [Validators.max(1000)])],
-        optionMaxParticipation: [option.optionMaxParticipation, this.formService.getValidators(10, [Validators.max(1000)])],
-        optionDate: [option.optionDate, Validators.required]
+        id: [option.id],
+        name: [option.name, this.formService.getValidators(100)],
+        description: [option.description, Validators.maxLength(300)],
+        price: [option.price, this.formService.getValidators(10, [Validators.max(10000000)])],
+        minParticipants: [option.minParticipants, this.formService.getValidators(10, [Validators.max(1000)])],
+        maxParticipants: [option.maxParticipants, this.formService.getValidators(10, [Validators.max(1000)])],
+        date: [option.date, Validators.required]
       });
       this.options.push(form);
     })
   }
 
-  loadMap(meeting: Meeting) {
+  loadMap(meeting: Product) {
     this.mapsAPILoader.load().then(() => {
       this.latitude = meeting.lat
       this.longitude = meeting.lon;
@@ -126,95 +134,36 @@ export class MeetingEditPage extends MeetingControl implements OnInit, AfterView
   }
 
   edit() {
-    const { title, subTitle, fileSource, categories, address, detailAddress, runningHours, runningMinutes,
-      price, discountPrice, point, recommend, programs, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
+    const { title, hashtags, fileSource, categories, address, detailAddress, runningHours, runningMinutes, price, discountPrice, point, recommend,
+      description, notice, checkList, includeList, excludeList, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
     this.mapsAPILoader.load().then(() => {
       this.geoCoder = new google.maps.Geocoder;
       this.geoCoder.geocode({ address }, (result, status) => {
         if (status == "OK") {
           if (result[0]) {
-            const uid = this.meeting.host;
             const location = result[0].geometry.location;
-            const lat = `${location.lat()}`;
-            const lon = `${location.lng()}`;
-            const discount = discountPrice ? discountPrice : 0;
-            const minutes = runningHours * 60 + runningMinutes;
-
-            const formData = new FormData();
-            formData.append('title', title);
-            formData.append('subTitle', subTitle);
-            formData.append('file', fileSource);
-            formData.append('categories', `${Category[categories]}`);
-            formData.append('address', `${address}`);
-            formData.append('detailed_address', detailAddress);
-            formData.append('runningMinutes', `${minutes}`);
-            formData.append('lat', lat);
-            formData.append('lon', lon);
-            formData.append('price', `${price}`);
-            formData.append('discountPrice', `${discount}`);
-            formData.append('point', point);
-            formData.append('recommend', recommend);
-            formData.append('programs', programs);
-            formData.append('host', `${uid}`);
-            formData.append('notice', notice);
-            formData.append('check_list', check_list);
-            formData.append('include', include);
-            formData.append('exclude', exclude);
-            formData.append('refundPolicy100', refundPolicy100);
-            formData.append('refundPolicy0', refundPolicy0);
-            formData.append('likes', `${this.meeting.likes}`);
-
-            this.meetingService.editMeeting(this.meeting.mid, formData).subscribe(meeting => {
-              // newWrittenOptions: 새롭게 쓰인 옵션
-              // deletedOptions: 삭제된 옵션
-              // changedOldOptions: 수정되서 old인 옵션
-              // changedNewOptions: 수정되서 새롭게 추가할 옵션
-              const writtenOptions = (options as MeetingOption[]);
-              const newWrittenOptions = writtenOptions
-                .filter(option => !option.oid)
-                .map(option => new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionDate, option.optionMinParticipation,
-                  option.optionMaxParticipation, false))
-
-              const deletedOptions = this.oldOptions
-                .filter(old => !writtenOptions.find(option => old.oid === option.oid))
-                .map(option => new MeetingOption(option.oid, meeting.mid, option.optionTitle, option.optionPrice, option.optionDate,
-                  option.optionMinParticipation, option.optionMaxParticipation, true))
-
-              const changedOldOptions: MeetingOption[] = [];
-              const changedNewOptions = writtenOptions
-                .filter(option => !!option.oid)
-                .filter(option => {
-                  const newO = new MeetingOption(option.oid, meeting.mid, option.optionTitle, option.optionPrice, option.optionDate,
-                    option.optionMinParticipation, option.optionMaxParticipation, false);
-                  const oldO = this.oldOptions.find(oldO => oldO.oid === newO.oid);
-                  const isEditable =
-                    newO.optionDate !== oldO.optionDate ||
-                    newO.optionPrice !== oldO.optionPrice ||
-                    newO.optionMinParticipation !== oldO.optionMinParticipation ||
-                    newO.optionMaxParticipation !== oldO.optionMaxParticipation ||
-                    newO.optionTitle !== oldO.optionTitle
-                  if (isEditable) {
-                    changedOldOptions.push(oldO)
-                  }
-                  return isEditable;
-                })
-                .map(option => new MeetingOption(0, meeting.mid, option.optionTitle, option.optionPrice, option.optionDate,
-                  option.optionMinParticipation, option.optionMaxParticipation, false))
-
-              const addOptions = newWrittenOptions.concat(changedNewOptions);
-              const editOptions = changedOldOptions.map(option => {
-                option.isOld = true;
-                return option
-              }).concat(deletedOptions)
-
-              this.meetingService.addMeetingOptions(meeting.mid, addOptions).subscribe(resp => {
-                this.meetingService.editMeetingOptions(editOptions).subscribe(resp => {
-                  alert('모임을 수정하였습니다.');
-                  this.passDeactivate = true;
-                  this.router.navigate(['./tabs/meeting-detail', meeting['mid']]);
-                  this.meetingForm.reset();
-                });
-              });
+            const hashtagNames = hashtags.map(v => {
+              if (v.label) return new HashtagCreateDto(HashtagType.PRODUCT, false, v.label);
+              else return new HashtagCreateDto(HashtagType.PRODUCT, false, undefined, v);
+            });
+            const minutes = (+runningHours) * 60 + (+runningMinutes);
+            const dto = {
+              title, point, recommend, description, address, detailAddress, runningMinutes: minutes, price: +price, discountPrice: +discountPrice,
+              lat: location.lat(), lon: location.lng(), notice, checkList, includeList, excludeList, refundPolicy100, refundPolicy0, sortOrder: 0,
+              status: this.meeting.status, hashtags: hashtagNames, categories, representationPhotos: [new ProductRepresentationPhotoCreateDto(fileSource, 0)]
+            } as ProductUpdateDto
+            const writtenOptions = (options as ProductOption[]);
+            const addedOptions = writtenOptions
+              .filter(option => !option.id)
+              .map(option => this.makeOption(option, false));
+            const removedOptions = this.oldOptions
+              .filter(old => !writtenOptions.find(option => old.id === option.id))
+              .map(option => this.makeOption(option, true));
+            this.productService.updateProduct(this.meeting.id, dto, addedOptions, removedOptions).subscribe(product => {
+              alert('모임을 수정하였습니다.');
+              this.passDeactivate = true;
+              this.router.navigate(['./tabs/meeting-detail', product.id]);
+              this.meetingForm.reset();
             })
           }
           else {
@@ -226,5 +175,12 @@ export class MeetingEditPage extends MeetingControl implements OnInit, AfterView
         }
       });
     });
+  }
+
+  makeOption(option: ProductOption, isOld: boolean) {
+    const productOption = new ProductOptionCreateDto(option.name, +option.price, option.description,
+      option.date, +option.minParticipants, +option.maxParticipants, isOld);
+    if (option.id) productOption.id = option.id;
+    return productOption;
   }
 }

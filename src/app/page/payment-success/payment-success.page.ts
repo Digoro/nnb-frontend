@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MeetingService } from 'src/app/service/meeting.service';
-import { PurchasedMeeting } from './../../model/meeting';
+import { Payment } from 'src/app/model/payment';
+import { PaymentService } from 'src/app/service/payment.service';
 
 @Component({
   selector: 'payment-success',
@@ -9,19 +9,19 @@ import { PurchasedMeeting } from './../../model/meeting';
   styleUrls: ['./payment-success.page.scss'],
 })
 export class PaymentSuccessPage implements OnInit {
-  pid: number;
-  meeting: PurchasedMeeting;
+  paymentId: number;
+  payment: Payment;
 
   constructor(
     private route: ActivatedRoute,
-    private meetingService: MeetingService
+    private paymentService: PaymentService
   ) { }
 
   ngOnInit() {
     this.route.params.subscribe(resp => {
-      this.pid = resp.id;
-      this.meetingService.getPurchasedMeeting(this.pid).subscribe(resp => {
-        this.meeting = resp;
+      this.paymentId = resp.id;
+      this.paymentService.getPurchasedProduct(+this.paymentId).subscribe(resp => {
+        this.payment = resp;
       })
     })
   }

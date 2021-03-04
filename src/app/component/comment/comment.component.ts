@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, Renderer2, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { IonTextarea } from '@ionic/angular';
-import { Comment } from 'src/app/model/comment';
+import { ProductReview } from 'src/app/model/comment';
+import { PaginationMeta } from 'src/app/model/pagination';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { CommentService } from './../../service/comment.service';
@@ -11,12 +12,14 @@ import { CommentService } from './../../service/comment.service';
   styleUrls: ['./comment.component.scss'],
 })
 export class CommentComponent implements OnInit, OnChanges {
-  @Input() comments: Comment[];
+  @Input() reviews: ProductReview[];
   @Input() currentUser: User;
   @Input() editable = true;
   @Input() displayLabel = false;
+  @Input() meta: PaginationMeta;
   @Output() onComment = new EventEmitter();
   @Output() onChildComment = new EventEmitter();
+  @Output() onPage = new EventEmitter();
   @Output() onDelete = new EventEmitter();
   @ViewChild('comment') comment: IonTextarea;
   canWrite = true;
@@ -31,18 +34,18 @@ export class CommentComponent implements OnInit, OnChanges {
   ) { this.DELETE_FLAG = CommentService.DELETE_FLAG }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!!changes.comments) {
-      if (!changes.comments.firstChange && !!changes.comments.currentValue) {
-        this.comments.map(comment => {
+    if (!!changes.reviews) {
+      if (!changes.reviews.firstChange && !!changes.reviews.currentValue) {
+        this.reviews.map(review => {
           if (!!this.currentUser) {
-            if (comment['writer']['uid'] === this.currentUser.uid) comment.canDelete = true;
+            if (review.user.id === this.currentUser.id) review.canDelete = true;
           }
-          return comment;
+          return review;
         })
-        let parents = this.comments.filter(comment => comment.parentCid === 0);
-        let children = this.comments.filter(comment => comment.parentCid !== 0);
-        this.comments = parents.map(parent => {
-          parent.children = children.filter(child => child.parentCid === parent.cid)
+        let parents = this.reviews.filter(review => !review.parent);
+        let children = this.reviews.filter(review => !!review.parent);
+        this.reviews = parents.map(parent => {
+          parent.children = children.filter(child => child.parent.id === parent.id)
           return parent;
         })
       }
@@ -62,8 +65,8 @@ export class CommentComponent implements OnInit, OnChanges {
     obj.style.height = (2 + obj.scrollHeight) + "px";
   }
 
-  delete(isParent: boolean, comment: Comment) {
-    this.onDelete.emit({ isParent, comment });
+  deleteComment(review: ProductReview) {
+    this.onDelete.emit(review);
   }
 
   private resetChildInput() {
@@ -73,7 +76,7 @@ export class CommentComponent implements OnInit, OnChanges {
     })
   }
 
-  showChildComment(index: number, parentComment: Comment) {
+  showChildComment(index: number, parentReview: ProductReview) {
     this.resetChildInput();
     const selected = this.addChildInputs.find((element, i) => i === index);
     this.renderer.setStyle(selected.nativeElement, 'display', 'block');
@@ -91,12 +94,16 @@ export class CommentComponent implements OnInit, OnChanges {
     }
   }
 
-  okChild(index: number, parentComment: Comment) {
+  okChild(index: number, parentComment: ProductReview) {
     const selected = this.addChildInputs.find((element, i) => i === index);
     const value = selected.nativeElement.children[0].children[0].value;
     if (!!value) {
-      this.onChildComment.emit({ value, parentCid: parentComment.cid });
+      this.onChildComment.emit({ value, parentCid: parentComment.id });
       this.resetChildInput();
     }
+  }
+
+  pageChanged(event) {
+    this.onPage.emit(event);
   }
 }

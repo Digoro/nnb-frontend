@@ -1,68 +1,82 @@
 <ion-content>
-  <ion-grid fixed *ngIf="!!profileUser" style="margin-top:1.2rem; padding: 0rem 1rem 0rem 1rem">
+  <ion-grid fixed *ngIf="!!profileUser && !!productPaginationMeta && !!reviewPaginationMeta"
+    style="margin-top:1.2rem; padding: 0rem 1rem 0rem 1rem">
     <div style="text-align: center;">
-      <img class="image" [src]="profileUser.image">
-      <p class="name">{{profileUser.nickName}}</p>
+      <img class="image" [src]="profileUser.profilePhoto">
+      <p class="name">
+        {{profileUser.nickname}}
+        <ng-container *ngIf="!!currentUser">
+          <a *ngIf="currentUser.id === pageUserId" [href]="'/tabs/edit-profile'"
+            style="text-decoration: none; color: black;">
+            <ion-icon style="font-size: 1rem;" name="create-outline"></ion-icon>
+          </a>
+        </ng-container>
+      </p>
       <p class="desc" style="margin:0px">
-        <span *ngIf="profileUser">좋아요 {{profileUser.score}}&nbsp;&nbsp;|&nbsp;</span>
-        <span *ngIf="hostedMeetings">주최한 모임 {{hostedMeetings.length}}&nbsp;|&nbsp;</span>
-        <span *ngIf="comments">후기 {{comments.length}}</span>
+        <span *ngIf="profileUser">좋아요 {{profileUser.point}}&nbsp;&nbsp;|&nbsp;</span>
+        <span *ngIf="hostedProducts">주최한 모임 {{productPaginationMeta.totalItems}}&nbsp;|&nbsp;</span>
+        <span *ngIf="reviews">후기 {{reviewPaginationMeta.totalItems}}</span>
       </p>
     </div>
-    <p class="catch_phrase">{{profileUser.catch_phrase}}</p>
+    <hr *ngIf="profileUser.catchphrase && profileUser.introduction">
+    <p>{{profileUser.catchphrase}}</p>
     <p class="pre-wrap" style="margin-bottom: 0.7rem;">{{profileUser.introduction}}</p>
-    <ng-container *ngIf="!!currentUser">
-      <div style="text-align: center;">
-        <a *ngIf="currentUser.uid === pageUserId" [href]="'/tabs/edit-profile'"
-          style="text-decoration: none; color: black;">
-          <ion-chip outline color="dark">
-            <ion-icon name="create-outline"></ion-icon>
-            <ion-label>내정보 수정</ion-label>
-          </ion-chip>
-        </a>
-        <a *ngIf="currentUser.uid !== pageUserId" href="mailto:nonunbub@gmail.com"
-          style="text-decoration: none; color: black;">
-          <ion-chip outline color="dark">
-            <ion-icon name="hand-left-outline"></ion-icon>
-            <ion-label>사용자 신고하기</ion-label>
-          </ion-chip>
-        </a>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="!currentUser">
-      <div style="text-align: center;">
-        <a href="mailto:nonunbub@gmail.com" style="text-decoration: none; color: black;">
-          <ion-chip outline color="dark">
-            <ion-icon name="hand-left-outline"></ion-icon>
-            <ion-label>사용자 신고하기</ion-label>
-          </ion-chip>
-        </a>
-      </div>
-    </ng-container>
     <hr>
-    <ion-row>
-      <ion-col>
-        <p class="subject"><span class="subject underline">주최한 모임</span> 🤟🤟</p>
-        <ion-row *ngIf="!!hostedMeetings">
-          <ion-col *ngIf="hostedMeetings.length === 0">
-            <div style="opacity: 0.4; padding: 20px">
-              <ion-chip outline>
-                <ion-label>주최한 모임이 없습니다.</ion-label>
-              </ion-chip>
-            </div>
-          </ion-col>
-          <ion-col *ngFor="let meeting of hostedMeetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6"
-            style="padding:0px">
-            <a [href]="'/tabs/meeting-detail/' + meeting.mid" style="text-decoration: none; color:black;">
-              <meeting-card [meeting]="meeting"></meeting-card>
-            </a>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-    <hr>
+    <ion-segment (ionChange)="segmentChanged($event)" value="hosted">
+      <ion-segment-button value="hosted">
+        <ion-label>주최한 모임
+          <ion-chip>
+            <ion-label>{{productPaginationMeta.totalItems}}</ion-label>
+          </ion-chip>
+        </ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="reviews">
+        <ion-label>후기
+          <ion-chip>
+            <ion-label>{{reviewPaginationMeta.totalItems}}</ion-label>
+          </ion-chip>
+        </ion-label>
+      </ion-segment-button>
+    </ion-segment>
 
-    <p class="subject"><span class="subject underline">후기</span> 😎😎</p>
-    <comment [comments]="comments" [currentUser]="profileUser" [editable]="false" [displayLabel]="true"></comment>
+    <ng-container *ngIf="selectedMenu === 'hosted' && hostedProducts">
+      <ion-row>
+        <ion-col *ngFor="let product of hostedProducts | paginate: {
+          id:productPaginationMeta.paginationId,
+          itemsPerPage: productPaginationMeta.itemsPerPage, 
+          currentPage: productPaginationMeta.currentPage,
+          totalItems:productPaginationMeta.totalItems
+        }; let i = index" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6" style="padding:0px">
+          <a [href]="'/tabs/meeting-detail/' + product.id" style="text-decoration: none; color:black;">
+            <meeting-card [product]="product"></meeting-card>
+          </a>
+        </ion-col>
+      </ion-row>
+      <br>
+      <pagination *ngIf="!!productPaginationMeta && hostedProducts.length>0" (onChange)="pageChanged($event)"
+        [paginationId]="productPaginationMeta.paginationId">
+      </pagination>
+      <ng-container *ngIf="hostedProducts.length === 0">
+        <div style="text-align: center; opacity: 0.4;">
+          <ion-chip outline>
+            <ion-label>주최한 모임이 없습니다.</ion-label>
+          </ion-chip>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="selectedMenu === 'reviews' && reviews">
+      <comment [reviews]="reviews" [currentUser]="profileUser" [meta]="reviewPaginationMeta" (onPage)="onPage($event)"
+        [editable]="false" [displayLabel]="false">
+      </comment>
+      <ng-container *ngIf="reviews.length === 0">
+        <div style="text-align: center; opacity: 0.4;">
+          <ion-chip outline>
+            <ion-label>댓글이 없습니다.</ion-label>
+          </ion-chip>
+        </div>
+      </ng-container>
+    </ng-container>
+
   </ion-grid>
 </ion-content>

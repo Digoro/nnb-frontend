@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Category } from 'src/app/model/category';
+import { CategoryType } from './../../model/category';
 
 @Component({
   selector: 'category',
@@ -12,32 +12,32 @@ export class CategoryPage implements OnInit {
     {
       title: "여행",
       image: '/assets/category/travel.png',
-      key: '여행'
+      key: Object.keys(CategoryType).indexOf("TRAVEL")
     },
     {
       title: "취미",
       image: '/assets/category/hobby.png',
-      key: '취미'
+      key: Object.keys(CategoryType).indexOf("HOBBY")
     },
     {
       title: "운동",
       image: '/assets/category/exersise.png',
-      key: '운동'
+      key: Object.keys(CategoryType).indexOf("EXERCISE")
     },
     {
       title: "모임",
       image: '/assets/category/meeting.png',
-      key: '모임'
+      key: Object.keys(CategoryType).indexOf("MEETING")
     },
     {
       title: "교육",
       image: '/assets/category/education.png',
-      key: '교육'
+      key: Object.keys(CategoryType).indexOf("EDUCATION")
     },
     {
       title: "사회공헌",
       image: '/assets/category/social.png',
-      key: '사회공헌'
+      key: Object.keys(CategoryType).indexOf("SOCIAL")
     },
   ]
   constructor(
@@ -48,8 +48,6 @@ export class CategoryPage implements OnInit {
   }
 
   click(key: string) {
-    const category = Category[key]
-    this.router.navigate(['./tabs/meetings'], { queryParams: { key: category } });
-
+    this.router.navigate(['./tabs/category-detail', key]);
   }
 }

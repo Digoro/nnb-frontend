@@ -1,10 +1,14 @@
+import { User } from 'src/app/model/user';
+
 export class Magazine {
     constructor(
-        public mid: number,
+        public id: number,
         public title: string,
-        public catch_phrase: string,
-        public image: string,
-        public content: string,
-        public createDT: string,
+        public catchphrase: string,
+        public representationPhoto: string,
+        public contents: string,
+        public createdAt: Date,
+        public updatedAt: Date,
+        public author: User
     ) { }
 }

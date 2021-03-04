@@ -35,7 +35,7 @@ export class PaymentManagementPage implements OnInit {
   }
 
   getList() {
-    this.paymentService.getUserPaymentAccounts(this.user.uid).subscribe(accounts => {
+    this.paymentService.getUserPaymentAccounts(this.user.id).subscribe(accounts => {
       this.accounts = accounts;
     })
   }

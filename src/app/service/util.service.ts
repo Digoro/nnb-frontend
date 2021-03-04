@@ -20,7 +20,6 @@ export class UtilService {
       'word-spacing': 'normal',
       'font-weight': 'normal',
       'letter-spacing': '0.8px',
-      'padding': '0px 10px 0px 10px',
       'font-family': `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";`
     }
   }

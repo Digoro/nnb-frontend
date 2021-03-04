@@ -1,15 +1,16 @@
 <div [formGroup]="group" [class.invalid]="group.controls[controlName].dirty && group.controls[controlName].invalid"
   [class.valid]="group.controls[controlName].dirty && group.controls[controlName].valid" style="margin-bottom: 5px;">
 
-  <ng-container *ngIf="type==='text' || type==='textarea' || type==='number'">
+  <ng-container *ngIf="type!=='select'">
     <ion-item *ngIf="name" [lines]="group.controls[controlName].pristine ? '':'none'">
       <ion-label position="floating" class="ion-text-wrap">{{name}}&nbsp;<span class="invalid-input"
           *ngIf="isRequired">*</span>
       </ion-label>
 
-      <ng-container *ngIf="type==='text' || type==='number'">
-        <ion-input [disabled]="disabled" [type]="type" [formControlName]="controlName" clearInput
-          (ngModelChange)="changeEvent($event)" (keypress)="numberOnlyValidation($event)" [placeholder]="placeholder">
+      <ng-container *ngIf="type==='text' || type==='number'|| type==='password'">
+        <ion-input [autocomplete]="false" [disabled]="disabled" [type]="type" [formControlName]="controlName" clearInput
+          (ngModelChange)="changeEvent($event)" (keypress)="numberOnlyValidation($event)" [placeholder]="placeholder"
+          clearOnEdit="false">
         </ion-input>
       </ng-container>
 
@@ -20,7 +21,8 @@
       </ng-container>
     </ion-item>
 
-    <ng-container *ngIf="(type==='text' || type==='textarea') && !!group.controls[controlName].value">
+    <ng-container
+      *ngIf="(type==='text' || type==='textarea'|| type==='password') && !!group.controls[controlName].value">
       <p *ngIf="group.controls[controlName].valid  && maxLength!==0" class="maximun-info">
         {{group.controls[controlName].value.length}} / 최대 {{maxLength}}자
       </p>
@@ -40,7 +42,7 @@
       [notFoundText]="notFoundText" [addTag]="addTag" [multiple]="multiple" [class.select]="name"
       [class.select-none-label]="!name" (change)="changeEvent($event)" (add)="addEvent($event)"
       (remove)="removeEvent($event)" [ngStyle]="selectStyle">
-      <ng-option *ngFor="let element of selectList" [value]="element">
+      <ng-option *ngFor="let element of selectList" [value]="valueProp?element[valueProp]:element">
         <ng-container *ngIf="template" [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: element }">
         </ng-container>
         <ng-container *ngIf="!template">{{element}}</ng-container>

@@ -3,18 +3,22 @@ import { AfterViewInit, ElementRef, HostListener, NgZone, ViewChild } from '@ang
 import { AbstractControl, FormArray, FormGroup, ValidatorFn } from '@angular/forms';
 import Stepper from 'bs-stepper';
 import { QuillEditorComponent } from 'ngx-quill';
-import { Category } from 'src/app/model/category';
-import { Meeting, MeetingStatus } from 'src/app/model/meeting';
+import { CategoryType } from 'src/app/model/category';
+import { Product, ProductStatus } from 'src/app/model/product';
 import { User } from 'src/app/model/user';
 import { S3Service } from 'src/app/service/s3.service';
 import { environment } from 'src/environments/environment';
+import { Category } from './../../model/category';
+import { Hashtag } from './../../model/product';
 
 export class MeetingControl implements AfterViewInit {
     user: User;
     quillStyle;
     quill: QuillEditorComponent;
     meetingForm: FormGroup;
-    categories = Object.values(Category).filter(v => typeof Category[v] === 'number');
+    categories = Object.values(CategoryType);
+    hashtags: Hashtag[];
+    categories1: Category[];
 
     options: FormArray;
     stepper: Stepper;
@@ -27,7 +31,7 @@ export class MeetingControl implements AfterViewInit {
     longitude: number;
     zoom: number;
 
-    previewMeeting: Meeting;
+    previewProduct: Product;
     previewImage: string | ArrayBuffer;
 
     passDeactivate = false;
@@ -67,6 +71,15 @@ export class MeetingControl implements AfterViewInit {
         };
     }
 
+    validateRefundPolicy0(controlName: string): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } => {
+            const refundPolicy0 = control.value;
+            const refundPolicy100 = control.root.value[controlName];
+            const isUpper = refundPolicy100 < refundPolicy0 + 2;
+            return isUpper ? { 'isUpper': { isUpper } } : null;
+        };
+    }
+
     checkDiscountPrice() {
         const price = this.meetingForm.controls.price;
         const discountPrice = this.meetingForm.controls.discountPrice;
@@ -78,15 +91,6 @@ export class MeetingControl implements AfterViewInit {
         discountPrice.updateValueAndValidity();
     }
 
-    validateRefundPolicy0(controlName: string): ValidatorFn {
-        return (control: AbstractControl): { [key: string]: any } => {
-            const refundPolicy0 = control.value;
-            const refundPolicy100 = control.root.value[controlName];
-            const isUpper = refundPolicy100 < refundPolicy0 + 2;
-            return isUpper ? { 'isUpper': { isUpper } } : null;
-        };
-    }
-
     checkRefundPolicy0() {
         const refundPolicy100 = this.meetingForm.controls.refundPolicy100;
         const refundPolicy0 = this.meetingForm.controls.refundPolicy0;
@@ -96,24 +100,6 @@ export class MeetingControl implements AfterViewInit {
             refundPolicy0.setErrors({ 'isUpper': null });
         }
         refundPolicy0.updateValueAndValidity();
-    }
-
-    markerDragEnd($event: any) {
-        this.latitude = $event.coords.lat;
-        this.longitude = $event.coords.lng;
-        this.zoom = 15;
-        this.geoCoder.geocode({ 'location': { lat: this.latitude, lng: this.longitude } }, (results, status) => {
-            if (status === 'OK') {
-                if (results[0]) {
-                    const address = results[0].formatted_address;
-                    this.meetingForm.controls['address'].setValue(address);
-                } else {
-                    alert('주소 검색 결과가 없습니다.');
-                }
-            } else {
-                alert('올바른 주소를 입력해주세요: ' + status);
-            }
-        });
     }
 
     changeAddress(event) {
@@ -130,8 +116,8 @@ export class MeetingControl implements AfterViewInit {
 
     next() {
         const index = this.stepper['_currentIndex'];
-        if (index === 9) {
-            this.makePreviewMeeting();
+        if (index === 8) {
+            this.makePreviewProduct();
         }
         this.stepper.next();
     }
@@ -140,10 +126,10 @@ export class MeetingControl implements AfterViewInit {
         this.stepper.previous();
     }
 
-    makePreviewMeeting() {
+    makePreviewProduct() {
         if (this.meetingForm.valid) {
-            const { title, subTitle, fileSource, categories, address, detailAddress, runningHours, runningMinutes,
-                price, discountPrice, point, recommend, programs, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
+            const { title, hashtags, categories, address, detailAddress, runningHours, runningMinutes, price, discountPrice,
+                point, recommend, description, notice, checkList, includeList, excludeList, refundPolicy100, refundPolicy0, options } = this.meetingForm.value;
             this.mapsAPILoader.load().then(() => {
                 this.geoCoder = new google.maps.Geocoder;
                 this.geoCoder.geocode({ address }, (result, status) => {
@@ -151,8 +137,8 @@ export class MeetingControl implements AfterViewInit {
                         if (result[0]) {
                             const location = result[0].geometry.location;
                             const minutes = runningHours * 60 + runningMinutes;
-                            this.previewMeeting = new Meeting(0, title, subTitle, point, recommend, programs, address, detailAddress, minutes, location.lat(), location.lng(), 0,
-                                categories, '', price, discountPrice, 0, notice, check_list, include, exclude, refundPolicy100, refundPolicy0, 0, MeetingStatus.CREATED, options)
+                            this.previewProduct = new Product(0, title, price, discountPrice, point, recommend, description, address, detailAddress, minutes, location.lat(), location.lng(), undefined,
+                                notice, checkList, includeList, excludeList, refundPolicy100, refundPolicy0, 0, ProductStatus.CREATED, hashtags, categories, 0, false, options)
                         }
                         else {
                             alert('주소 검색 결과가 없습니다.')
@@ -179,18 +165,14 @@ export class MeetingControl implements AfterViewInit {
         if (event.target.files.length > 0) {
             const file = event.target.files[0];
             if (fileTypes.find(t => t === file.type)) {
-                // if (file.size < 500000) {
-                //     this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
-                //         this.meetingForm.controls.fileSource.setValue(res.Location);
-                //         this.readURL(file);
-                //     })
-                // } else {
-                //     alert(`이미지 사이즈가 500KB를 넘습니다. (사이즈: 약 ${Math.ceil(file.size / 1000)}KB)`);
-                // }
-                this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
-                    this.meetingForm.controls.fileSource.setValue(res.Location);
-                    this.readURL(file);
-                })
+                if (file.size < 500000) {
+                    this.s3Service.uploadFile(file, environment.folder.meeting).then(res => {
+                        this.meetingForm.controls.fileSource.setValue(res.Location);
+                        this.readURL(file);
+                    })
+                } else {
+                    alert(`이미지 사이즈가 500KB를 넘습니다. (사이즈: 약 ${Math.ceil(file.size / 1000)}KB)`);
+                }
             } else {
                 alert(`이미지 형식만 가능합니다. (${fileTypes})`);
             }

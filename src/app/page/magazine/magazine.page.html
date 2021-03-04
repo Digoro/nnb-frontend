@@ -1,23 +1,23 @@
 <ion-content>
   <ion-grid fixed>
-    <ion-list-header>
-      <ion-label>매거진 홈</ion-label>
-    </ion-list-header>
     <ng-container *ngFor="let magazine of magazines">
       <ion-item>
-
-        <ion-thumbnail slot="start" style="cursor: pointer;" (click)="goDetailPage(magazine.mid)">
-          <img [src]="magazine.image" />
+        <ion-thumbnail slot="start" style="cursor: pointer;" (click)="goDetailPage(magazine.id)">
+          <img [src]="magazine.representationPhoto" />
         </ion-thumbnail>
-        <ion-label style="cursor: pointer;" (click)="goDetailPage(magazine.mid)">
+        <ion-label style="cursor: pointer;" (click)="goDetailPage(magazine.id)">
           <h3>{{magazine.title}} </h3>
-          <p>{{magazine.catch_phrase}}</p>
-          <p style="float: right;">{{magazine.createDT|date:'yyyy년 MM월 dd일'}}</p>
+          <p>{{magazine.catchphrase}}</p>
+          <p style="float: right;">{{magazine.createdAt|date:'yyyy년 MM월 dd일'}}</p>
         </ion-label>
         <ion-icon *ngIf="isAdmin" name="ellipsis-horizontal-outline" style="float: right; padding:20px 20px"
-          class="more" (click)="presentActionSheet(magazine.mid)"></ion-icon>
+          class="more" (click)="presentActionSheet(magazine.id)"></ion-icon>
       </ion-item>
-
     </ng-container>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loading-spinner="lines" loading-text="매거진 가져오는 중...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </ion-grid>
 </ion-content>

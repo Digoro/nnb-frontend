@@ -8,9 +8,11 @@ import { BsDaterangepickerDirective, BsLocaleService } from 'ngx-bootstrap/datep
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxCronUiConfig } from 'ngx-cron-ui/lib/model/model';
 import { QuillEditorComponent } from 'ngx-quill';
-import { Meeting } from 'src/app/model/meeting';
+import { Product, ProductOption } from 'src/app/model/product';
 import { FormService } from 'src/app/service/form.service';
 import { environment } from 'src/environments/environment';
+import { Category } from './../../model/category';
+import { Hashtag } from './../../model/product';
 import { CheckDesktopService } from './../../service/check-desktop.service';
 import { S3Service } from './../../service/s3.service';
 declare var daum: any;
@@ -23,19 +25,19 @@ declare var daum: any;
 export class MeetingControlComponent implements OnInit, AfterViewInit {
   @Input() formGroup: FormGroup;
   @Input() quillStyle;
-  @Input() categories;
+  @Input() hashtags: Hashtag[];
+  @Input() categories: Category[];
   @Input() previewImage: string | ArrayBuffer;
   @Input() latitude: number;
   @Input() longitude: number;
   @Input() zoom: number;
-  @Input() previewMeeting: Meeting;
+  @Input() previewProduct: Product;
   @Input() submitMessage: string;
 
   @Output() onNextEvent = new EventEmitter();
   @Output() onPrevEvent = new EventEmitter();
   @Output() onLastCheckEvent = new EventEmitter();
   @Output() onFileChangeEvent = new EventEmitter();
-  @Output() onMarkerDragEndEvent = new EventEmitter();
   @Output() onCheckDiscountPriceEvent = new EventEmitter();
   @Output() onCheckRefundPolicy0Event = new EventEmitter();
   @Output() onChangeAddressEvent = new EventEmitter();
@@ -45,6 +47,7 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   isDesktop = false;
   isShowMenu = false;
   isLoad = false;
+  minDate = new Date();
 
   @ViewChild('quill') quill: QuillEditorComponent;
   @ViewChild('quill2') quill2: QuillEditorComponent;
@@ -128,10 +131,10 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         descList: [
           '제목은 노출되는 상품 목록에서 고객에게 어필할 수 있는 첫 문구입니다.',
           '상품 주제를 정확하고 간결하게 표현해 주세요.',
-          '지역명, 일정 등의 정보가 포함된 제목은 전달에 더욱 효과적입니다.',
-          '캐치프레이즈는 제목과 연결되는 매력 포인트를 적어 주세요.'],
+          '지역명, 일정 등의 정보가 포함된 제목은 전달에 더욱 효과적입니다.'
+        ],
         moreDescList: [
-          '어떤 제목과 캐치프레이즈가 좋을지 여전히 고민이신가요?',
+          '어떤 제목이 좋을지 여전히 고민이신가요?',
           '<a target="_blank"  href="https://www.notion.so/gdgdaejeon/22a178f222b743e09925324db6028677">제목 가이드</a>에서 다양한 사례와 팁을 참고해 보세요!']
       },
       {
@@ -238,8 +241,9 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       }
     })
     this.calendarOptions.eventClick = (selectInfo: EventClickArg) => {
-      const { optionTitle, optionDate, optionMaxParticipation, optionMinParticipation, optionPrice } = selectInfo.event._def.extendedProps;
-      alert(`옵션: ${optionTitle}\n가격: ${optionPrice}원\n최소인원: ${optionMinParticipation}명\n최대인원: ${optionMaxParticipation}명`)
+      const { name, maxParticipants, minParticipants, price, discountPrice, description } = selectInfo.event._def.extendedProps;
+      const date = selectInfo.event.start;
+      alert(`일시: ${moment(date).format('YYYY-MM-DD HH:mm')}\n옵션: ${name}\n가격: ${price}원\n할인된 가격: ${discountPrice ? discountPrice + '원' : '없음'}\n최소인원: ${minParticipants}명\n최대인원: ${maxParticipants}명\n설명: ${description}`)
     }
     for (let i = 0; i < 24; i++) {
       this.hours.push(i)
@@ -248,27 +252,29 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       this.minutes.push(i)
     }
     this.optionAddFormGroup = new FormGroup({
-      oid: new FormControl(''),
-      optionTitle: new FormControl('', this.formService.getValidators(100)),
-      optionPrice: new FormControl('', this.formService.getValidators(10, [Validators.min(0), Validators.max(10000000)])),
-      optionMinParticipation: new FormControl('', this.formService.getValidators(10, [Validators.min(1), Validators.max(1000)])),
-      optionMaxParticipation: new FormControl('', this.formService.getValidators(10, [Validators.min(1), Validators.max(1000)])),
-      optionPeriod: new FormControl('', Validators.required),
+      id: new FormControl(''),
+      name: new FormControl('', this.formService.getValidators(100)),
+      description: new FormControl('', Validators.maxLength(300)),
+      price: new FormControl('', this.formService.getValidators(10, [Validators.min(0), Validators.max(10000000)])),
+      minParticipants: new FormControl('', this.formService.getValidators(10, [Validators.min(1), Validators.max(1000)])),
+      maxParticipants: new FormControl('', this.formService.getValidators(10, [Validators.min(1), Validators.max(1000)])),
+      period: new FormControl('', Validators.required),
       schedule: new FormControl('', Validators.required),
     })
 
     this.optionDeleteFormGroup = new FormGroup({
-      oid: new FormControl(''),
-      optionPeriod: new FormControl('', Validators.required),
+      id: new FormControl(''),
+      period: new FormControl('', Validators.required),
       schedule: new FormControl('', Validators.required),
     })
 
     this.optionAddFormGroup.valueChanges.subscribe(value => {
-      const min = this.optionAddFormGroup.controls.optionMinParticipation;
-      const period = this.optionAddFormGroup.controls.optionPeriod;
+      const min = this.optionAddFormGroup.controls.minParticipants;
+      const period = this.optionAddFormGroup.controls.period;
+      const discountPrice = this.optionAddFormGroup.controls.discountPrice;
 
-      if (+value.optionMinParticipation && +value.optionMaxParticipation) {
-        if (+value.optionMinParticipation > +value.optionMaxParticipation) {
+      if (+value.minParticipants && +value.maxParticipants) {
+        if (+value.minParticipants > +value.maxParticipants) {
           min.setErrors({ 'isUpper': true })
         } else {
           if (min.hasError('isUpper')) {
@@ -279,9 +285,9 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
         }
       }
 
-      if (value.optionPeriod) {
-        const fromValue = value.optionPeriod[0];
-        const toValue = value.optionPeriod[1];
+      if (value.period) {
+        const fromValue = value.period[0];
+        const toValue = value.period[1];
         if (Math.abs(moment(toValue).diff(moment(fromValue), 'days')) > 365) {
           period.setErrors({ 'maxDurationDays': true })
         } else {
@@ -454,15 +460,14 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       if (this.isInitialOptionLoad) {
         api.addEventSource(this.formGroup.controls.options.value.map(option => {
           return {
-            id: option.oid,
-            oid: option.oid,
-            optionTitle: option.optionTitle,
-            optionPrice: option.optionPrice,
-            optionMinParticipation: option.optionMinParticipation,
-            optionMaxParticipation: option.optionMaxParticipation,
-            optionDate: option.optionDate,
-            date: option.optionDate,
-            title: option.optionTitle
+            id: option.id,
+            name: option.name,
+            description: option.description,
+            price: option.price,
+            minParticipants: option.minParticipants,
+            maxParticipants: option.maxParticipants,
+            date: option.date,
+            title: option.name
           }
         }))
         this.isInitialOptionLoad = false;
@@ -499,10 +504,6 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     this.fileInput.nativeElement.value = '';
   }
 
-  markerDragEnd(event) {
-    this.onMarkerDragEndEvent.emit(event);
-  }
-
   checkDiscountPrice() {
     this.onCheckDiscountPriceEvent.emit();
   }
@@ -526,77 +527,60 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
   }
 
   addSchedule() {
-    const title = this.optionAddFormGroup.controls.optionTitle.value;
-    const price = this.optionAddFormGroup.controls.optionPrice.value;
-    const min = this.optionAddFormGroup.controls.optionMinParticipation.value;
-    const max = this.optionAddFormGroup.controls.optionMaxParticipation.value;
-    const period = this.optionAddFormGroup.controls.optionPeriod.value;
-    const cron = this.optionAddFormGroup.controls.schedule.value;
+    const { name, price, minParticipants, maxParticipants, description, period, schedule } = this.optionAddFormGroup.value;
     const start = moment(period[0]).format("YYYY-MM-DD");
     const end = moment(period[1]).format("YYYY-MM-DD");
     let newEvents = [];
     let cronInstance = new CronConverter();
-    cronInstance.fromString(cron);
-    let schedule = cronInstance.schedule();
-    schedule = cronInstance.schedule(start);
+    cronInstance.fromString(schedule);
+    let cronSchedule = cronInstance.schedule();
+    cronSchedule = cronInstance.schedule(start);
     while (true) {
-      const event = schedule.next();
+      const event = cronSchedule.next();
       const date = event.format("YYYY-MM-DD");
       if (moment(date).isAfter(moment(end))) {
         break;
       }
       newEvents.push({
-        oid: '',
-        optionTitle: title,
-        optionPrice: price,
-        optionMinParticipation: min,
-        optionMaxParticipation: max,
-        optionDate: event.format(),
+        id: '',
+        name,
+        price,
+        minParticipants,
+        maxParticipants,
+        description,
         date: event.format(),
-        title: title
+        title: name
       })
     }
     const api = this.calendarComponent.getApi();
-    // const originEvents = api.getEvents();
-    // if (originEvents.length !== 0) {
-    //   const filteredEvents = newEvents.filter(newEvent => {
-    //     return !originEvents.find(origin => {
-    //       return moment(origin.start).isSame(moment(newEvent.date))
-    //     });
-    //   })
-    //   api.addEventSource(filteredEvents);
-    //   this.addOptionForm(filteredEvents);
-    //   if (filteredEvents.length !== newEvents.length) alert('요청하신 옵션 중 동일한 일시의 옵션을 제외하고 추가하였습니다.')
-    //   else alert('스케줄이 등록되었습니다.')
-    // } else {
     api.addEventSource(newEvents);
     this.addOptionForm(newEvents);
     alert('스케줄이 등록되었습니다.')
-    // }
     this.optionAddFormGroup.reset();
     this.addModalRef.hide();
   }
 
-  addOptionForm(events: any[]) {
+  addOptionForm(events: ProductOption[]) {
     this.options = this.formGroup.get('options') as FormArray;
     events.forEach(event => {
       this.options.push(this.createOptionForm(event))
     })
   }
 
-  createOptionForm(event: any) {
+  createOptionForm(event: ProductOption) {
     return this.fb.group({
-      oid: [''],
-      optionTitle: [event.optionTitle, this.formService.getValidators(100)],
-      optionPrice: [event.optionPrice, this.formService.getValidators(10, [Validators.max(10000000)])],
-      optionMinParticipation: [event.optionMinParticipation, this.formService.getValidators(10, [Validators.max(1000)])],
-      optionMaxParticipation: [event.optionMaxParticipation, this.formService.getValidators(10, [Validators.max(1000)])],
-      optionDate: [event.date, Validators.required]
+      id: [''],
+      name: [event.name, this.formService.getValidators(100)],
+      price: [event.price, this.formService.getValidators(10, [Validators.max(10000000)])],
+      description: [event.description, Validators.maxLength(300)],
+      minParticipants: [event.minParticipants, this.formService.getValidators(10, [Validators.max(1000)])],
+      maxParticipants: [event.maxParticipants, this.formService.getValidators(10, [Validators.max(1000)])],
+      date: [event.date, Validators.required]
     });
   }
 
   searchSchedule() {
-    const period = this.optionDeleteFormGroup.controls.optionPeriod.value;
+    const period = this.optionDeleteFormGroup.controls.period.value;
     const cron = this.optionDeleteFormGroup.controls.schedule.value;
     const start = moment(period[0]).format("YYYY-MM-DD");
     const end = moment(period[1]).format("YYYY-MM-DD");
@@ -625,12 +609,12 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
       }).map(event => {
         return {
           id: event.id,
-          oid: event._def.extendedProps.oid,
-          optionTitle: event._def.extendedProps.optionTitle,
-          optionPrice: event._def.extendedProps.optionPrice,
-          optionMaxParticipation: event._def.extendedProps.optionMaxParticipation,
-          optionMinParticipation: event._def.extendedProps.optionMinParticipation,
-          optionDate: moment(event.start).locale('ko').format("YYYY-MM-DD HH:mm(ddd)")
+          name: event._def.extendedProps.name,
+          description: event._def.extendedProps.description,
+          price: event._def.extendedProps.price,
+          minParticipants: event._def.extendedProps.minParticipants,
+          maxParticipants: event._def.extendedProps.maxParticipants,
+          date: moment(event.start).locale('ko').format("YYYY-MM-DD HH:mm(ddd)")
         }
       })
     } else {
@@ -655,20 +639,34 @@ export class MeetingControlComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private removeOption(option: any) {
+  private removeOption(option: ProductOption) {
     this.options = this.formGroup.get('options') as FormArray;
     const api = this.calendarComponent.getApi();
 
-    const date = option.optionDate.split("(")[0];
+    const date = option.date.split("(")[0];
+    option.date = date;
     api.getEvents().find(event => {
-      return moment(event._def.extendedProps.optionDate).isSame(moment(date));
+      const props = event._def.extendedProps;
+      const eventOption = new ProductOption(0, 0, props.name, props.price, props.description,
+        moment(event.start).format('YYYY-MM-DD HH:mm'), props.minParticipants, props.maxParticipants, false)
+      return this.isSameOption(eventOption, option)
     }).remove();
     const value = this.options.value.find(o => {
-      return moment(o.optionDate).isSame(moment(date));
+      o.date = moment(o.date).format('YYYY-MM-DD HH:mm')
+      return this.isSameOption(o, option)
     });
     const index = this.options.value.indexOf(value);
     this.options.removeAt(index);
-    this.searchedOptions = this.searchedOptions.filter(o => o.oid !== option.oid);
+    this.searchedOptions = this.searchedOptions.filter(o => o.date !== option.date);
+  }
+
+  private isSameOption(a: ProductOption, b: ProductOption): boolean {
+    return a.name === b.name &&
+      a.price === b.price &&
+      a.description === b.description &&
+      a.date === b.date &&
+      a.minParticipants === b.minParticipants &&
+      a.maxParticipants === b.maxParticipants
   }
 
   add() {

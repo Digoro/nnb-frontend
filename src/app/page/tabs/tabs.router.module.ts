@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/service/auth-guard.service';
+import { RoleGuard } from 'src/app/service/role-guard';
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
@@ -16,6 +17,12 @@ const routes: Routes = [
         path: 'category', children: [{
           path: '', loadChildren: () =>
             import('../category/category.module').then(m => m.CategoryPageModule)
+        }]
+      },
+      {
+        path: 'category-detail/:category', children: [{
+          path: '', loadChildren: () =>
+            import('../category-detail/category-detail.module').then(m => m.CategoryDetailPageModule)
         }]
       },
       {
@@ -67,7 +74,7 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'signup/:method', children: [{
+        path: 'signup', children: [{
           path: '', loadChildren: () =>
             import('../signup/signup.module').then(m => m.SignupPageModule)
         }]
@@ -78,13 +85,6 @@ const routes: Routes = [
             import('../edit-profile/edit-profile.module').then(m => m.EditProfilePageModule)
         }]
       },
-      //TODO: edit-profile 페이지와 병합할 것
-      {
-        path: 'edit-individual', canActivateChild: [AuthGuard], children: [{
-          path: '', loadChildren: () =>
-            import('../edit-individual/edit-individual.module').then(m => m.EditIndividualPageModule)
-        }]
-      },
       {
         path: 'payment-management', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>
@@ -92,7 +92,7 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'payment/select/:mid', canActivateChild: [AuthGuard], children: [{
+        path: 'payment/select/:id', canActivateChild: [AuthGuard], children: [{
           path: '', loadChildren: () =>
             import('../payment-select/payment-select.module').then(m => m.PaymentSelectModule)
         }]
@@ -158,7 +158,7 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'admin', canActivateChild: [AuthGuard], children: [{
+        path: 'admin', canActivateChild: [AuthGuard, RoleGuard], data: { roles: ['admin'] }, children: [{
           path: '', loadChildren: () =>
             import('../admin/admin.module').then(m => m.AdminPageModule)
         }]
@@ -170,7 +170,7 @@ const routes: Routes = [
         }]
       },
       {
-        path: 'coupon-list', canActivateChild: [AuthGuard], children: [{
+        path: 'coupon-list', children: [{
           path: '', loadChildren: () =>
             import('../coupon-list/coupon-list.module').then(m => m.CouponListPageModule)
         }]

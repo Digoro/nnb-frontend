@@ -1,11 +1,14 @@
-import { MeetingOption } from './meeting';
+import { Coupon } from 'src/app/model/coupon';
+import { Product } from 'src/app/model/product';
+import { ProductOption } from './product';
+import { User } from './user';
 
 export class PaymentResult {
     constructor(
         public pid: number,
         public mid: number,
-        public uid: number,
-        public phone: string,
+        public id: number,
+        public phoneNumber: string,
         public PCD_PAY_RST: string,
         public PCD_PAY_MSG: string,
         public PCD_AUTH_KEY: string,
@@ -41,7 +44,6 @@ export class PaymentResult {
         public PCD_CARD_VER: string,
         public PCD_PAYER_HP: string,
         public PCD_PAY_BANKACCTYPE: string,
-        public isCanceled = false,
         public couponId?: number,
         public options?: any[]
     ) { }
@@ -51,7 +53,7 @@ export class PaymentOptionMap {
     constructor(
         public pomid: number,
         public payment: PaymentResult | number,
-        public option: MeetingOption | number,
+        public option: ProductOption | number,
         public count: number,
         public PCD_PAY_REFUND_CARDRECEIPT: string = "",
         public PCD_REFUND_TOTAL: number = 0,
@@ -66,4 +68,102 @@ export enum PaymentResultMsg {
     OK_DELETE_PAYMENT_METHOD = "해지완료",
     OK_GET_USER = "회원조회 성공",
     OK_PAYMENT_RESULT = "조회완료"
+}
+
+export class PaymentCreateDto {
+    constructor(
+        public order: OrderCreateDto,
+        public pgName: PG,
+        public pgOrderId: string,
+        public payAt: Date,
+        public totalPrice: number,
+        public payMethod: PayMethod,
+        public payPrice: number,
+        public payCommissionPrice: number,
+        public result: boolean,
+        public resultMessage: string,
+        public cardName?: string,
+        public cardNum?: string,
+        public cardReceipt?: string,
+        public bankName?: string,
+        public bankNum?: string,
+        public createdAt?: Date,
+        public updatedAt?: Date,
+    ) { }
+}
+
+export class OrderCreateDto {
+    constructor(
+        public userId: number,
+        public productId: number,
+        public couponId: number,
+        public point: number,
+        public orderAt: Date,
+        public orderItems: OrderItemCreateDto[],
+    ) { }
+}
+
+export class OrderItemCreateDto {
+    constructor(
+        public productOptionId: number,
+        public count: number,
+    ) { }
+}
+
+export class Payment {
+    id: number;
+    order: Order;
+    pgName: PG;
+    pgOrderId: string;
+    payAt: Date;
+    totalPrice: number;
+    payMethod: PayMethod;
+    payPrice: number;
+    payCommissionPrice: number;
+    result: boolean;
+    resultMessage: string;
+    cardName: string;
+    cardNum: string;
+    cardReceipt: string;
+    bankName: string;
+    bankNum: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface Order {
+    id: number;
+    user: User;
+    product: Product;
+    coupon: Coupon;
+    point: number;
+    orderAt: Date;
+    orderItems: OrderItem[];
+}
+
+export interface OrderItem {
+    id: number;
+    order: Order;
+    productOption: ProductOption;
+    count: number;
+}
+
+export enum PG {
+    NAVER = "NAVER",
+    KAKAO = "KAKAO",
+    PAYPLE = "PAYPLE"
+}
+
+export enum PayMethod {
+    BANKBOOK = "BANKBOOK",
+    POINT = "POINT",
+    CARD = "CARD",
+    TRANSFER = "TRANSFER",
+    DIRECT = "DIRECT",
+    FREE = "FREE"
+}
+
+export interface PaymentSearchDto {
+    page?: number;
+    limit?: number;
 }

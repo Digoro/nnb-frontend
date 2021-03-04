@@ -1,8 +1,15 @@
-export enum Category {
-    "운동",
-    "교육",
-    "여행",
-    "취미",
-    "모임",
-    "사회공헌",
+export enum CategoryType {
+    TRAVEL = "여행",
+    HOBBY = "취미",
+    EXERCISE = "운동",
+    MEETING = "모임",
+    EDUCATION = "교육",
+    SOCIAL = "사회공헌"
+}
+
+export class Category {
+    constructor(
+        public id: number,
+        public name: CategoryType,
+    ) { }
 }

@@ -17,10 +17,10 @@ export class ConfigurationService {
   ) { }
 
   getAll(): Observable<Configuration[]> {
-    return this.http.get<Configuration[]>(`${this.urlPrefix}/configurations/`);
+    return this.http.get<Configuration[]>(`/api/configurations`);
   }
 
   update(configuration: Configuration) {
-    return this.http.put(`${this.urlPrefix}/configurations/${configuration.configurationId}/`, configuration);
+    return this.http.put(`/api/configurations/${configuration.id}`, configuration);
   }
 }

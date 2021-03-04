@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { environment } from 'src/environments/environment';
@@ -16,14 +15,13 @@ import { UserService } from './../../service/user.service';
 export class EditProfilePage implements OnInit {
   user: User;
   form: FormGroup;
-  phone: string;
+  phoneNumber: string;
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
     private s3Service: S3Service,
-    private formService: FormService,
-    private router: Router
+    private formService: FormService
   ) { }
 
   ngOnInit() {
@@ -33,12 +31,12 @@ export class EditProfilePage implements OnInit {
   setUser() {
     this.authService.getCurrentNonunbubUser().subscribe(resp => {
       this.user = resp;
-      if (this.user.phone) this.phone = this.user.phone;
+      if (this.user.phoneNumber) this.phoneNumber = this.user.phoneNumber;
       this.form = new FormGroup({
-        image: new FormControl(resp.image),
-        nickname: new FormControl(resp.nickName, this.formService.getValidators(30)),
-        name: new FormControl(resp.name, this.formService.getValidators(30)),
-        catchphrase: new FormControl(resp.catch_phrase, [Validators.maxLength(30)]),
+        profilePhoto: new FormControl(resp.profilePhoto),
+        nickname: new FormControl(resp.nickname, this.formService.getValidators(30)),
+        name: new FormControl(resp.name, [Validators.maxLength(30)]),
+        catchphrase: new FormControl(resp.catchphrase, [Validators.maxLength(30)]),
         introduction: new FormControl(resp.introduction, [Validators.maxLength(300)])
       });
     });
@@ -49,22 +47,22 @@ export class EditProfilePage implements OnInit {
     const file = event.target.files[0];
     if (fileTypes.find(t => t === file.type)) {
       this.s3Service.uploadFile(file, environment.folder.user).then(res => {
-        this.form.controls.image.setValue(res.Location);
+        this.form.controls.profilePhoto.setValue(res.Location);
       })
     } else {
       alert(`이미지 형식만 가능합니다. (${fileTypes})`);
     }
   }
 
-  onAddPhone(phone: string) {
-    this.phone = phone;
+  onAddPhone(phoneNumber: string) {
+    this.phoneNumber = phoneNumber;
   }
 
   editUser() {
-    const { image, nickname, name, catchphrase, introduction } = this.form.value;
-    this.userService.edit(this.user.uid, image, nickname, name, catchphrase, introduction).subscribe(resp => {
+    const { profilePhoto, nickname, name, catchphrase, introduction } = this.form.value;
+    this.userService.edit(this.user.id, profilePhoto, nickname, name, catchphrase, introduction).subscribe(resp => {
       alert('수정되었습니다.');
-      window.location.href = `/tabs/profile/${this.user.uid}`;
+      window.location.href = `/tabs/profile/${this.user.id}`;
     })
   }
 }

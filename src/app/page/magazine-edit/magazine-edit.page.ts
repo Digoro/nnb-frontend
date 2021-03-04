@@ -30,7 +30,7 @@ export class MagazineEditPage implements OnInit {
     this.quillStyle = this.utilService.getQuillStyle();
     this.form = new FormGroup({
       title: new FormControl('', this.formService.getValidators(50)),
-      catch_phrase: new FormControl('', this.formService.getValidators(50)),
+      catchphrase: new FormControl('', this.formService.getValidators(50)),
       image: new FormControl(null, Validators.required),
       imageSource: new FormControl(null, Validators.required),
       content: new FormControl('', Validators.required),
@@ -50,8 +50,8 @@ export class MagazineEditPage implements OnInit {
 
   private setFormControlsValue(magazine: Magazine) {
     this.form.controls.title.setValue(magazine.title);
-    this.form.controls.catch_phrase.setValue(magazine.catch_phrase);
-    this.form.controls.content.setValue(magazine.content);
+    this.form.controls.catchphrase.setValue(magazine.catchphrase);
+    this.form.controls.content.setValue(magazine.contents);
   }
 
   ionViewDidLeave() {
@@ -60,15 +60,15 @@ export class MagazineEditPage implements OnInit {
   }
 
   edit() {
-    const { title, catch_phrase, imageSource, content } = this.form.value;
+    const { title, catchphrase, imageSource, content } = this.form.value;
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('catch_phrase', catch_phrase);
+    formData.append('catchphrase', catchphrase);
     formData.append('image', imageSource);
     formData.append('content', content);
-    this.magazineService.edit(this.magazine.mid, formData).subscribe(resp => {
+    this.magazineService.edit(this.magazine.id, formData).subscribe(resp => {
       console.log('수정되었습니다.');
-      this.router.navigate(['/tabs/magazine-detail', this.magazine.mid])
+      this.router.navigate(['/tabs/magazine-detail', this.magazine.id])
     })
   }
 

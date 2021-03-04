@@ -15,6 +15,8 @@ export class MagazinePage implements OnInit {
   currentUser: User;
   magazines: Magazine[];
   isAdmin = false;
+  currentPage: number;
+  nextPage: number;
 
   constructor(
     private magazineService: MagazineService,
@@ -26,7 +28,7 @@ export class MagazinePage implements OnInit {
   ngOnInit() {
     this.authService.getCurrentNonunbubUser().subscribe(user => {
       this.currentUser = user;
-      if (user.uid === this.authService.ADMIN_ID) this.isAdmin = true;
+      if (user.id === this.authService.ADMIN_ID) this.isAdmin = true;
       else this.isAdmin = false;
     })
   }
@@ -36,23 +38,24 @@ export class MagazinePage implements OnInit {
   }
 
   setMagazines() {
-    this.magazineService.getList().subscribe(resp => {
-      this.magazines = resp;
+    this.magazineService.getList(1).subscribe(resp => {
+      this.magazines = resp.items;
+      this.setPagination(resp.meta);
     })
   }
 
-  goDetailPage(mid: number) {
-    this.router.navigate(['/tabs/magazine-detail', mid])
+  goDetailPage(id: number) {
+    this.router.navigate(['/tabs/magazine-detail', id])
   }
 
-  async presentActionSheet(mid: number) {
+  async presentActionSheet(id: number) {
     const actionSheet = await this.actionSheetController.create({
       header: '매거진',
       buttons: [{
         text: '수정',
         icon: '',
         handler: () => {
-          this.router.navigate(['./tabs/magazine-edit', mid])
+          this.router.navigate(['./tabs/magazine-edit', id])
         }
       }, {
         text: '삭제',
@@ -61,7 +64,7 @@ export class MagazinePage implements OnInit {
         handler: () => {
           const isDelete = confirm('정말로 삭제하시겠습니까?');
           if (isDelete) {
-            this.magazineService.delete(mid).subscribe(resp => {
+            this.magazineService.delete(id).subscribe(resp => {
               alert('매거진을 삭제하였습니다.');
               this.setMagazines();
             })
@@ -79,4 +82,21 @@ export class MagazinePage implements OnInit {
     await actionSheet.present();
   }
 
+  private setPagination(meta) {
+    this.currentPage = +meta.currentPage;
+    const lastPage = +meta.totalPages;
+    if (this.currentPage + 1 <= lastPage) {
+      this.nextPage = this.currentPage + 1;
+    }
+  }
+
+  loadData(event) {
+    if (this.currentPage < this.nextPage) {
+      this.magazineService.getList(+this.nextPage).subscribe(resp => {
+        this.magazines = [...this.magazines, ...resp.items];
+        this.setPagination(resp.meta);
+        event.target.complete();
+      })
+    } else event.target.disabled = true;
+  }
 }

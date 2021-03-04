@@ -1,7 +1,7 @@
 <ion-row style="margin-bottom: 140px;">
   <ion-col *ngIf="!isDesktop">
     <ion-button color="medium" expand="block" size="small" (click)="showMenu()">
-      <ion-icon name="grid-outline"></ion-icon>&nbsp;&nbsp;
+      <ion-icon name="list-outline"></ion-icon>&nbsp;&nbsp;
       <span *ngIf="!isShowMenu">목록 보기</span>
       <span *ngIf="isShowMenu">목록 숨기기</span>
     </ion-button>
@@ -13,8 +13,8 @@
     <div class="step" data-target="#test-l-1">
       <button class="trigger">
         <ion-icon
-          [name]="formGroup.controls.title.valid && formGroup.controls.subTitle.valid ? 'checkmark-circle':'checkmark-circle-outline'"
-          [ngStyle]="{'color': formGroup.controls.title.valid && formGroup.controls.subTitle.valid ? '#e5456e':''}">
+          [name]="formGroup.controls.title.valid && formGroup.controls.hashtags.valid && formGroup.controls.categories.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.title.valid && formGroup.controls.hashtags.valid && formGroup.controls.categories.valid ? '#e5456e':''}">
         </ion-icon>
         상품 제목
       </button>
@@ -29,14 +29,6 @@
     </div>
     <div class="step" data-target="#test-l-3">
       <button class="trigger">
-        <ion-icon [name]="formGroup.controls.categories.valid ? 'checkmark-circle':'checkmark-circle-outline'"
-          [ngStyle]="{'color': formGroup.controls.categories.valid ? '#e5456e':''}">
-        </ion-icon>
-        카테고리
-      </button>
-    </div>
-    <div class="step" data-target="#test-l-4">
-      <button class="trigger">
         <ion-icon
           [name]="formGroup.controls.address.valid && formGroup.controls.detailAddress.valid && formGroup.controls.runningMinutes.valid ? 'checkmark-circle':'checkmark-circle-outline'"
           [ngStyle]="{'color': formGroup.controls.address.valid && formGroup.controls.detailAddress.valid && formGroup.controls.runningMinutes.valid ? '#e5456e':''}">
@@ -44,7 +36,7 @@
         장소/소요시간
       </button>
     </div>
-    <div class="step" data-target="#test-l-5">
+    <div class="step" data-target="#test-l-4">
       <button class="trigger">
         <ion-icon [name]="formGroup.controls.price.valid ? 'checkmark-circle':'checkmark-circle-outline'"
           [ngStyle]="{'color': formGroup.controls.price.valid ? '#e5456e':''}">
@@ -52,7 +44,7 @@
         가격
       </button>
     </div>
-    <div class="step" data-target="#test-l-6">
+    <div class="step" data-target="#test-l-5">
       <button class="trigger" (click)="setCalendar()">
         <ion-icon [name]="formGroup.controls.options.valid ? 'checkmark-circle':'checkmark-circle-outline'"
           [ngStyle]="{'color': formGroup.controls.options.valid ? '#e5456e':''}">
@@ -60,25 +52,25 @@
         구매 옵션
       </button>
     </div>
-    <div class="step" data-target="#test-l-7">
+    <div class="step" data-target="#test-l-6">
       <button class="trigger">
         <ion-icon [name]="formGroup.controls.point.valid && formGroup.controls.recommend.valid && 
-        formGroup.controls.programs.valid ? 'checkmark-circle':'checkmark-circle-outline'" [ngStyle]="{'color': formGroup.controls.point.valid && formGroup.controls.recommend.valid && 
-          formGroup.controls.programs.valid ? '#e5456e':''}">
+        formGroup.controls.description.valid ? 'checkmark-circle':'checkmark-circle-outline'" [ngStyle]="{'color': formGroup.controls.point.valid && formGroup.controls.recommend.valid && 
+          formGroup.controls.description.valid ? '#e5456e':''}">
         </ion-icon>
         소개
       </button>
     </div>
-    <div class="step" data-target="#test-l-8">
+    <div class="step" data-target="#test-l-7">
       <button class="trigger">
         <ion-icon
-          [name]="formGroup.controls.check_list.valid && formGroup.controls.include.valid && formGroup.controls.exclude.valid ? 'checkmark-circle':'checkmark-circle-outline'"
-          [ngStyle]="{'color': formGroup.controls.check_list.valid && formGroup.controls.include.valid && formGroup.controls.exclude.valid ? '#e5456e':''}">
+          [name]="formGroup.controls.checkList.valid && formGroup.controls.includeList.valid && formGroup.controls.excludeList.valid ? 'checkmark-circle':'checkmark-circle-outline'"
+          [ngStyle]="{'color': formGroup.controls.checkList.valid && formGroup.controls.includeList.valid && formGroup.controls.excludeList.valid ? '#e5456e':''}">
         </ion-icon>
         준비물
       </button>
     </div>
-    <div class="step" data-target="#test-l-9">
+    <div class="step" data-target="#test-l-8">
       <button class="trigger">
         <ion-icon [name]="formGroup.controls.notice.valid ? 'checkmark-circle':'checkmark-circle-outline'"
           [ngStyle]="{'color': formGroup.controls.notice.valid ? '#e5456e':''}">
@@ -86,7 +78,7 @@
         유의사항
       </button>
     </div>
-    <div class="step" data-target="#test-l-10">
+    <div class="step" data-target="#test-l-9">
       <button class="trigger">
         <ion-icon [name]="formGroup.controls.refundPolicy100.valid &&
         formGroup.controls.refundPolicy0.valid ? 'checkmark-circle':'checkmark-circle-outline'" [ngStyle]="{'color': formGroup.controls.refundPolicy100.valid &&
@@ -95,7 +87,7 @@
         환불 정책
       </button>
     </div>
-    <div class="step" data-target="#test-l-11">
+    <div class="step" data-target="#test-l-10">
       <button class="trigger" (click)="lastCheck()" [disabled]="formGroup.invalid"
         [ngStyle]="{'cursor':formGroup.invalid ? 'not-allowed':'pointer'}">
         <ion-icon [name]="formGroup.valid ? 'checkmark-circle':'checkmark-circle-outline'"
@@ -113,8 +105,18 @@
           <notion-desc [description]="descriptions[0]"></notion-desc>
           <form-input [name]="'상품 제목'" [controlName]="'title'" [group]="formGroup" [maxLength]="30"
             [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"></form-input>
-          <form-input [name]="'캐치 프레이즈'" [controlName]="'subTitle'" [group]="formGroup" [maxLength]="40"
-            [errors]="[{key:'maxlength',message:'40자 제한입니다.'}]"></form-input>
+          <form-input [name]="'해시 태그'" [controlName]="'hashtags'" [group]="formGroup" [type]="'select'"
+            [selectList]="hashtags" [multiple]="true" [addTag]="true" [template]="hashtagTpl" [valueProp]="'id'">
+          </form-input>
+          <ng-template #hashtagTpl let-element>
+            {{element.name}}
+          </ng-template>
+          <form-input [name]="'카테고리'" [controlName]="'categories'" [group]="formGroup" [type]="'select'"
+            [selectList]="categories" [multiple]="true" [template]="categoryTpl" [valueProp]="'id'">
+          </form-input>
+          <ng-template #categoryTpl let-element>
+            {{element.name}}
+          </ng-template>
         </div>
         <div id="test-l-2" class="content">
           <div class="next-prev">
@@ -137,16 +139,6 @@
             <button class="nnb-btn btn-light" (click)="prev()">이전</button>
             <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           </div>
-          <notion-desc [description]="descriptions[2]"></notion-desc>
-          <form-input [name]="'카테고리'" [controlName]="'categories'" [group]="formGroup" [type]="'select'"
-            [selectList]="categories">
-          </form-input>
-        </div>
-        <div id="test-l-4" class="content">
-          <div class="next-prev">
-            <button class="nnb-btn btn-light" (click)="prev()">이전</button>
-            <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
-          </div>
           <notion-desc [description]="descriptions[3]"></notion-desc>
           <ion-row>
             <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12" size="12">
@@ -160,8 +152,7 @@
             </div>
           </ion-row>
           <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
-            <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-              (dragEnd)="markerDragEnd($event)"></agm-marker>
+            <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
           </agm-map>
           <form-input [name]="'상세 장소'" [controlName]="'detailAddress'" [group]="formGroup" [maxLength]="500"
             [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]"></form-input>
@@ -180,7 +171,7 @@
           </ion-row>
           <hr>
         </div>
-        <div id="test-l-5" class="content">
+        <div id="test-l-4" class="content">
           <div class="next-prev">
             <button class="nnb-btn btn-light" (click)="prev()">이전</button>
             <button class="nnb-btn nnb-btn-primary" (click)="next(true)">다음</button>
@@ -202,7 +193,7 @@
             </price>
           </div>
         </div>
-        <div id="test-l-6" class="content">
+        <div id="test-l-5" class="content">
           <div class="next-prev">
             <button class="nnb-btn btn-light" (click)="prev()">이전</button>
             <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
@@ -214,7 +205,7 @@
           <hr style="margin-top:20px; margin-bottom:20px">
           <full-calendar #calendar [options]="calendarOptions"></full-calendar>
         </div>
-        <div id="test-l-7" class="content">
+        <div id="test-l-6" class="content">
           <div class="next-prev">
             <button class="nnb-btn btn-light" (click)="prev(true)">이전</button>
             <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
@@ -241,27 +232,27 @@
             <select style="margin-right: 0.2rem;width: 2rem;height: 2rem;margin-top: -0.1rem;"
               class="ql-align"></select>
           </div>
-          <quill-editor #quill style="-webkit-user-select: text" formControlName="programs"
+          <quill-editor #quill style="-webkit-user-select: text" formControlName="description"
             [placeholder]="'프로그램 소개를 작성해주세요'" [styles]="quillStyle" (onEditorCreated)="getEditorInstance($event, 1)">
           </quill-editor>
         </div>
-        <div id="test-l-8" class="content">
+        <div id="test-l-7" class="content">
           <div class="next-prev">
             <button class="nnb-btn btn-light" (click)="prev()">이전</button>
             <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
           </div>
           <notion-desc [description]="descriptions[7]"></notion-desc>
-          <form-input [name]="'준비물'" [controlName]="'check_list'" [type]="'textarea'" [group]="formGroup"
+          <form-input [name]="'준비물'" [controlName]="'checkList'" [type]="'textarea'" [group]="formGroup"
             [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500">
           </form-input>
-          <form-input [name]="'포함 사항'" [controlName]="'include'" [type]="'textarea'" [group]="formGroup"
+          <form-input [name]="'포함 사항'" [controlName]="'includeList'" [type]="'textarea'" [group]="formGroup"
             [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
           </form-input>
-          <form-input [name]="'불포함 사항'" [controlName]="'exclude'" [type]="'textarea'" [group]="formGroup"
+          <form-input [name]="'불포함 사항'" [controlName]="'excludeList'" [type]="'textarea'" [group]="formGroup"
             [errors]="[{key:'maxlength',message:'500자 제한입니다.'}]" [maxLength]="500" [isRequired]="false">
           </form-input>
         </div>
-        <div id="test-l-9" class="content">
+        <div id="test-l-8" class="content">
           <div class="next-prev">
             <button class="nnb-btn btn-light" (click)="prev()">이전</button>
             <button class="nnb-btn nnb-btn-primary" (click)="next()">다음</button>
@@ -275,7 +266,7 @@
           </ion-checkbox>
           노는법 정책을 따르겠습니다.
         </div>
-        <div id="test-l-10" class="content">
+        <div id="test-l-9" class="content">
           <div class="next-prev">
             <button class="nnb-btn btn-light" (click)="prev()">이전</button>
             <button class="nnb-btn nnb-btn-primary" (click)="next()" [disabled]="formGroup.invalid">다음</button>
@@ -306,14 +297,14 @@
           </ion-item>
           <hr>
         </div>
-        <div id="test-l-11" class="content">
+        <div id="test-l-10" class="content">
           <div class="next-prev">
             <button class="nnb-btn btn-light" (click)="prev()">이전</button>
             <button class="nnb-btn nnb-btn-primary" [disabled]="formGroup.invalid" debounce-click
               (debounceClick)="add()">{{submitMessage}}</button>
           </div>
           <notion-desc [description]="descriptions[10]"></notion-desc>
-          <meeting-preview [meeting]="previewMeeting" [previewImage]="previewImage"></meeting-preview>
+          <meeting-preview [product]="previewProduct" [previewImage]="previewImage"></meeting-preview>
         </div>
       </form>
     </div>
@@ -334,15 +325,14 @@
           <span class="desc" style="padding-left: 0.9rem;">상품 판매를 진행할 전체 기간을 선택해주세요.</span>
           <ion-item lines="none">
             <ion-label position="fixed">판매 기간<span class="invalid-input">*</span></ion-label>
-            <input *ngIf="isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
-              bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:2}">
+            <input *ngIf="isDesktop" type="text" class="form-control" [formControlName]="'period'" bsDaterangepicker
+              [bsConfig]="{containerClass: 'theme-default', displayMonths:2}" [minDate]="minDate">
             <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'period')"></ion-icon>
           </ion-item>
-          <input *ngIf="!isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
-            bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:1}"
-            (onShown)="onShowPicker($event)">
+          <input *ngIf="!isDesktop" type="text" class="form-control" [formControlName]="'period'" bsDaterangepicker
+            [bsConfig]="{containerClass: 'theme-default', displayMonths:1}" (onShown)="onShowPicker($event)">
           <hr>
-          <form-errors [formGroup]=" optionAddFormGroup" [controlName]="'optionPeriod'"
+          <form-errors [formGroup]=" optionAddFormGroup" [controlName]="'period'"
             [errors]="[{key:'maxDurationDays',message:'총 기간은 최대 1년까지 입력가능합니다.'}]"> </form-errors>
           <span class="desc" style="padding-left: 0.9rem;">매월/매주/매일 중 어떤 일정으로 진행할 지 선택해 주세요.</span>
           <ion-item lines="none">
@@ -353,18 +343,19 @@
           </ion-item>
           <hr>
           <span class="desc" style="padding-left: 0.9rem;">예시) 경복궁 투어 성인 1인</span>
-          <form-input [name]="'옵션 제목'" [controlName]="'optionTitle'" [group]="optionAddFormGroup" [maxLength]="100"
+          <form-input [name]="'옵션 제목'" [controlName]="'name'" [group]="optionAddFormGroup" [maxLength]="100"
             [errors]="[{key:'maxlength',message:'100자 제한입니다.'}]"></form-input>
-          <form-input [name]="'가격'" [controlName]="'optionPrice'" [type]="'number'" [group]="optionAddFormGroup"
-            [maxLength]="100" [errors]="[{key:'min',message:'0원 이상이어야 합니다.'},{key:'max',message:'10000000원 제한입니다.'}]"
-            [onlyDigit]="true">
+          <form-input [name]="'옵션 설명'" [controlName]="'description'" [group]="optionAddFormGroup" [maxLength]="300"
+            [errors]="[{key:'maxlength',message:'300자 제한입니다.'}]" [isRequired]="false"></form-input>
+          <form-input [name]="'가격'" [controlName]="'price'" [type]="'number'" [group]="optionAddFormGroup"
+            [errors]="[{key:'max',message:'10000000원 제한입니다.'}]" [onlyDigit]="true">
           </form-input>
-          <form-input [name]="'최소 인원(명)'" [controlName]="'optionMinParticipation'" [type]="'number'"
+          <form-input [name]="'최소 인원(명)'" [controlName]="'minParticipants'" [type]="'number'"
             [group]="optionAddFormGroup"
             [errors]="[{key:'min',message:'1명 이상이어야 합니다.'},{key:'max',message:'1000명 제한입니다.'},{key:'isUpper',message:'최대 인원보다 더 높을 수 없습니다.'}]"
             [onlyDigit]="true">
           </form-input>
-          <form-input [name]="'최대 인원(명)'" [controlName]="'optionMaxParticipation'" [type]="'number'"
+          <form-input [name]="'최대 인원(명)'" [controlName]="'maxParticipants'" [type]="'number'"
             [group]="optionAddFormGroup"
             [errors]="[{key:'min',message:'1명 이상이어야 합니다.'},{key:'max',message:'1000명 제한입니다.'}]" [onlyDigit]="true">
           </form-input>
@@ -394,13 +385,12 @@
         <form [formGroup]="optionDeleteFormGroup">
           <ion-item lines="none">
             <ion-label position="fixed">스케줄 기간<span class="invalid-input">*</span></ion-label>
-            <input *ngIf="isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
-              bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:2}">
+            <input *ngIf="isDesktop" type="text" class="form-control" [formControlName]="'period'" bsDaterangepicker
+              [bsConfig]="{containerClass: 'theme-default', displayMonths:2}">
             <ion-icon slot="end" name="help-circle-outline" (click)="openModal(descTpl, 'period-delete')"></ion-icon>
           </ion-item>
-          <input *ngIf="!isDesktop" type="text" class="form-control" [formControlName]="'optionPeriod'"
-            bsDaterangepicker [bsConfig]="{containerClass: 'theme-default', displayMonths:1}"
-            (onShown)="onShowPicker($event)">
+          <input *ngIf="!isDesktop" type="text" class="form-control" [formControlName]="'period'" bsDaterangepicker
+            [bsConfig]="{containerClass: 'theme-default', displayMonths:1}" (onShown)="onShowPicker($event)">
           <hr>
           <ion-item lines="none">
             <ion-label position="floating">스케줄<span class="invalid-input">*</span></ion-label>
@@ -429,6 +419,7 @@
                 <thead>
                   <tr>
                     <th>일시</th>
+                    <th>이름</th>
                     <th>설명</th>
                     <th>가격</th>
                     <th>최소인원</th>
@@ -438,11 +429,12 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let option of searchedOptions">
-                    <td>{{option.optionDate}}</td>
-                    <td>{{option.optionTitle}}</td>
-                    <td>{{option.optionPrice}}</td>
-                    <td>{{option.optionMinParticipation}}</td>
-                    <td>{{option.optionMaxParticipation}}</td>
+                    <td>{{option.date}}</td>
+                    <td>{{option.name}}</td>
+                    <td>{{option.description}}</td>
+                    <td>{{option.price}}</td>
+                    <td>{{option.minParticipants}}</td>
+                    <td>{{option.maxParticipants}}</td>
                     <td>
                       <ion-button color="medium" style="width: 54px; height: 25px;font-size: 12px;"
                         (click)="removeFromSearched(option)">삭제하기

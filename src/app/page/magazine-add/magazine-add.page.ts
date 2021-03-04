@@ -26,7 +26,7 @@ export class MagazineAddPage implements OnInit {
     this.quillStyle = this.utilService.getQuillStyle();
     this.form = new FormGroup({
       title: new FormControl('', this.formService.getValidators(50)),
-      catch_phrase: new FormControl('', this.formService.getValidators(50)),
+      catchphrase: new FormControl('', this.formService.getValidators(50)),
       image: new FormControl(null, Validators.required),
       imageSource: new FormControl(null, Validators.required),
       content: new FormControl('', Validators.required),
@@ -39,10 +39,10 @@ export class MagazineAddPage implements OnInit {
   }
 
   add() {
-    const { title, catch_phrase, imageSource, content } = this.form.value;
+    const { title, catchphrase, imageSource, content } = this.form.value;
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('catch_phrase', catch_phrase);
+    formData.append('catchphrase', catchphrase);
     formData.append('image', imageSource);
     formData.append('content', content);
     this.magazineService.add(formData).subscribe(resp => {

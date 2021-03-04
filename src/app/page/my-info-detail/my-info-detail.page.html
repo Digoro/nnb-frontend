@@ -1,13 +1,11 @@
 <ion-content>
-  <ion-grid fixed *ngIf="!!meeting">
+  <ion-grid fixed *ngIf="!!payment">
     <ion-row>
       <ion-col size-lg="6" size-md="6" size-sm="12" size-xs="12" size="12">
-        <a [href]="'/tabs/meeting-detail/' + $any(meeting.payment.mid).mid"
-          style="text-decoration: none; color: black;">
-          <img style="max-height: 275px;" [src]="$any(meeting.payment.mid).file" />
+        <a [href]="'/tabs/meeting-detail/' + product.id" style="text-decoration: none; color: black;">
+          <img style="max-height: 275px;" [src]="product.representationPhotos[0].photo" />
           <ion-card-header>
-            <ion-card-title>{{$any(meeting.payment.mid).title}}</ion-card-title>
-            <ion-card-subtitle>{{$any(meeting.payment.mid).subTitle}}</ion-card-subtitle>
+            <ion-card-title>{{product.title}}</ion-card-title>
           </ion-card-header>
         </a>
       </ion-col>
@@ -16,50 +14,49 @@
           <ion-chip outline color="tertiary">
             <ion-label>결제 정보</ion-label>
           </ion-chip>
-          <p>주문번호: {{meeting.payment.PCD_PAY_OID}}</p>
-          <p>결제일시: {{meeting.payment.PCD_PAY_TIME}}</p>
-          <p>결제금액: {{meeting.payment.PCD_PAY_TOTAL|number}}원</p>
+          <p>주문번호: {{order.id}}</p>
+          <p>결제일시: {{payment.payAt | date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+          <p>결제금액: {{payment.payPrice|number}}원</p>
 
-          <ng-container *ngIf="meeting.payment.PCD_PAY_TYPE === 'card'">
-            <p>카드사: {{meeting.payment.PCD_PAY_CARDNAME}}</p>
-            <p>카드번호: {{meeting.payment.PCD_PAY_CARDNUM}}</p>
-            <p><a *ngIf="meeting.payment.PCD_PAY_CARDRECEIPT!=''" [href]="meeting.payment.PCD_PAY_CARDRECEIPT"
-                target="_blank">매출전표 확인하기</a></p>
+          <ng-container *ngIf="payment.payMethod === PayMethod.CARD">
+            <p>카드사: {{payment.cardName}}</p>
+            <p>카드번호: {{payment.cardNum}}</p>
+            <p><a *ngIf="payment.cardReceipt!=''" [href]="payment.cardReceipt" target="_blank">매출전표 확인하기</a></p>
           </ng-container>
 
-          <ng-container *ngIf="meeting.payment.PCD_PAY_TYPE === 'transfer'">
-            <p>은행명: {{meeting.payment.PCD_PAY_BANKNAME}}</p>
-            <p>계좌번호: {{meeting.payment.PCD_PAY_BANKNUM}}</p>
+          <ng-container *ngIf="payment.payMethod === PayMethod.TRANSFER">
+            <p>은행명: {{payment.bankName}}</p>
+            <p>계좌번호: {{payment.bankNum}}</p>
           </ng-container>
 
-          <ion-button *ngIf="meeting.payment.couponId && isAllCanceled" color="medium" size="small"
-            (click)="question()">
-            취소 문의하기
-          </ion-button>
+          <ion-button *ngIf="order.coupon && isAllCanceled" color="medium" size="small" (click)="question()">
+            취소 문의하기</ion-button>
           <br>
           <ion-chip outline>
             <ion-label>구매 옵션</ion-label>
           </ion-chip>
-          <ng-container *ngFor="let option of meeting.options;let last = last">
-            <p>옵션: {{option.optionTitle}}</p>
-            <p>시작일: {{option.optionDate|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
-            <p>가격: {{option.optionPrice}}원</p>
-            <p>수량: {{option.count}}개</p>
-            <p *ngIf="option.isRefund">환불금액: {{option.PCD_REFUND_TOTAL|number}}원</p>
+          <ng-container *ngFor="let item of order.orderItems;let last = last">
+            <p>옵션: {{item.productOption.name}}</p>
+            <p>시작일: {{item.productOption.date|date:'yyyy년 MM월 dd일 HH시 mm분'}}</p>
+            <p>가격: {{item.productOption.price}}원</p>
+            <p>수량: {{item.count}}개</p>
+            <!-- TODO refund -->
+            <!-- <p *ngIf="option.isRefund">환불금액: {{option.PCD_REFUND_TOTAL|number}}원</p>
             <p *ngIf="option.isRefund && option.PCD_PAY_REFUND_CARDRECEIPT">
-              <a [href]="option.PCD_PAY_REFUND_CARDRECEIPT" target="_blank">매출전표 확인하기</a></p>
+              <a [href]="option.PCD_PAY_REFUND_CARDRECEIPT" target="_blank">매출전표 확인하기</a>
+            </p> -->
             <!-- <ion-button *ngIf="!option.isRefund && !meeting.payment.couponId" color="medium" size="small"
               (click)="cancel(meeting, option)">취소하기</ion-button> -->
-            <ion-button *ngIf="option.isRefund" color="medium" size="small" disabled>환불 완료된 옵션입니다.</ion-button>
+            <!-- <ion-button *ngIf="option.isRefund" color="medium" size="small" disabled>환불 완료된 옵션입니다.</ion-button> -->
             <hr *ngIf="!last">
           </ng-container>
-          <ng-container *ngIf="meeting.payment.couponId">
+          <ng-container *ngIf="order.coupon">
             <br>
             <ion-chip outline color="success">
               <ion-label>쿠폰</ion-label>
             </ion-chip>
-            <p>{{$any(meeting.payment.couponId).title}}
-              ({{$any(meeting.payment.couponId).price|number}}원)
+            <p>{{order.coupon.name}}
+              ({{order.coupon.price |number}}원)
             </p>
           </ng-container>
           <br>

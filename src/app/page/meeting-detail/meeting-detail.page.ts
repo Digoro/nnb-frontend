@@ -5,16 +5,15 @@ import { NativeTransitionOptions } from '@ionic-native/native-page-transitions/n
 import { ToastController } from '@ionic/angular';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ClipboardService } from 'ngx-clipboard';
-import { Meeting } from 'src/app/model/meeting';
-import { MeetingService } from 'src/app/service/meeting.service';
+import { PaginationMeta } from 'src/app/model/pagination';
+import { Product, ProductStatus } from 'src/app/model/product';
+import { ProductService } from 'src/app/service/meeting.service';
 import { environment } from './../../../environments/environment';
-import { Category } from './../../model/category';
-import { Comment } from './../../model/comment';
+import { ProductReview, ProductReviewCreateDto } from './../../model/comment';
 import { User } from './../../model/user';
 import { AuthService } from './../../service/auth.service';
 import { CheckDesktopService } from './../../service/check-desktop.service';
 import { CommentService } from './../../service/comment.service';
-import { TimeUtilService } from './../../service/time-util.service';
 import { TitleService } from './../../service/title.service';
 import { UserService } from './../../service/user.service';
 import { UtilService } from './../../service/util.service';
@@ -26,12 +25,16 @@ declare var Kakao;
   styleUrls: ['./meeting-detail.page.scss'],
 })
 export class MeetingDetailPage implements OnInit {
+  paramId: number;
   quillStyle;
-  meeting: Meeting;
+  product: Product;
+  ProductStatus = ProductStatus;
   host: User;
   user: User;
 
-  comments: Comment[];
+  reviews: ProductReview[];
+  meta: PaginationMeta;
+  currentReviewPage = 1;
 
   options: NativeTransitionOptions = {
     direction: 'right',
@@ -45,7 +48,7 @@ export class MeetingDetailPage implements OnInit {
   };
 
   modalRef: BsModalRef;
-  selectedMeeting: Meeting;
+  selectedMeeting: Product;
 
   isDesktop = true;
   runningHours;
@@ -53,12 +56,12 @@ export class MeetingDetailPage implements OnInit {
   categories;
 
   requestNumber = 0;
-  isRequestedMeeting: boolean;
+  alreadyRequestProduct: boolean;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private meetingService: MeetingService,
+    private productService: ProductService,
     private userService: UserService,
     private clipboardService: ClipboardService,
     private utilService: UtilService,
@@ -74,32 +77,23 @@ export class MeetingDetailPage implements OnInit {
 
   ngOnInit() {
     this.cds.isDesktop.subscribe(resp => this.isDesktop = resp)
+    this.quillStyle = this.utilService.getQuillStyle();
     this.authService.getCurrentNonunbubUser().subscribe(user => {
       this.user = user;
-      this.quillStyle = this.utilService.getQuillStyle();
       this.route.params.subscribe(params => {
-        const id = params.id;
-        this.meetingService.getMeeting(id).subscribe(meeting => {
-          this.meetingService.getRequestMeeting(id).subscribe(requestMeetings => {
-            if (requestMeetings.length > 0) {
-              this.requestNumber = requestMeetings.map(m => m.peopleNumber).reduce((a, b) => a + b);
-            }
-            if (!!this.user) {
-              this.isRequestedMeeting = !!requestMeetings.find(m => m.user['uid'] === this.user.uid);
-            } else {
-              this.isRequestedMeeting = false;
-            }
-            const title = `[노는법] ${meeting.title}`
-            this.titleService.setTitle(title);
-            this.meeting = meeting;
-            this.userService.get(this.meeting.host).subscribe(user => {
-              this.host = user;
-            });
-            this.runningHours = Math.floor(meeting.runningMinutes / 60);
-            this.runningMinutes = meeting.runningMinutes % 60;
-            this.categories = Category[meeting.categories]
-            this.getComments();
-          })
+        this.paramId = params.id;
+        this.productService.getProduct(this.paramId, this.user?.id).subscribe(product => {
+          const title = `[노는법] ${product.title}`
+          this.product = product;
+          this.titleService.setTitle(title);
+          if (product.productRequests.length > 0) {
+            this.requestNumber = product.productRequests.map(m => m.numberOfPeople).reduce((a, b) => a + b);
+          }
+          this.alreadyRequestProduct = !!this.user && !!product.productRequests.find(m => m.user['id'] === this.user.id);
+          this.runningHours = Math.floor(product.runningMinutes / 60);
+          this.runningMinutes = product.runningMinutes % 60;
+          this.getComments(this.currentReviewPage);
+          this.userService.get(this.product.host.id).subscribe(host => this.host = host);
         }, error => {
           if ((error as HttpErrorResponse).status === 404) {
             alert('모임이 존재하지 않습니다.');
@@ -131,17 +125,17 @@ export class MeetingDetailPage implements OnInit {
     this.router.navigate(['./tabs/meetings'], { queryParams: { key, title } });
   }
 
-  private getComments() {
-    this.commentService.getCommentsByMeeting(this.meeting.mid).subscribe(comments => {
-      this.comments = comments;
+  private getComments(page: number) {
+    this.commentService.getCommentsByMeeting(this.product.id, page).subscribe(comments => {
+      this.reviews = comments.items;
+      this.meta = comments.meta;
+      this.meta.paginationId = 'meeting-detail';
     });
   }
 
   onDeleteComment(event) {
-    const isParent = event.isParent
-    const comment = event.comment;
-    this.commentService.delete(isParent, comment).subscribe(resp => {
-      this.getComments();
+    this.commentService.delete(event).subscribe(resp => {
+      this.getComments(this.currentReviewPage);
     })
   }
 
@@ -149,7 +143,7 @@ export class MeetingDetailPage implements OnInit {
     this.authService.toastNeedLogin();
   }
 
-  openModal(meeting: Meeting, template: TemplateRef<any>) {
+  openModal(meeting: Product, template: TemplateRef<any>) {
     const config = {
       class: 'modal-dialog-centered',
       animated: false
@@ -159,7 +153,7 @@ export class MeetingDetailPage implements OnInit {
   }
 
   share(sns: string) {
-    let currentUrl = `https://nonunbub.com/tabs/meeting-detail/${this.meeting.mid}`
+    let currentUrl = `https://nonunbub.com/tabs/meeting-detail/${this.product.id}`
     switch (sns) {
       case 'facebook': {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, 'facebook-popup', 'height=350,width=600');
@@ -196,7 +190,7 @@ export class MeetingDetailPage implements OnInit {
         title: '노는법',
         description: this.selectedMeeting.title,
         imageUrl:
-          this.selectedMeeting.file,
+          this.selectedMeeting.representationPhotos[0].photo,
         link: {
           mobileWebUrl: url,
           androidExecParams: 'test',
@@ -231,23 +225,36 @@ export class MeetingDetailPage implements OnInit {
   }
 
 
-  like(meeting: Meeting) {
-    alert('서비스 준비중입니다 ^^');
+  like(id: number, isLike: boolean) {
+    if (!this.user) {
+      this.router.navigate(['/tabs/login'], { queryParams: { returnUrl: this.router.url } });
+    } else {
+      this.userService.likeProduct(id, isLike).subscribe(resp => {
+        this.productService.getProduct(this.paramId, this.user.id).subscribe(resp => {
+          this.product = resp;
+          if (isLike) alert('찜하였습니다!');
+        })
+      })
+    }
   }
 
   onComment(value) {
-    const comment = new Comment(0, this.meeting.mid, this.user.uid, 0, value, TimeUtilService.getNow())
+    const comment = new ProductReviewCreateDto(this.product.id, 0, value)
     this.commentService.comment(comment).subscribe(resp => {
-      this.getComments();
+      this.getComments(this.currentReviewPage);
     })
   }
 
   onChildComment(event) {
     const value = event.value;
     const parentCid = event.parentCid;
-    const comment = new Comment(0, this.meeting.mid, this.user.uid, 0, value, TimeUtilService.getNow(), parentCid)
+    const comment = new ProductReviewCreateDto(this.product.id, 0, value, undefined, parentCid)
     this.commentService.comment(comment).subscribe(resp => {
-      this.getComments();
+      this.getComments(this.currentReviewPage);
     })
+  }
+
+  onPage(event) {
+    this.getComments(event);
   }
 }

@@ -4,7 +4,8 @@ import { NgModule } from '@angular/core';
 import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouteReuseStrategy } from '@angular/router';
+import { Router, RouteReuseStrategy } from '@angular/router';
+import { JwtModule } from '@auth0/angular-jwt';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -20,6 +21,7 @@ import { MeetingManagementPage } from './page/meeting-management/meeting-managem
 import { CsrfInterceptor } from './service/csrf.interceptor';
 import { ErrorHttpInterceptor } from './service/error-http-interceptor';
 import { TabService } from './service/tab.service';
+import { TokenInterceptor } from './service/token.interceptor';
 import { SharedModule } from './shared.module';
 
 @NgModule({
@@ -38,7 +40,14 @@ import { SharedModule } from './shared.module';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem("access_token");
+        }
+      },
+    }),
   ],
   providers: [
     { provide: COMPOSITION_BUFFER_MODE, useValue: false },
@@ -48,7 +57,11 @@ import { SharedModule } from './shared.module';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true,
+      deps: [Router]
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     CookieService,
     TabService
   ],

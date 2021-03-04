@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanActivateChild, RouterStateSnapshot } from '@
 import { Observable } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-import { MeetingService } from './meeting.service';
+import { ProductService } from './meeting.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class PaymentGuard implements CanActivateChild {
 
   constructor(
     private authService: AuthService,
-    private meetingService: MeetingService,
+    private meetingService: ProductService,
   ) { }
 
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot)
@@ -24,7 +24,7 @@ export class PaymentGuard implements CanActivateChild {
     const mid = childRoute.params.mid;
     return this.authService.getCurrentNonunbubUser().pipe(
       concatMap(user => {
-        return this.meetingService.getPurchasedMeetings(user.uid)
+        return this.meetingService.getPurchasedMeetings(user.id)
       }),
       map(purchasedMeetings => {
         const isPurchased = purchasedMeetings.find(m => m.payment.mid === +mid);

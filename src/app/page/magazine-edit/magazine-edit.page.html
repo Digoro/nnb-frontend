@@ -3,7 +3,7 @@
     <form [formGroup]="form">
       <form-input [name]="'제목'" [controlName]="'title'" [group]="form" [maxLength]="30"
         [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"></form-input>
-      <form-input [name]="'캐치프라이즈'" [controlName]="'catch_phrase'" [group]="form" [maxLength]="30"
+      <form-input [name]="'캐치프라이즈'" [controlName]="'catchphrase'" [group]="form" [maxLength]="30"
         [errors]="[{key:'maxlength',message:'30자 제한입니다.'}]"></form-input>
       <ion-item>
         <ion-label position="fixed">대표 이미지</ion-label>

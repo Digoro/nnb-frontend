@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
-import { PayMethod } from 'src/app/model/payment-user-info';
+import { PayMethod } from 'src/app/model/payment';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
 import { Coupon } from '../../model/coupon';
-import { Meeting } from '../../model/meeting';
+import { Product, ProductStatus } from '../../model/product';
 import { CouponService } from '../../service/coupon.service';
-import { MeetingService } from '../../service/meeting.service';
+import { ProductService } from '../../service/meeting.service';
 import { PaymentService } from '../../service/payment.service';
 import { FormService } from './../../service/form.service';
 import { UserService } from './../../service/user.service';
@@ -20,7 +20,8 @@ import { UserService } from './../../service/user.service';
 })
 export class PaymentPayPage implements OnInit {
   user: User;
-  meeting: Meeting;
+  meeting: Product;
+  ProductStatus = ProductStatus;
   isThan: boolean;
   isThanPrice = 10000;
   price: number;
@@ -28,13 +29,13 @@ export class PaymentPayPage implements OnInit {
   options: any[];
   coupons: Coupon[]
   selectedCoupon: Coupon;
-  phone: string;
+  phoneNumber: string;
   alreadyExistPhone = false;
   alreadyExistName = false;
 
   constructor(
     private route: ActivatedRoute,
-    private meetingService: MeetingService,
+    private meetingService: ProductService,
     private paymentService: PaymentService,
     private authService: AuthService,
     private fb: FormBuilder,
@@ -59,8 +60,8 @@ export class PaymentPayPage implements OnInit {
     this.initForm();
     this.authService.getCurrentNonunbubUser().subscribe(user => {
       this.user = user;
-      if (this.user.phone) {
-        this.phone = this.user.phone;
+      if (this.user.phoneNumber) {
+        this.phoneNumber = this.user.phoneNumber;
         this.alreadyExistPhone = true;
       }
       if (this.user.name) {
@@ -68,21 +69,23 @@ export class PaymentPayPage implements OnInit {
         this.alreadyExistName = true;
       }
       const params: {
-        mid: number, options: {
-          oid: number,
-          optionCount: number,
-          optionDate: string,
-          optionPrice: number
-          optionTitle
+        id: number, options: {
+          id: number,
+          count: number,
+          date: string,
+          price: number,
+          discountPrice: number,
+          name,
+          description
         }[]
       } = JSON.parse(this.route.snapshot.params.queryParams);
-      const mid = params.mid;
+      const id = params.id;
       this.options = params.options;
       this.setPrice();
-      this.meetingService.getMeeting(mid).subscribe(meeting => {
+      this.meetingService.getProduct(id).subscribe(meeting => {
         this.meeting = meeting;
-        this.couponService.getCoupons(user.uid, false).subscribe(coupons => {
-          this.coupons = coupons;
+        this.couponService.search({ page: 1, limit: 10, userId: this.user.id, expireDuration: new Date(), isUsed: false }).subscribe(coupons => {
+          this.coupons = coupons.items;
         })
       });
     })
@@ -90,7 +93,7 @@ export class PaymentPayPage implements OnInit {
 
   setPrice() {
     if (this.options.length > 0) {
-      this.price = this.options.map(option => option.optionPrice * +option.optionCount).reduce((a, b) => a + b);
+      this.price = this.options.map(option => option.price * +option.count).reduce((a, b) => a + b);
       this.isThan = this.price < this.isThanPrice;
       if (this.isThan) {
         this.form.controls.coupon.patchValue(false);
@@ -117,23 +120,22 @@ export class PaymentPayPage implements OnInit {
   pay() {
     const { coupon, payMethod } = this.form.value;
     let optionsTemp = this.options.map(o => {
-      o.optionDate = moment(o.optionDate).format('YYYYMMDDHHmmss')
+      o.date = moment(o.date).format('YYYYMMDDHHmmss')
       return o
     })
     let method;
-    let isOk = true;
     switch (payMethod) {
       case 'card': method = PayMethod.CARD; break;
       case 'transfer': method = PayMethod.TRANSFER; break;
     }
-    if (isOk) this.paymentService.pay(method, this.user, this.meeting, this.phone, this.price, optionsTemp, coupon);
-    this.userService.edit(this.user.uid, undefined, undefined, this.form.controls.name.value).subscribe(resp => {
+    this.paymentService.pay(method, this.user, this.meeting, this.phoneNumber, this.price, optionsTemp, coupon);
+    this.userService.edit(this.user.id, undefined, undefined, this.form.controls.name.value).subscribe(resp => {
       console.log(resp);
     })
   }
 
-  onAddPhone(phone) {
-    this.phone = phone;
+  onAddPhone(phoneNumber) {
+    this.phoneNumber = phoneNumber;
   }
 
   ionViewDidLeave() {

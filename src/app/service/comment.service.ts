@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Comment } from './../model/comment';
+import { ProductReview, ProductReviewCreateDto } from './../model/comment';
+import { Pagination } from './../model/pagination';
 import { UrlService } from './url.service';
 
 @Injectable({
@@ -15,24 +16,19 @@ export class CommentService {
     private http: HttpClient
   ) { }
 
-  getCommentsByMeeting(mid: number): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`/comments?mid=${mid}`);
+  getCommentsByMeeting(id: number, page: number): Observable<Pagination<ProductReview>> {
+    return this.http.get<Pagination<ProductReview>>(`${this.urlPrefix}/reviews/products?page=${page}&limit=${10}&product=${id}`);
   }
 
-  getCommentsByUser(uid: number): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`/comments?uid=${uid}`);
+  getCommentsByUser(id: number, page: number): Observable<Pagination<ProductReview>> {
+    return this.http.get<Pagination<ProductReview>>(`/api/reviews/products?page=${page}&limit=${10}&user=${id}`);
   }
 
-  delete(isParent: boolean, comment: Comment): Observable<Comment[]> {
-    if (isParent) {
-      comment.comment = CommentService.DELETE_FLAG;
-      comment.writer = comment.writer['uid'];
-      return this.http.put<Comment[]>(`${this.urlPrefix}/comments/${comment.cid}/`, comment)
-    }
-    else return this.http.delete<Comment[]>(`${this.urlPrefix}/comments/${comment.cid}/`);
+  delete(comment: ProductReview): Observable<ProductReview[]> {
+    return this.http.delete<ProductReview[]>(`${this.urlPrefix}/reviews/products/${comment.id}`);
   }
 
-  comment(comment: Comment) {
-    return this.http.post(`${this.urlPrefix}/comments/`, comment);
+  comment(review: ProductReviewCreateDto) {
+    return this.http.post(`${this.urlPrefix}/reviews/products`, review);
   }
 }

@@ -20,7 +20,7 @@ export class BandService {
   ) { }
 
   get(post_key: string): Observable<BandDetailResult<BandPostDetail>> {
-    return this.http.get<BandDetailResult<BandPostDetail>>(`/band/post?post_key=${post_key}`).pipe(
+    return this.http.get<BandDetailResult<BandPostDetail>>(`/api/band/post?postKey=${post_key}`).pipe(
       map(bandResult => {
         bandResult.result_data.post.content = (bandResult.result_data.post.content as string)
           .replace(this.imgRegex, (a, b) => `<br><img src="${bandResult.result_data.post.photo[b].url}"><br>`)
@@ -33,7 +33,7 @@ export class BandService {
   }
 
   getList(after?: string): Observable<BandResultData<BandPost[]>> {
-    const url = after ? `/band/posts-list?after=${after}` : '/band/posts-list';
+    const url = after ? `/api/band/list?after=${after}` : '/api/band/list';
     return this.http.get<BandResult<BandPost[]>>(url).pipe(
       map(bandResult => {
         bandResult.result_data.items = bandResult.result_data.items.map(item => {
@@ -53,7 +53,7 @@ export class BandService {
   }
 
   getComments(post_key: string): Observable<BandResultData<BandComment[]>> {
-    return this.http.get<BandResult<BandComment[]>>(`/band/comments-list?post_key=${post_key}`).pipe(
+    return this.http.get<BandResult<BandComment[]>>(`/api/band/comments?postKey=${post_key}`).pipe(
       map(bandResult => {
         return bandResult.result_data
       })

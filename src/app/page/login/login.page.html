@@ -1,86 +1,41 @@
 <ion-content>
   <ion-grid fixed style="margin-top: 4rem">
-    <ng-container *ngIf="!isDesktop">
-      <ion-row>
-        <ion-col style="text-align: center;">
-          <p class="main_sentence" style="font-size: 1.3rem;font-weight: 350;">오늘 가장 젊은 순간을 특별하게</p>
-          <p class="main_sentence" style="margin-bottom: 10px;">꽃중년들의 노는 방법</p>
-          <br>
-          <button class="kakao-btn" (click)="login('kakao')">
-            <img width="28" height="28" src="../../../assets/sns-icon/kakaotalk-btn-logo.png">&nbsp;
-            <span class="text">카카오톡으로 시작하기!</span>
-          </button>
-        </ion-col>
-      </ion-row>
-    </ng-container>
-
-    <ng-container *ngIf="isDesktop">
-      <ion-row>
-        <ion-col>
-          <img src="/assets/login-main.jpg">
-        </ion-col>
-        <ion-col style="text-align: center;">
-          <p class="main_sentence" style="font-size: 1.3rem;font-weight: 350;">오늘 가장 젊은 순간을 특별하게</p>
-          <p class="main_sentence" style="margin-bottom: 10px;">꽃중년들의 노는 방법</p>
-          <br>
-          <button class="kakao-btn" (click)="login('kakao')">
-            <img width="28" height="28" src="../../../assets/sns-icon/kakaotalk-btn-logo.png">&nbsp;
-            <span class="text">카카오톡으로 시작하기</span>
-          </button>
-        </ion-col>
-      </ion-row>
-    </ng-container>
-
-    <!-- <div style="opacity: 0.4;">
-      <ion-row>
-        <ion-col>
-          <hr>
-          <p style="text-align: center;">또는</p>
-        </ion-col>
-      </ion-row>
-      <div style="text-align: center;">
-        <ion-chip outline>
-          <ion-label>서비스 추가 예정입니다. 카카오톡 로그인을 이용해주세요.</ion-label>
-        </ion-chip>
-      </div>
-      <form [formGroup]="loginForm">
-        <ion-row>
-          <ion-col>
-            <ion-item>
-              <ion-input type="text" [formControlName]="'id'" placeholder="이메일"></ion-input>
-              <div ngxErrors="id">
-                <div ngxError="maxlength" [when]="['dirty']">
-                  <p class="invalid-input">30자 제한</p>
-                </div>
-              </div>
-            </ion-item>
-            <ion-item>
-              <ion-input type="text" [formControlName]="'password'" placeholder="비밀번호"></ion-input>
-              <div ngxErrors="password">
-                <div ngxError="maxlength" [when]="['dirty']">
-                  <p class="invalid-input">30자 제한</p>
-                </div>
-              </div>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <button class="nnb-btn nnb-btn-primary nnb-btn-block" [disabled]="!loginForm.valid"
-              (click)="login('email')">노는법 로그인
+    <ion-row>
+      <ion-col *ngIf="isDesktop">
+        <img src="/assets/login-main.jpg">
+      </ion-col>
+      <ion-col>
+        <div style="padding:0rem 4rem">
+          <div style="text-align: center;">
+            <p class="main_sentence" style="font-size: 1.3rem;font-weight: 350;">오늘 가장 젊은 순간을 특별하게</p>
+            <p class="main_sentence" style="margin-bottom: 10px;">꽃중년들의 노는 방법</p>
+            <br>
+            <button class="kakao-btn" (click)="login('kakao')">
+              <img width="28" height="28" src="../../../assets/sns-icon/kakaotalk-btn-logo.png">&nbsp;
+              <span class="text">카카오톡으로 시작하기</span>
             </button>
-          </ion-col>
-        </ion-row>
-      </form>
-      <ion-row>
-        <ion-col>
+          </div>
+          <br><br>
+          <hr>
+          <p style="text-align: center;margin: 0px;">또는</p>
+          <br>
+          <form [formGroup]="loginForm">
+            <form-input [name]="'이메일'" [controlName]="'email'" [group]="loginForm" [maxLength]="254"
+              [errors]="[{key:'maxlength',message:'254자 제한입니다.'},{key:'email',message:'이메일이 형식이 아닙니다.'}]"></form-input>
+            <form-input [name]="'비밀번호'" [controlName]="'password'" [type]="'password'" [group]="loginForm"
+              [maxLength]="20" [errors]="[{key:'maxlength',message:'20자 제한입니다.'}]"></form-input>
+            <button class="nnb-btn nnb-btn-primary nnb-btn-block" [disabled]="!loginForm.valid"
+              (click)="login('email')">
+              노는법 로그인
+            </button>
+          </form>
           <div style="display: flex; justify-content: center;">
             <p (click)="findPassword()" style="cursor: pointer;">비밀번호 찾기</p>&nbsp;&nbsp;&nbsp;&nbsp;
             |&nbsp;&nbsp;&nbsp;
             <p (click)="signup()" style="cursor: pointer;">회원 가입</p>
           </div>
-        </ion-col>
-      </ion-row>
-    </div> -->
+        </div>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

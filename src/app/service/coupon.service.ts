@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Coupon } from './../model/coupon';
+import { Coupon, CouponSearchDto } from './../model/coupon';
+import { Pagination } from './../model/pagination';
 import { UrlService } from './url.service';
 
 @Injectable({
@@ -14,7 +15,8 @@ export class CouponService {
     private http: HttpClient,
   ) { }
 
-  getCoupons(uid: number, isUsed: boolean): Observable<Coupon[]> {
-    return this.http.get<Coupon[]>(`/coupons?uid=${uid}&isUsed=${isUsed}`)
+  search(dto: CouponSearchDto): Observable<Pagination<Coupon>> {
+    return this.http.get<Pagination<Coupon>>(
+      `/api/coupons?page=${dto.page}&limit=${dto.limit}&userId=${dto.userId}&expireDuration=${dto.expireDuration}&isUsed=${dto.isUsed}`)
   }
 }

@@ -1,0 +1,31 @@
+<ion-content>
+  <ion-grid fixed>
+    <h3 style="margin-top: 30px;margin-left: 13px;"><strong>{{category}}</strong></h3>
+    <ion-row>
+      <ng-container *ngIf="meetings">
+        <ion-col *ngFor="let meeting of meetings" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6">
+          <a [href]="'/tabs/meeting-detail/' + meeting.id" style="text-decoration: none; color: black;">
+            <meeting-card [product]="meeting"></meeting-card>
+          </a>
+        </ion-col>
+        <ion-col *ngIf="meetings.length === 0">
+          <div style="opacity: 0.4; padding: 20px">
+            <ion-chip outline>
+              <ion-label>다음 일정을 기대해주세요~!</ion-label>
+            </ion-chip>
+          </div>
+        </ion-col>
+
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+          <ion-infinite-scroll-content loading-spinner="lines" loading-text="모임 가져오는 중...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ng-container>
+      <ng-container *ngIf="!meetings">
+        <ion-col *ngFor="let meeting of [1,2,3,4]" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6">
+          <empty-meeting-card></empty-meeting-card>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+  </ion-grid>
+</ion-content>

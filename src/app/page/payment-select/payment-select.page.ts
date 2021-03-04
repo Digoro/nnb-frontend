@@ -3,13 +3,13 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarComponentOptions, CalendarDay } from 'ion2-calendar';
 import * as moment from 'moment';
-import { PaymentResult } from 'src/app/model/payment';
 import { User } from 'src/app/model/user';
 import { FormService } from 'src/app/service/form.service';
 import { Coupon } from '../../model/coupon';
-import { Meeting, MeetingOption } from '../../model/meeting';
-import { MeetingService } from '../../service/meeting.service';
+import { Product, ProductOption, ProductStatus } from '../../model/product';
+import { ProductService } from '../../service/meeting.service';
 import { PaymentService } from '../../service/payment.service';
+import { OrderCreateDto, OrderItemCreateDto, PaymentCreateDto, PayMethod } from './../../model/payment';
 import { AuthService } from './../../service/auth.service';
 import { UserService } from './../../service/user.service';
 
@@ -20,22 +20,23 @@ import { UserService } from './../../service/user.service';
 })
 export class PaymentSelectPage implements OnInit {
   user: User;
-  meeting: Meeting;
+  meeting: Product;
+  ProductStatus = ProductStatus;
   price: number;
   form: FormGroup;
   isFree = true;
   options: FormArray = new FormArray([]);
   coupons: Coupon[]
-  selectedOptionsFromCalendar: MeetingOption[];
+  selectedOptionsFromCalendar: ProductOption[];
   calendarOptions: CalendarComponentOptions;
-  phone: string;
+  phoneNumber: string;
   alreadyExistPhone = false;
   alreadyExistName = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private meetingService: MeetingService,
+    private meetingService: ProductService,
     private paymentService: PaymentService,
     private authService: AuthService,
     private formService: FormService,
@@ -57,12 +58,11 @@ export class PaymentSelectPage implements OnInit {
   ionViewDidEnter() {
     this.initForm()
     this.route.params.subscribe(params => {
-      const mid = params.mid;
-      this.meetingService.getMeeting(mid).subscribe(meeting => {
+      this.meetingService.getProduct(params.id).subscribe(meeting => {
         this.authService.getCurrentNonunbubUser().subscribe(user => {
           this.user = user;
-          if (this.user.phone) {
-            this.phone = this.user.phone;
+          if (this.user.phoneNumber) {
+            this.phoneNumber = this.user.phoneNumber;
             this.alreadyExistPhone = true;
           }
           if (this.user.name) {
@@ -78,14 +78,14 @@ export class PaymentSelectPage implements OnInit {
             monthPickerFormat: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
             daysConfig: this.meeting.options.map(option => {
               return {
-                date: moment(option.optionDate).toDate(),
+                date: moment(option.date).toDate(),
                 marked: true,
                 disable: false,
                 cssClass: '',
               }
             })
           }
-          this.isFree = this.meeting.price === 0;
+          this.isFree = this.meeting.price === 0 || this.meeting.discountPrice === 0;
           if (!this.isFree) {
             this.form.controls.name.clearValidators();
             this.form.controls.name.updateValueAndValidity();
@@ -102,8 +102,8 @@ export class PaymentSelectPage implements OnInit {
     const day = +moment(event.time).get('D')
 
     const selectedOptions = this.meeting.options.filter(option => {
-      const optionMonth = +moment(option.optionDate).format('M');
-      const optionDay = +moment(option.optionDate).format('D');
+      const optionMonth = +moment(option.date).format('M');
+      const optionDay = +moment(option.date).format('D');
       return month === optionMonth && day === optionDay;
     })
     this.selectedOptionsFromCalendar = selectedOptions;
@@ -111,71 +111,74 @@ export class PaymentSelectPage implements OnInit {
 
   setPrice() {
     if (this.options.value.length > 0) {
-      this.price = this.options.value.map(option => option.optionPrice * +option.optionCount).reduce((a, b) => a + b);
+      this.price = this.options.value.map(option => option.price * +option.count).reduce((a, b) => a + b);
     }
   }
 
-  changeCount(flag: boolean, option: MeetingOption) {
-    const optionArray = this.options.controls.find(o => o.value.oid === option.oid);
-    const count = flag ? +document.getElementById('optionCount' + option.oid)['value'] + 1 : +document.getElementById('optionCount' + option.oid)['value'] - 1;
-    if (count > option.optionMaxParticipation) {
-      alert(`최대 신청인원은 ${option.optionMaxParticipation}명 입니다.`);
+  changeCount(flag: boolean, option: ProductOption) {
+    const optionArray = (this.options.controls).find(o => {
+      return o.value.id === option.id;
+    });
+    const count = flag ? +document.getElementById('count' + option.id)['value'] + 1 : +document.getElementById('count' + option.id)['value'] - 1;
+    if (count > option.maxParticipants) {
+      alert(`최대 신청인원은 ${option.maxParticipants}명 입니다.`);
       return;
     }
-    document.getElementById('optionCount' + option.oid)['value'] = count;
+    document.getElementById('count' + option.id)['value'] = count;
 
     if (count > 0 && !optionArray) {
       this.addItem(option);
     } else if (count <= 0 && optionArray) {
       this.minusItem(option);
-      document.getElementById('optionCount' + option.oid)['value'] = 0;
+      document.getElementById('count' + option.id)['value'] = 0;
     } else if (count <= 0 && !optionArray) {
-      document.getElementById('optionCount' + option.oid)['value'] = 0;
+      document.getElementById('count' + option.id)['value'] = 0;
     } else if (count > 0 && optionArray) {
-      optionArray.value.optionCount = count;
+      optionArray.value.count = count;
     }
 
     this.setPrice()
     this.options.controls = this.sortSelectedOptions(this.options.controls)
   }
 
-  createItem(option: MeetingOption) {
+  createItem(option: ProductOption) {
     return this.fb.group({
-      oid: [option.oid, Validators.required],
-      optionTitle: [option.optionTitle, Validators.required],
-      optionPrice: [option.optionPrice, Validators.required],
-      optionCount: [1, this.formService.getValidators(10, [Validators.min(1), Validators.max(999)])],
-      optionDate: [option.optionDate]
+      id: [option.id, Validators.required],
+      name: [option.name, Validators.required],
+      price: [option.price, Validators.required],
+      description: [option.description],
+      count: [1, this.formService.getValidators(10, [Validators.min(1), Validators.max(999)])],
+      date: [option.date]
     });
   }
 
-  addItem(option: MeetingOption): void {
+  addItem(option: ProductOption): void {
     this.options = this.form.get('options') as FormArray;
     this.options.push(this.createItem(option));
   }
 
-  minusItem(option: MeetingOption): void {
+  minusItem(option: ProductOption): void {
     this.options = this.form.get('options') as FormArray;
-    const value = this.options.value.find(o => o.oid === option.oid)
+    const value = this.options.value.find(o => o.id === option.id)
     const index = this.options.value.indexOf(value)
     this.options.removeAt(index);
   }
 
   sortSelectedOptions(controls: AbstractControl[]) {
     return controls.sort((a, b) => {
-      if (moment(a.value.optionDate).isBefore(b.value.optionDate)) return -1;
-      else if (moment(a.value.optionDate).isSame(b.value.optionDate)) return 0;
+      if (moment(a.value.date).isBefore(b.value.date)) return -1;
+      else if (moment(a.value.date).isSame(b.value.date)) return 0;
       else return 1;
     })
   }
 
-  onAddPhone(phone) {
-    this.phone = phone;
+  onAddPhone(phoneNumber) {
+    this.phoneNumber = phoneNumber;
   }
 
   pay() {
     const obj: any = {};
-    obj.mid = this.meeting.mid;
+    obj.id = this.meeting.id;
     obj.options = this.options.controls.map(control => {
       return control.value;
     })
@@ -190,17 +193,17 @@ export class PaymentSelectPage implements OnInit {
 
   join() {
     const { options } = this.form.value
-    const now = moment();
-    const time = now.format('YYYYMMDDHHmmss');
+    const now = new Date();
+    const orderItems = options.map(option => new OrderItemCreateDto(option.id, option.count));
+    const order = new OrderCreateDto(this.user.id, this.meeting.id, undefined, undefined, now, orderItems)
+    const payment = new PaymentCreateDto(order, undefined, undefined, now, 0, PayMethod.FREE, 0, 0, true, '무료모임 등록 성공');
 
-    const payment = new PaymentResult(0, this.meeting.mid, this.user.uid, this.phone, 'success', '무료모임 등록 성공',
-      undefined, undefined, undefined, `nonunbub${this.user.uid}${this.meeting.mid}`, undefined, undefined
-      , undefined, undefined, undefined, undefined, undefined, this.meeting.title, '0', undefined, undefined
-      , undefined, undefined, undefined, time, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined
-      , undefined, undefined, undefined, undefined, this.phone, undefined)
-    this.paymentService.joinFreeMeeting(payment, options, this.phone, this.user);
-    this.userService.edit(this.user.uid, undefined, undefined, this.form.controls.name.value).subscribe(resp => {
-      console.log(resp);
+    this.paymentService.joinFreeMeeting(payment).subscribe(resp => {
+      this.userService.edit(this.user.id, undefined, undefined, this.form.controls.name.value).subscribe(resp => {
+        console.log(resp);
+      })
+      alert('등록한 모임으로 이동합니다.');
+      this.router.navigate(['/tabs/my-info']);
     })
   }
 }

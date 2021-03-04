@@ -1,8 +1,10 @@
-<div class="meeting" (click)="goDetailPage(meeting)">
-  <img [src]="meeting.file">
+<div class="meeting" (click)="goDetailPage(product)">
+  <img [src]="product.representationPhotos[0].photo">
   <div class="body">
-    <p class="sub-title desc">{{meeting.subTitle | truncate: [40]}}</p>
-    <p class="title">{{meeting.title | truncate: [30]}}</p>
-    <price [price]="meeting.price" [discountPrice]="meeting.discountPrice"></price>
+    <p class="sub-title desc">
+      <span *ngFor="let hashtag of product.hashtags">#{{hashtag.name}}</span>
+    </p>
+    <p class="title">{{product.title | truncate: [30]}}</p>
+    <price [price]="product.price" [discountPrice]="product.discountPrice"></price>
   </div>
 </div>

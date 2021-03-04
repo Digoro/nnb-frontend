@@ -1,3 +1,10 @@
+.review-wrapper {
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #efefef;
+    border-radius: 4px;
+}
+
 .avatar {
     margin: 0px 8px 0px 0px;
 }
@@ -13,8 +20,18 @@
 }
 
 .comment {
+    margin-left: 7px;
+    margin-bottom: 0px;
+}
+
+.child-comment {
     margin-left: 20px;
     margin-bottom: 0px;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #efefef;
+    border-radius: 4px;
+    background: #f3f3f3;
 }
 
 ::ng-deep .comment-textarea {

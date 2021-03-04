@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { PurchasedMeeting } from './../../model/meeting';
+import { Payment } from 'src/app/model/payment';
 
 @Component({
   selector: 'myinfo-meeting',
@@ -7,7 +7,7 @@ import { PurchasedMeeting } from './../../model/meeting';
   styleUrls: ['./myinfo-meeting.component.scss'],
 })
 export class MyinfoMeetingComponent implements OnInit {
-  @Input() meeting: PurchasedMeeting;
+  @Input() payment: Payment;
   @Input() lines = '';
 
   constructor(

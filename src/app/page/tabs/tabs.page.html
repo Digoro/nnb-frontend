@@ -16,7 +16,7 @@
       <ion-toolbar mode=md>
         <ion-title *ngIf="isHome">
           <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/home'">
-            <img src="../../../assets/nonunbub_logo.png" style="width: 3.1rem">&nbsp;&nbsp;</a>
+            <img src="../../../assets/nnb_logo.png" style="width: 4rem">&nbsp;&nbsp;</a>
         </ion-title>
         <ion-buttons slot="start" *ngIf="!isHome">
           <ion-button (click)="back()">
@@ -25,9 +25,9 @@
         </ion-buttons>
         <ion-buttons slot="end">
           <ng-container *ngIf="!!user">
-            <a [href]="'/tabs/profile/' + user.uid" style="text-decoration: none; color: black;">
+            <a [href]="'/tabs/profile/' + user.id" style="text-decoration: none; color: black;">
               <ion-button>
-                <img class="user-image" [src]="user.image">
+                <img class="user-image" [src]="user.profilePhoto">
               </ion-button>
             </a>
           </ng-container>
@@ -50,7 +50,7 @@
       <ion-toolbar>
         <ion-title>
           <a style="text-decoration: none; cursor: pointer;" [href]="'/tabs/home'">
-            <img src="../../../assets/nonunbub_logo.png" style="width: 3.1rem">&nbsp;&nbsp;</a>
+            <img src="../../../assets/nnb_logo.png" style="width: 4rem">&nbsp;&nbsp;</a>
         </ion-title>
         <ion-buttons slot="secondary">
           <ng-container *ngFor="let tab of descktopMenus">
@@ -61,9 +61,9 @@
             </a>
           </ng-container>
           <ng-container *ngIf="!!user">
-            <a [href]="'/tabs/profile/' + user.uid" style="text-decoration: none; color: black;">
+            <a [href]="'/tabs/profile/' + user.id" style="text-decoration: none; color: black;">
               <ion-button>
-                <img class="user-image" [src]="user.image">
+                <img class="user-image" [src]="user.profilePhoto">
               </ion-button>
             </a>
           </ng-container>

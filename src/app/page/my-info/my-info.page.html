@@ -2,20 +2,35 @@
   <ion-grid fixed style="margin-top: 0.5rem">
     <ion-segment (ionChange)="segmentChanged($event)" value="join">
       <ion-segment-button value="join">
-        <ion-label>등록한 모임</ion-label>
+        <ion-label>등록한 모임
+          <ion-chip>
+            <ion-label>{{paymentTotal}}</ion-label>
+          </ion-chip>
+        </ion-label>
+
       </ion-segment-button>
       <ion-segment-button value="like">
-        <ion-label>찜한 모임</ion-label>
+        <ion-label>찜한 모임
+          <ion-chip>
+            <ion-label>{{likeTotal}}</ion-label>
+          </ion-chip>
+        </ion-label>
       </ion-segment-button>
     </ion-segment>
     <br>
 
-    <ng-container *ngIf="selectedMenu === 'join'">
-      <ng-container *ngFor="let purchasedMeeeting of purchasedMeetings; let last=last">
-        <myinfo-meeting [lines]="'none'" [meeting]="purchasedMeeeting"></myinfo-meeting>
+    <ng-container *ngIf="selectedMenu === 'join' && payments">
+      <ng-container *ngFor="let payment of payments; let last=last">
+        <myinfo-meeting [lines]="'none'" [payment]="payment"></myinfo-meeting>
         <hr *ngIf="!last" style="margin: 0rem">
       </ng-container>
-      <ng-container *ngIf="!purchasedMeetings">
+
+      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+        <ion-infinite-scroll-content loading-spinner="lines" loading-text="결제 정보 가져오는 중...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+
+      <ng-container *ngIf="payments.length === 0">
         <div style="text-align: center; opacity: 0.4;">
           <ion-chip outline>
             <ion-label>등록한 모임이 없습니다.</ion-label>
@@ -24,12 +39,27 @@
       </ng-container>
     </ng-container>
 
-    <ng-container *ngIf="selectedMenu === 'like'">
-      <div style="text-align: center; opacity: 0.4;">
-        <ion-chip outline>
-          <ion-label>서비스 추가 예정입니다.</ion-label>
-        </ion-chip>
-      </div>
+    <ng-container *ngIf="selectedMenu === 'like' && likeProducts">
+      <ion-row>
+        <ion-col *ngFor="let product of likeProducts" size-lg="3" size-md="3" size-sm="6" size-xs="6" size="6">
+          <a [href]="'/tabs/meeting-detail/' + product.id" style="text-decoration: none; color: black;">
+            <meeting-card [product]="product"></meeting-card>
+          </a>
+        </ion-col>
+      </ion-row>
+
+      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadDataLikeProducts($event)">
+        <ion-infinite-scroll-content loading-spinner="lines" loading-text="상품 정보 가져오는 중...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+
+      <ng-container *ngIf="likeProducts.length === 0">
+        <div style="text-align: center; opacity: 0.4;">
+          <ion-chip outline>
+            <ion-label>찜한 모임이 없습니다.</ion-label>
+          </ion-chip>
+        </div>
+      </ng-container>
     </ng-container>
   </ion-grid>
 </ion-content>

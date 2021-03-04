@@ -2,57 +2,65 @@
   <ion-grid fixed *ngIf="coupons && usedCoupons" style="margin-top: 0.5rem">
     <ion-segment (ionChange)="segmentChanged($event)" value="canUse">
       <ion-segment-button value="canUse">
-        <ion-label>사용가능한 쿠폰&nbsp;<span class="badge badge-danger">{{coupons.length}}</span></ion-label>
+        <ion-label>사용가능한 쿠폰&nbsp;<span class="badge badge-danger">{{total}}</span></ion-label>
       </ion-segment-button>
       <ion-segment-button value="used">
-        <ion-label>지난 쿠폰&nbsp;<span class="badge badge-secondary">{{usedCoupons.length}}</span></ion-label>
+        <ion-label>지난 쿠폰&nbsp;<span class="badge badge-secondary">{{usedCouponsTotal}}</span></ion-label>
       </ion-segment-button>
     </ion-segment>
 
-    <ion-row *ngIf="selectedMenu === 'canUse'">
-      <ion-col>
-        <ng-container *ngFor="let coupon of coupons">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-subtitle>{{coupon.isUsed ? '사용됨':'사용가능'}}</ion-card-subtitle>
-              <ion-card-title>{{coupon.price|number}}원</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              {{coupon.title}}
-            </ion-card-content>
-          </ion-card>
-        </ng-container>
-        <ng-container *ngIf="coupons.length === 0">
-          <div style="text-align: center; opacity: 0.4;">
-            <ion-chip outline>
-              <ion-label>쿠폰이 없습니다.</ion-label>
-            </ion-chip>
-          </div>
-        </ng-container>
-      </ion-col>
-    </ion-row>
+    <ng-container *ngIf="selectedMenu === 'canUse'">
+      <ng-container *ngFor="let coupon of coupons">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>사용가능</ion-card-subtitle>
+            <ion-card-title>{{coupon.price|number}}원</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>만료시간: {{coupon.expireDuration|date:'yyyy-MM-dd HH:mm'}}</p>
+            <p>쿠폰명: {{coupon.name}}</p>
+            <p>설명: {{coupon.contents}}</p>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event,false)">
+        <ion-infinite-scroll-content loading-spinner="lines" loading-text="쿠폰 가져오는 중...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+      <ng-container *ngIf="coupons.length === 0">
+        <div style="text-align: center; opacity: 0.4;">
+          <ion-chip outline>
+            <ion-label>쿠폰이 없습니다.</ion-label>
+          </ion-chip>
+        </div>
+      </ng-container>
+    </ng-container>
 
-    <ion-row *ngIf="selectedMenu === 'used'">
-      <ion-col>
-        <ng-container *ngFor="let coupon of usedCoupons">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-subtitle>{{coupon.isUsed ? '사용됨':'사용가능'}}</ion-card-subtitle>
-              <ion-card-title>{{coupon.price|number}}원</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              {{coupon.title}}
-            </ion-card-content>
-          </ion-card>
-        </ng-container>
-        <ng-container *ngIf="usedCoupons.length === 0">
-          <div style="text-align: center; opacity: 0.4;">
-            <ion-chip outline>
-              <ion-label>쿠폰이 없습니다.</ion-label>
-            </ion-chip>
-          </div>
-        </ng-container>
-      </ion-col>
-    </ion-row>
+
+    <ng-container *ngIf="selectedMenu === 'used'">
+      <ng-container *ngFor="let coupon of usedCoupons">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{coupon.price|number}}원</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>만료시간: {{coupon.expireDuration|date:'yyyy-MM-dd HH:mm'}}</p>
+            <p>쿠폰명: {{coupon.name}}</p>
+            <p>설명: {{coupon.contents}}</p>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event,true)">
+        <ion-infinite-scroll-content loading-spinner="lines" loading-text="쿠폰 가져오는 중...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+      <ng-container *ngIf="usedCoupons.length === 0">
+        <div style="text-align: center; opacity: 0.4;">
+          <ion-chip outline>
+            <ion-label>쿠폰이 없습니다.</ion-label>
+          </ion-chip>
+        </div>
+      </ng-container>
+    </ng-container>
   </ion-grid>
 </ion-content>

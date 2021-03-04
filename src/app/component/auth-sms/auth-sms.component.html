@@ -1,14 +1,14 @@
 <form [formGroup]="form">
   <p class="desc" *ngIf="isDesc" style="margin: 0px">- 없이 번호만 입력해주세요</p>
-  <input type="tel" class="form-control" [formControlName]="'phone'" placeholder="01012345678"
-    [attr.disabled]="user.phone || isSMSAuth ? '' : null">
+  <input type="tel" class="form-control" [formControlName]="'phoneNumber'" placeholder="01012345678"
+    [attr.disabled]="user?.phoneNumber || isSMSAuth ? '' : null">
   <p class="invalid-input" style="margin-bottom: 1rem;"
-    *ngIf="form.controls.phone.dirty && form.controls.phone.invalid">
+    *ngIf="form.controls.phoneNumber.dirty && form.controls.phoneNumber.invalid">
     입력이 올바르지 않습니다.
   </p>
   <ng-container *ngIf="!isSMSAuth">
-    <button *ngIf="!user.phone" class="nnb-btn nnb-btn-secondary nnb-btn-sm"
-      [attr.disabled]="form.controls.phone.invalid ? '' : null" (click)="requestAuthSMS()">
+    <button *ngIf="!user?.phoneNumber" class="nnb-btn nnb-btn-secondary nnb-btn-sm"
+      [attr.disabled]="form.controls.phoneNumber.invalid ? '' : null" (click)="requestAuthSMS()">
       인증번호 발송</button>
     <span class="invalid-input" *ngIf="!!remainTime">&nbsp;{{remainTime}}</span>
     <ng-container *ngIf="isRequestAuth">

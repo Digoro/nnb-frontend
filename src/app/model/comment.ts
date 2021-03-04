@@ -1,20 +1,28 @@
+import { Product } from "./product";
+import { User } from "./user";
 
-export class Comment {
+export class ProductReview {
     constructor(
-        public cid: number,
-        public meeting: number,
-        public writer: {
-            image: string,
-            name: string,
-            nickName: string,
-            sid: number,
-            uid: number
-        } | number,
-        public star: number,
+        public id: number,
+        public user: User,
+        public product: Product,
+        public score: number,
         public comment: string,
-        public createDT: string,
-        public parentCid?: number,
-        public children?: Comment[],
+        public createAt: Date,
+        public updatedAt: Date,
+        public photo?: string,
+        public parent?: ProductReview,
+        public children?: ProductReview[],
         public canDelete = false
+    ) { }
+}
+
+export class ProductReviewCreateDto {
+    constructor(
+        public productId: number,
+        public score: number,
+        public comment: string,
+        public photo?: string,
+        public parentId?: number
     ) { }
 }

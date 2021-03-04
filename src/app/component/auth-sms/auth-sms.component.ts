@@ -17,10 +17,13 @@ export class AuthSmsComponent implements OnInit {
   interval: any;
 
   @ViewChild('authNumber') authNumber: ElementRef;
-  @Input() phone: string;
+  @Input() phoneNumber: string;
   @Input() user: User;
   @Input() isDesc = true;
   @Output() phoneAddEvent = new EventEmitter();
+  // reactive form
+  @Input() formGroup: FormGroup;
+  @Input() controlName: string;
 
   constructor(
     private authService: AuthService,
@@ -29,7 +32,7 @@ export class AuthSmsComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      phone: new FormControl(this.phone, [Validators.required, Validators.pattern("[0-9 ]{11}")]),
+      phoneNumber: new FormControl(this.phoneNumber, [Validators.required, Validators.pattern("[0-9 ]{11}")]),
     })
   }
 
@@ -51,8 +54,8 @@ export class AuthSmsComponent implements OnInit {
 
   requestAuthSMS() {
     clearInterval(this.interval);
-    this.authService.requestAuthSMS(this.form.controls.phone.value).subscribe(resp => {
-      if (resp.result) {
+    this.authService.requestAuthSms(this.form.controls.phoneNumber.value).subscribe(resp => {
+      if (resp) {
         this.isRequestAuth = true;
         this.interval = this.startTimer(60 * 5);
       } else {
@@ -62,15 +65,20 @@ export class AuthSmsComponent implements OnInit {
   }
 
   authSMS() {
-    const phone = this.form.controls.phone.value;
-    this.authService.authSMS(phone, this.authNumber.nativeElement.value).subscribe(resp => {
-      if (resp.result) {
+    const phoneNumber = this.form.controls.phoneNumber.value;
+    this.authService.checkAuthSms(phoneNumber, this.authNumber.nativeElement.value).subscribe(resp => {
+      if (resp) {
         this.isSMSAuth = true;
         alert('휴대폰 인증에 성공하였습니다.');
-        this.phoneAddEvent.emit(phone);
-        this.userService.edit(this.user.uid, undefined, undefined, undefined, undefined, undefined, phone).subscribe(resp => {
-          console.log(resp);
-        })
+        if (this.formGroup && this.controlName) {
+          this.formGroup.controls[this.controlName].setValue(phoneNumber);
+        }
+        this.phoneAddEvent.emit(phoneNumber);
+        if (this.user) {
+          this.userService.edit(this.user.id, undefined, undefined, undefined, undefined, undefined, phoneNumber).subscribe(resp => {
+            console.log(resp);
+          })
+        }
       } else {
         this.isSMSAuth = false;
         alert('휴대폰 인증에 실패하였습니다. 다시 시도해주세요.')

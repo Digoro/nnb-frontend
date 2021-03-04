@@ -1,0 +1,18 @@
+.pagination {
+    display: flex;
+
+    .current {
+        background: #e5456e;
+        color: white;
+    }
+
+    .page {
+        border: 1px solid #e9ebee;
+        padding: 0.1875rem 0.625rem;
+        cursor: pointer;
+    }
+}
+
+.transparency {
+    opacity: 0.5;
+}

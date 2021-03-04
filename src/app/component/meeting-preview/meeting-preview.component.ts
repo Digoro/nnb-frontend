@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Meeting } from 'src/app/model/meeting';
+import { Product } from 'src/app/model/product';
 import { UtilService } from './../../service/util.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { UtilService } from './../../service/util.service';
   styleUrls: ['./meeting-preview.component.scss'],
 })
 export class MeetingPreviewComponent implements OnInit, OnChanges {
-  @Input() meeting: Meeting;
+  @Input() product: Product;
   @Input() previewImage;
   quillStyle;
   runningHours;
@@ -19,10 +19,10 @@ export class MeetingPreviewComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!!changes.meeting) {
-      if (!changes.meeting.firstChange && !!changes.meeting.currentValue) {
-        this.runningHours = Math.floor(this.meeting.runningMinutes / 60);
-        this.runningMinutes = this.meeting.runningMinutes % 60;
+    if (!!changes.product) {
+      if (!changes.product.firstChange && !!changes.product.currentValue) {
+        this.runningHours = Math.floor(this.product.runningMinutes / 60);
+        this.runningMinutes = this.product.runningMinutes % 60;
       }
     }
   }
