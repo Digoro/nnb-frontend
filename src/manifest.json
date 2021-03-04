@@ -3,7 +3,7 @@
     "short_name": "노는법",
     "start_url": "/tabs/home",
     "display": "standalone",
-    "background_color": "#fff",
+    "background_color": "linear-gradient(to right, #fc466b, #3f5efb);",
     "description": "당신의 가장 젊은 순간을 특별하게 만드는 방법, 노는법",
     "icons": [
         {
