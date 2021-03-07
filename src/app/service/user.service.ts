@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { User } from '../model/user';
 import { AuthService } from './auth.service';
 import { UrlService } from './url.service';
@@ -27,11 +26,7 @@ export class UserService {
   }
 
   edit(userId, profilePhoto?: string, nickname?: string, name?: string, catchphrase?: string, introduction?: string, phoneNumber?: string) {
-    return this.http.put(`/api/users/${userId}`, { profilePhoto, nickname, name, catchphrase, introduction, phoneNumber }).pipe(
-      tap(data => {
-        console.log(data);
-      })
-    )
+    return this.http.put(`/api/users/${userId}`, { profilePhoto, nickname, name, catchphrase, introduction, phoneNumber });
   }
 
   likeProduct(productId: number, isLike: boolean) {
@@ -40,5 +35,13 @@ export class UserService {
 
   likeUser(userId: number, isLike: boolean) {
     return this.http.post(`api/users/likes/product`, { id: userId, isLike });
+  }
+
+  findPassword(email: string): any {
+    return this.http.post(`auth/find-password`, { email })
+  }
+
+  resetPassword(validationCode: string, password: string): any {
+    return this.http.put(`auth/reset-password`, { validationCode, password });
   }
 }

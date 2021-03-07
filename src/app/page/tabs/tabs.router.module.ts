@@ -174,7 +174,15 @@ const routes: Routes = [
           path: '', loadChildren: () =>
             import('../coupon-list/coupon-list.module').then(m => m.CouponListPageModule)
         }]
-      }
+      },
+      {
+        path: 'find-password',
+        loadChildren: () => import('../find-password/find-password.module').then(m => m.FindPasswordPageModule)
+      },
+      {
+        path: 'reset-password',
+        loadChildren: () => import('../reset-password/reset-password.module').then(m => m.ResetPasswordPageModule)
+      },
     ],
   },
   {

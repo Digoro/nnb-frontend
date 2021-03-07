@@ -86,7 +86,7 @@ export class LoginPage implements OnInit {
   }
 
   findPassword() {
-    alert('서비스 준비중입니다 ^^');
+    this.router.navigate(['./tabs/find-password']);
   }
 
   ionViewDidLeave() {
