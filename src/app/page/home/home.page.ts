@@ -64,8 +64,6 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ionViewDidEnter() {
-    alert(`서비스 점검중입니다. 🙏🏻🙏🏻
-(일부 기능이 동작하지 않을 수 있습니다)`)
     console.log('Home ionViewDidEnter');
     this.getMeetings();
     this.magazineServie.getList().subscribe(resp => {
